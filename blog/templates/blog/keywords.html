@@ -1,0 +1,10 @@
+<div>
+{{timediff}}
+{% for phrase, freq in sorted_nouns|slice:":12" %}
+
+<div class="keyword" data-contains="{{ phrase }}" rel="" >{{ phrase }}</div>
+
+{% endfor %}
+</div>
+
+

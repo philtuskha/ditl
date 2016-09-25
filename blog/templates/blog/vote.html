@@ -1,0 +1,157 @@
+<style>
+.hover-me{
+padding: 4px;
+background:yellowgreen;
+border-radius: 8px;
+width:300px;
+height:100px;
+list-style:none;
+cursor:pointer;
+position:relative;
+}
+.hover-me:after{
+content: "";
+display: block; /* reduce the damage in FF3.0 */
+position: absolute;
+bottom: -10px;
+left: 50px;
+width: 0;
+border-width: 10px 10px 0;
+border-style: solid;
+border-color: yellowgreen transparent;
+}
+.insider{
+visibility:hidden;
+position:absolute;
+border-radius: 8px;
+top:0;
+left:0;
+bottom:0;
+right:0;
+transition:all;
+transition-timing-function:ease-out;
+transition-duration: 0.5s; 
+}
+.insider:after{
+content: "";
+display: block; /* reduce the damage in FF3.0 */
+position: absolute;
+bottom: -10px;
+left: 50px;
+width: 0;
+border-width: 10px 10px 0;
+border-style: solid;
+/* 
+border-color: rgba(54,69,79,0.6) transparent;
+ */
+}
+
+.hover-me:hover .insider{
+background:rgba(54,69,79,0.6);
+visibility:visible;
+border-color: black transparent;
+
+}
+.vote-list{
+padding: 4px;
+background:pink;
+border-radius: 8px;
+width:200px;
+list-style:none;
+
+}
+.vote-list li{
+cursor:pointer;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+	$(".vote-list li").click(function(){
+		option_data = $(this).data("vote")    ////////, "csrfmiddlewaretoken": $('input').val()
+		$.ajax({
+				type: "POST",
+				url: "/vote/",
+				data: {"thread": $("#id_thread").val(), "option": option_data },
+				success: function(response) {
+					console.log(response.thread);
+					///////use to get 'this field is required errors'
+				
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					console.log(XMLHttpRequest.responseText.slice(0,14));
+					///////////this will return string 'IntegrityError' when the voter has voted for thread already
+
+				}
+			});
+
+		});////end of POST
+	});
+	
+// CSRF code
+    function getCookie(name) {
+        var cookieValue = null;
+        var i = 0;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (i; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    }); 
+
+</script>
+<form method="post">
+{% if form.errors %}
+<div id="form-error">
+	<p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+	<ul>
+	{% for field in form %}
+	<li>{{ field.errors|striptags }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
+<div class="post-form"</div>
+{% csrf_token %}
+<p>{{ tv }}</p>
+<p>{{ form }}</p>
+<div class="hover-me">Hover over me
+
+<div class="insider"></div>
+</div>
+<ul class="vote-list">
+<li data-vote="SE">SuperElf</li>
+<li data-vote="WU">WayUseful</li>
+<li data-vote="LV">LoveThis</li>
+<li data-vote="YS">Yes</li>
+<li data-vote="MS">MySympathies</li>
+<li data-vote="DL">DisLike</li>
+<li data-vote="TR">Troll</li>
+</ul>
+<div>
+
+<input type="submit" name="submit">
+</form>
+

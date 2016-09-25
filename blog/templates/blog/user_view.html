@@ -1,0 +1,53 @@
+{% load apptags %}
+ <div id="time">{{ timediff }}</div>
+ <div></div>
+ <div class="user-box-container" data-thread ="{{ curr_thread.id }}">
+	 {% if curr_thread %}
+	 <div class="user-box" >
+		{% if curr_thread.author == user %}
+		<div class="ti">
+		{% else %}
+		<div class="ti-other">
+		{% endif %}
+		 
+		 	{{ curr_thread.text|linebreaks }}
+		 </div>
+		 
+		 {% if curr_thread.author == user %}
+		 <p class="date-user">{{ curr_thread.published_date }}</p>
+		{% else %}
+		 <p class="date-middle">{{ curr_thread.published_date }}</p>
+		{% endif %}
+		
+	 </div>
+
+	 {% for response in respo %}
+		{% if response.author == user %}
+		<div class="middle-user-box">
+			<div class="bubble-user">
+				<div class="respo-vote-left" data-post="{{ response.pk }}">
+					<span class="close-btn"></span>
+				</div>
+		{% else %}
+		<div class="middle-box">
+			<div class="bubble-middle">
+				<div class="respo-vote-right">
+					<ul class="vote-list-response" data-post="{{ response.pk }}" data-bind="{% get_votes_r response.pk response.rvote_set request.user %}" data-type="response">
+						<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
+					</ul>
+				</div>
+		{% endif %}
+			<p>{{ response.text|linebreaks }}</p>
+		</div>
+		
+		{% if response.author == user %}
+		 <p class="date-user">{{ response.published_date }}</p>
+		{% else %}
+		 <p class="date-middle">{{ response.published_date }}</p>
+		{% endif %}
+		
+	 </div>
+	 {% endfor %}
+	 {% endif %}
+</div>
+

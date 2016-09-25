@@ -1,0 +1,73 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+   		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+   		<title>{% block title %}Helper{% endblock %}</title>
+
+   		<!-- Bootstrap -->
+  		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+   		<link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+   		<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+		
+	   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	   <!--[if lt IE 9]>
+		 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	   <![endif]-->
+	</head>
+	<body>
+	<script src="/static/js/main.js"></script>
+ 		<div>
+ 			<header>
+ 				<div class="login">
+					{% if user and not user.is_anonymous %}
+						<div>
+							<a>Hello {{ user.get_full_name|default:user.username }}!</a>
+						</div>
+						<div>
+							<a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+						</div>
+					{% else %}
+						<div>
+							not logged in :[
+						
+						</div>
+					{% endif %}
+ 				</div>
+ 				<h1>Helper User Area</h1>
+ 			</header>
+			 <div>
+				{% if user and not user.is_anonymous %}
+					<div>
+						{% block main %}{% endblock %}
+					</div>
+				{% else %}
+					<div>
+						<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+					</div>
+					<div>
+						<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+					</div>
+				{% endif %}
+ 			</div>
+ 		</div>
+   		
+   		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+   		<!-- Include all compiled plugins (below), or include individual files as needed -->
+  		<script src="/static/js/bootstrap.min.js"></script>
+  		<script src="/static/js/main.js"></script>
+	</body>
+</html>
+<!-- 
+{% with peace="Major Harris" %}
+       					{{peace}}
+       				{% endwith %}
+       				</p>
+ -->

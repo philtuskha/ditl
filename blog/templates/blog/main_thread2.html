@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>Day in the life</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="the.css">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+    </head>
+    <body>
+    <div id="fixed-top">
+		{% if user and not user.is_anonymous %}
+			<div>
+				<a>Hello {{ user.get_full_name|default:user.username }}!</a>
+			</div>
+			<div>
+				<a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+			</div>
+		{% else %}
+			<div>
+				not logged in :[
+			</div>
+		{% endif %}
+	</div>
+    <header>
+        <h1><a href="/">Day in the Life</a></h1>
+    </header>
+    <div class="content container">
+			{% if user and not user.is_anonymous %}
+			<div class="row">
+				<div>
+					<br>
+				</div>
+				<div class="col-md-8">
+					{% block content %}
+					{% endblock %}
+				</div>
+				<div>
+					bear
+				</div>
+			</div>
+		{% else %}
+			<div>
+				<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			</div>
+			<div>
+				<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+			</div>
+			<div>
+				<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+			</div>
+		{% endif %}
+			<div id="fixed-side">
+				<div id="post-form">
+					{% block form %}
+					{% endblock %}
+				</div>
+			</div>
+			
+    </div>
+</body>
+</html>

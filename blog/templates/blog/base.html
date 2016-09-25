@@ -1,0 +1,151 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Day in the Life</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!-- 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+ -->
+        <link href="https://fonts.googleapis.com/css?family=Monoton|Raleway" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/the.css' %}">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.min.js" integrity="sha256-mFypf4R+nyQVTrc8dBd0DKddGB5AedThU73sLmLWdc0=" crossorigin="anonymous"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+    </head>
+    <body>
+    <div id="fixed-top">
+		{% if user and not user.is_anonymous %}
+		<div id="fixed-top-left">
+			<ul>
+				<li data-type='status' data-hold='off'>status</li>
+				<li data-type='notifications' data-hold='off'>notifications</li>
+				<li></li>
+			</ul>
+		</div>
+		<div id="fixed-top-right">
+			<div>
+				<a>Hello {{ user.get_full_name|default:user.username }}!</a>
+			</div>
+			<div>
+				<a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+			</div>
+		{% else %}
+			<div>
+				not logged in :[
+			</div>
+		{% endif %}
+		</div>
+	</div>
+	<div id="drop-top">
+		<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
+	</div>
+    <header>
+        <h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>
+    </header>
+    <div class="content container">
+	{% if user and not user.is_anonymous %}
+		<div class="row">
+			<div class="left-holder">
+				<br>
+			</div>
+			<div class="main-feed">
+			</div>
+			<div class="sorter">
+				<h2>EXPLORE</h2>
+				<div data-my="response__author_id" class="sort">
+				<span class="sort-arrow">«</span> <span>my conversations</span>
+				</div>
+				<div data-faves="author_id__in" class="sort">
+				<span class="sort-arrow">«</span> <span>my favorite users</span>
+				</div>
+				<div>
+					<div data-pop="-resp_count" rel="pub" class="sort">
+					<span class="sort-arrow">«</span> <span>most popular threads</span>
+					</div>
+
+					<div data-pub="published_date" rel="pop" class="sort">
+					<span class="sort-arrow">«</span> <span>running out of time .....</span>
+					</div>
+				</div>
+				
+				<h2>SEARCH</h2>
+				<div id="search-box">
+					<input type="text"></input>
+					<input type="submit" name="search" id="search-threads"></input>
+				</div>
+				<h2>TRENDING</h2>
+				<div id="keywords">
+					{% block sidebar %}
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="row">
+			<div  class="left-holder">
+				<br>
+			</div>
+			<div  class="main-feed" style="opacity:1">
+			
+				<ul id="login">
+					<li class="fbook">
+						<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+							Login with Facebook<br><br>
+							<img src="{% static 'img/ico/fbook.svg' %}"></img>
+						</a>
+					</li>
+					<li class="googleplus">
+						<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+							Login with Google<br><br>
+							<img src="{% static 'img/ico/googleplus.svg' %}"></img>
+						</a>
+						
+					</li>
+				</ul>
+				
+			</div>
+			<div class="sorter">
+				
+			</div>
+		</div>
+	{% endif %}
+		<div id="fixed-side">
+			<!-- 
+			<svg width="100" height="100" class="chart" >
+							<circle r="10" cx="50" cy="50" stroke="orange" stroke-width="50" class="pie"/>
+						</svg>
+			 -->
+			 
+			  <svg width="60" height="60" class="chart">
+				<circle r="15" cx="30" cy="30" class="pie" fill=url('#grad2')/>
+				<!-- <circle r="17" cx="34" cy="34" class="pye"/> -->
+			  </svg>
+			
+			<div class="user-view">
+			</div>
+		</div>
+		
+		<div class="post-form-container">
+			{% block form %}
+			{% endblock %}
+		</div>	
+    </div>
+	<div class="bottom-nav">
+		<ul>
+			<li><span id="compose-ico"></span></li>
+			<li><span id="explore-ico"></span></li>
+		</ul>
+	</div>
+    <div class="scroll-to-top">Scroll to Top</div>
+	<div id="thread-div-pop" class="thread-pop">
+	<div class="white-space">
+		<div class="details">
+		</div>
+	</div>
+	</div>
+	<div id="thread-wrapper-pop"></div>
+</body>
+</html>

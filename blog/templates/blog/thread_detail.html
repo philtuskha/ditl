@@ -1,0 +1,15 @@
+ <div class="response-container">
+ 	{% include "blog/thread_detail_detail.html" %}
+</div>
+<div class="response-form">
+	{% block form %}
+	{% csrf_token %}
+		<p>
+		<textarea cols="40" id="id_text_r" name="text_r" rows="10"></textarea>
+		<input id="id_title_r" maxlength="200" name="title_r" type="hidden" />
+		<input id="id_is_thread_r" name="is_thread_r" type="hidden" value="{{ t.pk }}" />
+		</p>
+		<div class="char-count" data-max_char="">142</div>
+		<button class="resp-btn">post</button>
+	{% endblock %}
+</div>

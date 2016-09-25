@@ -1,0 +1,9 @@
+<div>
+{% for phrase, freq in sorted_nouns|slice:":20" %}
+
+<div class="sort" data-contains="{{ phrase }}">{{ phrase }}<span> - {{ freq }} mentions</span></div>
+
+{% endfor %}
+</div>
+
+

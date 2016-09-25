@@ -1,0 +1,19 @@
+{% load apptags %}
+
+<ul class="vote-list-thread" data-thread="{{ thread.pk }}" data-bind="">
+{% for key, choice in choices %}
+	<li  data-vote="{{ key }}"><div {% get_votes thread.pk thread.tvote_set key %} ></div><div>{{ choice }}</div></li>
+{% endfor %}
+</ul>
+
+<!-- 
+<ul class="vote-list-thread" data-thread="{{ thread.pk }}" data-bind="">
+	<li id="SE" data-vote="SE"><div></div><div>SuperElf</div></li>
+	<li id="WU" data-vote="WU"><div></div><div>WayUseful</div></li>
+	<li id="LV" data-vote="LV"><div></div><div>LoveThis</div></li>
+	<li id="YS" data-vote="YS"><div></div><div>Yes</div></li>
+	<li id="MS" data-vote="MS"><div></div><div>MySympathies</div></li>
+	<li id="DL" data-vote="DL"><div></div><div>DisLike</div></li>
+	<li id="TR" data-vote="TR"><div></div><div>Troll</div></li>
+ -->
+
