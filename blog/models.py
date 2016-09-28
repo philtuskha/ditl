@@ -50,7 +50,7 @@ class Thread(models.Model):
         
 class Response(models.Model):
 # 	thread=models.IntegerField(null=True)
-	thread=models.ForeignKey(Thread, null=True, on_delete=models.CASCADE)
+	thread=models.ForeignKey('Thread', null=True, on_delete=models.CASCADE)
 	author=models.ForeignKey('auth.User', related_name = 'response_author')
 	title=models.CharField(max_length=200)
 	text=models.TextField()
@@ -95,7 +95,7 @@ class RVOption(models.Model):
 	
 class TVote(models.Model):
 	MY_CHOICES=(('TR','Troll'),('SE','SuperElf'))
-	post=models.ForeignKey(Thread,on_delete=models.CASCADE)
+	post=models.ForeignKey('Thread',on_delete=models.CASCADE)
 	option=models.CharField(max_length=2,choices=MY_CHOICES)
 	user=models.ForeignKey(User)
 	published_date=models.DateTimeField(blank=True,null=True)
@@ -115,7 +115,7 @@ class TVote(models.Model):
 
 class RVote(models.Model):
 	MY_CHOICES=(('TR','Troll'),('SE','SuperElf'))
-	post=models.ForeignKey(Response,on_delete=models.CASCADE)
+	post=models.ForeignKey('Response',on_delete=models.CASCADE)
 	option=models.CharField(max_length=2,choices=MY_CHOICES)
 	user=models.ForeignKey(User)
 	published_date=models.DateTimeField(blank=True,null=True)
