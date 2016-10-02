@@ -8,10 +8,11 @@ from django.db.models import signals
 
 class UserProfile(models.Model):
 	#status_choices = (('troll','troll'),('neutral','neutral'),('elf','elf'),)
+	yesterday = timezone.now() - timezone.timedelta(days=1)
 	
-	user = models.OneToOneField(User, related_name='profile')
-	last_thread = models.DateTimeField(null=True) # choices=status_choices, default='neutral')
-	curr_thread = models.CharField(max_length=200, null=True)
+	user = models.OneToOneField('auth.User', related_name='profile')
+	#last_thread = models.DateTimeField(default=yesterday) # choices=status_choices, default='neutral')
+	#curr_thread = models.CharField(max_length=200, null=True)
 	favorites = models.CharField(max_length=200, null=True)
 	
 	def __unicode__(self):
@@ -49,12 +50,12 @@ class Thread(models.Model):
         
         
 class Response(models.Model):
-# 	thread=models.IntegerField(null=True)
 	thread=models.ForeignKey('Thread', null=True, on_delete=models.CASCADE)
 	author=models.ForeignKey('auth.User', related_name = 'response_author')
 	title=models.CharField(max_length=200)
 	text=models.TextField()
 	is_thread=models.BooleanField(default=False)
+	is_active=models.IntegerField(default=0)
  	vote_count = models.IntegerField(default=0)
 	created_date=models.DateTimeField(default=timezone.now)
 	published_date=models.DateTimeField(blank=True,null=True)
@@ -65,33 +66,6 @@ class Response(models.Model):
 
 	def __str__(self):
 		return self.title
-
-		
-class TVOption(models.Model):
-	option = models.CharField(max_length=200)
-	votes = models.IntegerField(default=0)
-	published_date=models.DateTimeField(blank=True,null=True)
-	
-	def publish(self):
-		self.published_date=timezone.now()
-		self.save()
-	
-	def __str__(self):
-		return self.option
-	
-
-class RVOption(models.Model):
-	option = models.CharField(max_length=200)
-	votes = models.IntegerField(default=0)
-	published_date=models.DateTimeField(blank=True,null=True)
-	
-	def publish(self):
-		self.published_date=timezone.now()
-		self.save()
-	
-	def __repr__(self):
-		return self.option
-
 	
 class TVote(models.Model):
 	MY_CHOICES=(('TR','Troll'),('SE','SuperElf'))

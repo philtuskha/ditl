@@ -31,7 +31,7 @@ def get_votes_r(post_id, set, user):
 @register.simple_tag
 def get_votes(post_id, set):
 	x = set.filter(post=post_id)
-	tally = [0,"Troll Votes -",0,"Elf Votes"]
+	tally = [0,"Troll -",0,"Elf"]
 	
 	if x.count() > 0:
 		for i in x:
@@ -47,7 +47,7 @@ def get_votes(post_id, set):
 def get_all_votes(post_id, tset, respo_set):
 	t = tset.filter(post=post_id)
 	rvset = respo_set.filter(thread_id=post_id)
-	tally = [0,"Troll Votes -",0,"Elf Votes"]
+	tally = [0,"Troll -",0,"Elf"]
 # 	response_count = rvset.count()
 	
 	

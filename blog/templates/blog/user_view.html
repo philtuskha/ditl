@@ -1,53 +1,78 @@
 {% load apptags %}
- <div id="time">{{ timediff }}</div>
- <div></div>
- <div class="user-box-container" data-thread ="{{ curr_thread.id }}">
-	 {% if curr_thread %}
-	 <div class="user-box" >
-		{% if curr_thread.author == user %}
-		<div class="ti">
-		{% else %}
-		<div class="ti-other">
-		{% endif %}
+<ul data-timediff="{{ timediff }}">
+	<li>
+		<svg width="60" height="60" class="chart">
+			<circle r="15" cx="30" cy="30" class="pie" fill=url('#grad2')/>
+		</svg>
+	</li><li>
+		<h3>User {{ user.id }}</h3>
+		<p>Todays post... <span id="update-page">Update page</span></p>
+	</li>
+</ul>
+<div class="user-view">
+	 <div id="user-view-spacer"></div>
+	 <div class="user-box-container" data-thread ="{{ curr_thread.id }}">
+		 {% if curr_thread %}
+		 <div class="user-box" >
+			{% if curr_thread.author == user %}
+			<div class="ti">
+			{% else %}
+			<div class="ti-other">
+			{% endif %}
 		 
-		 	{{ curr_thread.text|linebreaks }}
+				{{ curr_thread.text|linebreaks }}
+			 </div>
+		 
+			 <p class="date-user">
+				You posted at {{ curr_thread.published_date.time }} <b>|</b>{% get_votes curr_thread.pk curr_thread.tvote_set %}
+			 </p>		
+		
 		 </div>
-		 
-		 {% if curr_thread.author == user %}
-		 <p class="date-user">{{ curr_thread.published_date }}</p>
-		{% else %}
-		 <p class="date-middle">{{ curr_thread.published_date }}</p>
-		{% endif %}
-		
-	 </div>
 
-	 {% for response in respo %}
-		{% if response.author == user %}
-		<div class="middle-user-box">
-			<div class="bubble-user">
-				<div class="respo-vote-left" data-post="{{ response.pk }}">
-					<span class="close-btn"></span>
-				</div>
-		{% else %}
-		<div class="middle-box">
-			<div class="bubble-middle">
-				<div class="respo-vote-right">
-					<ul class="vote-list-response" data-post="{{ response.pk }}" data-bind="{% get_votes_r response.pk response.rvote_set request.user %}" data-type="response">
-						<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
-					</ul>
-				</div>
-		{% endif %}
-			<p>{{ response.text|linebreaks }}</p>
-		</div>
+		 {% for response in respo %}
+			{% if response.author == user %}
+			<div class="middle-user-box">
+				<div class="bubble-user">
+					{% if response.is_active == 0 %}
+					<div class="respo-vote-left" data-post="{{ response.pk }}">
+						<span class="close-btn"></span>
+					</div>
+					{% endif %}
+			{% else %}
+			<div class="middle-box">
+				<div class="bubble-middle">
+					{% if response.is_active == 0 %}
+					<div class="respo-vote-right">
+						<ul class="vote-list-response" data-post="{{ response.pk }}" data-bind="{% get_votes_r response.pk response.rvote_set request.user %}" data-type="response">
+							<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
+						</ul>
+					</div>
+					{% endif %}
+			{% endif %}
+				<p>
+				{% if response.is_active == 0 %}
+					{{ response.text|linebreaks }}
+				{% elif response.is_active == 1 %}
+					<span class="deleted">This response has been deleted by the user</span>
+				{% else %}
+					<span class="trolled">There is a troll in our midst >:( </span>
+				{% endif %}
+				</p>
+			</div>
 		
-		{% if response.author == user %}
-		 <p class="date-user">{{ response.published_date }}</p>
-		{% else %}
-		 <p class="date-middle">{{ response.published_date }}</p>
-		{% endif %}
+			{% if response.author == user %}
+			 <p class="date-user">
+			  You posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+			</p>
+			{% else %}
+			 <p class="date-middle">
+				<span class="post-user-respo">User {{ response.author_id }}</span> posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+			 </p>
+			{% endif %}
 		
-	 </div>
-	 {% endfor %}
-	 {% endif %}
+		 </div>
+		 {% endfor %}
+		 {% endif %}
+	</div>
 </div>
 

@@ -11,11 +11,6 @@ from django.contrib.auth.models import Permission
 from nltk import sent_tokenize, word_tokenize, pos_tag
 
 
-def home(request):
-    context = RequestContext(request, {'request': request, 'user': request.user,})
-    return render_to_response('blog/home.html', context_instance=context)
-
-
 
 def faves(vote_post_id, thread, add_subtract_faves, me):
     #storing favorite users to my profile, a.k.a. people's threads you respond to 
@@ -163,50 +158,57 @@ def delete_post(request):
         
     
 def add_thread(request):
+    #add thread or response
     if request.method == "POST" and request.is_ajax():
-        
-        if request.user.profile.last_thread:
-            t = timezone.now() - request.user.profile.last_thread
+        user_thread = Thread.objects.filter(author_id=request.user.id)
+    
+        if user_thread.count() > 0:
+            my_last_thread = user_thread.order_by("pk").reverse()[0]
+            t = timezone.now() - my_last_thread.published_date
             timediff = t.total_seconds() #86400 seconds in a day
         else:
             timediff = 90000
             
+            
         #check if new Thread or Response 
-        if timediff > 86400 and request.POST.get('is_thread') == 'True': #request.user.has_perm('blog.start_thread'):
+        if timediff > 86400 and request.POST.get('is_thread') == 'True': #request.user.has_perm('blog.add_thread'):
             form = ThreadForm(request.POST)
+            time_check = True
+            
         else:
             form = ResponseForm(request.POST)
+            time_check = False
         
+        #check which form the 
         if request.POST.get('is_thread')  == 'True':
+        
             #checking if valid form AND checking if user is allowed to post a new thread
-            if form.is_valid() and timediff > 86400: #request.user.has_perm('blog.start_thread'):
+            if form.is_valid() and time_check == True:
                 thread = form.save(commit=False)
                 thread.author = request.user
                 thread.published_date = timezone.now()
                 thread.save()
             
                 #add last_thread date and time to user profile
-                lt, created = UserProfile.objects.update_or_create(user=request.user, defaults={'last_thread':timezone.now()})
+                #lt, created = UserProfile.objects.update_or_create(user=request.user, defaults={'last_thread':timezone.now()})
             
                 #add current thread from user
-                ct, created = UserProfile.objects.update_or_create(user=request.user, defaults={'curr_thread':thread.id})
-
-                #take away start_thread permissions
-                perm=Permission.objects.get(codename="start_thread")
-                request.user.user_permissions.remove(perm) 
-            
+                #ct, created = UserProfile.objects.update_or_create(user=request.user, defaults={'curr_thread':thread.id}) 
+                
                 data = {'message': "%s and %s added" % (request.POST.get('title'), request.POST.get('text'))}
                 return HttpResponse(json.dumps(data), content_type='application/json')
             
             
-            elif form.is_valid() and timediff <= 86400:
+            elif form.is_valid() and time_check == False:
+                curr_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
+            
                 response = form.save(commit=False)
-                response.thread = Thread.objects.get(pk=request.user.profile.curr_thread)
+                response.thread = curr_thread #Thread.objects.get(pk=request.user.profile.curr_thread)
                 response.author = request.user
                 response.published_date = timezone.now()
                 response.save()
                 
-                curr_count = Thread.objects.get(pk=request.user.profile.curr_thread) # .values_list('resp_count', flat=True)
+                curr_count = curr_thread #Thread.objects.get(pk=request.user.profile.curr_thread) # .values_list('resp_count', flat=True)
                 curr_count.resp_count = curr_count.resp_count + 1
                 curr_count.save() 
                 
@@ -235,25 +237,86 @@ def add_thread(request):
         form = ThreadForm()
     return render(request, 'blog/thread_edit.html', {'form': form})
     
-
+ 
 def user_view(request):
-    if request.user.profile.curr_thread:
-        diff = timezone.now() - request.user.profile.last_thread
-        timediff = diff.total_seconds()
-        timediff = (timediff/86400) * 49.9
+    if request.user.id:
+        my_threads = Thread.objects.filter(author_id=request.user.id)
+        
+        if my_threads.count() > 0:
+            curr_thread = my_threads.order_by("pk").reverse()[0]
+        
+            diff = timezone.now() - curr_thread.published_date
+            timediff = diff.total_seconds()
+            timediff = (timediff/86400) * 49.9
     
-    
-        curr_thread_id = request.user.profile.curr_thread
-        curr_thread = get_object_or_404(Thread, pk=curr_thread_id)
-        respo = Response.objects.filter(published_date__lte=timezone.now(), thread=curr_thread_id).order_by('published_date')
+            respo = Response.objects.filter(published_date__lte=timezone.now(), thread=curr_thread.id).order_by('published_date')
+        else:
+            timediff = 0
+            curr_thread = 0
+            respo = []
+            
+        user=request.user
+        return render(request, 'blog/user_view.html', {'curr_thread_id': curr_thread.id, 'curr_thread': curr_thread, 'user': user, 'respo': respo, 'timediff': timediff })
     else:
-        timediff = 0
-        curr_thread = 0
-        respo = []
+        return render(request, 'blog/user_view.html', {})
+        
+
+def update_page(request):
+    # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
+
+    if request.GET.get('last_thread'):
+        #if Threads or Responses or TVotes or RVotes are updated reload the main threads again
+        thread_count = Thread.objects.filter(id__gte=request.GET.get('last_thread')).count()
+        last_thread = request.GET.get('last_thread') + thread_count
+        
+        response_count = Response.objects.filter(id__gte=request.GET.get('last_response')).count()
+        last_response = request.GET.get('last_response') + response_count
+        
+        tvote_count = TVote.objects.filter(id__gte=request.GET.get('last_tvote')).count()
+        last_tvote = request.GET.get('last_tvote') + tvote_count
+        
+        rvote_count = RVote.objects.filter(id__gte=request.GET.get('last_rvote')).count()
+        last_rvote = request.GET.get('last_rvote') + rvote_count
+        
+        
+        
+    else:
+        last_thread = Thread.objects.all().order_by("pk").reverse()[0].id
+        last_response = Response.objects.all().order_by("pk").reverse()[0].id
+        last_tvote = TVote.objects.all().order_by("pk").reverse()[0].id
+        last_rvote = RVote.objects.all().order_by("pk").reverse()[0].id
     
-    user=request.user
+    #count responses to my last thread
+    user_thread = Thread.objects.filter(author_id=request.user.id)
+    #user_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
     
-    return render(request, 'blog/user_view.html', {'curr_thread': curr_thread, 'user': user, 'respo': respo, 'timediff': timediff })
+    if user_thread.count() > 0:
+        my_last_thread = user_thread.order_by("pk").reverse()[0]
+        my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
+        my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
+        my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).exclude(user_id=request.user.id).count()
+        
+        #you can do this better
+        x = 0
+        for r in my_thread_respo:
+            x += RVote.objects.filter(post_id=r.id).exclude(user_id=request.user.id).count()
+       
+        my_last_thread_rvote = x
+
+    else:
+        my_last_thread_responses = 0
+        my_last_thread_tvote = 0
+        my_last_thread_rvote = 0
+        
+        
+    diff = timezone.now() - my_last_thread.published_date
+    timediff = diff.total_seconds()
+    timediff = (timediff/86400) * 49.9
+        
+      
+    data = {'last_thread': last_thread, 'last_response': last_response, 'last_tvote': last_tvote, 'last_rvote': last_rvote, 'my_last_thread_responses': my_last_thread_responses, 'my_last_thread_tvote': my_last_thread_tvote, 'my_last_thread_rvote': my_last_thread_rvote, 'timediff': timediff}
+    return HttpResponse(json.dumps(data), content_type='application/json')
+        
 
 def profile_test(request):
     # diff = timezone.now() - request.user.profile.last_thread
@@ -411,89 +474,7 @@ def status(request):
 #   user_votes = TVote.objects.all()
     return render(request,'blog/status.html',{'user':user, 'status':status, 'tvotes':tvotes, 'rvotes':rvotes, 'user_votes':user_votes, 'total_votes':total_votes})
 
-
-
-    
-def thread_list(request):
-    kwargs = {}
-    args = []
-    
-    if request.GET.get('start_end'):
-        start_end = request.GET.get('start_end')
-        start_end_list = start_end.split(',')
-        
-        start = start_end_list[0]
-        end = start_end_list[1]
-        
-    else:
-        start = 0
-        end = 10
-        
-    #use to exclude current thread from posts   
-    curr_thread_id = request.user.profile.curr_thread
-    
-    #organize by popularity. i.e, most comments and most elf votes    
-    if request.GET.get('pop') == "-resp_count":
-        args.append(request.GET.get('pop'))
-        args.append('-tcount')
-        args.append('-rvcount')
-        
-    #search or keyword
-    if request.GET.get('contains'):
-        kwargs['text__icontains'] = request.GET.get('contains')
-    
-    #my likes        
-    if request.GET.get('faves'):
-        #this is a fine method for now, but we need to figure out linkages between users.
-        #this method just finds all the things you voted for
-        #threads=threads.filter(Q(tvote__user_id=request.user.id) | Q(response__rvote__user_id=request.user.id))
-        #
-        #this method takes a new field in user profile that you can 
-        my_faves = UserProfile.objects.get(user_id=request.user.id).favorites
-        
-        fave_dict = json.loads(my_faves)
-        fave_list_tuples = sorted(fave_dict.items(), key=lambda x: x[1], reverse=False)
-        fave_list = []
-        for x in fave_list_tuples:
-            if x[1] > 0:
-                fave_list.append(x[0])
-            
-            
-        kwargs[request.GET.get('faves')] = fave_list
-                
-    #my conversations        
-    if request.GET.get('my'):
-        kwargs[request.GET.get('my')] = request.user.id
-     
-    #order by when published               
-    if request.GET.get('pub'):
-#         if not request.GET.get('pop'):
-        args.append(request.GET.get('pub'))
-    else:
-#         if not request.GET.get('pop'):
-        args.append('-published_date')
-        
-    threads=Thread.objects.filter(published_date__lte=timezone.now()).exclude(pk=curr_thread_id).filter(**kwargs).order_by(*args)
-    
-    #most popular
-    if request.GET.get('pop') == "-resp_count":
-        threads=threads.annotate(tcount=Count('tvote__post_id')).annotate(rvcount=Count('response__rvote__post_id'))
-        
-    
-        
-#         threads=Thread.objects.filter(published_date__lte=timezone.now()).exclude(pk=curr_thread_id).filter(author_id__in=fave_list).order_by('-published_date')
-        
-        
-            
-    
-    threads=threads.distinct()[start:end]
-    votes=TVote.objects.filter(user=request.user)
-    choices=TVote.MY_CHOICES
-    
-    return render(request,'blog/thread_list.html',{'threads':threads, 'votes':votes, 'choices':choices})
- 
-    
-def main_thread(request):
+def home(request):
     #default load before ajax reload JIC
     threads = Thread.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     
@@ -503,7 +484,99 @@ def main_thread(request):
     #main keyword loading to sidbar
     sorted_nouns = keyword_extends()
     
-    return render(request, 'blog/main_thread.html', {'sorted_nouns': sorted_nouns, 'threads': threads, 'form': form})
+    return render(request, 'blog/home.html', {'sorted_nouns': sorted_nouns, 'threads': threads, 'form': form})
+
+
+    
+def thread_list(request):
+    #if someone is logged in
+    if request.user.id:
+        kwargs = {}
+        args = []
+    
+        if request.GET.get('start_end'):
+            start_end = request.GET.get('start_end')
+            start_end_list = start_end.split(',')
+        
+            start = start_end_list[0]
+            end = start_end_list[1]
+        
+        else:
+            start = 0
+            end = 10
+    
+        #organize by popularity. i.e, most comments and most elf votes    
+        if request.GET.get('pop') == "-resp_count":
+            args.append(request.GET.get('pop'))
+            args.append('-tcount')
+            args.append('-rvcount')
+        
+        #search or keyword
+        if request.GET.get('contains'):
+            kwargs['text__icontains'] = request.GET.get('contains')
+    
+        #my likes
+             
+        if request.GET.get('faves'):
+            #this is a fine method for now, but we need to figure out linkages between users.
+            #this method just finds all the things you voted for
+            #threads=threads.filter(Q(tvote__user_id=request.user.id) | Q(response__rvote__user_id=request.user.id))
+            #
+            #this method takes a new field in user profile that you can 
+            
+            my_faves = UserProfile.objects.get(user_id=request.user.id).favorites
+            
+            if my_faves: 
+                fave_dict = json.loads(my_faves)
+                fave_list_tuples = sorted(fave_dict.items(), key=lambda x: x[1], reverse=False)
+                fave_list = []
+                for x in fave_list_tuples:
+                    if x[1] > 0:
+                        fave_list.append(x[0])
+            
+                kwargs[request.GET.get('faves')] = fave_list
+                
+            else:
+                kwargs[request.GET.get('faves')] = [0] #filter by a non user
+                
+                
+        #my conversations        
+        if request.GET.get('my'):
+            kwargs[request.GET.get('my')] = request.user.id
+     
+        #order by when published               
+        if request.GET.get('pub'):
+    #         if not request.GET.get('pop'):
+            args.append(request.GET.get('pub'))
+        else:
+    #         if not request.GET.get('pop'):
+            args.append('-published_date')
+        
+        threads=Thread.objects.filter(published_date__lte=timezone.now()).filter(**kwargs).order_by(*args)
+    
+        #check to see if user has posted any threads
+        my_threads = Thread.objects.filter(author_id=request.user.id)
+        if my_threads.count() > 0:
+            curr_thread = my_threads.order_by("pk").reverse()[0]
+            threads=threads.exclude(pk=curr_thread.id)
+    
+        #most popular
+        if request.GET.get('pop') == "-resp_count":
+            threads=threads.annotate(tcount=Count('tvote__post_id')).annotate(rvcount=Count('response__rvote__post_id'))
+   
+    
+        threads=threads.distinct()[start:end]
+        votes=TVote.objects.filter(user=request.user)
+        choices=TVote.MY_CHOICES
+        user=True
+    
+        return render(request,'blog/thread_list.html',{'threads':threads, 'votes':votes, 'choices':choices, 'user':user})
+    
+    else:
+        user=False
+        return render(request,'blog/thread_list.html',{'user':user})
+ 
+    
 
     
 def thread_detail(request, pk):

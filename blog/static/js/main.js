@@ -1,18 +1,20 @@
 $(document).ready(function() {
 	
-	$("circle").css({'strokeDashoffset':$("#time").html()})
+	$("circle").css({'strokeDashoffset':$("#fixed-side").data("timediff")})
 
 	function loadThread(pKey, pValue){
-	//console.log(pKey, "|"+pValue+"|")
+
 	/////////evaluate local storage here!!!!, values 
 	pData = {}
-	
-	var order_text = ""
-	$.each(localStorage, function(key, value){
-		if (value != ""){
+	var order_text = "";
+	for (var i = 0; i < localStorage.length; i++){
+    	
+    	var key = localStorage.key(i);
+    	var value = localStorage.getItem(key);
+    	
+    	if (value != ""){
 			pData[key] = value;
-			
-			
+		
 			if (key == "pop"){
 				$("#order").html("popularity");
 			}else if(key == "pub"){
@@ -31,10 +33,11 @@ $(document).ready(function() {
 				order_text += '<div id="contains">"'+value+'"<div class="close-filter"></div></div>';
 				
 			}
-		}
-	});
+		}	
+	}
 	$("#filter").html(order_text)
 	
+ 	
 	 ///////close-filter by tag in drop-top
 	$(".close-filter").click(function(){
 		var blank = "";
@@ -51,14 +54,16 @@ $(document).ready(function() {
             url: "/thread_list",
             data: pData,
             success: function(data) {
-
+				console.log("data length: ", data.length)
             	if(pKey == "start_end" ){
-            		$(".main-feed").append('<div id="'+pValue+'">' + data + '</div')
+            		$(".main-feed").append('<div id="'+pValue+'">' + data + '</div>')
             	}else{
-            		if(data.length > 2){
+            		if(data.length > 31 ){
             			$(".main-feed").html('<div id="0,10">' + data + '</div')
-            		}else{
+            		}else if(data.length == 31){
             			$(".main-feed").html('<div id="no-results"><h1>SORRY, NO POSTS MATCH YOUR QUERY :(</h1></div>')
+            		}else{
+						//do nothing. this is for when no user is logged in
             		}
             		
             	}
@@ -66,8 +71,8 @@ $(document).ready(function() {
             	$("#id_title").val("")
             	$("#id_text").val("")
             	
-            	window.getComputedStyle($(".main-feed")[0]);
-            	$(".main-feed")[0].style.opacity = 1;
+            	window.getComputedStyle($(".center")[0]);
+            	$(".center")[0].style.opacity = 1;
             	
             	
             		///this might be too general, but I can't call loadMore unless I'm within here
@@ -81,11 +86,17 @@ $(document).ready(function() {
 
 						}
 						
-						////////drop the drop-top
-						if($(window).scrollTop() > 100){
-							$("#drop-top").css({top:"34px"})
+						////////sticky drop-top and sorter
+						if($(window).scrollTop() > 85){
+							$("#drop-top").css({position:"fixed",top:"34px",left:"33%",width:"45%"});
+							$(".sorter").css({position:"fixed",right:"0",top:"34px"});
+							$(".main-feed").css({"margin-top":"40px"});
+							$("#fixed-top-center h3").css({opacity:"1"});
 						}else{
-							$("#drop-top").css({top:"0px"})
+							$("#drop-top").css({position:"static",top:"0px",left:"0",width:"100%"});
+							$(".sorter").css({position:"static",right:"0",top:"0"});
+							$(".main-feed").css({"margin-top":"0px"});
+							$("#fixed-top-center h3").css({opacity:"0"});
 						}
 						//
 						
@@ -112,7 +123,6 @@ $(document).ready(function() {
 						}
 					});
 					
-					////add filter & order by text to #filter
 					
 					
 				$('.main-feed').children().last().find(".thread").on("click",function(){
@@ -156,8 +166,6 @@ $(document).ready(function() {
 							
 							// use instead of settimeout to make magic transition happen
 							// window.getComputedStyle($(this)[0]);
-							// window.getComputedStyle($(this).children().last().children().first()[0]);
-							// window.getComputedStyle($(this).children().last()[0]);
 					
 							//transition magic
 							setTimeout(function () {
@@ -196,7 +204,6 @@ $(document).ready(function() {
 								
 								console.log($(this).parent().prev())
 								curr_container = $(this).parent().prev();
-// 									curr_title = $(this).parent().children('p').children("#id_title_r").val();
 								curr_text = $(this).parent().children('p').children("#id_text_r").val();
 								clear_text = $(this).parent().children('p').children("#id_text_r")
 								
@@ -207,10 +214,7 @@ $(document).ready(function() {
 								}
 								curr_is_thread = $(this).parent().children('p').children("#id_is_thread_r").val();
 								
-// 									console.log($("#id_title_r").val(), $("#id_text_r").val(), $("#id_is_thread_r").val())
-								/////enstate copy text to title function for response posting
-								
-								
+
 								$.ajax({
 									type: "POST",
 									url: "/ajax/add/",
@@ -238,7 +242,6 @@ $(document).ready(function() {
 									error: function(XMLHttpRequest, textStatus, errorThrown) { 
 										console.log(curr_container)
 										console.log({ "title": curr_title, "text": curr_text, "is_thread":  curr_is_thread })
-										//console.log("Status: " + XMLHttpRequest); alert("Error: " + errorThrown); 
 									}
 								});
 
@@ -260,49 +263,93 @@ $(document).ready(function() {
 	
 	
 	// update user view function
-	function reload(){
+	function reload(curr_position, is_scroll){
+		
 		$.ajax({
             type: "GET",
             url: "/user_view/",
             success: function(data) {
-            	$(".user-view").html(data)
+            	$("#fixed-side").html(data)
             	
-            	//////messy. use same methods as below to get info from data
             	///get time since last post
-            	myFunction($("#time").html());
-//             	console.log($("#time").html());
-            	/////scroll user-view to look like texting
-				//$(".user-view").scrollTop( $(".user-view").height())
-				scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-				myScroller($(".user-view"), scroll_diff);
+            	currThreadTime($("#fixed-side>ul").data("timediff"));
+				if(is_scroll){
+					/////scroll user-view to look like texting
+					$(".user-view").scrollTop(curr_position);
+					setTimeout(function(){
+						scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+						myScroller($(".user-view"), scroll_diff);        	
+					},30);
+            	}else{
+            		$(".user-view").scrollTop(curr_position);
+            	}
 				
-				/////scroll down to the last post
-				$(".user-view>div").first().next().height($(".user-view").height() - $(".user-box-container").height())
+								
+				
+				////making spacer smoothly transition
+				$("#user-view-spacer").height($(".user-view").height() - $(".user-box-container").height() + $(".user-box-container").children().first().height())
+				window.getComputedStyle($("#user-view-spacer")[0]);
+				$("#user-view-spacer").height($(".user-view").height() - $(".user-box-container").height())
 				
 				attach_details($('.user-box-container'));
 				
+				$("#update-page").on('click', function(){
+					updatePage();
+				});
 
 	
         	}
         });
-		/////initiate
-		//loadThread('big', 'dummy');
-        
-
     }///end reload()
     
     
     //////initial load left side user-view
-    reload();
+    reload($(".user-view").scrollTop(), true);
  
+ 	function updatePage(){
+ 		//check for local storage 'curr_page_state'
+ 		console.log(localStorage.getItem('curr_page_state') === null);
+		if(localStorage.getItem('curr_page_state') === null){
+			var state = {};
+		}else{
+			var state = localStorage.getItem('curr_page_state');
+		}
+		
+		var last_state = []
+		last_state = JSON.parse(state);
+				
+		console.log(state)
+ 		$.ajax({
+			type: "POST",
+			url: "/update_page/",
+			dataType: "json",
+			data: state,
+			success: function(data) {
  
-    
-////////////////periodically refresh user view, but we should add more refresh to the same Interval
-//    setInterval(function(){
-//       reload();
-//    }, 20000); 
-    
-   
+				console.log(data, last_state)				
+				//update thread
+				if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
+					loadThread('big', 'dummy');	 
+				} 
+				//update user_view with scroll --- responses
+				if(data.my_last_thread_responses != last_state.my_last_thread_responses){
+					reload($(".user-view").scrollTop(), true);
+				}
+				//update user_view without scroll --- votes
+				if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote){
+					reload($(".user-view").scrollTop(), false);
+				}
+				////update user clock
+				 currThreadTime(data.timediff)
+				
+				
+				//store in localStorage
+				localStorage.setItem('curr_page_state', JSON.stringify(data));
+ 			}
+ 		});
+ 		 setTimeout(updatePage, 10000);
+ 	}/////end updatePage
+ 	
 
     // add new thread
 	$('.post-btn').click(function(){
@@ -322,7 +369,7 @@ $(document).ready(function() {
 			data: { "title": post_title, "text": post_text, "is_thread": $("#id_is_thread").val() },
 			success: function(data) {
 				//reload the user view
-				reload();
+				reload($(".user-view").scrollTop(), true);
 				
 				///clear textarea
 				$("#id_text").val('')
@@ -405,18 +452,6 @@ function refreshOpenThread(){
 		});////end of Click
 	}//////end of attach_details   
     //add new response
-   //  $('.resp-btn').click(function(){
-//         $.ajax({
-//             type: "POST",
-//             url: "/ajax/add/",
-//             dataType: "json",
-//             data: { "title": $("#id_title_r").val(), "text": $("#id_text_r").val(), "is_thread":  $("#id_is_thread_r").val() },
-//             success: function(data) {
-//                 reload()
-//             }
-//         });
-// 
-//     });////end of POST
 
 
     // CSRF code
@@ -451,12 +486,7 @@ function refreshOpenThread(){
         }
     }); 
 
-    
- ////////////load more entries on scroll down
-//  localStorage.removeItem("start_end")
-	
 
-	
 	
  ///////////set the sorter functions ADD EVALUATE LOCAL STORAGE AND STYLE THE BUTTONS TO BE ON WHEN ON!!  
  	 $('.sorter div').each(function(){
@@ -465,30 +495,20 @@ function refreshOpenThread(){
 			if(!$.isEmptyObject(this_div.data())){
 				$.each(this_div.data(), function(key, value) {
 				
-					console.log(this_div.data())
+					//console.log(this_div.data())
 					if(localStorage.getItem(key) == value){
-						this_div.css({background: 'rgb(255, 249, 230)', 'border-bottom':'1px solid #e6e6e6', left:"-4%"});
+						this_div.css({background: 'rgb(251, 249, 234)', 'border-bottom':'1px solid #e6e6e6'});
 						this_div.children('span').first().css({width:"22px"});
 						
-					}
+					}//dope green blue rgb(239, 243, 242)224, 229, 235
 				});
 			}
     	});
 
 
-
-///////start page off (no local storage) with most popular (place on *)				
-// 					console.log(localStorage.getItem(key), value);
-					// if(!localStorage.getItem(key)){
-// 							$('.sorter>div').first().css({background: '#f28c8c', transition: "background", transitionTimingFunction:'ease', transitionDuration: '1s' });
-// 							return false;
-// 					}else{ 
-//
-//}
- 
     $('.sorter div').click(function(){
     	var this_div = $(this);
-		$(".main-feed")[0].style.opacity = 0;
+		$(".center")[0].style.opacity = 0;
     	if(!$.isEmptyObject(this_div.data())){
 			$.each(this_div.data(), function(key, value) {
 			
@@ -512,7 +532,7 @@ function refreshOpenThread(){
 						// this_div.parent().children('div').attr('class','sort')
 
 					}
-					this_div.css({background: 'rgb(255, 249, 230)','border-bottom':'1px solid #e6e6e6', left:"-4%"});
+					this_div.css({background: 'rgb(251, 249, 234)','border-bottom':'1px solid #e6e6e6'});
 					this_div.children('span').first().css({width:"22px"});
 					
 					// this_div.attr('class','sort sort-selected')
@@ -568,28 +588,13 @@ function refreshOpenThread(){
             url: "/time_since/",
             success: function(data) {
             	$("#keywords").html(data)
-            	//myFunction(data.slice(16, 19).replace('<','').replace('/',''));
+            	//currThreadTime(data.slice(16, 19).replace('<','').replace('/',''));
 
 	
         	}
         });
 	}
-	
-	// loadSideBar()
-	
-		
-	// function copyText(trigger, target) {
-// 	///// set title for thread
-// 		trigger.keyup(function() {
-// 			if(trigger.val().length < 32 ){
-// 				target.val(trigger.val())
-// 			}else if(trigger.val().length == 32){
-// 				target.val(target.val() + "...")
-// 			}
-// 		});
-// 	}
-// 	
-// 	copyText($('#id_text'), $('#id_title'));
+
 	
 	
 ///// scroll to see pie timer when you focus on post form
@@ -625,7 +630,7 @@ function refreshOpenThread(){
 	}	
 
 ////////start pie timer
-	function myFunction(startTime) {
+	function currThreadTime(startTime) {
 		var time = parseFloat(startTime, 10);
 	
 		if(time < 49.9){
@@ -644,18 +649,15 @@ function refreshOpenThread(){
 	
 			$( "circle.pie" ).css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'ease', transitionDuration: '2s' });
 			$( "circle.pie" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 				console.log('all done!');console.log($( "circle.pie" ).css('transition'))
 				$( "circle.pie" ).css({transition: "none !important"});
 		
 			});
 		}
 	
-		//$("circle").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){console.log('all done!');console.log($( "circle" ).css('transition'))});
 		
 	}/////end of pie timer	
 	
 	/////////pop up window for status and notifications
-	//////////solve the issue of the 
 	$('#fixed-top-left>ul>li').on('click', function(){
 		
 		var this_li = $(this);
@@ -853,9 +855,7 @@ function refreshOpenThread(){
 		thread_div.appendChild(details_div);
 		thread_wrapper.appendChild(thread_div);
     	document.body.appendChild(thread_wrapper);		
-		
-		//$('#thread-div-pop').find(".details").html(data);
-		
+				
 	}//////end of showResponses
 	
 	
@@ -885,7 +885,7 @@ function refreshOpenThread(){
 
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				alert(XMLHttpRequest.responseText.slice(0,34));
+				console.log(XMLHttpRequest.responseText.slice(0,34));
 				///////////this will return string 'IntegrityError' when the voter has voted for post already
 
 			}
@@ -922,16 +922,19 @@ function refreshOpenThread(){
 	(function prettyTitle() {
 		$( "header span, .post-user p span").each(function(i, el){
 			var theSpan = $(this);
-// 			console.log(theSpan.parent().prop("tagName"))
 			setTimeout(function(){
-		   //#e6ffff#ffe6e6///////#ffb3b3///////#ffe6e6
 		   	if(theSpan.parent().prop("tagName") == "P"){
-				theSpan.css({color: '#ffe6e6', transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+// 		   		response titles
+				var red = "#fffaf5"; ///actually yellow
+				var salmon = "#ffd9cc";
 			}else{
-				theSpan.css({color: '#ffb3b3', transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
-			}
+// 				main title
+				var red ="#fef8cd";//#ef7578
+				var salmon = "#ffbaa2";
+				
+			}	theSpan.css({color: salmon, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 				theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-					theSpan.css({color: '#ffecb3', transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+					theSpan.css({color: red, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 						theSpan.css({color: '#ffffff', transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					});
@@ -940,10 +943,9 @@ function refreshOpenThread(){
 			},100 + ( i * 500 ));
 		});
     	setTimeout(prettyTitle, 25000);
-	})();////////////end of PrettyTitle
+	})();////////////end of PrettyLights
 	
 	/////////////bottom nav for mobile
-	
 	$(".bottom-nav li:nth-child(1)").click(function(){
 		if($("#fixed-side").css("left") != "0px"){
 			$("#fixed-side").css({left:0});
@@ -993,10 +995,7 @@ function refreshOpenThread(){
 		setTimeout(function(){
 			$("#thread-wrapper-pop").css({display:"none"});
 			$("#thread-div-pop").css({display:"none"});
-			$("#thread-wrapper-pop").css({opacity:1});
-			
-			// , height:"calc(100vh - 34px)"
-							
+			$("#thread-wrapper-pop").css({opacity:1});							
 			
 		}, 500);
 	
@@ -1031,4 +1030,10 @@ function refreshOpenThread(){
 		}
 		
 	});
+	
+	
+	////////when all is loaded, updatePage
+	updatePage();
+	
+	
 });//////endtag

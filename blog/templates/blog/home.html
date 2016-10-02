@@ -1,5 +1,21 @@
-{% extends 'blog/base2.html' %}
+{% extends 'blog/base.html' %}
 
-{% block main %}
- We are on the home page
+{% block content %}
+	{% include 'blog/thread_list.html' %}
 {% endblock %}
+
+
+{% block sidebar %}
+	{% include 'blog/keywords.html' %}
+{% endblock %}
+
+
+<div id="form-bar">
+{% block form %}
+    <div class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <span class="char-count" data-max_char="">142</span><button class="post-btn">post</button>
+    </div>
+<!--     <div class="save-btn">button</div> save btn btn-default class="post-form"-->
+{% endblock %}
+</div>

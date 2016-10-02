@@ -2,12 +2,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    
         <title>Day in the Life</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- 
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
  -->
-        <link href="https://fonts.googleapis.com/css?family=Monoton|Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Monoton:400|Raleway:400,700"rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
         <link rel="stylesheet" href="{% static 'css/the.css' %}">
         
@@ -20,76 +22,87 @@
 		{% if user and not user.is_anonymous %}
 		<div id="fixed-top-left">
 			<ul>
-				<li data-type='status' data-hold='off'>status</li>
-				<li data-type='notifications' data-hold='off'>notifications</li>
+				<li data-type='status' data-hold='off'>STATUS</li>
+				<li data-type='notifications' data-hold='off'>NOTIFICATIONS</li>
 				<li></li>
 			</ul>
+		</div><div id="fixed-top-center">
+			<h3>ditl</h3>
+		</div><div id="fixed-top-right">
+			<ul>
+				<li>
+					<a href="{% url 'auth:logout' %}?next={{ request.path }}">LOGOUT</a>
+				</li>
+			</ul>
 		</div>
-		<div id="fixed-top-right">
-			<div>
-				<a>Hello {{ user.get_full_name|default:user.username }}!</a>
-			</div>
-			<div>
-				<a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
-			</div>
 		{% else %}
-			<div>
-				not logged in :[
-			</div>
+		<div></div>
+		<div></div>
+		<div id="fixed-top-right">
+			<ul>
+				<li>
+
+				</li>
+			</ul>
+		</div>
 		{% endif %}
 		</div>
-	</div>
-	<div id="drop-top">
-		<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
 	</div>
     <header>
         <h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>
     </header>
-    <div class="content container">
+    <div class="content-wrap">
 	{% if user and not user.is_anonymous %}
-		<div class="row">
-			<div class="left-holder">
-				<br>
+		<div class="left-holder">
+		</div><div class="center">
+			<div id="drop-top">
+				<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
 			</div>
 			<div class="main-feed">
 			</div>
-			<div class="sorter">
-				<h2>EXPLORE</h2>
-				<div data-my="response__author_id" class="sort">
-				<span class="sort-arrow">«</span> <span>my conversations</span>
+		
+		</div><div class="sorter">
+			<h2>EXPLORE</h2>
+			<div data-my="response__author_id" class="sort">
+			<span class="sort-arrow">«</span> <span>my conversations</span>
+			</div>
+			<div data-faves="author_id__in" class="sort">
+			<span class="sort-arrow">«</span> <span>my favorite users</span>
+			</div>
+			<div>
+				<div data-pop="-resp_count" rel="pub" class="sort">
+				<span class="sort-arrow">«</span> <span>most popular posts</span>
 				</div>
-				<div data-faves="author_id__in" class="sort">
-				<span class="sort-arrow">«</span> <span>my favorite users</span>
-				</div>
-				<div>
-					<div data-pop="-resp_count" rel="pub" class="sort">
-					<span class="sort-arrow">«</span> <span>most popular posts</span>
-					</div>
 
-					<div data-pub="published_date" rel="pop" class="sort">
-					<span class="sort-arrow">«</span> <span>ending soon</span>
-					</div>
+				<div data-pub="published_date" rel="pop" class="sort">
+				<span class="sort-arrow">«</span> <span>ending soon</span>
 				</div>
-				
-				<h2>SEARCH</h2>
-				<div id="search-box">
-					<input type="text"></input>
-					<input type="submit" name="search" id="search-threads"></input>
-				</div>
-				<h2>TRENDING</h2>
-				<div id="keywords">
-					{% block sidebar %}
-					{% endblock %}
-				</div>
+			</div>
+			
+			<h2>SEARCH</h2>
+			<div id="search-box">
+				<input type="text"></input>
+				<input type="submit" name="search" id="search-threads"></input>
+			</div>
+			<h2>TRENDING</h2>
+			<div id="keywords">
+				{% block sidebar %}
+				{% endblock %}
 			</div>
 		</div>
+		<div id="fixed-side">
+
+		</div>
+		<div class="post-form-container">
+			{% block form %}
+			{% endblock %}
+		</div>
 	{% else %}
-		<div class="row">
-			<div  class="left-holder">
-				<br>
-			</div>
+		<div  class="left-holder">
+			<br>
+		</div>
+		<div class="center">
 			<div  class="main-feed" style="opacity:1">
-			
 				<ul id="login">
 					<li class="fbook">
 						<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
@@ -102,36 +115,15 @@
 							Login with Google<br><br>
 							<img src="{% static 'img/ico/googleplus.svg' %}"></img>
 						</a>
-						
 					</li>
 				</ul>
-				
-			</div>
-			<div class="sorter">
-				
 			</div>
 		</div>
-	{% endif %}
-		<div id="fixed-side">
-			<!-- 
-			<svg width="100" height="100" class="chart" >
-							<circle r="10" cx="50" cy="50" stroke="orange" stroke-width="50" class="pie"/>
-						</svg>
-			 -->
-			 
-			  <svg width="60" height="60" class="chart">
-				<circle r="15" cx="30" cy="30" class="pie" fill=url('#grad2')/>
-				<!-- <circle r="17" cx="34" cy="34" class="pye"/> -->
-			  </svg>
-			
-			<div class="user-view">
-			</div>
+		<!-- 
+<div class="sorter">
 		</div>
-		
-		<div class="post-form-container">
-			{% block form %}
-			{% endblock %}
-		</div>	
+ -->
+	{% endif %}	
     </div>
 	<div class="bottom-nav">
 		<ul>
