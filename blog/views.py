@@ -288,7 +288,7 @@ def update_page(request):
     
     try:
         user_thread = Thread.objects.filter(author_id=request.user.id)
-    except IndexError:
+    except (IndexError, ValueError):
         my_last_thread_responses = 0
         my_last_thread_tvote = 0
         my_last_thread_rvote = 0
