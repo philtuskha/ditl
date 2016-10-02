@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jn0%+5@0^fj*yox21f(45+$-xjiqg$3(4w_jzuhum5a=ev@1!z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS']
 
 
 # Application definition
@@ -80,8 +80,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 
 LOGIN_REDIRECT_URL = '/'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '909469595838465'
-SOCIAL_AUTH_FACEBOOK_SECRET = '19599a4756a38b3180b14aa814b482a2'
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_AUTH_KEY']#'909469595838465' for my localhost
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_AUTH_SECRET']#'19599a4756a38b3180b14aa814b482a2' for my localhost
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '307928381078-d751ocma3nj7mipq45tlsfm3o0lqjgmf.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '9RxGeqq5xhD40Yw6MoOI7RLt'
 
@@ -114,9 +114,9 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'eyas',
-        'PASSWORD': '',
+        'NAME': os.environ['DATABASE_NAME'],
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
         'HOST': 'localhost',
         'PORT': '',
     }
