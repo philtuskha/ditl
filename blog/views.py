@@ -272,7 +272,7 @@ def return_last_id_from_table(request, table, value):
         try:
             x = table.objects.all()
             return_value = x.order_by("pk").reverse()[0].id
-        except IndexError:         #list index out of range
+        except (IndexError, ValueError):         #list index out of range
             return_value = 0
     
     return return_value        
