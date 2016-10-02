@@ -272,7 +272,7 @@ def return_last_id_from_table(request, table, value):
         try:
             x = table.objects.all()
             return_value = x.order_by("pk").reverse()[0].id
-        except:         #list index out of range
+        except IndexError:         #list index out of range
             return_value = 0
     
     return return_value        
@@ -280,53 +280,20 @@ def return_last_id_from_table(request, table, value):
     
 def update_page(request):
     # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
-    print return_last_id_from_table(request, Thread, 'last_thread')
-    print "##########"
+    
     last_thread = return_last_id_from_table(request, Thread, 'last_thread')
     last_response = return_last_id_from_table(request, Response, 'last_response')
     last_tvote = return_last_id_from_table(request, TVote, 'last_tvote')
     last_rvote = return_last_id_from_table(request, RVote, 'last_rvote')
     
-    # if request.GET.get('last_thread'):
-#         #if Threads or Responses or TVotes or RVotes are updated reload the main threads again
-#         thread_count = Thread.objects.filter(id__gte=request.GET.get('last_thread')).count()
-#         last_thread = request.GET.get('last_thread') + thread_count
-#     else:
-#         t = Thread.objects.all()
-#         if(t.count() > 0)
-#             last_thread = t.order_by("pk").reverse()[0].id
-#         else:
-#             last_thread = 0
-#         
-#     if request.GET.get('last_response'):   
-#         response_count = Response.objects.filter(id__gte=request.GET.get('last_response')).count()
-#         last_response = request.GET.get('last_response') + response_count
-#     else:
-#         last_response = Response.objects.all().order_by("pk").reverse()[0].id
-#         t = Thread.objects.all()
-#         if(t.count() > 0)
-#             last_thread = t.order_by("pk").reverse()[0].id
-#         else:
-#             last_thread = 0
-#     
-#     if request.GET.get('last_tvote'):   
-#         tvote_count = TVote.objects.filter(id__gte=request.GET.get('last_tvote')).count()
-#         last_tvote = request.GET.get('last_tvote') + tvote_count
-#     else:
-#         last_tvote = TVote.objects.all().order_by("pk").reverse()[0].id
-#       
-#     if request.GET.get('last_rvote'):  
-#         rvote_count = RVote.objects.filter(id__gte=request.GET.get('last_rvote')).count()
-#         last_rvote = request.GET.get('last_rvote') + rvote_count
-#     else:
-#         last_rvote = RVote.objects.all().order_by("pk").reverse()[0].id
-        
+    try:
+        user_thread = Thread.objects.filter(author_id=request.user.id)
+    except IndexError:
+        my_last_thread_responses = 0
+        my_last_thread_tvote = 0
+        my_last_thread_rvote = 0
     
-    #count responses to my last thread
-    user_thread = Thread.objects.filter(author_id=request.user.id)
-    #user_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
-    
-    if user_thread.count() > 0:
+    else:
         my_last_thread = user_thread.order_by("pk").reverse()[0]
         my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
@@ -338,11 +305,28 @@ def update_page(request):
             x += RVote.objects.filter(post_id=r.id).exclude(user_id=request.user.id).count()
        
         my_last_thread_rvote = x
-
-    else:
-        my_last_thread_responses = 0
-        my_last_thread_tvote = 0
-        my_last_thread_rvote = 0
+        
+    # count responses to my last thread
+#     user_thread = Thread.objects.filter(author_id=request.user.id)
+#     user_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
+#     
+#     if user_thread.count() > 0:
+#         my_last_thread = user_thread.order_by("pk").reverse()[0]
+#         my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
+#         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
+#         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).exclude(user_id=request.user.id).count()
+#         
+#         you can do this better
+#         x = 0
+#         for r in my_thread_respo:
+#             x += RVote.objects.filter(post_id=r.id).exclude(user_id=request.user.id).count()
+#        
+#         my_last_thread_rvote = x
+# 
+#     else:
+#         my_last_thread_responses = 0
+#         my_last_thread_tvote = 0
+#         my_last_thread_rvote = 0
         
         
     diff = timezone.now() - my_last_thread.published_date
