@@ -270,11 +270,9 @@ def return_last_id_from_table(request, table, value):
         
     else:
         try:
-            x = table.objects.all()
+            return_value = table.objects.all().order_by("pk").reverse()[0].id
         except (IndexError, ValueError):         #list index out of range
             return_value = 0
-        else:
-            return_value = x.order_by("pk").reverse()[0].id
     
     return return_value        
     
@@ -288,14 +286,13 @@ def update_page(request):
     last_rvote = return_last_id_from_table(request, RVote, 'last_rvote')
     
     try:
-        user_thread = Thread.objects.filter(author_id=request.user.id)
+        my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
     except (IndexError, ValueError):
         my_last_thread_responses = 0
         my_last_thread_tvote = 0
         my_last_thread_rvote = 0
     
     else:
-        my_last_thread = user_thread.order_by("pk").reverse()[0]
         my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).exclude(user_id=request.user.id).count()
