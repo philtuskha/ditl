@@ -259,32 +259,68 @@ def user_view(request):
         return render(request, 'blog/user_view.html', {'curr_thread_id': curr_thread.id, 'curr_thread': curr_thread, 'user': user, 'respo': respo, 'timediff': timediff })
     else:
         return render(request, 'blog/user_view.html', {})
-        
 
-def update_page(request):
-    # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
 
-    if request.GET.get('last_thread'):
-        #if Threads or Responses or TVotes or RVotes are updated reload the main threads again
-        thread_count = Thread.objects.filter(id__gte=request.GET.get('last_thread')).count()
-        last_thread = request.GET.get('last_thread') + thread_count
-        
-        response_count = Response.objects.filter(id__gte=request.GET.get('last_response')).count()
-        last_response = request.GET.get('last_response') + response_count
-        
-        tvote_count = TVote.objects.filter(id__gte=request.GET.get('last_tvote')).count()
-        last_tvote = request.GET.get('last_tvote') + tvote_count
-        
-        rvote_count = RVote.objects.filter(id__gte=request.GET.get('last_rvote')).count()
-        last_rvote = request.GET.get('last_rvote') + rvote_count
-        
-        
+def return_last_id_from_table(request, table, value):
+    get_request_value = request.GET.get(value)
+
+    if get_request_value:
+        count = table.objects.filter(id__gte=get_request_value).count()
+        return_value = get_request_value + count
         
     else:
-        last_thread = Thread.objects.all().order_by("pk").reverse()[0].id
-        last_response = Response.objects.all().order_by("pk").reverse()[0].id
-        last_tvote = TVote.objects.all().order_by("pk").reverse()[0].id
-        last_rvote = RVote.objects.all().order_by("pk").reverse()[0].id
+        x = table.objects.all()
+        if x.count() > 0:
+            return_value = x.order_by("pk").reverse()[0].id
+        else:
+            return_value = 0
+    
+    return return_value        
+    
+    
+def update_page(request):
+    # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
+    print return_last_id_from_table(request, Thread, 'last_thread')
+    print "##########"
+    last_thread = return_last_id_from_table(request, Thread, 'last_thread')
+    last_response = return_last_id_from_table(request, Response, 'last_response')
+    last_tvote = return_last_id_from_table(request, TVote, 'last_tvote')
+    last_rvote = return_last_id_from_table(request, RVote, 'last_rvote')
+    
+    # if request.GET.get('last_thread'):
+#         #if Threads or Responses or TVotes or RVotes are updated reload the main threads again
+#         thread_count = Thread.objects.filter(id__gte=request.GET.get('last_thread')).count()
+#         last_thread = request.GET.get('last_thread') + thread_count
+#     else:
+#         t = Thread.objects.all()
+#         if(t.count() > 0)
+#             last_thread = t.order_by("pk").reverse()[0].id
+#         else:
+#             last_thread = 0
+#         
+#     if request.GET.get('last_response'):   
+#         response_count = Response.objects.filter(id__gte=request.GET.get('last_response')).count()
+#         last_response = request.GET.get('last_response') + response_count
+#     else:
+#         last_response = Response.objects.all().order_by("pk").reverse()[0].id
+#         t = Thread.objects.all()
+#         if(t.count() > 0)
+#             last_thread = t.order_by("pk").reverse()[0].id
+#         else:
+#             last_thread = 0
+#     
+#     if request.GET.get('last_tvote'):   
+#         tvote_count = TVote.objects.filter(id__gte=request.GET.get('last_tvote')).count()
+#         last_tvote = request.GET.get('last_tvote') + tvote_count
+#     else:
+#         last_tvote = TVote.objects.all().order_by("pk").reverse()[0].id
+#       
+#     if request.GET.get('last_rvote'):  
+#         rvote_count = RVote.objects.filter(id__gte=request.GET.get('last_rvote')).count()
+#         last_rvote = request.GET.get('last_rvote') + rvote_count
+#     else:
+#         last_rvote = RVote.objects.all().order_by("pk").reverse()[0].id
+        
     
     #count responses to my last thread
     user_thread = Thread.objects.filter(author_id=request.user.id)
