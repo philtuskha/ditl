@@ -307,23 +307,27 @@ $(document).ready(function() {
     reload($(".user-view").scrollTop(), true);
  
  	function updatePage(){
- 		//check for local storage 'curr_page_state'
+ 		//check for local storage 'curr_page_state' deal with user first time visiting the site with no local storage item 'curr_page_state'
  		console.log(localStorage.getItem('curr_page_state') === null);
 		if(localStorage.getItem('curr_page_state') === null){
+			
 			var state = {};
+			localStorage.setItem('curr_page_state', JSON.stringify(state))
+			last_state = state;
+			
 		}else{
 			var state = localStorage.getItem('curr_page_state');
+			var last_state = []
+			last_state = JSON.parse(state);
 		}
-		
-		var last_state = []
-		last_state = JSON.parse(state);
+
 				
-		console.log(state)
+		
  		$.ajax({
 			type: "POST",
 			url: "/update_page/",
 			dataType: "json",
-			data: state,
+			data: last_state,
 			success: function(data) {
  
 				console.log(data, last_state)				

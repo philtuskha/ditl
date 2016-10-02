@@ -269,9 +269,8 @@ def return_last_id_from_table(request, table, value):
         return_value = get_request_value + count
         
     else:
-        x = table.objects.all()
-        if x.count() > 0:
-            return_value = x.order_by("pk").reverse()[0].id
+        if table.objects.all().count() > 0:
+            return_value = table.objects.all().order_by("pk").reverse()[0].id
         else:
             return_value = 0
     
