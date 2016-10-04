@@ -10,9 +10,13 @@ background:url(../img/diamond_bkg4.jpg);
 }
 *{
 box-sizing:border-box;
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-touch-callout: none;
 }
 a, a:visited, a:active, a:hover {
 text-decoration: none;
+
+
 }
 h1, h2, h3, h4 {
 /* font-family: 'Lobster', cursive; */
@@ -33,6 +37,7 @@ padding:0;
 textarea{
 padding:6px;
 }
+
 textarea, input[type=text], input[type=submit]{
 -webkit-transition: all 0.30s ease-in-out;
 -moz-transition: all 0.30s ease-in-out;
@@ -225,11 +230,11 @@ margin:20%;
     float: right;
 }
 .post-form-container {
-width:33%;
+width:100%;
 height:110px;
 background: rgba(248,248,248,0.96);
 border-top:1px solid #d3d3d3;
-position:fixed;
+position:absolute;
 left:0px;
 bottom:0px;
 z-index:5;
@@ -487,30 +492,30 @@ z-index:4;
 -webkit-box-shadow: 2px 0 5px -4px #888;
 box-shadow: 2px 0 5px -4px #888;
 }
-#fixed-side>ul{
+#fixed-side div>ul{
 list-style:none;
 padding:12px 4px 0 4px;
 height:82px;
 }
-#fixed-side>ul>li{
+#fixed-side div>ul>li{
 display:inline-block;
 vertical-align:top;
 padding:0;
 }
-#fixed-side>ul>li:nth-child(1){
+#fixed-side div>ul>li:nth-child(1){
 width:76px;
 }
-#fixed-side>ul>li:nth-child(2){
+#fixed-side div>ul>li:nth-child(2){
 width:calc(100% - 76px);
 }
-#fixed-side>ul>li>h3{
+#fixed-side div>ul>li>h3{
 margin:-4px 0 0 0;
 color:#ff5050;
 font-size:32px;
 padding:0;
 height:44px;
 }
-#fixed-side>ul>li>p{
+#fixed-side div>ul>li>p{
 padding-left:4px;
 }
 
@@ -1230,5 +1235,10 @@ and (max-width: 64.000em){
 	.bottom-nav>ul>li:nth-child(1){
 		visibility:hidden;
 	}
+
+}
+
+@media only screen{
+
 
 }

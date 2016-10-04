@@ -340,7 +340,7 @@ $(document).ready(function() {
             type: "GET",
             url: "/user_view/",
             success: function(data) {
-            	$("#fixed-side").html(data)
+            	$("#fixed-side>div:nth-child(1)").html(data)
             	
             	///get time since last post
             	currThreadTime($("#fixed-side>ul").data("timediff"));
@@ -581,7 +581,7 @@ function refreshOpenThread(){
     	});
 
 
-    $('.sorter div').click(function(){
+    $('.sorter div').on(' click',function(){
     	var this_div = $(this);
 		$(".center")[0].style.opacity = 0;
     	if(!$.isEmptyObject(this_div.data())){
@@ -1022,7 +1022,7 @@ function refreshOpenThread(){
 	
 	/////////
 	///////lifted from stackoverflow thanks galambalazs!
-	$( '#fixed-side' ).on( 'scroll mousewheel DOMMouseScroll', function ( e ) {
+	$( '#fixed-side>div:nth-child(1)' ).on( 'scroll mousewheel DOMMouseScroll', function ( e ) {
 		
 			var e0 = e.originalEvent,
 				delta = e0.wheelDelta || -e0.detail;
@@ -1041,7 +1041,7 @@ function refreshOpenThread(){
 	
 	
 	/////////////bottom nav for mobile
-	$(".bottom-nav li:nth-child(1)").click(function(){
+	$(".bottom-nav li:nth-child(1)").on('click', function(){
 		if($("#fixed-side").css("left") != "0px"){
 			$("#fixed-side").css({left:0});
 			$(".post-form-container").css({left:0});
@@ -1065,7 +1065,7 @@ function refreshOpenThread(){
 	
 	
 	////bottom navigation
-	$(".bottom-nav li:nth-child(2)").click(function(){
+	$(".bottom-nav li:nth-child(2)").on('click', function(){
 		
 		var sorter_rposition = parseInt($(".sorter").css("right").replace("px", "").replace("-", ""));
 		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
@@ -1073,7 +1073,7 @@ function refreshOpenThread(){
 		
 		//if phone
 		if (center_check == 1){		
-			if(sorter_rposition == $("body").width() && $("#fixed-side").css("left") == "0px"){
+			if(sorter_rposition == $(window).width() && $("#fixed-side").css("left") == "0px"){
 				// 	keep closed
 				if($(window).scrollTop() > 85){ 
 				
@@ -1082,11 +1082,13 @@ function refreshOpenThread(){
 
 					$(".sorter").css({position:"absolute",right:"-60%",top:"0"});
 				}
+				
 				$("#fixed-side").css({left:"-100%"});
 				$(".post-form-container").css({left:"-100%"});
 				$(".bottom-nav li:nth-child(1)").html("<span id='compose-ico'></span>");
 			
-			}else if(sorter_rposition == $("body").width() && $("#fixed-side").css("left") != "0px"){
+			}else if(sorter_rposition == $(window).width() && $("#fixed-side").css("left") != "0px"){
+				
 				if($(window).scrollTop() > 85){ 
 				
 					$(".sorter").css({position:"fixed",right:"-60%",top:"34px"});
@@ -1169,6 +1171,22 @@ function refreshOpenThread(){
 			}
 		});
 	};
+	
+	//if(typeof window.orientation !== 'undefined'){
+    /* cache dom references */ 
+    var $body = jQuery('body'); 
+
+    /* bind events */
+   //  $("textarea").on('focus', function() {
+//         $('#fixed-side').css({position:"absolute"})
+//         $('#fixed-side').css({position:"absolute"})
+//         
+//         
+//     }).on('blur', function() {
+//         $('fixed-side').css({position:"fixed"})
+//         $('#fixed-side').css({position:"absolute"})
+//     });
+//} 
 	
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 	$(window).resize(function(){
