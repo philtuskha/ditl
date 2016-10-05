@@ -85,7 +85,35 @@ $(document).ready(function() {
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
-            	
+            	$('.main-feed').on('scroll', function(event){
+        			//console.log($('.main-feed').scrollTop())
+        			console.log($('.main-feed').scrollTop())
+        			
+        			if($('.main-feed').scrollTop() == 0){
+        				//alert('pop')
+        			
+        				// $("html, body").animate({ scrollTop: "0px" }, 2000, 'easeOutQuint', function(){
+//         					$('.main-feed').scrollTop(0)
+//         				});
+						$("header").css({height:$("header>div").css("height")+"px"})
+        				
+        				//$('.main-feed').off('scroll', function(event){});
+        					
+        			}
+        			
+        			else{
+        				
+        				// $("html, body").animate({ scrollTop: "0px" }, 2000, 'easeOutQuint', function(){
+//         					$('.main-feed').scrollTop("20px")
+//         				});
+        				$("header").css({height:"0px"})
+        				
+        			}
+//         			
+// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
+//         			$("html, body").css({"overflow-y":is_html_scroll})
+         			
+        		})
             	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
 
         		// var is_mf_scroll = "hidden";
