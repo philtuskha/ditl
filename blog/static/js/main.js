@@ -1221,6 +1221,7 @@ function refreshOpenThread(){
 
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 	$(window).resize(function(){
+		$("#inner-height").html($(window).innerHeight())
 		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
 		///phone
 		if(center_check == 1){
