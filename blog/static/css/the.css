@@ -1187,7 +1187,14 @@ margin:10px;
 /* phone */
 @media screen
 and (max-width:48.125em){
-	
+	html {
+    height  : 100%;
+    overflow: hidden;
+	}
+	body {
+		height  : 100%;
+		overflow: auto;
+	}
 	#fixed-top-left ul li:nth-child(1){
 		display:inline-block;
 	}
