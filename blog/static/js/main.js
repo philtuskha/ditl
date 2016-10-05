@@ -1106,19 +1106,19 @@ function refreshOpenThread(){
 	});
 	
 	////close thread on scroll
-	function closeThreadScroll(){
-		var thread_id = localStorage.getItem('open_thread');
-		var position_stamp = $(window).scrollTop(); 
-		
-		$(document).on("scroll", function(e){
-			var position = $(window).scrollTop();
-			console.log(position, position_stamp);
-			if (position >= position_stamp + 300 || position <= position_stamp - 300) {
-				closeThread();
-				$(document).off("scroll");
-			}
-		});
-	};
+	// function closeThreadScroll(){
+// 		var thread_id = localStorage.getItem('open_thread');
+// 		var position_stamp = $(window).scrollTop(); 
+// 		
+// 		$(document).on("scroll", function(e){
+// 			var position = $(window).scrollTop();
+// 			console.log(position, position_stamp);
+// 			if (position >= position_stamp + 300 || position <= position_stamp - 300) {
+// 				closeThread();
+// 				$(document).off("scroll");
+// 			}
+// 		});
+// 	};
 	
 	//if(typeof window.orientation !== 'undefined'){
     /* cache dom references */ 
