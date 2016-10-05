@@ -43,6 +43,8 @@ $(document).ready(function() {
 		var blank = "";
 		localStorage.setItem($(this).parent().attr('id'), blank);
 		loadThread($(this).parent().attr('id'), blank);
+		$(".sorter").find("[data-"+$(this).parent().attr('id')+"]").css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"}).children('span').first().css({width:""});
+		console.log($(".sorter").find("[data-"+$(this).parent().attr('id')+"]"))
 	});
 	
 	if (pValue != ""){
@@ -74,104 +76,62 @@ $(document).ready(function() {
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
+        
+        			var lastScrollTop = 0;
+						$('.main-feed').on('scroll', function (event){
+						   
+						   var st = $(this).scrollTop();
+						   				
+						   if (st > lastScrollTop + 100){
+							   // downscroll code
+							   $("header").css({height:"0px"})
+							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
+								return false;
+							   
+						   } else {
+							  // upscroll code
+							  $("header").css({height:$("header>div").css("height")})
+							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
+							  return false;
+							 
+						   }
+						   
+						   lastScrollTop = st;
+						   						   
+						})
+						
+						////////try and figure out simple solution to keep responses in div user view stationary 
+						// $("header").bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){ 
+// 							   scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+//  							    //$(".user-view").scrollTop(scroll_diff)
+// 							   myScroller($(".user-view"), scroll_diff);
+// 							   });
+
+
+					
             	
             		///this might be too general, but I can't call loadMore unless I'm within here
-            		$(window).off('scroll');
-					$(window).on("scroll", function loadMore(){
-						////
-						if($(window).scrollTop() > $(window).height()){
+            		//$('.main-feed').off('scroll');
+					$('.main-feed').on("scroll", function loadMore(){
+					
+						////add scroll to top butn
+						if($('.main-feed').scrollTop() > $('.main-feed').height()){
 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
 						}else{
 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
 
 						}
 						
-						var sorter_rposition = parseInt($(".sorter").css("right").replace("px", "").replace("-", ""));
-						var center_check =  parseInt($(".center").css("width").replace("px", "")) / $("body").width();
-						////////sticky drop-top and sorter
-						////if scroll is in the bottom section
-						if($(window).scrollTop() > 85){
-						console.log(center_check)
-							
-							//if desktop
-							if(center_check < 0.5){
-								$("#drop-top").css({position:"fixed",top:"34px",left:"33%",width:"45%"});
-								$(".sorter").css({position:"fixed",right:"0",top:"34px"});
-							
-							///if tablet
-							}else if(center_check < 1  && center_check > 0.5){
-								$("#drop-top").css({position:"fixed",top:"34px",left:"42%",width:"68%"});
-								$(".sorter").css({position:"fixed",right:"-28%",top:"34px"});
-							
-							//if phone
-							}else{
-								$("#drop-top").css({position:"fixed",top:"34px",left:"0",width:"100%"});
-								$(".sorter").css({position:"fixed",right:"-100%",top:"34px"});
-								
-							}
-							
-							$(".main-feed").css({"margin-top":"40px"});
-							$("#fixed-top-center h3").css({opacity:"1"});
-							
-						//if scroll if at the top	
-						}else{
-						console.log(center_check)
-						
-							$("#drop-top").css({position:"static",top:"0px",left:"0",width:"100%"});
-							$(".main-feed").css({"margin-top":"0px"});
-							$("#fixed-top-center h3").css({opacity:"0"});
-								
-							
-							
-							//desktop
-							if(center_check < 0.5){
-								$(".sorter").css({position:"static",right:"0",top:"0"});
-							
-							///if tablet
-							}else if(1 > center_check  && center_check > 0.5){
-								//closes the sorter
-								$(".sorter").css({right:"-28%"});
-								
-							// 
-// 								// if sorter closed
-// 								if(sorter_rposition == $(window).width() ){
-// 								
-// 									//keep closed
-// 									$(".sorter").css({position:"fixed",right:"-100%",top:"34px"});
-// 								}else{
-// 									
-// 									//keep open
-// 									$(".sorter").css({position:"absolute",right:"-60%",top:"0"});
-// 								}
-// 							
-							
-							//if phone
-							}else{
-								$(".sorter").css({right:"-100%"});
-						
-								// if sorter closed
-								//if(sorter_rposition == $(window).width() ){
-								
-								
-								// 	keep closed
-// 									$(".sorter").css({position:"fixed",right:"-100%",top:"34px"});
-// 								}else{
-// 									
-// 									keep open
-// 									$(".sorter").css({position:"absolute",right:"-60%",top:"0"});
-// 								}
-							}
-								
-						}
-						//
-						
+				
 						/////if there is any new data
-						if(data.trim() != ""){
+						console.log("length", data.length)
+						if(data.length > 40 ){
 						
 							////if scrolled down all the way (old way? $(window).height() - window.innerHeight < $(window).scrollTop())
-							if($(window).scrollTop() + $(window).height() > $(document).height() - 200)
+							console.log($('.main-feed').scrollTop() + $('.main-feed').height(), $(document).height())
+							if($('.main-feed').scrollTop() + $('.main-feed').height() > $(document).height() - 200)
 							{
-								$(window).off('scroll', loadMore);
+								$('.main-feed').off('scroll', loadMore);
 			
 								x = $('.main-feed').children().length * 10
 								y = x + 10
@@ -184,12 +144,12 @@ $(document).ready(function() {
 							}
 						}else{
 						
-							$(window).off('scroll', loadMore);
+							$('.main-feed').off('scroll', loadMore);
 						}
 					});
 					
 					
-					
+				//////open threads	
 				$('.main-feed').children().last().find(".thread").on("click",function(){
 					
 					var curr_id = this.id
@@ -271,21 +231,22 @@ $(document).ready(function() {
 							});
 								
 					
-							$('.resp-btn').click(function(){
+							
+							function addResponse(){  
 								
-								console.log($(this).parent().prev())
-								curr_container = $(this).parent().prev();
-								curr_text = $(this).parent().children('p').children("#id_text_r").val();
-								clear_text = $(this).parent().children('p').children("#id_text_r")
+								//console.log($(this).parent().prev())
+								curr_container = $('.resp-btn').parent().prev();
+								curr_text = $('.resp-btn').parent().children('p').children("#id_text_r").val();
+								clear_text = $('.resp-btn').parent().children('p').children("#id_text_r")
 								
 								if(curr_text.length < 32){
 									curr_title = curr_text;
 								}else{
 									curr_title = curr_text.slice(0,32) + "...";
 								}
-								curr_is_thread = $(this).parent().children('p').children("#id_is_thread_r").val();
+								curr_is_thread = $('.resp-btn').parent().children('p').children("#id_is_thread_r").val();
 								
-
+			
 								$.ajax({
 									type: "POST",
 									url: "/ajax/add/",
@@ -315,8 +276,19 @@ $(document).ready(function() {
 										console.log({ "title": curr_title, "text": curr_text, "is_thread":  curr_is_thread })
 									}
 								});
-
+							}
+							$('.resp-btn').click(function(){
+								addResponse()
 							});////end of POST
+							
+							$("#id_text_r").keydown(function(e){
+								if(e.keyCode == '13' )
+								{
+									addResponse($(this))
+								}
+							});
+							
+							
 						}
 					});
 				
@@ -343,7 +315,7 @@ $(document).ready(function() {
             	$("#fixed-side>div:nth-child(1)").html(data)
             	
             	///get time since last post
-            	currThreadTime($("#fixed-side>ul").data("timediff"));
+            	currThreadTime($("#user>ul").data("timediff"));
 				if(is_scroll){
 					/////scroll user-view to look like texting
 					$(".user-view").scrollTop(curr_position);
@@ -365,7 +337,7 @@ $(document).ready(function() {
 				attach_details($('.user-box-container'));
 				
 				$("#update-page").on('click', function(){
-					updatePage();
+					tinyScroll();
 				});
 
 	
@@ -379,7 +351,7 @@ $(document).ready(function() {
  
  	function updatePage(){
  		//check for local storage 'curr_page_state' deal with user first time visiting the site with no local storage item 'curr_page_state'
- 		console.log(localStorage.getItem('curr_page_state') === null);
+ 		//console.log(localStorage.getItem('curr_page_state') === null);
 		if(localStorage.getItem('curr_page_state') === null){
 			
 			var state = {};
@@ -401,7 +373,7 @@ $(document).ready(function() {
 			data: last_state,
 			success: function(data) {
  
-				console.log(data, last_state)				
+				//console.log(data, last_state)				
 				//update thread
 				if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
 					loadThread('big', 'dummy');	 
@@ -427,7 +399,9 @@ $(document).ready(function() {
  	
 
     // add new thread
-	$('.post-btn').click(function(){
+	
+	
+	function addPost(){
 		//console.log($("#id_title").val(), $("#id_text").val(), $("#id_is_thread").val())
 		post_text = $("#id_text").val()
 		if(post_text.length < 32){
@@ -460,8 +434,20 @@ $(document).ready(function() {
 				
 			}
 		});
-
+	
+	}
+	
+	$('.post-btn').click(function(){
+		addPost()
 	});////end of POST
+	
+	$("#id_text").keydown(function(e){
+		if(e.keyCode == '13' )
+		{
+			addPost()
+		}
+	});
+	
 	
 ////////function that refreshes the main open thread	
 function refreshOpenThread(){
@@ -505,7 +491,7 @@ function refreshOpenThread(){
 			console.log(obj)
 			///////
 			if(option_data == "TR" && curr_vote != "TR"){
-				message = "Three troll votes and this user is kicked off, sure you want to mark this comment Troll?"
+				message = "Three troll votes and this comment is deleted. Sure you want to mark this comment Troll?"
 				if(myAlert('confirm', message, obj, vote)){
 					alert('this returned true!!')
 				}
@@ -581,7 +567,7 @@ function refreshOpenThread(){
     	});
 
 
-    $('.sorter div').on(' click',function(){
+    $('.sorter .sort, .sorter .keyword').on(' click',function(){
     	var this_div = $(this);
 		$(".center")[0].style.opacity = 0;
     	if(!$.isEmptyObject(this_div.data())){
@@ -619,15 +605,15 @@ function refreshOpenThread(){
 			});
 		}
 		//if mobile version, hide sorter panel
-		if($('.sorter').css("z-index") == '6'){
-			$('.sorter').css({right:'-100%'})	
-		}
+		// if($('.sorter').css("z-index") == '6'){
+// 			$('.sorter').css({right:'-100%'})	
+// 		}
 		
     });
     
     /////////scroll to top when you get too far down
     $('.scroll-to-top').click(function(){
-		myScroller($("html, body"), $("html, body").offset().top);
+		myScroller($(".main-feed"), $(".main-feed").offset().top);
 	});	
 	
 	/////////search threads
@@ -674,16 +660,22 @@ function refreshOpenThread(){
 	
 ///// scroll to see pie timer when you focus on post form
 	(function tinyScroll() {
-		$('#id_text').click(function() {	
-		
+		$('#id_text').on('focus', function() {	
+			
 			/////scroll user view to bottom of texts
-			scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+			var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+			
 			myScroller($(".user-view"), scroll_diff);
+			
+			$("header").css({height:0})
+			$(".content-wrap").css({height:"calc(100vh - 36px)"})
+			
 
-			///////scroll header out of the way
-			if($(window).scrollTop() < 75){
-				myScroller($("html, body"), $('.left-holder').offset().top - 35);
-			}
+		}).on('blur', function() {
+			
+			$("header").css({height:$("header>div").css("height")})
+			$(".content-wrap").css({height:"calc(100vh - 126px)"})
+		
 		});
 	})();
 	
@@ -707,7 +699,12 @@ function refreshOpenThread(){
 ////////start pie timer
 	function currThreadTime(startTime) {
 		var time = parseFloat(startTime, 10);
-	
+		 var hrs = 24 - (time/49.9 * 24)
+		 var minutes = (hrs % 1) * 60
+		 	 hrs = Math.floor(hrs)
+		     minutes = Math.floor(minutes)
+		     
+		console.log("hrs, min: ", hrs , minutes)
 		if(time < 49.9){
 			var off_set = (time / 49.9) * 106.2;
 			off_set = off_set.toString() + ' 106.2';
@@ -719,6 +716,8 @@ function refreshOpenThread(){
 			$( "circle.pie" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 				$( "circle.pie" ).css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'linear', transitionDuration: cssTime });
 			});
+			
+			$("#time-text").html(hrs+" hours and "+minutes+" minutes remaining")
 	
 		}else{
 	
@@ -1020,107 +1019,51 @@ function refreshOpenThread(){
     	setTimeout(prettyTitle, 25000);
 	})();////////////end of PrettyLights
 	
-	/////////
-	///////lifted from stackoverflow thanks galambalazs!
-	$( '#fixed-side>div:nth-child(1)' ).on( 'scroll mousewheel DOMMouseScroll', function ( e ) {
+	////toggle user-view and main-feed
+	$("#fixed-top-left>ul>li:nth-child(1)").on("click", function(){
 		
-			var e0 = e.originalEvent,
-				delta = e0.wheelDelta || -e0.detail;
-				//console.log(e.originalEvent.wheelDelta);
-		
-			
-			$(this).children(".user-view")[0].scrollTop += delta ;
-			e.preventDefault();
-		});
-	
-		$(document).on("pagecreate","#pageone",function(){
-	  $(document).on("scrollstop",function(){
-		alert("Stopped scrolling!");
-	  });
-	});
-	
-	
-	/////////////bottom nav for mobile
-	$(".bottom-nav li:nth-child(1)").on('click', function(){
-		if($("#fixed-side").css("left") != "0px"){
-			$("#fixed-side").css({left:0});
-			$(".post-form-container").css({left:0});
-			$(".sorter").css({right:"-100%"});
-			$(".bottom-nav li:nth-child(1)").html("<span id='posts-ico'></span>");
+		if($(".content-wrap").css("left") == "0px"){
+			$(".content-wrap").css({left:"-100%"})
+			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+			$("#fixed-top-left>ul>li:nth-child(1)").attr('id','compose-ico')
+			$('.scroll-to-top').css({display:"block"})
 			
 		}else{
-			$("#fixed-side").css({left:"-100%"});
-			$(".post-form-container").css({left:"-100%"});
-			$(".bottom-nav li:nth-child(1)").html("<span id='compose-ico'></span>");
+			$(".content-wrap").css({left:"0"})
+			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+			$("#fixed-top-left>ul>li:nth-child(1)").attr('id','posts-ico')
+			$('.scroll-to-top').css({display:"none"})
 		}
-	});
 	
-	//media query breakponts
-	//phone:
-	// and (min-width:20em)
-	// and (max-width:48.125em)and 
-	// tablet
-	// (min-width: 48.125em) 
-	// and (max-width: 64.000em) 
+	})
 	
+	////toggle sorter menu
+	function toggleSorter(){
+		var sorter_wrap =  $(".center").width()
+			sorter_wrap = sorter_wrap+"px"
+			console.log(sorter_wrap)
+			
+		var sorter_div_right =  $(".center").width() * 0.4
+			sorter_div_right = sorter_div_right+"px"
 	
-	////bottom navigation
-	$(".bottom-nav li:nth-child(2)").on('click', function(){
-		
-		var sorter_rposition = parseInt($(".sorter").css("right").replace("px", "").replace("-", ""));
-		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
-		//console.log("if phone = 1",center_check,"sorter poizzzzion", sorter_rposition)
-		
-		//if phone
-		if (center_check == 1){		
-			if(sorter_rposition == $(window).width() && $("#fixed-side").css("left") == "0px"){
-				// 	keep closed
-				if($(window).scrollTop() > 85){ 
-				
-					$(".sorter").css({position:"fixed",right:"-60%",top:"34px"});
-				}else{
-
-					$(".sorter").css({position:"absolute",right:"-60%",top:"0"});
-				}
-				
-				$("#fixed-side").css({left:"-100%"});
-				$(".post-form-container").css({left:"-100%"});
-				$(".bottom-nav li:nth-child(1)").html("<span id='compose-ico'></span>");
+		if($(".sorter>div").css("right") == "0px"){
+			$(".sorter").css({opacity:"0"});
+			setTimeout(function(){
+				$(".sorter").css({right:"-"+sorter_wrap, width:sorter_wrap});
+			}, 700);
+			$(".sorter>div").css({right:"-"+sorter_div_right});
 			
-			}else if(sorter_rposition == $(window).width() && $("#fixed-side").css("left") != "0px"){
-				
-				if($(window).scrollTop() > 85){ 
-				
-					$(".sorter").css({position:"fixed",right:"-60%",top:"34px"});
-				}else{
-				
-					$(".sorter").css({position:"absolute",right:"-60%",top:"0"});
-				}
-			
-			}else{
-				$(".sorter").css({right:"-100%"});
-			}
-			
-		///if tablet	
 		}else{
-			console.log($(window).scrollTop())
-			if(sorter_rposition == 0){
-				
-				//$(".sorter").css({right:"-28%"});
-				if($(window).scrollTop() > 85){ 
-					$(".sorter").css({position:"fixed",right:"-28%",top:"34px"});
-				}else{
-					$(".sorter").css({position:"absolute",right:"-28%",top:"0"});
-				}
-			}else{
-				if($(window).scrollTop() > 85){ 
-					$(".sorter").css({position:"fixed",right:"0",top:"34px"});
-				}else{
-					$(".sorter").css({position:"absolute",right:"0",top:"0"});
-				}
-			}
+			$(".sorter").css({right:"0px", width:sorter_wrap, opacity:"1"});
+			$(".sorter>div").css({right:"0px", width:sorter_div_right});
 		}
+	}
+	
+	////
+	$("#fixed-top-right>ul>li:nth-child(2)").on("click", function(){
+		toggleSorter();	
 	});
+	
 	
 	function closeThread(){
 		var thread_id = localStorage.getItem('open_thread');
@@ -1174,61 +1117,38 @@ function refreshOpenThread(){
 	
 	//if(typeof window.orientation !== 'undefined'){
     /* cache dom references */ 
-    var $body = jQuery('body'); 
+    //var $body = jQuery('body'); 
 
-    /* bind events */
-   //  $("textarea").on('focus', function() {
-//         $('#fixed-side').css({position:"absolute"})
-//         $('#fixed-side').css({position:"absolute"})
-//         
-//         
-//     }).on('blur', function() {
-//         $('fixed-side').css({position:"fixed"})
-//         $('#fixed-side').css({position:"absolute"})
-//     });
-//} 
-	
+
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 	$(window).resize(function(){
 		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
 		///phone
 		if(center_check == 1){
-			$("#fixed-side").css({left:0});
-			$(".post-form-container").css({left:0});
-			$(".bottom-nav>ul>li:nth-child(1)").html("<span id='posts-ico'></span>");
-			
-			if($(window).scrollTop() > 85){ 
-				$(".sorter").css({position:"fixed",right:"-100%",top:"34px"});
+			if($(".content-wrap").css("left") == "0px"){
+				$(".content-wrap").css({left:"0"})
 			}else{
-				$(".sorter").css({position:"absolute",right:"-100%",top:"0"});
+				$(".content-wrap").css({left:"-100%"})
 			}
-			
+			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+			$(".sorter").removeAttr("style")
+			$(".sorter>div").removeAttr("style")
+
+
 		///tablet	
 		}else if(center_check < 1 && center_check > 0.5){
-			$("#fixed-side").css({left:0});
-			$(".post-form-container").css({left:0});
-			$(".bottom-nav>ul>li:nth-child(1)").html("<span id='posts-ico'></span>");
+			$(".content-wrap").css({left:"0"})
+			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+			$(".sorter").removeAttr("style")
+			$(".sorter>div").removeAttr("style")
 			
-			
-			if($(window).scrollTop() > 85){ 
-				$(".sorter").css({position:"fixed",right:"-28%",top:"34px"});
-				$("#drop-top").css({position:"fixed", width:"68%", left:"42%"})
-			}else{
-				$(".sorter").css({position:"absolute",right:"-28%",top:"0"});
-				$("#drop-top").css({position:"relative", width:"100%", left:"0"})
-				
-			}
 		
 		///desktop	
 		}else{
-			if($(window).scrollTop() > 85){ 
-				$(".sorter").css({position:"fixed",right:"0",top:"34px"});
-				$("#drop-top").css({position:"fixed", width:"45%", left:"33%"})
-				
-			}else{
-				$(".sorter").css({position:"static",right:"0",top:"0"});
-				$("#drop-top").css({position:"relative", width:"100%", left:"0"})
-			}
+			$(".content-wrap").css({left:"0"})
+			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+			$(".sorter").removeAttr("style")
+			$(".sorter>div").removeAttr("style")
 		
 		}
 		

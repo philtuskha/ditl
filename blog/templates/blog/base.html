@@ -22,17 +22,17 @@
 		{% if user and not user.is_anonymous %}
 		<div id="fixed-top-left">
 			<ul>
-				<li data-type='status' data-hold='off'>STATUS</li>
-				<li data-type='notifications' data-hold='off'>NOTIFICATIONS</li>
+				<li id="posts-ico"></li>
+				<li data-type='status' data-hold='off'><a>STATUS</a></li>
+				<li data-type='notifications' data-hold='off'><a>NOTIFICATIONS</a></li><!--<div id="fixed-top-center"><h3>ditl</h3></div>-->
 				<li></li>
 			</ul>
-		</div><div id="fixed-top-center">
-			<h3>ditl</h3>
 		</div><div id="fixed-top-right">
 			<ul>
 				<li>
 					<a href="{% url 'auth:logout' %}?next={{ request.path }}">LOGOUT</a>
 				</li>
+				<li id="explore-ico"></li>
 			</ul>
 		</div>
 		{% else %}
@@ -48,12 +48,28 @@
 		{% endif %}
 		</div>
 	</div>
+
     <header>
-        <h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>
+    	<div>
+        	<h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>
+   		</div>
     </header>
+
     <div class="content-wrap">
 	{% if user and not user.is_anonymous %}
 		<div class="left-holder">
+			<div id="fixed-side">
+				<div id="user">
+			
+				</div>
+				<div>
+					<div class="post-form-container">
+						{% block form %}
+						{% endblock %}
+					</div>
+				</div>
+			
+			</div>
 		</div><div class="center">
 			<div id="drop-top">
 				<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
@@ -62,46 +78,37 @@
 			</div>
 		
 		</div><div class="sorter">
-			<h2>EXPLORE</h2>
-			<div data-my="response__author_id" class="sort">
-			<span class="sort-arrow">«</span> <span>my conversations</span>
-			</div>
-			<div data-faves="author_id__in" class="sort">
-			<span class="sort-arrow">«</span> <span>my favorite users</span>
-			</div>
 			<div>
-				<div data-pop="-resp_count" rel="pub" class="sort">
-				<span class="sort-arrow">«</span> <span>most popular posts</span>
+				<h2>EXPLORE</h2>
+				<div data-my="response__author_id" class="sort">
+				<span class="sort-arrow">«</span> <span>my conversations</span>
 				</div>
+				<div data-faves="author_id__in" class="sort">
+				<span class="sort-arrow">«</span> <span>my favorite users</span>
+				</div>
+				<div>
+					<div data-pop="-resp_count" rel="pub" class="sort">
+					<span class="sort-arrow">«</span> <span>most popular posts</span>
+					</div>
 
-				<div data-pub="published_date" rel="pop" class="sort">
-				<span class="sort-arrow">«</span> <span>ending soon</span>
+					<div data-pub="published_date" rel="pop" class="sort">
+					<span class="sort-arrow">«</span> <span>ending soon</span>
+					</div>
 				</div>
-			</div>
 			
-			<h2>SEARCH</h2>
-			<div id="search-box">
-				<input type="text"></input>
-				<input type="submit" name="search" id="search-threads"></input>
-			</div>
-			<h2>TRENDING</h2>
-			<div id="keywords">
-				{% block sidebar %}
-				{% endblock %}
-			</div>
-		</div>
-		<div id="fixed-side">
-			<div>
-			
-			</div
-			<div>
-				<div class="post-form-container">
-					{% block form %}
+				<h2>SEARCH</h2>
+				<div id="search-box">
+					<input type="text"></input>
+					<input type="submit" name="search" id="search-threads"></input>
+				</div>
+				<h2>TRENDING</h2>
+				<div id="keywords">
+					{% block sidebar %}
 					{% endblock %}
 				</div>
 			</div>
-			
 		</div>
+		
 		
 	{% else %}
 		<div  class="left-holder">
@@ -131,13 +138,7 @@
  -->
 	{% endif %}	
     </div>
-	<div class="bottom-nav">
-		<ul>
-			<li><span id="compose-ico"></span></li>
-			<li><span id="explore-ico"></span></li>
-		</ul>
-	</div>
-    <div class="scroll-to-top">Scroll to Top</div>
+    <div class="scroll-to-top"><h1>^</h1></div>
 	<div id="thread-div-pop" class="thread-pop">
 	<div class="white-space">
 		<div class="details">

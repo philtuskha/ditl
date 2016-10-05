@@ -164,7 +164,7 @@ def add_thread(request):
     
         if user_thread.count() > 0:
             my_last_thread = user_thread.order_by("pk").reverse()[0]
-            t = timezone.now() - my_last_thread.published_date
+            t = timezone.now() - my_last_thread.published_date #raised an error somehow on this line during load failure
             timediff = t.total_seconds() #86400 seconds in a day
         else:
             timediff = 90000

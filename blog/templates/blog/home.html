@@ -10,6 +10,7 @@
 {% endblock %}
 
 
+<div id="form-bar">
 {% block form %}
     <div class="post-form">{% csrf_token %}
         {{ form.as_p }}
@@ -17,3 +18,4 @@
     </div>
 <!--     <div class="save-btn">button</div> save btn btn-default class="post-form"-->
 {% endblock %}
+</div>

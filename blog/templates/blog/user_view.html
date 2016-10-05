@@ -6,7 +6,9 @@
 		</svg>
 	</li><li>
 		<h3>User {{ user.id }}</h3>
-		<p>Todays post... <span id="update-page">Update page</span></p>
+		<p><span id="time-text"></span></p>
+	</li><li>
+		
 	</li>
 </ul>
 <div class="user-view">
@@ -24,7 +26,7 @@
 			 </div>
 		 
 			 <p class="date-user">
-				You posted at {{ curr_thread.published_date.time }} <b>|</b>{% get_votes curr_thread.pk curr_thread.tvote_set %}
+				You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %}
 			 </p>		
 		
 		 </div>
