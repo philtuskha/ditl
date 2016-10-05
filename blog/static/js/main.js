@@ -6,6 +6,11 @@ $(document).ready(function() {
 	} 
 	
 	
+	$('content-wrap').on('touchmove', function (e){
+		e.preventDefault();
+	}, false);
+	
+	
 	$("circle").css({'strokeDashoffset':$("#fixed-side").data("timediff")})
 
 	function loadThread(pKey, pValue){
@@ -85,35 +90,46 @@ $(document).ready(function() {
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
+            	
+            	
             	$('.main-feed').on('scroll', function(event){
-        			//console.log($('.main-feed').scrollTop())
-        			console.log($('.main-feed').scrollTop())
         			
-        			if($('.main-feed').scrollTop() == 0){
-        				//alert('pop')
-        			
-        				// $("html, body").animate({ scrollTop: "0px" }, 2000, 'easeOutQuint', function(){
-//         					$('.main-feed').scrollTop(0)
-//         				});
-						$("header").css({height:$("header>div").css("height")+"px"})
+        			if($('.main-feed').scrollTop() < 30){
         				
-        				//$('.main-feed').off('scroll', function(event){});
-        					
+        				if($("header").css("height") != $("header>div").css("height")+"px"){
+							$("header").css({height:$("header>div").css("height")+"px"})
+							return false
+						}
+        			
+        			}else{
+						if($("header").css("height") != "0px"){
+        					$("header").css({height:"0px"})
+        					return false
+        				}
         			}
+			
+        		});
+        		
+        		$('.user-view').on('scroll', function(event){
         			
-        			else{
+        			if($('.user-view').scrollTop() < 30){
         				
-        				// $("html, body").animate({ scrollTop: "0px" }, 2000, 'easeOutQuint', function(){
-//         					$('.main-feed').scrollTop("20px")
-//         				});
-        				$("header").css({height:"0px"})
-        				
+        				if($("header").css("height") != $("header>div").css("height")+"px"){
+							$("header").css({height:$("header>div").css("height")+"px"})
+							var cw_height = ($(window).innerHeight()-155)+"px"
+							$(".content-wrap").css({height:cw_height})
+							return false
+						}
+        			
+        			}else{
+						if($("header").css("height") != "0px"){
+        					$("header").css({height:"0px"})
+        					$(".content-wrap").css({height:$(window).innerHeight()-36-44+"px"})
+        					return false
+        				}
         			}
-//         			
-// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
-//         			$("html, body").css({"overflow-y":is_html_scroll})
-         			
-        		})
+			
+        		});
             	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
 
         		// var is_mf_scroll = "hidden";
@@ -439,16 +455,16 @@ $(document).ready(function() {
             	
             	///get time since last post
             	currThreadTime($("#user>ul").data("timediff"));
-				if(is_scroll){
-					/////scroll user-view to look like texting
-					$(".user-view").scrollTop(curr_position);
-					setTimeout(function(){
-						scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-						myScroller($(".user-view"), scroll_diff);        	
-					},30);
-            	}else{
-            		$(".user-view").scrollTop(curr_position);
-            	}
+				// if(is_scroll){
+// 					/////scroll user-view to look like texting
+// 					$(".user-view").scrollTop(curr_position);
+// 					setTimeout(function(){
+// 						scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+// 						myScroller($(".user-view"), scroll_diff);        	
+// 					},30);
+//             	}else{
+//             		$(".user-view").scrollTop(curr_position);
+//             	}
 				
 								
 				
