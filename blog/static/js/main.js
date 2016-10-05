@@ -1,5 +1,10 @@
 $(document).ready(function() {
 	
+	///hacky way to make this site look right in phone
+	if ($(window).width() < 600) { 
+		$('meta[name=viewport]').attr('content','initial-scale=0.8, maximum-scale=0.8, user-scalable=no');
+	} 
+	
 	$("circle").css({'strokeDashoffset':$("#fixed-side").data("timediff")})
 
 	function loadThread(pKey, pValue){
@@ -77,28 +82,28 @@ $(document).ready(function() {
             	$(".center")[0].style.opacity = 1;
             	
         
-        			var lastScrollTop = 0;
-						$('.main-feed').on('scroll', function (event){
-						   
-						   var st = $(this).scrollTop();
-						   				
-						   if (st > lastScrollTop + 100){
-							   // downscroll code
-							   $("header").css({height:"0px"})
-							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
-								return false;
-							   
-						   } else {
-							  // upscroll code
-							  $("header").css({height:$("header>div").css("height")})
-							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
-							  return false;
-							 
-						   }
-						   
-						   lastScrollTop = st;
-						   						   
-						})
+        			// var lastScrollTop = 0;
+// 						$('.main-feed').on('scroll', function (event){
+// 						   
+// 						   var st = $(this).scrollTop();
+// 						   				
+// 						   if (st > lastScrollTop + 100){
+// 							   // downscroll code
+// 							   $("header").css({height:"0px"})
+// 							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
+// 								return false;
+// 							   
+// 						   } else {
+// 							  // upscroll code
+// 							  $("header").css({height:$("header>div").css("height")})
+// 							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
+// 							  return false;
+// 							 
+// 						   }
+// 						   
+// 						   lastScrollTop = st;
+// 						   						   
+// 						})
 						
 						////////try and figure out simple solution to keep responses in div user view stationary 
 						// $("header").bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){ 
@@ -112,41 +117,41 @@ $(document).ready(function() {
             	
             		///this might be too general, but I can't call loadMore unless I'm within here
             		//$('.main-feed').off('scroll');
-					$('.main-feed').on("scroll", function loadMore(){
-					
-						////add scroll to top butn
-						if($('.main-feed').scrollTop() > $('.main-feed').height()){
-							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
-						}else{
-							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
-
-						}
-						
-				
-						/////if there is any new data
-						console.log("length", data.length)
-						if(data.length > 40 ){
-						
-							////if scrolled down all the way (old way? $(window).height() - window.innerHeight < $(window).scrollTop())
-							console.log($('.main-feed').scrollTop() + $('.main-feed').height(), $(document).height())
-							if($('.main-feed').scrollTop() + $('.main-feed').height() > $(document).height() - 200)
-							{
-								$('.main-feed').off('scroll', loadMore);
-			
-								x = $('.main-feed').children().length * 10
-								y = x + 10
-			
-								x = x.toString();
-								y = y.toString();
-			
-								loadThread('start_end',x+','+y);
-								
-							}
-						}else{
-						
-							$('.main-feed').off('scroll', loadMore);
-						}
-					});
+					// $('.main-feed').on("scroll", function loadMore(){
+// 					
+// 						////add scroll to top butn
+// 						if($('.main-feed').scrollTop() > $('.main-feed').height()){
+// 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
+// 						}else{
+// 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
+// 
+// 						}
+// 						
+// 				
+// 						/////if there is any new data
+// 						console.log("length", data.length)
+// 						if(data.length > 40 ){
+// 						
+// 							////if scrolled down all the way (old way? $(window).height() - window.innerHeight < $(window).scrollTop())
+// 							console.log($('.main-feed').scrollTop() + $('.main-feed').height(), $(document).height())
+// 							if($('.main-feed').scrollTop() + $('.main-feed').height() > $(document).height() - 200)
+// 							{
+// 								$('.main-feed').off('scroll', loadMore);
+// 			
+// 								x = $('.main-feed').children().length * 10
+// 								y = x + 10
+// 			
+// 								x = x.toString();
+// 								y = y.toString();
+// 			
+// 								loadThread('start_end',x+','+y);
+// 								
+// 							}
+// 						}else{
+// 						
+// 							$('.main-feed').off('scroll', loadMore);
+// 						}
+// 					});
 					
 					
 				//////open threads	
@@ -160,7 +165,7 @@ $(document).ready(function() {
 					$("#thread-div-pop").html($(this).html());
 					$("#thread-div-pop").children(".post-user").append("<span class='close-btn'></span>")
 					///add close button to top of open thread
-					$(".close-btn").one("click",function(){
+					$(".close-btn").on("click",function(){
 						closeThread();
 					});
 					//remove triange from responses class
@@ -667,14 +672,14 @@ function refreshOpenThread(){
 			
 			myScroller($(".user-view"), scroll_diff);
 			
-			$("header").css({height:0})
-			$(".content-wrap").css({height:"calc(100vh - 36px)"})
+			// $("header").css({height:0})
+// 			$(".content-wrap").css({height:"calc(100vh - 36px)"})
 			
 
 		}).on('blur', function() {
 			
-			$("header").css({height:$("header>div").css("height")})
-			$(".content-wrap").css({height:"calc(100vh - 126px)"})
+			// $("header").css({height:$("header>div").css("height")})
+// 			$(".content-wrap").css({height:"calc(100vh - 126px)"})
 		
 		});
 	})();
