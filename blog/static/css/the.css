@@ -59,7 +59,7 @@ height:90px;
 position:relative;
 z-index:5;
 overflow:hidden;
-transition:height 0.5s;
+transition:height 0.3s;
 }
 header>div{
 height:90px;
@@ -260,14 +260,14 @@ transition:opacity 0.3s;
 }
 .content-wrap{
 width:100%;
-height:calc(100vh - 80px);/* calc(100vh - 126px); */
+height:calc(100vh - 155px);/* calc(100vh - 126px); */
 padding:0;
 position:relative;
 left:0;
 top:0;
 bottom:0;
 overflow:hidden;
-transition:all ease 0.5s;
+transition:all ease 0.3s;
 }
 
 .content-wrap>div{

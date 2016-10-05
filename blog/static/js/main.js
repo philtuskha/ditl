@@ -6,7 +6,7 @@ $(document).ready(function() {
 	} 
 	
 	
-	$('content-wrap').on('touchmove', function (e){
+	$('.content-wrap').on('touchmove', function (e){
 		e.preventDefault();
 	}, false);
 	
@@ -98,12 +98,14 @@ $(document).ready(function() {
         				
         				if($("header").css("height") != $("header>div").css("height")+"px"){
 							$("header").css({height:$("header>div").css("height")+"px"})
+							$(".content-wrap").css({height:$(window).innerHeight()})
 							return false
 						}
         			
         			}else{
 						if($("header").css("height") != "0px"){
         					$("header").css({height:"0px"})
+        					$(".content-wrap").css({height:$(window).innerHeight()})
         					return false
         				}
         			}
@@ -114,7 +116,7 @@ $(document).ready(function() {
         			
         			if($('.user-view').scrollTop() < 30){
         				
-        				if($("header").css("height") != $("header>div").css("height")+"px"){
+        				if($("header").css("height") != $("header>div").css("height")){
 							$("header").css({height:$("header>div").css("height")+"px"})
 							var cw_height = ($(window).innerHeight()-155)+"px"
 							$(".content-wrap").css({height:cw_height})
@@ -124,12 +126,14 @@ $(document).ready(function() {
         			}else{
 						if($("header").css("height") != "0px"){
         					$("header").css({height:"0px"})
-        					$(".content-wrap").css({height:$(window).innerHeight()-36-44+"px"})
+        					$(".content-wrap").css({height:$(window).innerHeight()-80+"px"})
         					return false
         				}
         			}
 			
         		});
+        		
+        		
             	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
 
         		// var is_mf_scroll = "hidden";
