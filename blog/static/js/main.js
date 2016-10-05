@@ -5,6 +5,7 @@ $(document).ready(function() {
 		$('meta[name=viewport]').attr('content','initial-scale=0.8, maximum-scale=0.8, user-scalable=no');
 	} 
 	
+	
 	$("circle").css({'strokeDashoffset':$("#fixed-side").data("timediff")})
 
 	function loadThread(pKey, pValue){
@@ -75,35 +76,124 @@ $(document).ready(function() {
             		
             	}
             	
+            	
+            	
             	$("#id_title").val("")
             	$("#id_text").val("")
+            	
             	
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
-        
+            	
+            	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
+
+        		var is_mf_scroll = "hidden";
+        		var is_html_scroll = "scroll";
+        		var header_height = $('header>div').height()
+        		
+        		$('.main-feed').css({"overflow-y":is_mf_scroll})
+        		$("html").css({"overflow-y":is_html_scroll})
+        		
+        		$(window).on('scroll', function(event){
+        			//console.log($(window).scrollTop())
+        			if($(window).scrollTop() > header_height - 1){
+        				is_mf_scroll = "scroll";
+        				is_html_scroll = "hidden"
+
+        				$(window).scrollTop( header_height);
+        					
+        			}else{
+        				is_mf_scroll = "hidden";
+        				is_html_scroll = "scroll";
+        			}
+        			
+					$('.main-feed').css({"overflow-y":is_mf_scroll})
+        			$("html").css({"overflow-y":is_html_scroll})
+        			
+        		});
+        		
+        		////pass 
+        		$('.main-feed').on('scroll', function(event){
+        			console.log($('.main-feed').scrollTop())
+        			if($('.main-feed').scrollTop() <= 1){
+        				is_mf_scroll = "hidden";
+        				is_html_scroll = "scroll"
+
+        				$(window).scrollTop( header_height);
+        					
+        			}else{
+        				is_mf_scroll = "scroll";
+        				is_html_scroll = "hidden";
+        			}
+        			
+					$('.main-feed').css({"overflow-y":is_mf_scroll})
+        			$("html, body").css({"overflow-y":is_html_scroll})
+         			
+        		});
+        		
+        		////pass off try to do the elegant way 
+        		// function passOffScroll(el, off_el, arg){
+// 
+// 					var header_height = $('header>div').height()
+// 
+// 					el.on('scroll', function(event){
+// 					console.log(el, off_el, arg)
+// 					console.log(el.scrollTop(), off_el.scrollTop())
+// 						if(arg){
+// 							
+// 							el.css({"overflow-y":"hidden"})
+//         					off_el.css({"overflow-y":"scroll"})
+//         					if(el != $(window)){
+// 								$(window).scrollTop( header_height);
+// 							}
+// 							
+// 						}else{
+// 							el.css({"overflow-y":"scroll"})
+//         					off_el.css({"overflow-y":"hidden"})
+// 						}
+// 					
+// 					});
+//         		}
+//         		
+        		//var header_height = $('header>div').height()
+        		// passOffScroll($('.main-feed'), $(window), $('.main-feed').scrollTop() <= 1)
+//         		passOffScroll($('.user-view'), $(window), $('.user-view').scrollTop() <= 1)
+//         		passOffScroll($(window), $('.main-feed'),  $(window).scrollTop() > 89)
+        		//passOffScroll($(window), $('.user-view'),  $(window).scrollTop() > 89)
+        		
+        		
+        		
         			// var lastScrollTop = 0;
 // 						$('.main-feed').on('scroll', function (event){
 // 						   
 // 						   var st = $(this).scrollTop();
-// 						   				
-// 						   if (st > lastScrollTop + 100){
+// 						  
+// 						   console.log(st, lastScrollTop)				
+// 						   if (st > lastScrollTop){
+// 						   console.log("down")
+// 						   	$(window).scrollTop("-90px")
+// 						   	// element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
+// // 							   element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+// // 						   });
 // 							   // downscroll code
-// 							   $("header").css({height:"0px"})
-// 							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
-// 								return false;
+// 							   // $("header").css({height:"0px"})
+// // 							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
+// 								lastScrollTop = st;
+//  								return false;
 // 							   
 // 						   } else {
+// 						   	$(window).scrollTop("0")
 // 							  // upscroll code
-// 							  $("header").css({height:$("header>div").css("height")})
-// 							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
-// 							  return false;
+// 							  // $("header").css({height:$("header>div").css("height")})
+// // 							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
+// // 							  return false;
 // 							 
 // 						   }
-// 						   
-// 						   lastScrollTop = st;
-// 						   						   
-// 						})
+						   
+						    						   
+						   						   
+						//})
 						
 						////////try and figure out simple solution to keep responses in div user view stationary 
 						// $("header").bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){ 
@@ -220,8 +310,8 @@ $(document).ready(function() {
 								charCount($(this));	
 							});
 							
-							/////attach scroll listener for closing of thread
-							closeThreadScroll();
+							///attach scroll listener for closing of thread
+							//closeThreadScroll();
 				
 							////////add thread to localStorage if open
 							if(handle.html() != "" ){
@@ -341,9 +431,6 @@ $(document).ready(function() {
 				
 				attach_details($('.user-box-container'));
 				
-				$("#update-page").on('click', function(){
-					tinyScroll();
-				});
 
 	
         	}
@@ -1032,12 +1119,19 @@ function refreshOpenThread(){
 			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
 			$("#fixed-top-left>ul>li:nth-child(1)").attr('id','compose-ico')
 			$('.scroll-to-top').css({display:"block"})
+			$('.main-feed').removeAttr('style');
+        	$('.user-view').removeAttr('style');
+			
 			
 		}else{
 			$(".content-wrap").css({left:"0"})
 			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
 			$("#fixed-top-left>ul>li:nth-child(1)").attr('id','posts-ico')
 			$('.scroll-to-top').css({display:"none"})
+			$('.main-feed').removeAttr('style');
+        	$('.user-view').removeAttr('style');
+			//$(window).scrollTop( 90);
+			//myScroller($(window), -90)
 		}
 	
 	})
@@ -1163,7 +1257,9 @@ function refreshOpenThread(){
 	////////when all is loaded, updatePage
 	updatePage();
 	
-	
+	////dealing with iphone bars
+	$(window).scrollTop("44px")
+	$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
 	
 	
 });//////endtag
