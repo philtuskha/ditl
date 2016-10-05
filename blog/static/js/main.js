@@ -88,50 +88,50 @@ $(document).ready(function() {
             	
             	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
 
-        		var is_mf_scroll = "hidden";
-        		var is_html_scroll = "scroll";
-        		var header_height = $('header>div').height()
-        		
-        		$('.main-feed').css({"overflow-y":is_mf_scroll})
-        		$("html").css({"overflow-y":is_html_scroll})
-        		
-        		$(window).on('scroll', function(event){
-        			//console.log($(window).scrollTop())
-        			if($(window).scrollTop() > header_height - 1){
-        				is_mf_scroll = "scroll";
-        				is_html_scroll = "hidden"
-
-        				$(window).scrollTop( header_height);
-        					
-        			}else{
-        				is_mf_scroll = "hidden";
-        				is_html_scroll = "scroll";
-        			}
-        			
-					$('.main-feed').css({"overflow-y":is_mf_scroll})
-        			$("html").css({"overflow-y":is_html_scroll})
-        			
-        		});
-        		
-        		////pass 
-        		$('.main-feed').on('scroll', function(event){
-        			console.log($('.main-feed').scrollTop())
-        			if($('.main-feed').scrollTop() <= 1){
-        				is_mf_scroll = "hidden";
-        				is_html_scroll = "scroll"
-
-        				$(window).scrollTop( header_height);
-        					
-        			}else{
-        				is_mf_scroll = "scroll";
-        				is_html_scroll = "hidden";
-        			}
-        			
-					$('.main-feed').css({"overflow-y":is_mf_scroll})
-        			$("html, body").css({"overflow-y":is_html_scroll})
-         			
-        		});
-        		
+        		// var is_mf_scroll = "hidden";
+//         		var is_html_scroll = "scroll";
+//         		var header_height = $('header>div').height()
+//         		
+//         		$('.main-feed').css({"overflow-y":is_mf_scroll})
+//         		$("html").css({"overflow-y":is_html_scroll})
+//         		
+//         		$(window).on('scroll', function(event){
+//         			//console.log($(window).scrollTop())
+//         			if($(window).scrollTop() > header_height - 1){
+//         				is_mf_scroll = "scroll";
+//         				is_html_scroll = "hidden"
+// 
+//         				$(window).scrollTop( header_height);
+//         					
+//         			}else{
+//         				is_mf_scroll = "hidden";
+//         				is_html_scroll = "scroll";
+//         			}
+//         			
+// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
+//         			$("html").css({"overflow-y":is_html_scroll})
+//         			
+//         		});
+//         		
+//         		////pass 
+//         		$('.main-feed').on('scroll', function(event){
+//         			console.log($('.main-feed').scrollTop())
+//         			if($('.main-feed').scrollTop() <= 1){
+//         				is_mf_scroll = "hidden";
+//         				is_html_scroll = "scroll"
+// 
+//         				$(window).scrollTop( header_height);
+//         					
+//         			}else{
+//         				is_mf_scroll = "scroll";
+//         				is_html_scroll = "hidden";
+//         			}
+//         			
+// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
+//         			$("html, body").css({"overflow-y":is_html_scroll})
+//          			
+//         		});
+//         		
         		////pass off try to do the elegant way 
         		// function passOffScroll(el, off_el, arg){
 // 
