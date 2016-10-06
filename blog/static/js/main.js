@@ -104,10 +104,16 @@ $(document).ready(function() {
 						var lastScrollTop = 0;
 						// $(".user-view").off('scroll')
 // 						$(".main-feed").off('scroll')
-						el.on('scroll', function(event){
-						
+						el.on('keyup scroll mousewheel touchmove mousemove', function(event){
+							
+							if(event.type == "mousewheel"){
+							
+							
+							}	
 							var st = $(this).scrollTop();
 			
+							
+							console.log(st, lastScrollTop)
 							if(st > lastScrollTop){     ///////// 0 && passed_direction <= 0
 								if(el.data("scroll") == "down"){
 									console.log(el.data("scroll"))
@@ -118,6 +124,7 @@ $(document).ready(function() {
 										$(".content-wrap").css({height:cw_height})
 									}
 									el.data("scroll","up")
+									console.log(event.type)
 								}
 								
 							}else{
@@ -128,6 +135,7 @@ $(document).ready(function() {
 										$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
 									}
 									el.data("scroll","down")
+									console.log(event)
 								}
 								
 							}
@@ -1086,7 +1094,7 @@ function refreshOpenThread(){
 		
 	//////////voting for threads and responses
 	function vote(obj){
-	console.log(this_inside)
+	//console.log(this_inside)
 		$.ajax({
 			type: "POST",
 			url: "/vote/",
@@ -1126,7 +1134,7 @@ function refreshOpenThread(){
 		
 			this_text.parent().next().html(count);
 			this_text.parent().next().data("max_char", this_text.val());
-			console.log(this_text.parent().next().data("max_char"))
+			//console.log(this_text.parent().next().data("max_char"))
 		}else{
 		
 			this_text.parent().next().html("<span style='color:red;'>0</span>");
@@ -1198,7 +1206,7 @@ function refreshOpenThread(){
 	function toggleSorter(){
 		var sorter_wrap =  $(".center").width()
 			sorter_wrap = sorter_wrap+"px"
-			console.log(sorter_wrap)
+			//console.log(sorter_wrap)
 			
 		var sorter_div_right =  $(".center").width() * 0.4
 			sorter_div_right = sorter_div_right+"px"
