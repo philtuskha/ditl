@@ -59,7 +59,9 @@ height:90px;
 position:relative;
 z-index:5;
 overflow:hidden;
+-webkit-transition:height 0.3s;
 transition:height 0.3s;
+-webkit-transform:translate3d(0,0,0);
 }
 header>div{
 height:90px;
