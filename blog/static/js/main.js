@@ -97,48 +97,47 @@ $(document).ready(function() {
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
-            	
-            	
-            	$('.main-feed').on('scroll', function(event){
-        			
-        			if($('.main-feed').scrollTop() < 30){
-        				
-        				if($("header").css("height") != $("header>div").css("height")+"px"){
-							$("header").css({height:$("header>div").css("height")+"px"})
-							$(".content-wrap").css({height:$(window).innerHeight()})
-							return false
-						}
-        			
-        			}else{
-						if($("header").css("height") != "0px"){
-        					$("header").css({height:"0px"})
-        					$(".content-wrap").css({height:$(window).innerHeight()})
-        					return false
-        				}
-        			}
+
+        			function toggleHeader(el){
+						///////userview fix sizing on scroll iphones especially
+						var lastScrollTop = 0;
+					
+						el.on('scroll', function(event){
+						
+							var st = $(this).scrollTop();
 			
-        		});
-        		
-        		$('.user-view').on('scroll', function(event){
-        			
-        			if($('.user-view').scrollTop() < 30){
-        				
-        				if($("header").css("height") != $("header>div").css("height")){
-							$("header").css({height:$("header>div").css("height")+"px"})
-							var cw_height = ($(window).innerHeight()-155)+"px"
-							$(".content-wrap").css({height:cw_height})
-							return false
-						}
-        			
-        			}else{
-						if($("header").css("height") != "0px"){
-        					$("header").css({height:"0px"})
-        					$(".content-wrap").css({height:$(window).innerHeight()-80+"px"})
-        					return false
-        				}
-        			}
+							if(st > lastScrollTop){     ///////// 0 && passed_direction <= 0
+								if(el.data("scrollD") == "down"){
+									console.log(el, $(".user-view"))
+								
+									$("header").css({height:$("header>div").css("height")+"px"})
+									if (el.length == $(".user-view").length){
+										var cw_height = ($(window).innerHeight()-111)+"px"
+										$(".content-wrap").css({height:cw_height})
+									}
+								}
+								el.data("scrollD","up")
+							}else{
+								if(el.data("scrollD") == "up"){
+									console.log(el.data("scrollD"))
+									$("header").css({height:"0px"})
+									if (el.length == $(".user-view").length){
+										$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
+									}
+								}
+								el.data("scrollD","down")
+							}
+							lastScrollTop = st
+						});
+					}
+					
+					if($(".center").width() == $(window).width()){
+						toggleHeader($(".user-view"))
+						toggleHeader($(".main-feed"))
+					}
+				
 			
-        		});
+
         		
         		
             	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
@@ -358,7 +357,7 @@ $(document).ready(function() {
 								}
 								handle.parent().css({height:"calc(100vh - 163px)"});
 								handle.css({height:"calc(100vh - 163px)"});
-							}, 0);
+							}, 30);
 							
 							//attach charCount to response form
 							$("#id_text_r").on("keyup", function(){
