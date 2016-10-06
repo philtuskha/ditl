@@ -99,7 +99,7 @@ $(document).ready(function() {
             	
 
         			function toggleHeader(el){
-        			//console.log(el)
+        			console.log(el, el.data("scroll"))
 						///////userview fix sizing on scroll iphones especially
 						var lastScrollTop = 0;
 						// $(".user-view").off('scroll')
@@ -109,25 +109,27 @@ $(document).ready(function() {
 							var st = $(this).scrollTop();
 			
 							if(st > lastScrollTop){     ///////// 0 && passed_direction <= 0
-								if(el.data("scrollD") == "down"){
-									console.log(el.data("scrollD"))
+								if(el.data("scroll") == "down"){
+									console.log(el.data("scroll"))
 								
 									$("header").css({height:$("header>div").css("height")+"px"})
 									if (el.length == $(".user-view").length){
 										var cw_height = ($(window).innerHeight()-111)+"px"
 										$(".content-wrap").css({height:cw_height})
 									}
+									el.data("scroll","up")
 								}
-								el.data("scrollD","up")
+								
 							}else{
-								if(el.data("scrollD") == "up"){
-									console.log(el.data("scrollD"))
+								if(el.data("scroll") == "up"){
+									console.log(el.data("scroll"))
 									$("header").css({height:"0px"})
 									if (el.length == $(".user-view").length){
 										$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
 									}
+									el.data("scroll","down")
 								}
-								el.data("scrollD","down")
+								
 							}
 							lastScrollTop = st
 						});
