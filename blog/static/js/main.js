@@ -334,7 +334,7 @@ $(document).ready(function() {
 						type: "GET",
 						url: curr_url,
 						success: function(data) {
-							console.log(handle);
+							//console.log(handle);
 							
 							//showResponses(thread,data)
 							handle.html(data);
@@ -412,7 +412,7 @@ $(document).ready(function() {
 											url: "/thread_detail_detail/"+curr_id+"/",
 											success: function(data) {
 												curr_container.html(data)
-												console.log();
+												//console.log();
 												clear_text.val("")
             									console.log(curr_container.prop('scrollHeight'), curr_container.parent().height())
 												myScroller(curr_container, curr_container.prop('scrollHeight')-curr_container.parent().height())
@@ -638,7 +638,7 @@ function refreshOpenThread(){
 			vote_type = $(this).parent().data("type")
 			this_inside = $(this)
 			obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote]
-			console.log(obj)
+			//console.log(obj)
 			///////
 			if(option_data == "TR" && curr_vote != "TR"){
 				message = "Three troll votes and this comment is deleted. Sure you want to mark this comment Troll?"
@@ -854,7 +854,7 @@ function refreshOpenThread(){
 		 	 hrs = Math.floor(hrs)
 		     minutes = Math.floor(minutes)
 		     
-		console.log("hrs, min: ", hrs , minutes)
+		//console.log("hrs, min: ", hrs , minutes)
 		if(time < 49.9){
 			var off_set = (time / 49.9) * 106.2;
 			off_set = off_set.toString() + ' 106.2';
