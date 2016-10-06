@@ -102,19 +102,17 @@ $(document).ready(function() {
         			console.log(el, el.data("scroll"))
 						///////userview fix sizing on scroll iphones especially
 						var lastScrollTop = 0;
-						// $(".user-view").off('scroll')
-// 						$(".main-feed").off('scroll')
-						el.on('keyup scroll mousewheel touchmove mousemove', function(event){
-							
-							if(event.type == "mousewheel"){
+					
+
+						el.on('scroll', function(event){
 							
 							
-							}	
 							var st = $(this).scrollTop();
 			
 							
 							console.log(st, lastScrollTop)
 							if(st > lastScrollTop){     ///////// 0 && passed_direction <= 0
+							lastScrollTop = st
 								if(el.data("scroll") == "down"){
 									console.log(el.data("scroll"))
 								
@@ -124,11 +122,13 @@ $(document).ready(function() {
 										$(".content-wrap").css({height:cw_height})
 									}
 									el.data("scroll","up")
-									console.log(event.type)
+									console.log(event)
+									 
 								}
 								
 							}else{
 								if(el.data("scroll") == "up"){
+									lastScrollTop = st
 									console.log(el.data("scroll"))
 									$("header").css({height:"0px"})
 									if (el.length == $(".user-view").length){
@@ -136,10 +136,16 @@ $(document).ready(function() {
 									}
 									el.data("scroll","down")
 									console.log(event)
+									
 								}
 								
 							}
-							lastScrollTop = st
+							if(el.data("scroll") == "down"){ 
+								lastScrollTop = st + 10
+							}else{
+								lastScrollTop = st - 10
+							}
+							
 						});
 					}
 					
