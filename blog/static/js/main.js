@@ -7,9 +7,16 @@ $(document).ready(function() {
 	
 	
 	$('.content-wrap').on('touchmove', function (e){
-		e.preventDefault();
-	}, false);
-	
+		if(!$('.user-view').has($(e.target)).length){
+			e.preventDefault();
+		}else if(!$('.main-feed').has($(e.target)).length){ 
+			e.preventDefault();
+		}
+	});
+		// $('#fix').on('touchmove',function(e){
+// 		if(!$('.scroll').has($(e.target)).length)
+// 			e.preventDefault();
+// 	});
 	
 	$("circle").css({'strokeDashoffset':$("#fixed-side").data("timediff")})
 
