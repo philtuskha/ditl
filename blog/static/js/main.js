@@ -123,6 +123,7 @@ $(document).ready(function() {
 										console.log(el.data("scroll"))
 								
 										$("header").css({height:$("header>div").css("height")+"px"})
+										el.css({'margin-top':"-"+$("header>div").css("height")+"px"})
 										if (el.length == $(".user-view").length){
 											var cw_height = ($(window).innerHeight()-111)+"px"
 											$(".content-wrap").css({height:cw_height})
@@ -151,20 +152,7 @@ $(document).ready(function() {
 								lastScrollTop = st
 							
 							}
-							
-							// if(el.data("scroll") == "down"){ 
-// 								if (st < scroll_max + 10){
-// 									 lastScrollTop = st
-// 								}
-// 								
-// 							}else{
-// 								if(st > 10){
-// 									lastScrollTop = st
-// 								}
-// 							}
-							
-							
-							
+
 						});
 					}
 					
