@@ -108,47 +108,57 @@ $(document).ready(function() {
 							
 							var st = $(this).scrollTop();
 							//var nu_st = st - lastScrollTop
-			
+							
+							var scroll_max = $(this).children().last().height() - $(this).height();
 							
 							console.log(st, lastScrollTop)
-							if(st > lastScrollTop ){     ///////// 0 && passed_direction <= 0
-							//lastScrollTop = st
-								if(el.data("scroll") == "down"){
-									console.log(el.data("scroll"))
+							
+							
+							if(st > 0 && st < scroll_max){
+						
+							
+								if(st > lastScrollTop ){     ///////// 0 && passed_direction <= 0
+								//lastScrollTop = st
+									if(el.data("scroll") == "down"){
+										console.log(el.data("scroll"))
 								
-									$("header").css({height:$("header>div").css("height")+"px"})
-									if (el.length == $(".user-view").length){
-										var cw_height = ($(window).innerHeight()-111)+"px"
-										$(".content-wrap").css({height:cw_height})
-									}
-									el.data("scroll","up")
-									console.log(event)
+										$("header").css({height:$("header>div").css("height")+"px"})
+										if (el.length == $(".user-view").length){
+											var cw_height = ($(window).innerHeight()-111)+"px"
+											$(".content-wrap").css({height:cw_height})
+										}
+										el.data("scroll","up")
+										console.log(event)
 									 
-								}
-								
-							}else{
-								if(el.data("scroll") == "up"){
-									//lastScrollTop = st
-									console.log(el.data("scroll"))
-									$("header").css({height:"0px"})
-									if (el.length == $(".user-view").length){
-										$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
 									}
-									el.data("scroll","down")
-									console.log(event)
-									
-								}
 								
+								}else{
+									if(el.data("scroll") == "up"){
+										//lastScrollTop = st
+										console.log(el.data("scroll"))
+										$("header").css({height:"0px"})
+										if (el.length == $(".user-view").length){
+											$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
+										}
+										el.data("scroll","down")
+										console.log(event)
+									
+									}
+								
+								}
+								console.log($(this).children().last().height(), $(this).height())
+							
+								lastScrollTop = st
+							
 							}
-							 lastScrollTop = st
-							 
+							
 							// if(el.data("scroll") == "down"){ 
-// 								if (st > 20 ){
-// 									event.preventDefault
+// 								if (st < scroll_max + 10){
+// 									 lastScrollTop = st
 // 								}
 // 								
 // 							}else{
-// 								if(st < lastScrollTop ){
+// 								if(st > 10){
 // 									lastScrollTop = st
 // 								}
 // 							}
