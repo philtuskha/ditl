@@ -22,7 +22,6 @@
 		{% if user and not user.is_anonymous %}
 		<div id="fixed-top-left">
 			<ul>
-				<li id="posts-ico"></li>
 				<li data-type='status' data-hold='off'><a>STATUS</a></li>
 				<li data-type='notifications' data-hold='off'><a>NOTIFICATIONS</a></li><!--<div id="fixed-top-center"><h3>ditl</h3></div>-->
 				<li></li>
@@ -52,31 +51,30 @@
     <header>
     	<div>
         	<h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>
+   			<div id="posts-ico"></div>
    		</div>
     </header>
 
     <div class="content-wrap">
 	{% if user and not user.is_anonymous %}
-		<div class="left-holder">
-			<div id="fixed-side">
-				<div id="user">
-			
-				</div>
-				<div>
+		<div class="left-wrap">
+			<div class="left-holder">
+				<div id="user-wrap">
+					<div id="user">
+		
+					</div>
 					<div class="post-form-container">
 						{% block form %}
 						{% endblock %}
 					</div>
 				</div>
-			
+			</div><div class="center">
+				<div id="drop-top">
+					<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
+				</div>
+				<div class="main-feed" data-scroll="down">
+				</div>
 			</div>
-		</div><div class="center">
-			<div id="drop-top">
-				<h2>POSTS: <span id="filter"></span><span id="order"></span></h2> 
-			</div>
-			<div class="main-feed" data-scroll="down">
-			</div>
-		
 		</div><div class="sorter">
 			<div>
 				<h2>EXPLORE</h2>
