@@ -98,88 +98,78 @@ $(document).ready(function() {
             	$(".center")[0].style.opacity = 1;
             	
 
+
         			function toggleHeader(el){
-        			console.log(el, el.data("scroll"))
+        			
 						///////userview fix sizing on scroll iphones especially
 						var lastScrollTop = 0;
-
+						
+						
+						function wheelScroll(){
+							el.on('mousewheel', function(e){
+								e.preventDefault;
+								var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
+								var move = $("header").height() + delta ;
+								var move_wrap = $(".content-wrap").height() - delta ;
+								
+									
+								 //console.log(delta, $(".left-wrap").css("height"))
+								if(e.originalEvent.wheelDelta < 0){
+									
+									$("header").css({height: move + "px"})
+									$(".content-wrap").css({height: move_wrap + "px"});
+									
+									if($("header").height() <= 0){
+										//default
+										$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+										el.css({overflow:"scroll"})
+										el.off('mousewheel')
+									}
+									
+								}else{
+							
+									$("header").css({height: move + "px"})
+									$(".content-wrap").css({height: move_wrap + "px"});
+									
+									
+									
+									if($("header").height() > $("header>div").height()){
+										//defaults
+										$("header").css({height: $("header>div").height() + "px"})
+										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+									
+										el.css({overflow:"scroll"})
+										el.off('mousewheel')
+									}
+								}
+								
+							});	
+						}
+						
+						
+						///////on scroll function
 						el.on('scroll', function(event){
 							
-							
-							var st = $(this).scrollTop();
-							//var nu_st = st - lastScrollTop
-							
 							var scroll_max = $(this).children().last().height() - $(this).height();
+							var st = $(this).scrollTop();							
 							
-							console.log(st, lastScrollTop)
-							
-							
+							/////confine for mobile stretch scrolling
 							if(st > 0 && st < scroll_max){
-							
-						
-							
-								if(st > lastScrollTop ){     ///////// 0 && passed_direction <= 0
-									
-									// if($("header").height() <= $("header>div").height()){
-// 										var dh = $("header").height() + (st - lastScrollTop)
-// 										$("header").css({height: dh + "px"})
-// 										
-// 										if (el.length == $(".user-view").length){
-// 											var cw_height = ($(window).innerHeight()-111)+"px"
-// 											$(".content-wrap").css({height:cw_height})
-// 										}
-// 
-// 									}else if($("header").height() > $("header>div").height()){
-// 							
-// 										$("header").css({height: $("header>div").height() + "px"})
-// 									}
-// 									
-									
-								
-								//lastScrollTop = st
-									if(el.data("scroll") == "down"){
-										console.log(el.data("scroll"))
-										//el.off('scroll');
-										$("header").css({height:$("header>div").css("height")+"px"})
+								if(st > lastScrollTop ){ //////scrolling up 
 										
-										// el.css({'padding-top':$("header>div").css("height")})
-										if (el.length == $(".user-view").length){
-											var cw_height = ($(window).innerHeight()-111)+"px"
-											$(".content-wrap").css({height:cw_height})
-										}
-										el.data("scroll","up")
-										console.log(event)
-									 
-									}
-								
-								}else{
-// 								
-									// if($("header").height() <= $("header>div").height()){
-// 										var uh = $("header").height() - st - lastScrollTop
-// 										$("header").css({height: uh + "px"})
-// 									}else if($("header").height() < 0){
-// 										$("header").css({height: "0px"})
-// 									}
-									if(el.data("scroll") == "up"){
-										//lastScrollTop = st
-										console.log(el.data("scroll"))
-										$("header").css({height:"0px"})
-										// el.css({'padding-top':'-'+$("header>div").css("height")})
-										if (el.length == $(".user-view").length){
-											$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
-										}
-										el.data("scroll","down")
- 										console.log(event)
+									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
+										el.css({overflow:"hidden"})
+										wheelScroll()
+									} 
+								}else{ //////scrolling down
 									
-									}
-								
+									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
+										el.css({overflow:"hidden"})
+										wheelScroll()
+									} 
 								}
-								//console.log($(this).children().last().height(), $(this).height())
-							
 								lastScrollTop = st
-							
 							}
-
 						});
 					}
 					
@@ -191,165 +181,6 @@ $(document).ready(function() {
 			
 
         		
-        		
-            	////stupid iphone nav bar fix cant transition an element have to use scroll to disappear
-
-        		// var is_mf_scroll = "hidden";
-//         		var is_html_scroll = "scroll";
-//         		var header_height = $('header>div').height()
-//         		
-//         		$('.main-feed').css({"overflow-y":is_mf_scroll})
-//         		$("html").css({"overflow-y":is_html_scroll})
-//         		
-//         		$(window).on('scroll', function(event){
-//         			//console.log($(window).scrollTop())
-//         			if($(window).scrollTop() > header_height - 1){
-//         				is_mf_scroll = "scroll";
-//         				is_html_scroll = "hidden"
-// 
-//         				$(window).scrollTop( header_height);
-//         					
-//         			}else{
-//         				is_mf_scroll = "hidden";
-//         				is_html_scroll = "scroll";
-//         			}
-//         			
-// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
-//         			$("html").css({"overflow-y":is_html_scroll})
-//         			
-//         		});
-//         		
-//         		////pass 
-//         		$('.main-feed').on('scroll', function(event){
-//         			console.log($('.main-feed').scrollTop())
-//         			if($('.main-feed').scrollTop() <= 1){
-//         				is_mf_scroll = "hidden";
-//         				is_html_scroll = "scroll"
-// 
-//         				$(window).scrollTop( header_height);
-//         					
-//         			}else{
-//         				is_mf_scroll = "scroll";
-//         				is_html_scroll = "hidden";
-//         			}
-//         			
-// 					$('.main-feed').css({"overflow-y":is_mf_scroll})
-//         			$("html, body").css({"overflow-y":is_html_scroll})
-//          			
-//         		});
-//         		
-        		////pass off try to do the elegant way 
-        		// function passOffScroll(el, off_el, arg){
-// 
-// 					var header_height = $('header>div').height()
-// 
-// 					el.on('scroll', function(event){
-// 					console.log(el, off_el, arg)
-// 					console.log(el.scrollTop(), off_el.scrollTop())
-// 						if(arg){
-// 							
-// 							el.css({"overflow-y":"hidden"})
-//         					off_el.css({"overflow-y":"scroll"})
-//         					if(el != $(window)){
-// 								$(window).scrollTop( header_height);
-// 							}
-// 							
-// 						}else{
-// 							el.css({"overflow-y":"scroll"})
-//         					off_el.css({"overflow-y":"hidden"})
-// 						}
-// 					
-// 					});
-//         		}
-//         		
-        		//var header_height = $('header>div').height()
-        		// passOffScroll($('.main-feed'), $(window), $('.main-feed').scrollTop() <= 1)
-//         		passOffScroll($('.user-view'), $(window), $('.user-view').scrollTop() <= 1)
-//         		passOffScroll($(window), $('.main-feed'),  $(window).scrollTop() > 89)
-        		//passOffScroll($(window), $('.user-view'),  $(window).scrollTop() > 89)
-        		
-        		
-        		
-        			// var lastScrollTop = 0;
-// 						$('.main-feed').on('scroll', function (event){
-// 						   
-// 						   var st = $(this).scrollTop();
-// 						  
-// 						   console.log(st, lastScrollTop)				
-// 						   if (st > lastScrollTop){
-// 						   console.log("down")
-// 						   	$(window).scrollTop("-90px")
-// 						   	// element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
-// // 							   element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-// // 						   });
-// 							   // downscroll code
-// 							   // $("header").css({height:"0px"})
-// // 							   $(".content-wrap").css({height:"calc(100vh - 36px)"})
-// 								lastScrollTop = st;
-//  								return false;
-// 							   
-// 						   } else {
-// 						   	$(window).scrollTop("0")
-// 							  // upscroll code
-// 							  // $("header").css({height:$("header>div").css("height")})
-// // 							  $(".content-wrap").css({height:"calc(100vh - 126px)"})
-// // 							  return false;
-// 							 
-// 						   }
-						   
-						    						   
-						   						   
-						//})
-						
-						////////try and figure out simple solution to keep responses in div user view stationary 
-						// $("header").bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){ 
-// 							   scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-//  							    //$(".user-view").scrollTop(scroll_diff)
-// 							   myScroller($(".user-view"), scroll_diff);
-// 							   });
-
-
-					
-            	
-            		///this might be too general, but I can't call loadMore unless I'm within here
-            		//$('.main-feed').off('scroll');
-					// $('.main-feed').on("scroll", function loadMore(){
-// 					
-// 						////add scroll to top butn
-// 						if($('.main-feed').scrollTop() > $('.main-feed').height()){
-// 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
-// 						}else{
-// 							$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
-// 
-// 						}
-// 						
-// 				
-// 						/////if there is any new data
-// 						console.log("length", data.length)
-// 						if(data.length > 40 ){
-// 						
-// 							////if scrolled down all the way (old way? $(window).height() - window.innerHeight < $(window).scrollTop())
-// 							console.log($('.main-feed').scrollTop() + $('.main-feed').height(), $(document).height())
-// 							if($('.main-feed').scrollTop() + $('.main-feed').height() > $(document).height() - 200)
-// 							{
-// 								$('.main-feed').off('scroll', loadMore);
-// 			
-// 								x = $('.main-feed').children().length * 10
-// 								y = x + 10
-// 			
-// 								x = x.toString();
-// 								y = y.toString();
-// 			
-// 								loadThread('start_end',x+','+y);
-// 								
-// 							}
-// 						}else{
-// 						
-// 							$('.main-feed').off('scroll', loadMore);
-// 						}
-// 					});
-					
-					
 				//////open threads	
 				$('.main-feed').children().last().find(".thread").on("click",function(){
 					
@@ -517,6 +348,7 @@ $(document).ready(function() {
             	
             	///get time since last post
             	currThreadTime($("#user-top>ul").data("timediff"));
+            	$(".user-view").scrollTop(curr_position);
 				// if(is_scroll){
 // 					/////scroll user-view to look like texting
 // 					$(".user-view").scrollTop(curr_position);
@@ -1223,7 +1055,6 @@ function refreshOpenThread(){
 		
 		if($(".left-wrap").css("left") == "0px"){
 			$(".left-wrap").css({left:"-100%"})
-			$(".user-view").css({left:"-100%"})
 			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
 			$("header>div>div").attr('id','compose-ico')
 			$('.scroll-to-top').css({display:"block"})
@@ -1233,7 +1064,6 @@ function refreshOpenThread(){
 			
 		}else{
 			$(".left-wrap").css({left:"0"})
-			$(".user-view").css({left:"0"})
 			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
 			$("header>div>div").attr('id','posts-ico')
 			$('.scroll-to-top').css({display:"none"})
@@ -1357,7 +1187,9 @@ function refreshOpenThread(){
 			$(".sorter").removeAttr("style")
 			$(".sorter>div").removeAttr("style")
 			$(".user-view").removeAttr("style")
-			
+			$(".user-view").off('scroll')
+			$(".main-feed").off('scroll')
+			$("header").removeAttr("style")
 		
 		///desktop	
 		}else{
@@ -1370,6 +1202,10 @@ function refreshOpenThread(){
 			$(".sorter").removeAttr("style")
 			$(".sorter>div").removeAttr("style")
 			$(".user-view").removeAttr("style")
+			$(".user-view").off('scroll')
+			$(".main-feed").off('scroll')
+			$("header").removeAttr("style")
+			
 		
 		}
 		
@@ -1383,5 +1219,14 @@ function refreshOpenThread(){
 	//$(window).scrollTop("44px")
 	//$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
 	
+	$('#user').click(function(){ alert('test' )})
+
+	var foo = $.data( $('body').get(0), 'events' ).click
+	// you can query $.data( object, 'events' ) and get an object back, then see what events are attached to it.
+
+	$.each( foo, function(i,o) {
+		console.log(i, o) // guid of the event
+		
+	});
 	
 });//////endtag
