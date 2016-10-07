@@ -101,65 +101,73 @@ $(document).ready(function() {
 
         			function toggleHeader(el){
         			
-						///////userview fix sizing on scroll iphones especially
-						var lastScrollTop = 0;
 						
 						
-						function wheelScroll(){
-							el.on('mousewheel touchstart', function(e){
-								e.preventDefault;
-								if("ontouchstart" in document.documentElement){
+						function wheelScroll(delta){
+							var move = $("header").height() + delta ;
+							var move_wrap = $(".content-wrap").height() - delta ;
+							
+							 //console.log(delta, $(".left-wrap").css("height"))
+							if(delta < 0){
 								
-									 var startingY = e.originalEvent.touches[0].pageY;
+								$("header").css({height: move + "px"})
+								$(".content-wrap").css({height: move_wrap + "px"});
+								
+								if($("header").height() <= 0){
+									//default
+									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+									el.css({overflow:"scroll"})
+									el.off('mousewheel touchstart touchmove')
+								}
+								
+							}else{
+						
+								$("header").css({height: move + "px"})
+								$(".content-wrap").css({height: move_wrap + "px"});
+								
+								
+								
+								if($("header").height() > $("header>div").height()){
+									//defaults
+									$("header").css({height: $("header>div").height() + "px"})
+									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+								
+									el.css({overflow:"scroll"})
+									el.off('mousewheel touchstart touchmove')
+								}
+							}
+						}
+						
+						function wheelCheck(){
+							if('ontouchstart' in window || navigator.maxTouchPoints){
+								el.on("touchstart", function(e) {
+									var startingY = e.originalEvent.touches[0].pageY;
 
 									el.on("touchmove", function(e) {
+										e.preventDefault;
+										
 										currentY = e.originalEvent.touches[0].pageY;
 										var delta = currentY - startingY;
+										
+										wheelScroll(delta);
+										
 									});
+								});
 								
-								}else{
+							}else{
+								
+								el.on('mousewheel', function(e){
+									e.preventDefault;
+									
 									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
-									var move = $("header").height() + delta ;
-									var move_wrap = $(".content-wrap").height() - delta ;
-								}
 								
-									
-								
-									
-								 //console.log(delta, $(".left-wrap").css("height"))
-								if(delta < 0){
-									
-									$("header").css({height: move + "px"})
-									$(".content-wrap").css({height: move_wrap + "px"});
-									
-									if($("header").height() <= 0){
-										//default
-										$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
-										el.css({overflow:"scroll"})
-										el.off('mousewheel')
-									}
-									
-								}else{
-							
-									$("header").css({height: move + "px"})
-									$(".content-wrap").css({height: move_wrap + "px"});
-									
-									
-									
-									if($("header").height() > $("header>div").height()){
-										//defaults
-										$("header").css({height: $("header>div").height() + "px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
-									
-										el.css({overflow:"scroll"})
-										el.off('mousewheel')
-									}
-								}
-								
-							});	
+									wheelScroll(delta);
+								});
+							}
 						}
 						
 						
+						var lastScrollTop = 0;
 						///////on scroll function
 						el.on('scroll', function(event){
 							
@@ -172,13 +180,13 @@ $(document).ready(function() {
 										
 									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
 										el.css({overflow:"hidden"})
-										wheelScroll()
+										wheelCheck()
 									} 
 								}else{ //////scrolling down
 									
 									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
 										el.css({overflow:"hidden"})
-										wheelScroll()
+										wheelCheck()
 									} 
 								}
 								lastScrollTop = st
