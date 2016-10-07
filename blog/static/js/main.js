@@ -144,7 +144,7 @@ $(document).ready(function() {
 									var startingY = e.originalEvent.touches[0].pageY;
 
 									el.on("touchmove", function(e) {
-										e.preventDefault;
+										//e.preventDefault;
 										
 										currentY = e.originalEvent.touches[0].pageY;
 										var delta = currentY - startingY;
