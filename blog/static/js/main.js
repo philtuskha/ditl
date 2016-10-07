@@ -106,15 +106,28 @@ $(document).ready(function() {
 						
 						
 						function wheelScroll(){
-							el.on('mousewheel', function(e){
+							el.on('mousewheel touchstart', function(e){
 								e.preventDefault;
-								var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
-								var move = $("header").height() + delta ;
-								var move_wrap = $(".content-wrap").height() - delta ;
+								if(e.originalEvent.touches[0]){
+								
+									 var startingY = e.originalEvent.touches[0].pageY;
+
+									el.on("touchmove", function(e) {
+										currentY = e.originalEvent.touches[0].pageY;
+										var delta = currentY - startingY;
+									});
+								
+								}else{
+									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
+									var move = $("header").height() + delta ;
+									var move_wrap = $(".content-wrap").height() - delta ;
+								}
+								
+									
 								
 									
 								 //console.log(delta, $(".left-wrap").css("height"))
-								if(e.originalEvent.wheelDelta < 0){
+								if(delta < 0){
 									
 									$("header").css({height: move + "px"})
 									$(".content-wrap").css({height: move_wrap + "px"});
