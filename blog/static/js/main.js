@@ -115,15 +115,34 @@ $(document).ready(function() {
 							
 							
 							if(st > 0 && st < scroll_max){
+							
 						
 							
 								if(st > lastScrollTop ){     ///////// 0 && passed_direction <= 0
+									
+									// if($("header").height() <= $("header>div").height()){
+// 										var dh = $("header").height() + (st - lastScrollTop)
+// 										$("header").css({height: dh + "px"})
+// 										
+// 										if (el.length == $(".user-view").length){
+// 											var cw_height = ($(window).innerHeight()-111)+"px"
+// 											$(".content-wrap").css({height:cw_height})
+// 										}
+// 
+// 									}else if($("header").height() > $("header>div").height()){
+// 							
+// 										$("header").css({height: $("header>div").height() + "px"})
+// 									}
+// 									
+									
+								
 								//lastScrollTop = st
 									if(el.data("scroll") == "down"){
 										console.log(el.data("scroll"))
-								
+										//el.off('scroll');
 										$("header").css({height:$("header>div").css("height")+"px"})
-										el.css({'margin-top':"-"+$("header>div").css("height")+"px"})
+										
+										// el.css({'padding-top':$("header>div").css("height")})
 										if (el.length == $(".user-view").length){
 											var cw_height = ($(window).innerHeight()-111)+"px"
 											$(".content-wrap").css({height:cw_height})
@@ -134,20 +153,28 @@ $(document).ready(function() {
 									}
 								
 								}else{
+// 								
+									// if($("header").height() <= $("header>div").height()){
+// 										var uh = $("header").height() - st - lastScrollTop
+// 										$("header").css({height: uh + "px"})
+// 									}else if($("header").height() < 0){
+// 										$("header").css({height: "0px"})
+// 									}
 									if(el.data("scroll") == "up"){
 										//lastScrollTop = st
 										console.log(el.data("scroll"))
 										$("header").css({height:"0px"})
+										// el.css({'padding-top':'-'+$("header>div").css("height")})
 										if (el.length == $(".user-view").length){
 											$(".content-wrap").css({height:$(window).innerHeight()-36+"px"})
 										}
 										el.data("scroll","down")
-										console.log(event)
+ 										console.log(event)
 									
 									}
 								
 								}
-								console.log($(this).children().last().height(), $(this).height())
+								//console.log($(this).children().last().height(), $(this).height())
 							
 								lastScrollTop = st
 							
