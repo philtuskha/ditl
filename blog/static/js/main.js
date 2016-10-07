@@ -108,7 +108,7 @@ $(document).ready(function() {
 						function wheelScroll(){
 							el.on('mousewheel touchstart', function(e){
 								e.preventDefault;
-								if(e.originalEvent.touches[0]){
+								if("ontouchstart" in document.documentElement){
 								
 									 var startingY = e.originalEvent.touches[0].pageY;
 
@@ -1232,14 +1232,6 @@ function refreshOpenThread(){
 	//$(window).scrollTop("44px")
 	//$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
 	
-	$('#user').click(function(){ alert('test' )})
-
-	var foo = $.data( $('body').get(0), 'events' ).click
-	// you can query $.data( object, 'events' ) and get an object back, then see what events are attached to it.
-
-	$.each( foo, function(i,o) {
-		console.log(i, o) // guid of the event
-		
-	});
+	
 	
 });//////endtag
