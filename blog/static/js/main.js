@@ -100,8 +100,7 @@ $(document).ready(function() {
 
 
         			function toggleHeader(el){
-        			
-						
+        
 						
 						function wheelScroll(delta){
 							var move = $("header").height() + delta ;
@@ -139,23 +138,24 @@ $(document).ready(function() {
 						}
 						
 						function wheelCheck(){
-							if('ontouchstart' in window || navigator.maxTouchPoints){
-								el.on("touchstart", function(e) {
-									var startingY = e.originalEvent.touches[0].pageY;
-
-									el.on("touchmove", function(e) {
-										//e.preventDefault;
-										
-										currentY = e.originalEvent.touches[0].pageY;
-										var delta = currentY - startingY;
-										
-										wheelScroll(delta);
-										
-									});
-								});
-								
-							}else{
-								
+							// if('ontouchstart' in window || navigator.maxTouchPoints){
+// 								el.on("touchstart", function(e) {
+// 									var startingY = e.originalEvent.touches[0].pageY;
+// 
+// 									el.on("touchmove", function(e) {
+// 										e.preventDefault;
+// 										
+// 										currentY = e.originalEvent.touches[0].pageY;
+// 										var delta = currentY - startingY;
+// 										
+// 										wheelScroll(delta);
+// 										
+// 									});
+// 								});
+// 								
+// 							}else{
+							
+								var triggers = 0;
 								el.on('mousewheel', function(e){
 									e.preventDefault;
 									
@@ -163,7 +163,11 @@ $(document).ready(function() {
 								
 									wheelScroll(delta);
 								});
-							}
+								
+								$(el).on('touchmove', function() { //touchmove works for iOS, I don't know if Android supports it
+								  $(el).trigger('mousewheel');
+								});
+							//}
 						}
 						
 						
