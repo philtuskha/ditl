@@ -281,7 +281,17 @@ $(document).ready(function() {
 						
 						var lastScrollTop = 0;
 						///////on scroll function
-						el.on('touchmove', function(event){
+						///
+						
+						////
+						
+						////
+						
+						/////
+						///this is my cure!!!! mouse wheel is pretty smooth in this instance.  do touch event version or just use on "scroll" if you cant figure.  also pretty smooth on ios
+						//// 😻😉
+						
+						el.on('mousewheel DomMouseWheel touchmove', function(event){
 							//console.log(event)
 							var scroll_max = $(this).children().last().height() - $(this).height();
 							var st = $(this).scrollTop();
