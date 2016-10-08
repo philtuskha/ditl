@@ -238,13 +238,13 @@ $(document).ready(function() {
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
 									}else{
-										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})
+										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}else{
 									if($("header").height() >= $("header>div").height()){
 										$("header").css({height:$("header>div").height()+"px"})
 									}else{
-										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})
+										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}
 								
