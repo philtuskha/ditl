@@ -272,7 +272,7 @@ $(document).ready(function() {
 								var diff =	st - lastScrollTop; 						
 								console.log(event)
 								/////confine for mobile stretch scrolling
-								if(st > 0 && st < scroll_max){
+								//if(st > 0 && st < scroll_max){
 									if(st > lastScrollTop ){ //////scrolling up 
 										//console.log("up: ",diff)
 											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
@@ -287,7 +287,7 @@ $(document).ready(function() {
 
 									}
 									lastScrollTop = st
-								}
+								//}
 							});
 						}
 					
