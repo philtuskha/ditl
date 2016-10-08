@@ -170,26 +170,26 @@ $(document).ready(function() {
 						
 						var lastScrollTop = 0;
 						///////on scroll function
-						el.on('scroll', function(event){
-							
-							var scroll_max = $(this).children().last().height() - $(this).height();
-							var st = $(this).scrollTop();							
-							
-							/////confine for mobile stretch scrolling
-							if(st > 0 && st < scroll_max){
-								if(st > lastScrollTop ){ //////scrolling up 
-										
-									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
-										el.css({overflow:"hidden"})
-										wheelCheck()
-									} 
-								}else{ //////scrolling down
-									
-									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
-										el.css({overflow:"hidden"})
-										wheelCheck()
-									} 
-								}
+						el.on(' touchmove', function(event){
+							console.log(event)
+							// var scroll_max = $(this).children().last().height() - $(this).height();
+// 							var st = $(this).scrollTop();							
+// 							
+// 							/////confine for mobile stretch scrolling
+// 							if(st > 0 && st < scroll_max){
+// 								if(st > lastScrollTop ){ //////scrolling up 
+// 										
+// 									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
+// 										el.css({overflow:"hidden"})
+// 										wheelCheck()
+// 									} 
+// 								}else{ //////scrolling down
+// 									
+// 									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
+// 										el.css({overflow:"hidden"})
+// 										wheelCheck()
+// 									} 
+// 								}
 								lastScrollTop = st
 							}
 						});
