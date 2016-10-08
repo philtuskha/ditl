@@ -232,7 +232,7 @@ $(document).ready(function() {
 							}
 						}
 						
-						function wheelCheck(dir){
+						function wheelCheck(dir, diff){
 							if('ontouchstart' in window || navigator.maxTouchPoints){
 								if(dir){
 									if($("header").height() <= 0){
@@ -268,7 +268,8 @@ $(document).ready(function() {
 						el.on('scroll', function(event){
 							//console.log(event)
 							var scroll_max = $(this).children().last().height() - $(this).height();
-							var st = $(this).scrollTop();							
+							var st = $(this).scrollTop();
+							var diff =	st - lastScrollTop						
 							
 							/////confine for mobile stretch scrolling
 							if(st > 0 && st < scroll_max){
@@ -277,13 +278,13 @@ $(document).ready(function() {
 										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
 										//sending up == true
-										wheelCheck(true)
+										wheelCheck(true, diff)
 
 								}else{ //////scrolling down
 									console.log("down: ",st - lastScrollTop)
 										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
- 										wheelCheck(false)
+ 										wheelCheck(false, diff)
 
 								}
 								lastScrollTop = st
