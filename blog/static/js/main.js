@@ -280,7 +280,7 @@ $(document).ready(function() {
 										//
 										///wheelCheck()
 										console.log("up: ",st - lastScrollTop)
-										($("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
+										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
 									} 
 								}else{ //////scrolling down
 									
@@ -288,7 +288,7 @@ $(document).ready(function() {
 										//el.css({overflow:"hidden"})
 										//wheelCheck()
 										console.log("down: ",st - lastScrollTop)
-										($("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
+										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
 									} 
 								}
 								lastScrollTop = st
