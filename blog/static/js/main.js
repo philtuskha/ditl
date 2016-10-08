@@ -190,8 +190,8 @@ $(document).ready(function() {
 // 										wheelCheck()
 // 									} 
 // 								}
-								lastScrollTop = st
-							}
+								// lastScrollTop = st
+// 							}
 						});
 					}
 					
