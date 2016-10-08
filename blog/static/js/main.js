@@ -170,7 +170,7 @@ $(document).ready(function() {
 						
 						var lastScrollTop = 0;
 						///////on scroll function
-						el.on(' touchmove', function(event){
+						el.on('mousewheel', function(event){
 							console.log(event)
 							// var scroll_max = $(this).children().last().height() - $(this).height();
 // 							var st = $(this).scrollTop();							
@@ -190,7 +190,7 @@ $(document).ready(function() {
 // 										wheelCheck()
 // 									} 
 // 								}
-								// lastScrollTop = st
+// 								lastScrollTop = st
 // 							}
 						});
 					}
