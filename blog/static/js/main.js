@@ -223,6 +223,7 @@ $(document).ready(function() {
 								if('ontouchstart' in document.documentElement){
 									wheelScroll(diff, el);
 									el.on('touchend', function(e){
+									console.log("TOUCHEND!!!!!!", e)
 										if(diff > 0){
 											$("header").css({height:"0px"}) 
 										}else{
@@ -256,17 +257,17 @@ $(document).ready(function() {
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								var diff =	st - lastScrollTop; 						
-							
+								console.log(event)
 								/////confine for mobile stretch scrolling
 								if(st > 0 && st < scroll_max){
 									if(st > lastScrollTop ){ //////scrolling up 
-										console.log("up: ",diff)
+										//console.log("up: ",diff)
 											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
 											wheelCheck(diff, el)
 
 									}else if(st < lastScrollTop ){ //////scrolling down
-										console.log("down: ",diff)
+										//console.log("down: ",diff)
 											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
 											wheelCheck(diff, el)
