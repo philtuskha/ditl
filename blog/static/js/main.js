@@ -221,13 +221,14 @@ $(document).ready(function() {
 						
 							function wheelCheck(diff, el){
 								if('ontouchstart' in document.documentElement){
+									wheelScroll(diff, el);
 									el.on('touchend', function(e){
 										if(diff > 0){
 											$("header").css({height:"0px"}) 
 										}else{
 											$("header").css({height:$("header>div").height()+"px"})
 										}
-										wheelScroll(diff, el);
+										
 									});
 								}else{
 								
