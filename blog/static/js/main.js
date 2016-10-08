@@ -196,7 +196,7 @@ $(document).ready(function() {
 // 					}
 					function toggleHeader(el){
         
-						
+						var lastDiff = 0
 						function wheelScroll(diff, el){
 						
 							if(diff > 0){
@@ -216,13 +216,14 @@ $(document).ready(function() {
 										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}
+								lastDiff = diff
 							}
 						
 						
 							function wheelCheck(diff, el){
 								if('ontouchstart' in document.documentElement){
 									wheelScroll(diff, el);
-									el.one('touchend', function(e){
+									el.on('touchend', function(e){
 									console.log("TOUCHEND!!!!!!", e)
 										if(diff > 0){
 											$("header").css({transition:"height 0.2s"})
@@ -231,7 +232,7 @@ $(document).ready(function() {
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 												$( "header" ).css({transition: "none !important"});
 											});
-											 
+											el.off('touchend');
 										}else{
 											$("header").css({transition:"height 0.2s"})
 											window.getComputedStyle($("header")[0]);
@@ -239,7 +240,7 @@ $(document).ready(function() {
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 												$( "header" ).css({transition: "none !important"});
 											});
-											
+											el.off('touchend');
 										}
 										
 									});
