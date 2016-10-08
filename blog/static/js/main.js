@@ -236,14 +236,14 @@ $(document).ready(function() {
 							if('ontouchstart' in window || navigator.maxTouchPoints){
 								el.on("touchstart", function(e) {
 									var startingY = e.originalEvent.touches[0].pageY;
-									console.log("start", e)
+									//console.log("start", e)
 									el.on("touchmove", function(e) {
 										//e.preventDefault;
-										console.log("move", e)
+										//console.log("move", e)
 										currentY = e.originalEvent.touches[0].pageY;
 										var delta = currentY - startingY;
 										
-										console.log(delta)
+										//console.log(delta)
 										//wheelScroll(delta);
 										
 									});
