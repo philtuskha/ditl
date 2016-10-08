@@ -277,7 +277,9 @@ $(document).ready(function() {
 										
 									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
 										//el.css({overflow:"hidden"})
-										wheelCheck()
+										//
+										///wheelCheck()
+										console.log(st - lastScrollTop)
 									} 
 								}else{ //////scrolling down
 									
