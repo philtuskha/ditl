@@ -197,59 +197,9 @@ $(document).ready(function() {
 					function toggleHeader(el){
         
 						
-						function wheelScroll(delta){
-							var move = $("header").height() + delta ;
-							var move_wrap = $(".content-wrap").height() - delta ;
-							
-							 //console.log(delta, $(".left-wrap").css("height"))
-							if(delta < 0){
-								
-								$("header").css({height: move + "px"})
-								$(".content-wrap").css({height: move_wrap + "px"});
-								
-								if($("header").height() <= 0){
-									//default
-									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
-									el.css({overflow:"scroll"})
-									el.off('mousewheel DomMouseWheel')
-								}
-								
-							}else{
+						function wheelScroll(diff, el){
 						
-								$("header").css({height: move + "px"})
-								$(".content-wrap").css({height: move_wrap + "px"});
-								
-								
-								
-								if($("header").height() > $("header>div").height()){
-									//defaults
-									$("header").css({height: $("header>div").height() + "px"})
-									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
-								
-									el.css({overflow:"scroll"})
-									el.off('mousewheel DomMouseWheel')
-								}
-							}
-						}
-						
-						function wheelCheck(dir, diff, el){
-							// if('ontouchstart' in window || navigator.maxTouchPoints){
-// 								if(dir){
-// 									if($("header").height() <= 0){
-// 										$("header").css({height:"0px"})
-// 									}else{
-// 										$("header").css({height:($("header").height() - diff)+"px"})
-// 									}
-// 								}else{
-// 									if($("header").height() >= $("header>div").height()){
-// 										$("header").css({height:$("header>div").height()+"px"})
-// 									}else{
-// 										$("header").css({height:($("header").height() - diff)+"px"})
-// 									}
-// 								}
-// 								
-// 							}else{
-								if(dir){
+							if(diff > 0){
 									if($("header").height() <= 0){
 										//el.css({overflow:"scroll"})
 										$("header").css({height:"0px"})
@@ -266,62 +216,70 @@ $(document).ready(function() {
 										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}
-								
-								// el.on('mousewheel DomMouseWheel', function(e){
-// 									e.preventDefault;
-// 									
-// 									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
-// 								
-// 									wheelScroll(delta);
-// 								});
-								
-							//}
-						}
-						
-						
-						var lastScrollTop = 0;
-						///////on scroll function
-						///
-						
-						////
-						
-						////
-						
-						/////
-						///this is my cure!!!! mouse wheel is pretty smooth in this instance.  do touch event version or just use on "scroll" if you cant figure.  also pretty smooth on ios
-						//// 😻😉
-						
-						el.on('mousewheel DomMouseWheel touchmove', function(event){
-							//console.log(event)
-							var scroll_max = $(this).children().last().height() - $(this).height();
-							var st = $(this).scrollTop();
-							var diff =	st - lastScrollTop						
-							
-							/////confine for mobile stretch scrolling
-							if(st > 0 && st < scroll_max){
-								if(st > lastScrollTop ){ //////scrolling up 
-									console.log("up: ",st - lastScrollTop)
-										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									
-										//sending up == true
-										wheelCheck(true, diff, el)
-
-								}else{ //////scrolling down
-									console.log("down: ",st - lastScrollTop)
-										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									
- 										wheelCheck(false, diff, el)
-
-								}
-								lastScrollTop = st
 							}
-						});
-					}
+						
+						
+							function wheelCheck(diff, el){
+								if('ontouchstart' in document.documentElement){
+									el.on('touchend' function(e){
+										if(diff > 0){
+											$("header").css({height:"0px"}) 
+										}else{
+											$("header").css({height:$("header>div").height()+"px"})
+										}
+										wheelScroll(diff, el);
+									})
+								}else{
+								
+									wheelScroll(diff, el);
+								
+								};
+							};
+						
+						
+							
+							///////on scroll function
+							///
+						
+							////
+						
+							////
+						
+							/////
+							///this is my cure!!!! mouse wheel is pretty smooth in this instance.  do touch event version or just use on "scroll" if you cant figure.  also pretty smooth on ios
+							//// 
+						
+							var lastScrollTop = 0;
+							el.on('mousewheel DomMouseWheel touchmove', function(event){
+								//console.log(event)
+								var scroll_max = $(this).children().last().height() - $(this).height();
+								var st = $(this).scrollTop();
+								var diff =	st - lastScrollTop; 						
+							
+								/////confine for mobile stretch scrolling
+								if(st > 0 && st < scroll_max){
+									if(st > lastScrollTop ){ //////scrolling up 
+										console.log("up: ",diff)
+											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
+									
+											wheelCheck(diff, el)
+
+									}else if(st < lastScrollTop ){ //////scrolling down
+										console.log("down: ",diff)
+											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
+									
+											wheelCheck(diff, el)
+
+									}
+									lastScrollTop = st
+								}
+							});
+						}
 					
-					if($(".center").width() == $(window).width()){
-						toggleHeader($(".user-view"))
-						toggleHeader($(".main-feed"))
-					}
+						if($(".center").width() == $(window).width()){
+							toggleHeader($(".user-view"))
+							toggleHeader($(".main-feed"))
+						}
 				
 			
 
