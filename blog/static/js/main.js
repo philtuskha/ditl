@@ -243,7 +243,7 @@ $(document).ready(function() {
 										currentY = e.originalEvent.touches[0].pageY;
 										var delta = currentY - startingY;
 										
-										//console.log(delta)
+										console.log(delta)
 										//wheelScroll(delta);
 										
 									});
