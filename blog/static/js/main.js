@@ -274,22 +274,23 @@ $(document).ready(function() {
 							/////confine for mobile stretch scrolling
 							if(st > 0 && st < scroll_max){
 								if(st > lastScrollTop ){ //////scrolling up 
-										
-									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
-										//el.css({overflow:"hidden"})
-										//
-										///wheelCheck()
-										console.log("up: ",st - lastScrollTop)
-										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
-									} 
+									console.log("up: ",st - lastScrollTop)
+										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})	
+									// if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
+// 										//el.css({overflow:"hidden"})
+// 										//
+// 										///wheelCheck()
+// 										console.log("up: ",st - lastScrollTop)
+// 										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
+// 									} 
 								}else{ //////scrolling down
 									
-									if($("header").height() <= 0 && $("header").height() >= $("header>div").height()){
-										//el.css({overflow:"hidden"})
-										//wheelCheck()
-										console.log("down: ",st - lastScrollTop)
-										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
-									} 
+									// if($("header").height() <= 0 && $("header").height() >= $("header>div").height()){
+// 										//el.css({overflow:"hidden"})
+// 										//wheelCheck()
+// 										console.log("down: ",st - lastScrollTop)
+// 										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
+// 									} 
 								}
 								lastScrollTop = st
 							}
