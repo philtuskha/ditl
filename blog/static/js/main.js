@@ -222,10 +222,10 @@ $(document).ready(function() {
 							function wheelCheck(diff, el){
 								if('ontouchstart' in document.documentElement){
 									wheelScroll(diff, el);
-									el.on('touchend', function(e){
+									el.one('touchend', function(e){
 									console.log("TOUCHEND!!!!!!", e)
 										if(diff > 0){
-											$("header").css({transition:"height 0.5s"})
+											$("header").css({transition:"height 0.2s"})
 											window.getComputedStyle($("header")[0]);
 											$("header").css({height:"0px"})
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
@@ -233,12 +233,13 @@ $(document).ready(function() {
 											});
 											 
 										}else{
-											$("header").css({transition:"height 0.5s"})
+											$("header").css({transition:"height 0.2s"})
 											window.getComputedStyle($("header")[0]);
 											$("header").css({height:$("header>div").height()+"px"})
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 												$( "header" ).css({transition: "none !important"});
 											});
+											
 										}
 										
 									});
