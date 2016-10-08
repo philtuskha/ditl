@@ -284,7 +284,7 @@ $(document).ready(function() {
 									} 
 								}else{ //////scrolling down
 									
-									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
+									if($("header").height() <= 0 && $("header").height() >= $("header>div").height()){
 										//el.css({overflow:"hidden"})
 										//wheelCheck()
 										console.log("down: ",st - lastScrollTop)
