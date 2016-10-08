@@ -279,13 +279,16 @@ $(document).ready(function() {
 										//el.css({overflow:"hidden"})
 										//
 										///wheelCheck()
-										console.log(st - lastScrollTop)
+										console.log("up: ",st - lastScrollTop)
+										($("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
 									} 
 								}else{ //////scrolling down
 									
 									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
 										//el.css({overflow:"hidden"})
-										wheelCheck()
+										//wheelCheck()
+										console.log("down: ",st - lastScrollTop)
+										($("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
 									} 
 								}
 								lastScrollTop = st
