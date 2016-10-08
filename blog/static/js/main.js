@@ -232,40 +232,56 @@ $(document).ready(function() {
 							}
 						}
 						
-						function wheelCheck(dir, diff){
-							if('ontouchstart' in window || navigator.maxTouchPoints){
+						function wheelCheck(dir, diff, el){
+							// if('ontouchstart' in window || navigator.maxTouchPoints){
+// 								if(dir){
+// 									if($("header").height() <= 0){
+// 										$("header").css({height:"0px"})
+// 									}else{
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 									}
+// 								}else{
+// 									if($("header").height() >= $("header>div").height()){
+// 										$("header").css({height:$("header>div").height()+"px"})
+// 									}else{
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 									}
+// 								}
+// 								
+// 							}else{
 								if(dir){
 									if($("header").height() <= 0){
+										//el.css({overflow:"scroll"})
 										$("header").css({height:"0px"})
 									}else{
+										//el.css({overflow:"hidden"})
 										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}else{
 									if($("header").height() >= $("header>div").height()){
+										//el.css({overflow:"scroll"})
 										$("header").css({height:$("header>div").height()+"px"})
 									}else{
+										//el.css({overflow:"hidden"})
 										$("header").css({height:($("header").height() - diff)+"px"})
 									}
 								}
 								
-							}else{
-							
+								// el.on('mousewheel DomMouseWheel', function(e){
+// 									e.preventDefault;
+// 									
+// 									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
+// 								
+// 									wheelScroll(delta);
+// 								});
 								
-								el.on('mousewheel DomMouseWheel', function(e){
-									e.preventDefault;
-									
-									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
-								
-									wheelScroll(delta);
-								});
-								
-							}
+							//}
 						}
 						
 						
 						var lastScrollTop = 0;
 						///////on scroll function
-						el.on('scroll', function(event){
+						el.on('mousewheel DomMouseWheel touchmove', function(event){
 							//console.log(event)
 							var scroll_max = $(this).children().last().height() - $(this).height();
 							var st = $(this).scrollTop();
@@ -278,13 +294,13 @@ $(document).ready(function() {
 										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
 										//sending up == true
-										wheelCheck(true, diff)
+										wheelCheck(true, diff, el)
 
 								}else{ //////scrolling down
 									console.log("down: ",st - lastScrollTop)
 										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									
- 										wheelCheck(false, diff)
+ 										wheelCheck(false, diff, el)
 
 								}
 								lastScrollTop = st
