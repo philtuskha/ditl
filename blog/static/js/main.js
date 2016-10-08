@@ -275,7 +275,7 @@ $(document).ready(function() {
 							if(st > 0 && st < scroll_max){
 								if(st > lastScrollTop ){ //////scrolling up 
 									console.log("up: ",st - lastScrollTop)
-										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})	
+										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									// if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
 // 										//el.css({overflow:"hidden"})
 // 										//
@@ -284,7 +284,8 @@ $(document).ready(function() {
 // 										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
 // 									} 
 								}else{ //////scrolling down
-									
+									console.log("down: ",st - lastScrollTop)
+										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
 									// if($("header").height() <= 0 && $("header").height() >= $("header>div").height()){
 // 										//el.css({overflow:"hidden"})
 // 										//wheelCheck()
