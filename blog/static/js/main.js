@@ -197,62 +197,61 @@ $(document).ready(function() {
 					function toggleHeader(el){
         
 						
-						// function wheelScroll(delta){
-// 							var move = $("header").height() + delta ;
-// 							var move_wrap = $(".content-wrap").height() - delta ;
-// 							
-// 							 //console.log(delta, $(".left-wrap").css("height"))
-// 							if(delta < 0){
-// 								
-// 								$("header").css({height: move + "px"})
-// 								$(".content-wrap").css({height: move_wrap + "px"});
-// 								
-// 								if($("header").height() <= 0){
-// 									//default
-// 									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
-// 									el.css({overflow:"scroll"})
-// 									el.off('mousewheel touchstart touchmove')
-// 								}
-// 								
-// 							}else{
-// 						
-// 								$("header").css({height: move + "px"})
-// 								$(".content-wrap").css({height: move_wrap + "px"});
-// 								
-// 								
-// 								
-// 								if($("header").height() > $("header>div").height()){
-// 									//defaults
-// 									$("header").css({height: $("header>div").height() + "px"})
-// 									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
-// 								
-// 									el.css({overflow:"scroll"})
-// 									el.off('mousewheel touchstart touchmove')
-// 								}
-// 							}
-// 						}
+						function wheelScroll(delta){
+							var move = $("header").height() + delta ;
+							var move_wrap = $(".content-wrap").height() - delta ;
+							
+							 //console.log(delta, $(".left-wrap").css("height"))
+							if(delta < 0){
+								
+								$("header").css({height: move + "px"})
+								$(".content-wrap").css({height: move_wrap + "px"});
+								
+								if($("header").height() <= 0){
+									//default
+									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+									el.css({overflow:"scroll"})
+									el.off('mousewheel DomMouseWheel')
+								}
+								
+							}else{
 						
-						function wheelCheck(){
+								$("header").css({height: move + "px"})
+								$(".content-wrap").css({height: move_wrap + "px"});
+								
+								
+								
+								if($("header").height() > $("header>div").height()){
+									//defaults
+									$("header").css({height: $("header>div").height() + "px"})
+									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+								
+									el.css({overflow:"scroll"})
+									el.off('mousewheel DomMouseWheel')
+								}
+							}
+						}
+						
+						function wheelCheck(dir){
 							if('ontouchstart' in window || navigator.maxTouchPoints){
-								el.on("touchstart", function(e) {
-									var startingY = e.originalEvent.touches[0].pageY;
-									//console.log("start", e)
-									el.on("touchmove", function(e) {
-										//e.preventDefault;
-										//console.log("move", e)
-										currentY = e.originalEvent.touches[0].pageY;
-										var delta = currentY - startingY;
-										
-										console.log(delta)
-										//wheelScroll(delta);
-										
-									});
-								});
+								if(dir){
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
+									}else{
+										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})
+									}
+								}else{
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+									}else{
+										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})
+									}
+								}
 								
 							}else{
 							
 								
-								el.on('mousewheel', function(e){
+								el.on('mousewheel DomMouseWheel', function(e){
 									e.preventDefault;
 									
 									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
@@ -275,23 +274,17 @@ $(document).ready(function() {
 							if(st > 0 && st < scroll_max){
 								if(st > lastScrollTop ){ //////scrolling up 
 									console.log("up: ",st - lastScrollTop)
-										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									// if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
-// 										//el.css({overflow:"hidden"})
-// 										//
-// 										///wheelCheck()
-// 										console.log("up: ",st - lastScrollTop)
-// 										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
-// 									} 
+										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
+									
+										//sending up == true
+										wheelCheck(true)
+
 								}else{ //////scrolling down
 									console.log("down: ",st - lastScrollTop)
-										$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									// if($("header").height() <= 0 && $("header").height() >= $("header>div").height()){
-// 										//el.css({overflow:"hidden"})
-// 										//wheelCheck()
-// 										console.log("down: ",st - lastScrollTop)
-// 										$("header").css({height:($("header").height() + st - lastScrollTop)+"px"})
-// 									} 
+										//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
+									
+ 										wheelCheck(false)
+
 								}
 								lastScrollTop = st
 							}
