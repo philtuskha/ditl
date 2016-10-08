@@ -98,44 +98,139 @@ $(document).ready(function() {
             	$(".center")[0].style.opacity = 1;
             	
 
-
-        			function toggleHeader(el){
+/////maintain good desktop working example
+        			// function toggleHeader(el){
+//         
+// 						
+// 						function wheelScroll(delta){
+// 							var move = $("header").height() + delta ;
+// 							var move_wrap = $(".content-wrap").height() - delta ;
+// 							
+// 							 //console.log(delta, $(".left-wrap").css("height"))
+// 							if(delta < 0){
+// 								
+// 								$("header").css({height: move + "px"})
+// 								$(".content-wrap").css({height: move_wrap + "px"});
+// 								
+// 								if($("header").height() <= 0){
+// 									//default
+// 									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+// 									el.css({overflow:"scroll"})
+// 									el.off('mousewheel touchstart touchmove')
+// 								}
+// 								
+// 							}else{
+// 						
+// 								$("header").css({height: move + "px"})
+// 								$(".content-wrap").css({height: move_wrap + "px"});
+// 								
+// 								
+// 								
+// 								if($("header").height() > $("header>div").height()){
+// 									//defaults
+// 									$("header").css({height: $("header>div").height() + "px"})
+// 									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+// 								
+// 									el.css({overflow:"scroll"})
+// 									el.off('mousewheel touchstart touchmove')
+// 								}
+// 							}
+// 						}
+// 						
+// 						function wheelCheck(){
+// 							if('ontouchstart' in window || navigator.maxTouchPoints){
+// 								el.on("touchstart", function(e) {
+// 									var startingY = e.originalEvent.touches[0].pageY;
+// 									console.log("start", e)
+// 									el.on("touchmove", function(e) {
+// 										//e.preventDefault;
+// 										console.log("move", e)
+// 										currentY = e.originalEvent.touches[0].pageY;
+// 										var delta = currentY - startingY;
+// 										
+// 										wheelScroll(delta);
+// 										
+// 									});
+// 								});
+// 								
+// 							}else{
+// 							
+// 								
+// 								el.on('mousewheel', function(e){
+// 									e.preventDefault;
+// 									
+// 									var delta = e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.detail
+// 								
+// 									wheelScroll(delta);
+// 								});
+// 								
+// 							}
+// 						}
+// 						
+// 						
+// 						var lastScrollTop = 0;
+// 						///////on scroll function
+// 						el.on('mousewheel touchmove scroll', function(event){
+// 							console.log(event)
+// 							var scroll_max = $(this).children().last().height() - $(this).height();
+// 							var st = $(this).scrollTop();							
+// 							
+// 							/////confine for mobile stretch scrolling
+// 							if(st > 0 && st < scroll_max){
+// 								if(st > lastScrollTop ){ //////scrolling up 
+// 										
+// 									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
+// 										el.css({overflow:"hidden"})
+// 										wheelCheck()
+// 									} 
+// 								}else{ //////scrolling down
+// 									
+// 									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
+// 										el.css({overflow:"hidden"})
+// 										wheelCheck()
+// 									} 
+// 								}
+// 								lastScrollTop = st
+// 							}
+// 						});
+// 					}
+					function toggleHeader(el){
         
 						
-						function wheelScroll(delta){
-							var move = $("header").height() + delta ;
-							var move_wrap = $(".content-wrap").height() - delta ;
-							
-							 //console.log(delta, $(".left-wrap").css("height"))
-							if(delta < 0){
-								
-								$("header").css({height: move + "px"})
-								$(".content-wrap").css({height: move_wrap + "px"});
-								
-								if($("header").height() <= 0){
-									//default
-									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
-									el.css({overflow:"scroll"})
-									el.off('mousewheel touchstart touchmove')
-								}
-								
-							}else{
-						
-								$("header").css({height: move + "px"})
-								$(".content-wrap").css({height: move_wrap + "px"});
-								
-								
-								
-								if($("header").height() > $("header>div").height()){
-									//defaults
-									$("header").css({height: $("header>div").height() + "px"})
-									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
-								
-									el.css({overflow:"scroll"})
-									el.off('mousewheel touchstart touchmove')
-								}
-							}
-						}
+						// function wheelScroll(delta){
+// 							var move = $("header").height() + delta ;
+// 							var move_wrap = $(".content-wrap").height() - delta ;
+// 							
+// 							 //console.log(delta, $(".left-wrap").css("height"))
+// 							if(delta < 0){
+// 								
+// 								$("header").css({height: move + "px"})
+// 								$(".content-wrap").css({height: move_wrap + "px"});
+// 								
+// 								if($("header").height() <= 0){
+// 									//default
+// 									$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+// 									el.css({overflow:"scroll"})
+// 									el.off('mousewheel touchstart touchmove')
+// 								}
+// 								
+// 							}else{
+// 						
+// 								$("header").css({height: move + "px"})
+// 								$(".content-wrap").css({height: move_wrap + "px"});
+// 								
+// 								
+// 								
+// 								if($("header").height() > $("header>div").height()){
+// 									//defaults
+// 									$("header").css({height: $("header>div").height() + "px"})
+// 									$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+// 								
+// 									el.css({overflow:"scroll"})
+// 									el.off('mousewheel touchstart touchmove')
+// 								}
+// 							}
+// 						}
 						
 						function wheelCheck(){
 							if('ontouchstart' in window || navigator.maxTouchPoints){
@@ -148,7 +243,8 @@ $(document).ready(function() {
 										currentY = e.originalEvent.touches[0].pageY;
 										var delta = currentY - startingY;
 										
-										wheelScroll(delta);
+										console.log(delta)
+										//wheelScroll(delta);
 										
 									});
 								});
@@ -170,28 +266,28 @@ $(document).ready(function() {
 						
 						var lastScrollTop = 0;
 						///////on scroll function
-						el.on('mousewheel touchmove scroll', function(event){
-							console.log(event)
-							// var scroll_max = $(this).children().last().height() - $(this).height();
-// 							var st = $(this).scrollTop();							
-// 							
-// 							/////confine for mobile stretch scrolling
-// 							if(st > 0 && st < scroll_max){
-// 								if(st > lastScrollTop ){ //////scrolling up 
-// 										
-// 									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
-// 										el.css({overflow:"hidden"})
-// 										wheelCheck()
-// 									} 
-// 								}else{ //////scrolling down
-// 									
-// 									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
-// 										el.css({overflow:"hidden"})
-// 										wheelCheck()
-// 									} 
-// 								}
-// 								lastScrollTop = st
-// 							}
+						el.on('scroll', function(event){
+							//console.log(event)
+							var scroll_max = $(this).children().last().height() - $(this).height();
+							var st = $(this).scrollTop();							
+							
+							/////confine for mobile stretch scrolling
+							if(st > 0 && st < scroll_max){
+								if(st > lastScrollTop ){ //////scrolling up 
+										
+									if($("header").height() > 0 && $("header").height() < $("header>div").height() + 1){
+										//el.css({overflow:"hidden"})
+										wheelCheck()
+									} 
+								}else{ //////scrolling down
+									
+									if($("header").height() >= 0 && $("header").height() < $("header>div").height()){
+										//el.css({overflow:"hidden"})
+										wheelCheck()
+									} 
+								}
+								lastScrollTop = st
+							}
 						});
 					}
 					
