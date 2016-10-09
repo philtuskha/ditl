@@ -1234,6 +1234,14 @@ transition:all 500ms;
 color:white;
 margin:10px;
 }
+#viewport{
+position:fixed;
+top:0;
+right:0;
+width:1px;
+height:100vh;
+visibility:hidden;
+}
 /* phone */
 @media screen
 and (max-width:48.125em){
