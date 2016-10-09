@@ -201,7 +201,7 @@ $(document).ready(function() {
 							
 							el.css({overflow:'hidden'});	
 							$(window).on('touchend', function(e){
-								consol.log("window top: ", $(window).scrollTop())
+								console.log("window top: ", $(window).scrollTop())
 								if($(window).scrollTop() > 44){
 									
 									$("body").css({transition:"padding-top 1s","padding-top":$(this).scrollTop()+"px"})
