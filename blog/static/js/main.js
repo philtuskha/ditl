@@ -199,29 +199,29 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							// el.css({overflow:'hidden'});	
-// 							$(window).on('touchend', function(e){
-// 								console.log("window top: ", $(window).scrollTop())
-// 								if($(window).scrollTop() > 44){
-// 									
-// 									$("body").css({transition:"margin-top 0.2s", "margin-top":$(this).scrollTop()+"px"})
-// 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 										 $(window).scrollTop(0)
-// 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
-// 										//$("body").removeAttr("style")
-// 										$(window).off('touchend')
-// 										console.log("done with window fix")
-// 										return;
-// 									
-// 									});
-// 							
-// 									el.css({overflow:'scroll'})
-// 									
-// 								}else{
-// 									el.css({overflow:'hidden'});
-// 									
-// 								}
-// 							});
+							el.css({overflow:'hidden'});	
+							$(window).on('touchend', function(e){
+								console.log("window top: ", $(window).scrollTop())
+								if($(window).scrollTop() > 44){
+									
+									$("body").css({transition:"margin-top 0.2s", "margin-top":$(this).scrollTop()+"px"})
+									$( "body" ).bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										 $(window).scrollTop(0)
+										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
+										//$("body").removeAttr("style")
+										$("body").unbind()
+										console.log("done with window fix")
+										return;
+									
+									});
+							
+									el.css({overflow:'scroll'})
+									
+								}else{
+									el.css({overflow:'hidden'});
+									
+								}
+							});
 							
 							function touchScroll(diff, el){
 								
