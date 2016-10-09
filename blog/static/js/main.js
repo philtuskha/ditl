@@ -199,23 +199,28 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							el.css({overflow:'hidden'});	
-							$(window).on('touchend', function(e){
+							el.css({overflow:'hidden'});
+							$(window).on('scroll'),function(e){
+							e.preventDefault();
 							
-								if($(window).scrollTop() > 44){
-									$("body").css({overflow:'hidden'});
-									$("body").css({"padding-top":$(this).scrollTop()+"px"})
-									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(window).scrollTop(0)
-										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
-										$("body").removeAttr("style")
-										$(window).off('scroll')
+								
+								$(window).on('touchend', function(){
+							
+									if($(window).scrollTop() > 44){
+										$("body").css({overflow:'hidden'});
+										$("body").css({"padding-top":$(this).scrollTop()+"px"})
+										$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											$(window).scrollTop(0)
+											$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
+											$("body").removeAttr("style")
+											$(window).off('scroll')
 									
-									});
+										});
 							
-									el.css({overflow:'scroll'})
-								}
-							})
+										el.css({overflow:'scroll'})
+									};
+								});
+							});
 							
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
