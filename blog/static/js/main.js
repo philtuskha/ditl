@@ -238,9 +238,11 @@ $(document).ready(function() {
 									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
+										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
 									
 									}else{
 										$("header").css({height:($("header").height() - diff)+"px"})
+										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
 									}
 								}else{
 									if($("header").height() >= $("header>div").height()){
@@ -248,6 +250,8 @@ $(document).ready(function() {
 									
 									}else{
 										$("header").css({height:($("header").height() - diff)+"px"})
+										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
+										$(".content-wrap").css({height: ($(window).innerHeight() - "36px"});
 									}
 								}
 								
