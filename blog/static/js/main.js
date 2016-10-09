@@ -205,11 +205,11 @@ $(document).ready(function() {
 								if($(window).scrollTop() > 44){
 									
 									$("body").css({transition:"margin-top 0.2s", "margin-top":$(this).scrollTop()+"px"})
-									$( "body" ).bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
 										//$("body").removeAttr("style")
-										$("body").unbind()
+										$("body").unbind('touchend')
 										console.log("done with window fix")
 										return;
 									
