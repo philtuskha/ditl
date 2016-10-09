@@ -243,7 +243,7 @@ $(document).ready(function() {
 									
 									}else{
 										$("header").css({height:($("header").height() - diff)+"px"})
-										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
+										$(".content-wrap").css({height:($(window).innerHeight() - $("header").height() - diff)+"px"})
 									}
 								}else{
 									if($("header").height() >= $("header>div").height()){
@@ -252,7 +252,7 @@ $(document).ready(function() {
 									
 									}else{		   
 										$("header").css({height:($("header").height() - diff)+"px"})
-										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
+										$(".content-wrap").css({height:($(window).innerHeight()  - $("header").height() - diff)+"px"})
 										
 									}
 								}
