@@ -195,11 +195,21 @@ $(document).ready(function() {
 // 						});
 // 					}	
 
-						// $(window).on('touchmove', function(){
-// 						
-// 						})	
+							
 						function toggleHeader(el){
 							/////set up page height
+							
+							el.css({overflow:"hidden"})
+							$(window).on('touchmove', function(){
+						
+								if($(window).scrollTop() < 44){
+									el.css({overflow:"hidden"})
+									
+								}else{
+									el.css({overflow:"scroll"})
+									
+								}
+							})
 							
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
@@ -210,12 +220,8 @@ $(document).ready(function() {
 								}else if(diff < "-"+$("header>div").height()/2){
 									diff = -30
 								}
-								
-								if($(window).scrollTop() < 44){
-										el.css({overflow:"hidden"})
-									}else{
-										el.css({overflow:"scroll"})
-									}
+								// console.log
+// 								
 									
 								console.log("2: ",diff);	
 								if(diff > 0){
