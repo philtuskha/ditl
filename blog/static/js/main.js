@@ -201,7 +201,7 @@ $(document).ready(function() {
 							
 							el.css({overflow:'hidden'});	
 							$(window).on('touchend', function(e){
-							
+								consol.log("window top: ", $(window).scrollTop())
 								if($(window).scrollTop() > 44){
 									
 									$("body").css({transition:"padding-top 1s","padding-top":$(this).scrollTop()+"px"})
@@ -278,7 +278,7 @@ $(document).ready(function() {
 										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											$( "header" ).css({transition: "none !important"});
 										});
-										$(".content-wrap").css({height: "calc(100vh - 36px"});
+										$(".content-wrap").css({height: "100vh"});
 									}else{
 										$("header").css({transition:"height 0.2s"})
 										window.getComputedStyle($("header")[0]);
