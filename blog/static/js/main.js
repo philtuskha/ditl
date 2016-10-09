@@ -207,7 +207,7 @@ $(document).ready(function() {
 									$("body").css({transition:"margin-top 1s","margin-top":$(this).scrollTop()+"px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
-										$("body").css({transition: "none !important", "margin-top":"0px"})
+										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
 										//$("body").removeAttr("style")
 										$(window).off('touchend')
 										console.log("done with window fix")
@@ -268,7 +268,7 @@ $(document).ready(function() {
 						
 							function wheelCheck(diff, el, event){
 								touchScroll(diff, el);
-							
+								$(".content-wrap").css({height: "calc(100vh + 200px"});
 								el.one('touchend', function(e){
 								console.log("TOUCHEND!!!!!!", e)
 									if(diff > 0){
@@ -278,7 +278,7 @@ $(document).ready(function() {
 										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											$( "header" ).css({transition: "none !important"});
 										});
-										$(".content-wrap").css({height: "100vh"});
+										$(".content-wrap").css({height: "calc(100vh -36px)"});
 									}else{
 										$("header").css({transition:"height 0.2s"})
 										window.getComputedStyle($("header")[0]);
