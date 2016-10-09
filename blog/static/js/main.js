@@ -204,10 +204,10 @@ $(document).ready(function() {
 								console.log("window top: ", $(window).scrollTop())
 								if($(window).scrollTop() > 44){
 									
-									$("body").css({transition:"margin-top 1s","margin-top":$(this).scrollTop()+"px"})
+									$("body").css({transition:"margin-top 0.4s", "margin-top":"44px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										 $(window).scrollTop(44)
-										$("body").css({transition: "none !important", "margin-top":"44px", overflow:"hidden"})
+										 $(window).scrollTop(0)
+										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
 										//$("body").removeAttr("style")
 										$(window).off('touchend')
 										console.log("done with window fix")
