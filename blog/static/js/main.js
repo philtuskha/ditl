@@ -238,7 +238,7 @@ $(document).ready(function() {
 									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - "36px"});
+										$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
 										
 									
 									}else{
