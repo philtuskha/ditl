@@ -223,7 +223,7 @@ $(document).ready(function() {
 								}
 								// console.log
 // 								
-								$(window).scrollTop() == el.scrollTop();
+								
 									
 								console.log("2: ",diff);	
 								if(diff > 0){
@@ -275,7 +275,7 @@ $(document).ready(function() {
 						
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								
+								$(window).scrollTop() = el.scrollTop();
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
