@@ -199,25 +199,23 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							el.css({overflow:'hidden'});
-								
-							$(window).on('touchend', function(){
-						
+							el.css({overflow:'hidden'});	
+							$(window).on('touchend', function(e){
+							
 								if($(window).scrollTop() > 44){
 									$("body").css({overflow:'hidden'});
-									$("body").css({"padding-top":$(this).scrollTop()+"px"})
+									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
 										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
 										$("body").removeAttr("style")
 										$(window).off('scroll')
-								
+									
 									});
-						
-									el.css({overflow:'scroll'})
-								};
-							});
 							
+									el.css({overflow:'scroll'})
+								}
+							})
 							
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
