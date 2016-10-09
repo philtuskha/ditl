@@ -206,9 +206,9 @@ $(document).ready(function() {
 									
 									$("body").css({transition:"padding-top 1s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(window).scrollTop(0)
-										$("body").css({"padding-top":"0px"})
-										$("body").removeAttr("style")
+										//$(window).scrollTop(0)
+										//$("body").css({"padding-top":"0px"})
+										//$("body").removeAttr("style")
 										$(window).off('touchend')
 										console.log("done with window fix")
 									
