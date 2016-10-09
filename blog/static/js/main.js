@@ -194,61 +194,61 @@ $(document).ready(function() {
 // 							}
 // 						});
 // 					}
-					function toggleHeader(el){
+						function toggleHeader(el){
 						
-						function touchScroll(diff, el){
-							console.log("1: ",diff);
+							function touchScroll(diff, el){
+								console.log("1: ",diff);
 							
-							//prevent wild swings in header height
-							if(diff > $("header>div").height()/2){
-								diff = 30
-							}else if(diff < "-"+$("header>div").height()/2){
-								diff = -30
-							}
-							
-							console.log("2: ",diff);	
-							if(diff > 0){
-							
-								if($("header").height() <= 0){
-									$("header").css({height:"0px"})
-									
-								}else{
-									$("header").css({height:($("header").height() - diff)+"px"})
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
 								}
-							}else{
-								if($("header").height() >= $("header>div").height()){
-									$("header").css({height:$("header>div").height()+"px"})
+							
+								console.log("2: ",diff);	
+								if(diff > 0){
+							
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
 									
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+									}
 								}else{
-									$("header").css({height:($("header").height() - diff)+"px"})
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+									
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+									}
 								}
-							}
 								
-						}
+							}
 						
 							function wheelCheck(diff, el, event){
-								if('ontouchstart' in document.documentElement){
-									touchScroll(diff, el);
-									el.one('touchend', function(e){
-									console.log("TOUCHEND!!!!!!", e)
-										if(diff > 0){
-											$("header").css({transition:"height 0.2s"})
-											window.getComputedStyle($("header")[0]);
-											$("header").css({height:"0px"})
-											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-												$( "header" ).css({transition: "none !important"});
-											});
-										}else{
-											$("header").css({transition:"height 0.2s"})
-											window.getComputedStyle($("header")[0]);
-											$("header").css({height:$("header>div").height()+"px"})
-											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-												$( "header" ).css({transition: "none !important"});
-											});
-										}
-										
-									});
+								touchScroll(diff, el);
+							
+								el.one('touchend', function(e){
+								console.log("TOUCHEND!!!!!!", e)
+									if(diff > 0){
+										$("header").css({transition:"height 0.2s"})
+										window.getComputedStyle($("header")[0]);
+										$("header").css({height:"0px"})
+										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											$( "header" ).css({transition: "none !important"});
+										});
+									}else{
+										$("header").css({transition:"height 0.2s"})
+										window.getComputedStyle($("header")[0]);
+										$("header").css({height:$("header>div").height()+"px"})
+										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											$( "header" ).css({transition: "none !important"});
+										});
+									}
 								
+								});
+							
 							};
 						
 							var lastScrollTop = 0;
@@ -257,22 +257,21 @@ $(document).ready(function() {
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								var diff =	st - lastScrollTop; 						
-					
+				
 								if(st > lastScrollTop ){ //////scrolling up 	
-								
+							
 										wheelCheck(diff, el, event)
 
 								}else if(st < lastScrollTop ){ //////scrolling down
-								
+							
 										wheelCheck(diff, el, event)
 
 								}
 								lastScrollTop = st
-								
+							
 							});
 						}
 					
-						//if($(".center").width() >= $(window).width()){
 						if('ontouchstart' in document.documentElement){
 							toggleHeader($(".user-view"))
 							toggleHeader($(".main-feed"))
