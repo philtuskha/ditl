@@ -255,24 +255,24 @@ $(document).ready(function() {
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 								// $('body').scrollTop(36)
-								// $('body').on('scroll', function(){
-// 									if($(this).scrollTop() < 36){
-// 										el.css({overflow:"hidden"})
-// 									}else{	
-// 										el.css({overflow:"scroll"})
-// 									}
-// 								})
+								$('body').on('scroll', function(){
+									if($(this).scrollTop() < 36){
+										el.css({overflow:"hidden"})
+									}else{	
+										el.css({overflow:"scroll"})
+									}
+								})
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								var diff =	st - lastScrollTop; 						
 				
 								if(st > lastScrollTop ){ //////scrolling up 	
-										window.scrollTo(0, 44);
+										
 										wheelCheck(diff, el, event)
 
 								}else if(st < lastScrollTop ){ //////scrolling down
-										window.scrollTo(0, 0);
+										
 										wheelCheck(diff, el, event)
 
 								}
