@@ -248,12 +248,7 @@ $(document).ready(function() {
 										}
 										
 									});
-								}else{
 								
-							
-									//if you want to add desktop header resize, but doesn't seem necesary
-									
-								};
 							};
 						
 							var lastScrollTop = 0;
@@ -277,7 +272,8 @@ $(document).ready(function() {
 							});
 						}
 					
-						if($(".center").width() >= $(window).width()){
+						//if($(".center").width() >= $(window).width()){
+						if('ontouchstart' in document.documentElement){
 							toggleHeader($(".user-view"))
 							toggleHeader($(".main-feed"))
 						}
