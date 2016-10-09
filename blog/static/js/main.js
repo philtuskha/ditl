@@ -204,7 +204,7 @@ $(document).ready(function() {
 							
 								if($(window).scrollTop() > 44){
 									
-									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
+									$("body").css({transition:"padding-top 0.1s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
 										$("body").css({"padding-top":"0px"})
