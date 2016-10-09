@@ -233,7 +233,8 @@ $(document).ready(function() {
 								}
 								// console.log
 // 								
-								
+							
+								$(".content-wrap").css({height: "calc(100vh + 200px)"});
 									
 								console.log($(window).height(), $("#viewport").height());	
 								if(diff > 0){
@@ -243,25 +244,19 @@ $(document).ready(function() {
 									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
-										$(".content-wrap").css({height: "calc(100vh - 36px)"});
+										
 									}else{
 										$("header").css({height:($("header").height() - diff)+"px"})
-										//$(".content-wrap").css({height:($(window).innerHeight() - $("header").height() - diff)+"px"})
-										$(".content-wrap").css({height: "calc(100vh - "+$("header").height() - diff+"px)"});
 									}
-									
-									
 									
 								}else{
 									if($("header").height() >= $("header>div").height()){
 										$("header").css({height:$("header>div").height()+"px"})
-										//$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
-										$(".content-wrap").css({height: "calc(100vh - 111px"});
+										
 									}else{		   
 										$("header").css({height:($("header").height() - diff)+"px"})
-										//$(".content-wrap").css({height:($(window).innerHeight()  - $("header").height() - diff)+"px"})
 										
-										$(".content-wrap").css({height: "calc(100vh - "+$("header").height() - diff+"px)"});
+										
 										
 									}
 									
@@ -282,6 +277,13 @@ $(document).ready(function() {
 											$( "header" ).css({transition: "none !important"});
 										});
 										
+										$(".content-wrap").css({transition:"height 0.6s"})
+										window.getComputedStyle($(".content-wrap")[0]);
+										$(".content-wrap").css({height: "calc(100vh - 36px)"});
+										$(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											$(".content-wrap").css({transition: "none !important"});
+										});
+										
 									}else{
 										$("header").css({transition:"height 0.2s"})
 										window.getComputedStyle($("header")[0]);
@@ -290,6 +292,12 @@ $(document).ready(function() {
 											$( "header" ).css({transition: "none !important"});
 										});
 										
+										$(".content-wrap").css({transition:"height 0.6s"})
+										window.getComputedStyle($(".content-wrap")[0]);
+										$(".content-wrap").css({height: "calc(100vh - 111px)"});
+										$(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											$(".content-wrap").css({transition: "none !important"});
+										});
 									}
 								
 								});
