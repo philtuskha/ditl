@@ -280,6 +280,7 @@ $(document).ready(function() {
 									$("header").css({height:"0px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$( "header" ).css({transition: "none !important"});
+										window.getComputedStyle($(".content-wrap")[0]);
 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
 									
 									});
@@ -290,6 +291,7 @@ $(document).ready(function() {
 									$("header").css({height:$("header>div").height()+"px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$( "header" ).css({transition: "none !important"});
+										window.getComputedStyle($(".content-wrap")[0]);
 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
 									
 									});
