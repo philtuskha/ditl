@@ -252,7 +252,7 @@ $(document).ready(function() {
 									}else{		   
 										$("header").css({height:($("header").height() - diff)+"px"})
 										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36)+"px"});
+										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
 									}
 								}
 								
