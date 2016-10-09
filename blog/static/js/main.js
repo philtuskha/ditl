@@ -204,7 +204,7 @@ $(document).ready(function() {
 							
 								if($(window).scrollTop() > 44){
 									$("body").css({overflow:'hidden'});
-									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
+									$("body").css({"padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
 										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
