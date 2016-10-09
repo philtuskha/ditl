@@ -268,7 +268,7 @@ $(document).ready(function() {
 						
 							function wheelCheck(diff, el, event){
 								touchScroll(diff, el);
-								$(".content-wrap").css({height: "calc(100vh + 200px"});
+								
 								el.one('touchend', function(e){
 								console.log("TOUCHEND!!!!!!", e)
 									if(diff > 0){
@@ -278,7 +278,7 @@ $(document).ready(function() {
 										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											$( "header" ).css({transition: "none !important"});
 										});
-										$(".content-wrap").css({height: "calc(100vh -36px)"});
+										$(".content-wrap").css({height: "calc(100vh - 36px)"});
 									}else{
 										$("header").css({transition:"height 0.2s"})
 										window.getComputedStyle($("header")[0]);
@@ -298,7 +298,7 @@ $(document).ready(function() {
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 							
-								
+								$(".content-wrap").css({height: "calc(100vh + 100px"});
 								// $(window).scrollTop(el.scrollTop());
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
