@@ -255,7 +255,7 @@ $(document).ready(function() {
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 								$('body').on('scroll', function(){
-									if($(this).scrollTop() < "36px"){
+									if($(this).scrollTop() < 36"){
 										el.css({overflow:"hidden"})
 									}else{	
 										el.css({overflow:"scroll"})
