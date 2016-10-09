@@ -199,20 +199,24 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-								
+							el.css({overflow:'hidden'});	
 							$(window).on('touchend', function(e){
 							
 								if($(window).scrollTop() > 44){
-									$("body").css({overflow:'hidden'});
-									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
-									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(window).scrollTop(0)
-										$("body").css({"padding-top":"0px"})
-										$("body").removeAttr("style")
-										$(window).off('scroll')
-										console.log("done with window fix")
-									
-									});
+									$(window).scrollTop(0)
+									//$("body").css({"padding-top":"0px"})
+									//$("body").removeAttr("style")
+									$(window).off('scroll')
+									console.log("done with window fix")
+									// $("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
+// 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 										$(window).scrollTop(0)
+// 										$("body").css({"padding-top":"0px"})
+// 										$("body").removeAttr("style")
+// 										$(window).off('scroll')
+// 										console.log("done with window fix")
+// 									
+// 									});
 							
 									el.css({overflow:'scroll'})
 								}else{
