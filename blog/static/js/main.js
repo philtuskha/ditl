@@ -1326,8 +1326,7 @@ function refreshOpenThread(){
 	////dealing with iphone bars
 	//$(window).scrollTop("44px")
 	//$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
-	window.innerHeight = 3000;
-	el.css({overflow:"hidden"})
+	
 	
 	
 });//////endtag
