@@ -196,7 +196,7 @@ $(document).ready(function() {
 // 					}
 						function toggleHeader(el){
 							/////set up page height
-							$("body").css({height:(window.innerHeight + 36)+px});
+							$("body").css({height:(window.innerHeight + 36)+"px"});
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
 							
