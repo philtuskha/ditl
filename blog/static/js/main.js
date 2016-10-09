@@ -207,7 +207,7 @@ $(document).ready(function() {
 									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
-										$("body").css({transition:"padding-top 0.5s","padding-top":"0px",height:"100vh"})
+										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
 										$("body").removeAttr("style")
 										$(window).off('scroll')
 										console.log("done with window fix")
@@ -231,7 +231,7 @@ $(document).ready(function() {
 // 								
 								
 									
-								console.log($(window).innerHeight(), $(window).height());	
+								console.log($(window).height());	
 								if(diff > 0){
 									
 									
