@@ -193,7 +193,11 @@ $(document).ready(function() {
 // 								lastScrollTop = st
 // 							}
 // 						});
-// 					}
+// 					}	
+
+						// $(window).on('touchmove', function(){
+// 						
+// 						})	
 						function toggleHeader(el){
 							/////set up page height
 							
@@ -206,10 +210,19 @@ $(document).ready(function() {
 								}else if(diff < "-"+$("header>div").height()/2){
 									diff = -30
 								}
-							
+								
+								if($(window).scrollTop() < 44){
+										el.css({overflow:"hidden"})
+									}else{
+										el.css({overflow:"scroll"})
+									}
+									
 								console.log("2: ",diff);	
 								if(diff > 0){
-							
+									
+									
+									
+									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
 									
@@ -254,8 +267,9 @@ $(document).ready(function() {
 						
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								$(window).scrollTop(136)
-								$('body').css({"margin-top":"136px"})
+								// $(window).scrollTop(136)
+// 								$('body').css({"margin-top":"136px"})
+// 								
 								// $(window).on('scroll', function(){
 // 									if($(this).scrollTop() < 36){
 // 										el.css({overflow:"hidden"})
