@@ -204,10 +204,10 @@ $(document).ready(function() {
 								console.log("window top: ", $(window).scrollTop())
 								if($(window).scrollTop() > 44){
 									
-									$("body").css({transition:"padding-top 1s","padding-top":$(this).scrollTop()+"px"})
+									$("body").css({transition:"margin-top 1s","margin-top":$(this).scrollTop()+"px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										//$(window).scrollTop(0)
-										//$("body").css({"padding-top":"0px"})
+										$(window).scrollTop(0)
+										$("body").css({transition: "none !important", "margin-top":"0px"})
 										//$("body").removeAttr("style")
 										$(window).off('touchend')
 										console.log("done with window fix")
