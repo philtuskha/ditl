@@ -200,14 +200,14 @@ $(document).ready(function() {
 							/////set up page height
 							
 							el.css({overflow:"hidden"})
-							$(window).on('touchmove', function(){
-						
+							$(window).on('scroll', function(e){
+								prevent.
 								if($(window).scrollTop() < 144){
 									//el.css({overflow:"hidden"})
 									
 								}else{
 									//el.css({overflow:"scroll"})
-									alert('pop')
+									console.log('pop')
 									
 								}
 							})
@@ -223,6 +223,7 @@ $(document).ready(function() {
 								}
 								// console.log
 // 								
+								$(window).scrollTop() == el.scrollTop();
 									
 								console.log("2: ",diff);	
 								if(diff > 0){
