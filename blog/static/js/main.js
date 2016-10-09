@@ -280,7 +280,7 @@ $(document).ready(function() {
 									$("header").css({height:"0px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$( "header" ).css({transition: "none !important"});
-									});
+									
 									
 									$(".content-wrap").css({transition:"height 0.6s"})
 									window.getComputedStyle($(".content-wrap")[0]);
@@ -289,19 +289,23 @@ $(document).ready(function() {
 										$(".content-wrap").css({transition: "none !important"});
 									});
 									
+									});
+									
 								}else{
 									$("header").css({transition:"height 0.2s"})
 									window.getComputedStyle($("header")[0]);
 									$("header").css({height:$("header>div").height()+"px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$( "header" ).css({transition: "none !important"});
-									});
+									
 									
 									$(".content-wrap").css({transition:"height 0.6s"})
 									window.getComputedStyle($(".content-wrap")[0]);
 									$(".content-wrap").css({height: "calc(100vh - 111px)"});
 									$(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(".content-wrap").css({transition: "none !important"});
+									});
+									
 									});
 								}
 							
