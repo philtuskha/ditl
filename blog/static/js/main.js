@@ -209,9 +209,9 @@ $(document).ready(function() {
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
 										//$("body").removeAttr("style")
-										$("body").off('touchend')
+										//$("body").off('touchend')
 										console.log("done with window fix")
-										return;
+										//return;
 									
 									});
 							
