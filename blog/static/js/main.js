@@ -196,8 +196,7 @@ $(document).ready(function() {
 // 					}
 						function toggleHeader(el){
 							/////set up page height
-							$("body").css({height:(window.innerHeight *2)+"px"});
-							el.css({overflow:"hidden"})
+							
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
 							
@@ -1327,7 +1326,8 @@ function refreshOpenThread(){
 	////dealing with iphone bars
 	//$(window).scrollTop("44px")
 	//$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
-	
+	$("body").css({height:(window.innerHeight *2)+"px"});
+	el.css({overflow:"hidden"})
 	
 	
 });//////endtag
