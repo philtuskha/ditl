@@ -248,7 +248,7 @@ $(document).ready(function() {
 										$("header").css({height:($("header").height() - diff)+"px"})
 										//$(".content-wrap").css({height:($(window).innerHeight() - $("header").height() - diff)+"px"})
 									}
-									$(".content-wrap").css({height: "calc(100vh - 36px)"});
+									$(".content-wrap").css({height: "calc(100vh + 200px)"});
 									
 									
 								}else{
@@ -261,7 +261,7 @@ $(document).ready(function() {
 										//$(".content-wrap").css({height:($(window).innerHeight()  - $("header").height() - diff)+"px"})
 										
 									}
-									$(".content-wrap").css({height: "calc(100vh - 111px"});
+									$(".content-wrap").css({height: "calc(100vh + 200px"});
 								}
 								
 							}
@@ -278,7 +278,7 @@ $(document).ready(function() {
 										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											$( "header" ).css({transition: "none !important"});
 										});
-										
+										$(".content-wrap").css({height: "calc(100vh - 36px)"});
 									}else{
 										$("header").css({transition:"height 0.2s"})
 										window.getComputedStyle($("header")[0]);
@@ -286,7 +286,7 @@ $(document).ready(function() {
 										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											$( "header" ).css({transition: "none !important"});
 										});
-										
+										$(".content-wrap").css({height: "calc(100vh - 111px"});
 									}
 								
 								});
