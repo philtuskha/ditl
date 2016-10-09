@@ -199,28 +199,29 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							el.css({overflow:'hidden'});	
+							// el.css({overflow:'hidden'});	
 							$(window).on('touchend', function(e){
-								console.log("window top: ", $(window).scrollTop())
-								if($(window).scrollTop() > 44){
-									
-									$("body").css({transition:"margin-top 0.2s", "margin-top":$(this).scrollTop()+"px"})
-									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										 $(window).scrollTop(0)
-										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
-										//$("body").removeAttr("style")
-										//$("body").off('touchend')
-										console.log("done with window fix")
-										//return;
-									
-									});
-							
-									el.css({overflow:'scroll'})
-									
-								}else{
-									//el.css({overflow:'hidden'});
-									
-								}
+								el.css({overflow:'scroll'})
+// 								console.log("window top: ", $(window).scrollTop())
+// 								if($(window).scrollTop() > 44){
+// 									
+// 									$("body").css({transition:"margin-top 0.2s", "margin-top":$(this).scrollTop()+"px"})
+// 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 										 $(window).scrollTop(0)
+// 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
+// 										//$("body").removeAttr("style")
+// 										//$("body").off('touchend')
+// 										console.log("done with window fix")
+// 										//return;
+// 									
+// 									});
+// 							
+// 									el.css({overflow:'scroll'})
+// 									
+// 								}else{
+// 									//el.css({overflow:'hidden'});
+// 									
+// 								}
 							});
 							
 							function touchScroll(diff, el){
@@ -307,9 +308,19 @@ $(document).ready(function() {
 								// $(window).scrollTop(el.scrollTop());
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
+								
+								
+								
+								
+								
 								var st = $(this).scrollTop();
 								diff =	st - lastScrollTop; 						
-								console.log("edges: ", el.scrollTop() )
+								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
+								
+								if(st == $(this).children().last().height() - $(this).height() || st == 0){
+									el.css({overflow:"hidden"})
+								}
+								
 								if(st > lastScrollTop ){ //////scrolling up 	
 										
 										wheelCheck(diff, el, event)
