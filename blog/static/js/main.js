@@ -209,7 +209,7 @@ $(document).ready(function() {
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
 										//$("body").removeAttr("style")
-										$("body").unbind('touchend')
+										$("body").off('touchend')
 										console.log("done with window fix")
 										return;
 									
@@ -309,7 +309,7 @@ $(document).ready(function() {
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								diff =	st - lastScrollTop; 						
-				
+								console.log("edges: ", el.scrollTop)
 								if(st > lastScrollTop ){ //////scrolling up 	
 										
 										wheelCheck(diff, el, event)
