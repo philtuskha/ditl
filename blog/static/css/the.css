@@ -1242,8 +1242,10 @@ and (max-width:48.125em){
     overflow: hidden;
 	}
 	body {
-		height  : 100%;
+		/* 
+height  : 100%;
 		overflow: auto;
+ */
 	}
 	#fixed-top-left ul li:nth-child(1){
 		display:inline-block;
