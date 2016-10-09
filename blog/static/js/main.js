@@ -218,7 +218,7 @@ $(document).ready(function() {
 									el.css({overflow:'scroll'})
 									
 								}else{
-									el.css({overflow:'hidden'});
+									//el.css({overflow:'hidden'});
 									
 								}
 							});
@@ -309,7 +309,7 @@ $(document).ready(function() {
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								diff =	st - lastScrollTop; 						
-								console.log("edges: ", el.scrollTop)
+								console.log("edges: ", el.scrollTop() )
 								if(st > lastScrollTop ){ //////scrolling up 	
 										
 										wheelCheck(diff, el, event)
