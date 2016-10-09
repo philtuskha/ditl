@@ -202,11 +202,12 @@ $(document).ready(function() {
 							el.css({overflow:"hidden"})
 							$(window).on('touchmove', function(){
 						
-								if($(window).scrollTop() < 44){
-									el.css({overflow:"hidden"})
+								if($(window).scrollTop() < 144){
+									//el.css({overflow:"hidden"})
 									
 								}else{
-									el.css({overflow:"scroll"})
+									//el.css({overflow:"scroll"})
+									alert('pop')
 									
 								}
 							})
@@ -273,16 +274,7 @@ $(document).ready(function() {
 						
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								// $(window).scrollTop(136)
-// 								$('body').css({"margin-top":"136px"})
-// 								
-								// $(window).on('scroll', function(){
-// 									if($(this).scrollTop() < 36){
-// 										el.css({overflow:"hidden"})
-// 									}else{	
-// 										el.css({overflow:"scroll"})
-// 									}
-// 								})
+								$(window).trigger('touchmove');
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
