@@ -268,11 +268,11 @@ $(document).ready(function() {
 								var diff =	st - lastScrollTop; 						
 				
 								if(st > lastScrollTop ){ //////scrolling up 	
-										window.scrollTo(0, 100);
+										// window.scrollTo(0, 100);
 										wheelCheck(diff, el, event)
 
 								}else if(st < lastScrollTop ){ //////scrolling down
-										window.scrollTo(0, 0);
+// 										window.scrollTo(0, 0);
 										wheelCheck(diff, el, event)
 
 								}
@@ -1268,7 +1268,7 @@ function refreshOpenThread(){
 
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 	$(window).resize(function(){
-		$("#inner-height").html($(window).innerHeight())
+		//$("#inner-height").html($(window).innerHeight())
 		
 		
 		
