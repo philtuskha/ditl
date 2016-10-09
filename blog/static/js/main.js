@@ -195,35 +195,41 @@ $(document).ready(function() {
 // 						});
 // 					}
 					function toggleHeader(el){
-        
-						var lastDiff = 0
-						function wheelScroll(diff, el){
 						
-							if(diff > 0){
-									if($("header").height() <= 0){
-										//el.css({overflow:"scroll"})
-										$("header").css({height:"0px"})
-									}else{
-										//el.css({overflow:"hidden"})
-										$("header").css({height:($("header").height() - diff)+"px"})
-									}
-								}else{
-									if($("header").height() >= $("header>div").height()){
-										//el.css({overflow:"scroll"})
-										$("header").css({height:$("header>div").height()+"px"})
-									}else{
-										//el.css({overflow:"hidden"})
-										$("header").css({height:($("header").height() - diff)+"px"})
-									}
-								}
-								lastDiff = diff
+						function touchScroll(diff, el){
+							console.log("1: ",diff);
+							
+							//prevent wild swings in header height
+							if(diff > $("header>div").height()/2){
+								diff = 30
+							}else if(diff < "-"+$("header>div").height()/2){
+								diff = -30
 							}
+							
+							console.log("2: ",diff);	
+							if(diff > 0){
+							
+								if($("header").height() <= 0){
+									$("header").css({height:"0px"})
+									
+								}else{
+									$("header").css({height:($("header").height() - diff)+"px"})
+								}
+							}else{
+								if($("header").height() >= $("header>div").height()){
+									$("header").css({height:$("header>div").height()+"px"})
+									
+								}else{
+									$("header").css({height:($("header").height() - diff)+"px"})
+								}
+							}
+								
+						}
 						
-						
-							function wheelCheck(diff, el){
+							function wheelCheck(diff, el, event){
 								if('ontouchstart' in document.documentElement){
-									wheelScroll(diff, el);
-									el.on('touchend', function(e){
+									touchScroll(diff, el);
+									el.one('touchend', function(e){
 									console.log("TOUCHEND!!!!!!", e)
 										if(diff > 0){
 											$("header").css({transition:"height 0.2s"})
@@ -232,7 +238,6 @@ $(document).ready(function() {
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 												$( "header" ).css({transition: "none !important"});
 											});
-											el.off('touchend');
 										}else{
 											$("header").css({transition:"height 0.2s"})
 											window.getComputedStyle($("header")[0]);
@@ -240,58 +245,39 @@ $(document).ready(function() {
 											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 												$( "header" ).css({transition: "none !important"});
 											});
-											el.off('touchend');
 										}
 										
 									});
 								}else{
 								
-									wheelScroll(diff, el);
-								
+							
+									//if you want to add desktop header resize, but doesn't seem necesary
+									
 								};
 							};
 						
-						
-							
-							///////on scroll function
-							///
-						
-							////
-						
-							////
-						
-							/////
-							///this is my cure!!!! mouse wheel is pretty smooth in this instance.  do touch event version or just use on "scroll" if you cant figure.  also pretty smooth on ios
-							//// 
-						
 							var lastScrollTop = 0;
-							el.on('mousewheel DomMouseWheel touchmove', function(event){
-								//console.log(event)
+							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
+								event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
 								var diff =	st - lastScrollTop; 						
-								console.log(event)
-								/////confine for mobile stretch scrolling
-								//if(st > 0 && st < scroll_max){
-									if(st > lastScrollTop ){ //////scrolling up 
-										//console.log("up: ",diff)
-											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									
-											wheelCheck(diff, el)
+					
+								if(st > lastScrollTop ){ //////scrolling up 	
+								
+										wheelCheck(diff, el, event)
 
-									}else if(st < lastScrollTop ){ //////scrolling down
-										//console.log("down: ",diff)
-											//$("header").css({height:($("header").height() - (st - lastScrollTop))+"px"})	
-									
-											wheelCheck(diff, el)
+								}else if(st < lastScrollTop ){ //////scrolling down
+								
+										wheelCheck(diff, el, event)
 
-									}
-									lastScrollTop = st
-								//}
+								}
+								lastScrollTop = st
+								
 							});
 						}
 					
-						if($(".center").width() == $(window).width()){
+						if($(".center").width() >= $(window).width()){
 							toggleHeader($(".user-view"))
 							toggleHeader($(".main-feed"))
 						}
