@@ -204,21 +204,21 @@ $(document).ready(function() {
 								console.log("window top: ", $(window).scrollTop())
 								if($(window).scrollTop() > 44){
 									
-									$("body").css({transition:"margin-top 1s","margin-top":$(this).scrollTop()+"px"})
-									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(window).scrollTop(0)
-										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
-										//$("body").removeAttr("style")
-										$(window).off('touchend')
-										console.log("done with window fix")
-									
-									});
+									// $("body").css({transition:"margin-top 1s","margin-top":$(this).scrollTop()+"px"})
+// 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 										$(window).scrollTop(0)
+// 										$("body").css({transition: "none !important", "margin-top":"0px", overflow:"hidden"})
+// 										//$("body").removeAttr("style")
+// 										$(window).off('touchend')
+// 										console.log("done with window fix")
+// 									
+// 									});
 							
 									el.css({overflow:'scroll'})
-									return false;
+									
 								}else{
 									el.css({overflow:'hidden'});
-									return true;
+									
 								}
 							})
 							
