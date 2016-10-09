@@ -210,7 +210,7 @@ $(document).ready(function() {
 										$("body").css({transition:"padding-top 0.5s","padding-top":"0px",height:"100vh"})
 										$("body").removeAttr("style")
 										$(window).off('scroll')
-										
+										console.log("done with window fix")
 									
 									});
 							
