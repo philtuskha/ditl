@@ -199,7 +199,7 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							el.css({overflow:'hidden'});	
+								
 							$(window).on('touchend', function(e){
 							
 								if($(window).scrollTop() > 44){
@@ -207,7 +207,7 @@ $(document).ready(function() {
 									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
-										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
+										$("body").css({"padding-top":"0px"})
 										$("body").removeAttr("style")
 										$(window).off('scroll')
 										console.log("done with window fix")
@@ -215,6 +215,8 @@ $(document).ready(function() {
 									});
 							
 									el.css({overflow:'scroll'})
+								}else{
+									el.css({overflow:'hidden'});
 								}
 							})
 							
@@ -239,7 +241,7 @@ $(document).ready(function() {
 									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - 36)+"px"});
+										$(".content-wrap").css({height: "calc(100vh - 36px"});
 										
 									
 									}else{
