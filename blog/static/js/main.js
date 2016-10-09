@@ -268,7 +268,7 @@ $(document).ready(function() {
 								var diff =	st - lastScrollTop; 						
 				
 								if(st > lastScrollTop ){ //////scrolling up 	
-										window.scrollTo(0, 1);
+										window.scrollTo(0, 100);
 										wheelCheck(diff, el, event)
 
 								}else if(st < lastScrollTop ){ //////scrolling down
