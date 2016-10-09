@@ -209,7 +209,7 @@ $(document).ready(function() {
 										$(window).scrollTop(0)
 										$("body").css({"padding-top":"0px"})
 										$("body").removeAttr("style")
-										$(window).off('scroll')
+										$(window).off('touchend')
 										console.log("done with window fix")
 									
 									});
