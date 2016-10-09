@@ -1,7 +1,7 @@
 html, body {
-max-width: 100%;
+/* max-width: 100%; */
 height:calc(100vh + 44px);
-overflow-x: hidden;
+/* overflow-x: hidden; */
 background: #fff;
 font-family: 'Raleway', sans-serif; 
 color:#1a1a1a;

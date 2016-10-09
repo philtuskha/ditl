@@ -314,7 +314,7 @@ $(document).ready(function() {
 										
 										wheelCheck(diff, el, event)
 
-								}else if(st < lastScrollTop ){ //////scrolling down
+								}else if(st <= lastScrollTop ){ //////scrolling down
 										
 										wheelCheck(diff, el, event)
 
