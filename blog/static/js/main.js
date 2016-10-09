@@ -285,9 +285,9 @@ $(document).ready(function() {
 									$(".content-wrap").css({transition:"height 0.6s"})
 									window.getComputedStyle($(".content-wrap")[0]);
 									$(".content-wrap").css({height: "calc(100vh - 36px)"});
-									$(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(".content-wrap").css({transition: "none !important"});
-									});
+									// $(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 										$(".content-wrap").css({transition: "none !important"});
+// 									});
 									
 									});
 									
@@ -302,9 +302,9 @@ $(document).ready(function() {
 									$(".content-wrap").css({transition:"height 0.6s"})
 									window.getComputedStyle($(".content-wrap")[0]);
 									$(".content-wrap").css({height: "calc(100vh - 111px)"});
-									$(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$(".content-wrap").css({transition: "none !important"});
-									});
+									// $(".content-wrap").one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 										$(".content-wrap").css({transition: "none !important"});
+// 									});
 									
 									});
 								}
