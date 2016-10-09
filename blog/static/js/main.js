@@ -238,7 +238,8 @@ $(document).ready(function() {
 									///sizing the header
 									if($("header").height() <= 0){
 										$("header").css({height:"0px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+										$(".content-wrap").css({height: ($(window).innerHeight() - "36px"});
+										
 									
 									}else{
 										$("header").css({height:($("header").height() - diff)+"px"})
@@ -248,10 +249,10 @@ $(document).ready(function() {
 									if($("header").height() >= $("header>div").height()){
 										$("header").css({height:$("header>div").height()+"px"})
 									
-									}else{
+									}else{		   
 										$("header").css({height:($("header").height() - diff)+"px"})
 										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - "36px"});
+										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36)+"px"});
 									}
 								}
 								
