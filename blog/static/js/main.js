@@ -207,9 +207,10 @@ $(document).ready(function() {
 									$("body").css({transition:"padding-top 0.5s","padding-top":$(this).scrollTop()+"px"})
 									$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										$(window).scrollTop(0)
-										$("body").css({transition:"padding-top 0.5s","padding-top":"0px"})
+										$("body").css({transition:"padding-top 0.5s","padding-top":"0px",height:"100vh"})
 										$("body").removeAttr("style")
 										$(window).off('scroll')
+										
 									
 									});
 							
@@ -218,7 +219,7 @@ $(document).ready(function() {
 							})
 							
 							function touchScroll(diff, el){
-								console.log("1: ",diff);
+								
 							
 								//prevent wild swings in header height
 								if(diff > $("header>div").height()/2){
@@ -230,7 +231,7 @@ $(document).ready(function() {
 // 								
 								
 									
-								console.log("2: ",diff);	
+								console.log($(window).innerHeight(), $(window).height());	
 								if(diff > 0){
 									
 									
