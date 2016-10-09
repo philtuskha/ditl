@@ -195,7 +195,8 @@ $(document).ready(function() {
 // 						});
 // 					}
 						function toggleHeader(el){
-						
+							/////set up page height
+							$("body").css({(height:innerHeight + 36)+px});
 							function touchScroll(diff, el){
 								console.log("1: ",diff);
 							
@@ -253,6 +254,13 @@ $(document).ready(function() {
 						
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
+								$('body').on('scroll', function(){
+									if($(this).scrollTop() < "36px"){
+										el.css({overflow:"hidden"})
+									}else{	
+										el.css({overflow:"scroll"})
+									}
+								})
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
