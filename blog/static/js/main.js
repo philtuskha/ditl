@@ -248,11 +248,12 @@ $(document).ready(function() {
 								}else{
 									if($("header").height() >= $("header>div").height()){
 										$("header").css({height:$("header>div").height()+"px"})
+										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
 									
 									}else{		   
 										$("header").css({height:($("header").height() - diff)+"px"})
 										$(".content-wrap").css({height:($("header").height() + diff)+"px"})
-										$(".content-wrap").css({height: ($(window).innerHeight() - ($("header>div").height() + 36))+"px"});
+										
 									}
 								}
 								
