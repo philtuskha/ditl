@@ -256,10 +256,11 @@ $(document).ready(function() {
 											$(window).scrollTop(0)
 										   
 											var scroll_dist = $(this).scrollTop()
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
-												el.clearQueue()
-												//el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-											});
+											myScroller(el, scroll_dist)
+											// el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
+// 												el.clearQueue()
+// 												//el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+// 											});
 
 											   return false; 
 	
