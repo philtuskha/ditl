@@ -238,12 +238,12 @@ $(document).ready(function() {
 									
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
-										el.off("touchend", elementEnd);
-										el.off("touchmove", elementMove);
+										el.off("touchend");
+										el.off("touchmove");
 										
 									}else if(last_ws > 0){
-										el.on("touchend", elementEnd);
-										el.on("touchmove", elementMove);
+										el.trigger("touchend");
+										el.trigger("touchmove");
 										
 										if(e.target.id != "id_text"){
 											
@@ -348,7 +348,7 @@ $(document).ready(function() {
 // 							};
 							var diff = 0
 							
-							el.on('touchend', function elementEnd(e){
+							el.on('touchend', function(e){
 								// e.stopPropagation();
 							
 								if(diff > 0){
@@ -377,7 +377,7 @@ $(document).ready(function() {
 							});
 						
 							var lastScrollTop = 0;
-							el.on('touchmove', function elementMove(event){ ///mousewheel DomMouseWheel
+							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 								// event.stopPropagation();
 								
 								$(".content-wrap").css({height: "calc(100vh + 100px"});
