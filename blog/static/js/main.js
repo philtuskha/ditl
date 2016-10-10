@@ -301,7 +301,7 @@ $(document).ready(function() {
 							});
 							
 							///////attach window events
-							var last_ws = 0;
+							var last_ws = 1;
 							
 							$(window).on('touchmove', function(e){
 								var this_ws = $(this).scrollTop();
