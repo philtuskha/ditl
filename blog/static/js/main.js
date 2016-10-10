@@ -199,9 +199,20 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							// el.css({overflow:'hidden'});	
+							$('scroll-stop').css({display:'block',border:"1px solid cyan"})
+							
 							$(window).on('touchend', function(e){
-								el.css({overflow:'scroll'})
+								$('scroll-stop').css({display:'none'})
+								
+								
+								
+								
+								//le.scrollTop(
+								
+								
+								
+								
+								
 // 								console.log("window top: ", $(window).scrollTop())
 // 								if($(window).scrollTop() > 44){
 // 									

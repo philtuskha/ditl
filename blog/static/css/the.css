@@ -617,7 +617,6 @@ z-index:4;
 box-shadow: 2px 0 5px -4px #888;
 }
 #user-top{
-list-style:none;
 padding:12px 4px 0 14px;
 margin-left:2px;
 height:82px;
@@ -627,8 +626,17 @@ z-index:4;
 background:rgba(248,248,248,0.96);
 border-bottom: 1px solid #d3d3d3;
 }
+#scroll-stop{
+position:absolute;
+top:0px;
+z-index:5;
+height:inherit;
+width:100%;
+display:none;
+}
 #user-top>ul{
 height:42px;
+list-style:none;
 }
 #user-top>ul>li{
 display:inline-block;
