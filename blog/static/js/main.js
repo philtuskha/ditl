@@ -303,7 +303,7 @@ $(document).ready(function() {
 
 							
 							///attach window event only once
-							if(el.length == $(".user-view").length){
+							//if(el.length == $(".user-view").length){
 								var last_ws = 0;
 								$(window).on('touchmove', function(e){
 									var this_ws = $(this).scrollTop();
@@ -352,56 +352,9 @@ $(document).ready(function() {
 										
 								});
 								
-							}////end of window event listeners
+							//}////end of window event listeners
 							
-							function touchScroll(diff, el){
-								
 							
-								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-								// console.log
-// 								
-							
-								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
-									
-								console.log($(window).height(), $("#viewport").height());	
-								if(diff > 0){
-									
-									
-									
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-										
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-									}
-									
-								}else{
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-										
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-										
-										
-									}
-									
-								}
-								
-							}
-						
-							// function wheelCheck(diff, el, event){
-// 								touchScroll(diff, el);
-// 								
-// 								
-// 							
-// 							};
 						}
 					
 						if('ontouchstart' in document.documentElement){
