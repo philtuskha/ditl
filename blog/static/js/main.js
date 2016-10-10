@@ -221,7 +221,12 @@ $(document).ready(function() {
 										
 										if(e.target.id != "id_text"){
 											 setTimeout(function(){
-											 $(window).scrollTop(0)
+											 $(window).scrollTop(0);
+											 $("header").css({transition:"height 0.2s", "height":$("header").height()+"px"})
+												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+													$("header").css({transition: "none !important", "height":"0px"})
+												});
+												
 // 												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 // 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 // 													 $(window).scrollTop(0)
