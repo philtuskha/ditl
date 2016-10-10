@@ -207,27 +207,29 @@ $(document).ready(function() {
 									el.css({overflow:"scroll"})
 								
 								
-									console.log("TOUCHEND!!!!!!", e)
+									console.log("TOUCHEND!!!!!!", e, e.target)
 							
 								
 								
-								
+									if(e.target.id != "id_text")
 
 								
-									setTimeout(function(){
-										$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
-										$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-											 $(window).scrollTop(0)
-											$("body").css({transition: "none !important", "margin-top":"0px"})
-											$("body").removeAttr("style")
-											console.log($("body").attr("style"))
-											//$("body").off('touchend')
-											console.log("done with window fix")
-											//return;
+										setTimeout(function(){
+											$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
+											$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+												 $(window).scrollTop(0)
+												$("body").css({transition: "none !important", "margin-top":"0px"})
+												$("body").removeAttr("style")
+												console.log($("body").attr("style"))
+												//$("body").off('touchend')
+												console.log("done with window fix")
+												//return;
 									
-										});							
+											});							
 								
-									}, 500);	
+										}, 500);
+										
+									}	
 									
 							
 				
