@@ -257,7 +257,8 @@ $(document).ready(function() {
 										   
 											var scroll_dist = $(this).scrollTop()
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
-												el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+												el.clearQueue()
+												//el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
 											});
 
 											   return false; 
