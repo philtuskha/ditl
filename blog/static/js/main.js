@@ -346,7 +346,7 @@ $(document).ready(function() {
 // 											   });
 
 											//$(window).scrollTop(0)
-											$("html, body").animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(){
+											$("html, body").animate({ scrollTop: 0}, 3000, 'easeOutQuint', function initWindowScroll(){
 												$("html, body").off("scroll", initWindowScroll);
 										
 											});	
