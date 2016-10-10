@@ -215,7 +215,94 @@ $(document).ready(function() {
 							
 							//
 							
-							///attach only once
+							function elementEvents(on){
+								if(on){
+									var diff = 0
+							
+									el.on('touchend', function(e){
+										e.stopPropagation();
+							
+										if(diff > 0){
+											$("header").css({transition:"height 0.2s"})
+											window.getComputedStyle($("header")[0]);
+											$("header").css({height:"0px"})
+											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+												$( "header" ).css({transition: "none !important"});
+												// window.getComputedStyle($(".content-wrap")[0]);
+		// 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
+									
+											});
+									
+										}else{
+											$("header").css({transition:"height 0.2s"})
+											window.getComputedStyle($("header")[0]);
+											$("header").css({height:$("header>div").height()+"px"})
+											$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+												$( "header" ).css({transition: "none !important"});
+												// window.getComputedStyle($(".content-wrap")[0]);
+		// 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
+									
+											});
+										}
+							
+									});
+						
+									var lastScrollTop = 0;
+									el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
+										event.stopPropagation();
+								
+										$(".content-wrap").css({height: "calc(100vh + 100px"});
+										// $(window).scrollTop(el.scrollTop());
+										//event.preventDefault();
+										var scroll_max = $(this).children().last().height() - $(this).height();
+										var st = $(this).scrollTop();
+										diff =	st - lastScrollTop; 	
+													
+										console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
+								
+										//prevent wild swings in header height
+										if(diff > $("header>div").height()/2){
+											diff = 30
+										}else if(diff < "-"+$("header>div").height()/2){
+											diff = -30
+										}
+								
+								
+										if( diff > 0){ //////scrolling up st > lastScrollTop
+										
+											///sizing the header
+											if($("header").height() <= 0){
+												$("header").css({height:"0px"})
+										
+											}else{
+												$("header").css({height:($("header").height() - diff)+"px"})
+										
+											}
+
+										}else if(st <= lastScrollTop ){ //////scrolling down
+										
+											if($("header").height() >= $("header>div").height()){
+												$("header").css({height:$("header>div").height()+"px"})
+										
+											}else{		   
+												$("header").css({height:($("header").height() - diff)+"px"})
+										
+										
+										
+											}
+
+										}
+										lastScrollTop = st
+							
+									});
+								}else{
+									el.off("touchend");
+										el.off("touchmove");
+								}
+							}
+
+							
+							///attach window event only once
 							if(el.length == $(".user-view").length){
 								var last_ws = 0;
 								$(window).on('touchmove', function(e){
@@ -238,17 +325,14 @@ $(document).ready(function() {
 									
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
-										el.off("touchend");
-										el.off("touchmove");
+										
+										elementEvents(false);
 										
 									}else if(last_ws > 0){
-										el.on("touchend");
-										el.on("touchmove");
+										
+										elementEvents(true);
 										
 										if(e.target.id != "id_text"){
-											
-											
-											
 											
 											//$("body").css({"margin-top":"-"+($(this).scrollTop()-24)+"px"})
 											
@@ -346,84 +430,6 @@ $(document).ready(function() {
 // 								
 // 							
 // 							};
-							var diff = 0
-							
-							el.on('touchend', function(e){
-								e.stopPropagation();
-							
-								if(diff > 0){
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:"0px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-										// window.getComputedStyle($(".content-wrap")[0]);
-// 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
-									
-									});
-									
-								}else{
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:$("header>div").height()+"px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-										// window.getComputedStyle($(".content-wrap")[0]);
-// 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
-									
-									});
-								}
-							
-							});
-						
-							var lastScrollTop = 0;
-							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								event.stopPropagation();
-								
-								$(".content-wrap").css({height: "calc(100vh + 100px"});
-								// $(window).scrollTop(el.scrollTop());
-								//event.preventDefault();
-								var scroll_max = $(this).children().last().height() - $(this).height();
-								var st = $(this).scrollTop();
-								diff =	st - lastScrollTop; 	
-													
-								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
-								
-								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-								
-								
-								if( diff > 0){ //////scrolling up st > lastScrollTop
-										
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-										
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-									}
-
-								}else if(st <= lastScrollTop ){ //////scrolling down
-										
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-										
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-										
-										
-									}
-
-								}
-								lastScrollTop = st
-							
-							});
 						}
 					
 						if('ontouchstart' in document.documentElement){
