@@ -297,7 +297,7 @@ $(document).ready(function() {
 									});
 								}else{
 									el.off("touchend");
-										el.off("touchmove");
+									el.off("touchmove");
 								}
 							}
 
@@ -351,7 +351,11 @@ $(document).ready(function() {
 									
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initScroll(e){
 												console.log(e)
-												el.off("scroll", initScroll);
+												
+												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(e){
+													el.off("scroll", initWindowScroll);
+										
+												});	
 											});
 
 											   //return false; 
