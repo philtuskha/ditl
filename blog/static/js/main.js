@@ -253,7 +253,7 @@ $(document).ready(function() {
 // 												   el.stop();
 // 											   });
 
-											$(window).scrollTop(0)
+											//$(window).scrollTop(0)
 										   
 											var scroll_dist = $(this).scrollTop()
 									
