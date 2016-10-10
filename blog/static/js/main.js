@@ -358,38 +358,44 @@ $(document).ready(function() {
 									}
 								}
 								
-								if(e.target.offsetParent.className == "user-view" || e.target.offsetParent.offsetParent.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
+								//////////
+								//////////
+								////////
+								///instead of searching through the event, determine which view you are on (compose or post) by looking at the dom
+								
+								if($(".left-holder").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 									
 									
 									chooseTarget($(".user-view"));
 									
 								
-								}else if(e.target.offsetParent.className == "center" && $(".main-feed").css("overflow") != "scroll"){
+								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
 								
 									
 									chooseTarget($(".main-feed"));
 									
-								}else if(e.target.id == "compose-ico"){
-									
-									//chooseTarget($(".user-view"))
-									$(".main-feed").off("touchend");
-									$(".main-feed").off("touchmove");
-									$(".main-feed").css({overflow:"hidden"})
-									$(window).on('touchend')
-									
-								}else if(e.target.id == "posts-ico"){
-									
-									//chooseTarget($(".main-feed"))
-									$(".user-view").off("touchend");
-									$(".user-view").off("touchmove");
-									$(".user-view").css({overflow:"hidden"})
-									$(window).on('touchend')	
-								
-								}else{
-									console.log("not valid target", e)
-								
-								
 								}
+								// else if(e.target.id == "compose-ico"){
+// 									
+// 									//chooseTarget($(".user-view"))
+// 									$(".main-feed").off("touchend");
+// 									$(".main-feed").off("touchmove");
+// 									$(".main-feed").css({overflow:"hidden"})
+// 									$(window).on('touchend')
+// 									
+// 								}else if(e.target.id == "posts-ico"){
+// 									
+// 									//chooseTarget($(".main-feed"))
+// 									$(".user-view").off("touchend");
+// 									$(".user-view").off("touchmove");
+// 									$(".user-view").css({overflow:"hidden"})
+// 									$(window).on('touchend')	
+// 								
+// 								}else{
+// 									console.log("not valid target", e)
+// 								
+// 								
+// 								}
 								
 								
 								
