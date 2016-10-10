@@ -319,7 +319,7 @@ $(document).ready(function() {
 								//e.stopPropagation();
 								
 							
-								 = $('.'+e.target.offsetParent.className)
+								el = $('.'+e.target.offsetParent.className)
 								console.log("TOUCHEND!!!!!!", e, el)
 							
 								if(last_ws < 0){
