@@ -238,13 +238,14 @@ $(document).ready(function() {
 										
 										
 										if(e.target.id != "id_text"){
-										
+											
+											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
 											$("body").css({"margin-top":"-"+$(this).scrollTop()+"px"})
 											
 											
 											 setTimeout(function(){
 												$("body").css({transition:"margin-top 0.7s", "margin-top":"0px"})
-												myScroll(el, $(this).scrollTop());
+												myScroller(el, $(this).scrollTop());
 												
 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 													 $(window).scrollTop(0)
@@ -253,7 +254,7 @@ $(document).ready(function() {
 													
 													el.css({overflow:"scroll"})
 													
-													console.log($("body").attr("style"))
+													
 													console.log("done with window fix")
 												});							
 // 								
