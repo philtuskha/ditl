@@ -372,10 +372,14 @@ $(document).ready(function() {
 								}else if(e.target.id == "compose-ico"){
 									
 									chooseTarget($(".user-view"))
+									$(".main-feed").off("touchend");
+									$(".main-feed").off("touchmove");
 									
 								}else if(e.target.id == "posts-ico"){
 									
-									chooseTarget($(".main-feed"))	
+									chooseTarget($(".main-feed"))
+									$(".user-view").off("touchend");
+									$(".user-view").off("touchmove");	
 								
 								}else{
 									console.log("not valid target")
