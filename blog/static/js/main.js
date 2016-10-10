@@ -242,8 +242,8 @@ $(document).ready(function() {
 										el.off("touchmove");
 										
 									}else if(last_ws > 0){
-										el.trigger("touchend");
-										el.trigger("touchmove");
+										el.on("touchend");
+										el.on("touchmove");
 										
 										if(e.target.id != "id_text"){
 											
