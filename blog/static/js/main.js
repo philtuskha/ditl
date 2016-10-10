@@ -319,6 +319,7 @@ $(document).ready(function() {
 								last_ws = this_ws
 							});
 						
+							
 							$(window).on('touchend', function windowEnd(e){
 								//e.stopPropagation();
 								
@@ -368,10 +369,18 @@ $(document).ready(function() {
 									
 									chooseTarget($(".main-feed"));
 									
+								}else if(e.target.id == "compose-ico"){
+									
+									chooseTarget($(".user-view"))
+									
+								}else if(e.target.id == "posts-ico"){
+									
+									chooseTarget($(".main-feed"))	
 								
 								}else{
-								
 									console.log("not valid target")
+								
+								
 								}
 								
 								
