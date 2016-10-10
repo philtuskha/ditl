@@ -346,17 +346,17 @@ $(document).ready(function() {
 // 											   });
 
 											//$(window).scrollTop(0)
-											$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(){
-													//$(window).off("scroll", initWindowScroll);
+											$("html, body").animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").off("scroll", initWindowScroll);
 										
 											});	
 										   
 											var scroll_dist = $(this).scrollTop()
 									
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(){
 												//console.log(e)
 												//$(window).scrollTop(0)
-												//el.off("scroll", initElScroll);
+												el.off("scroll", initElScroll);
 												
 											});
 
