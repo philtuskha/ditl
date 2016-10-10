@@ -349,12 +349,12 @@ $(document).ready(function() {
 										   
 											var scroll_dist = $(this).scrollTop()
 									
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(e){
 												console.log(e)
 												//$(window).scrollTop(0)
-												el.off("scroll", initElScroll);
-												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(e){
-													$(window).off("scroll", initWindowScroll);
+												//el.off("scroll", initElScroll);
+												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(e){
+													//$(window).off("scroll", initWindowScroll);
 										
 												});	
 											});
