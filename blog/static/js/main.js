@@ -201,34 +201,35 @@ $(document).ready(function() {
 							
 							el.css({overflow:"hidden"})
 							
-							
-							$(window).on('touchend', function(e){
-								el.css({overflow:"scroll"})
+							///attach only once
+							if(el.length == $(".user-view").length){
+								$(window).on('touchend', function(e){
+									el.css({overflow:"scroll"})
 								
 								
 								
 								
-								//le.scrollTop(
-								console.log(e.timeStamp)
+									//le.scrollTop(
+									console.log(e.timeStamp)
 								
 								
 								
 
 								
-								setTimeout(function(){
-									$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
-									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										 $(window).scrollTop(0)
-										$("body").css({transition: "none !important", "margin-top":"0px"})
-										$("body").removeAttr("style")
-										console.log($("body").attr("style"))
-										//$("body").off('touchend')
-										console.log("done with window fix")
-										//return;
+									setTimeout(function(){
+										$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
+										$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+											 $(window).scrollTop(0)
+											$("body").css({transition: "none !important", "margin-top":"0px"})
+											$("body").removeAttr("style")
+											console.log($("body").attr("style"))
+											//$("body").off('touchend')
+											console.log("done with window fix")
+											//return;
 									
-									});							
+										});							
 								
-								}, 500);	
+									}, 500);	
 									
 							
 				
@@ -241,7 +242,8 @@ $(document).ready(function() {
 								
 								
 								
-							});
+								});
+							}
 							
 							function touchScroll(diff, el){
 								
