@@ -319,7 +319,7 @@ $(document).ready(function() {
 								last_ws = this_ws
 							});
 						
-							$(window).on('touchend', function(e){
+							$(window).on('touchend', function windowEnd(e){
 								//e.stopPropagation();
 								
 								function chooseTarget(el){
@@ -328,12 +328,16 @@ $(document).ready(function() {
 									if(last_ws < 1){
 										console.log("initialized")
 										el.css({overflow:"hidden"})
-								
+										$(window).off('touchend', windowEnd)
+										
 										toggleHeader(false, el);
 										
 								
 									}else{
 										console.log("NOT initialized")
+										el.css({overflow:"scroll"})
+										$(window).on('touchend', windowEnd)
+										
 										toggleHeader(true, el);
 								
 										if(e.target.id != "id_text"){
