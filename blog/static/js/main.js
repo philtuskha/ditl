@@ -344,19 +344,21 @@ $(document).ready(function() {
 // 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
 // 												   el.stop();
 // 											   });
-
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(){
+												//console.log(e)
+												//$(window).scrollTop(0)
+												el.off("scroll", initElScroll);
+											
+											});
+											
 											//$(window).scrollTop(0)
-											$("html, body").animate({ scrollTop: 0}, 200, 'easeOutQuint', function initWindowScroll(){
+											$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
 												$("html, body").off("scroll", initWindowScroll);
 												
-												el.animate({ scrollTop: scroll_dist}, 2000, 'easeOutQuint', function initElScroll(){
-													//console.log(e)
-													//$(window).scrollTop(0)
-													el.off("scroll", initElScroll);
-												
-												});
 										
-											});	
+											});
+												
+											
 										   
 											var scroll_dist = $(this).scrollTop()
 									
