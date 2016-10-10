@@ -346,6 +346,10 @@ $(document).ready(function() {
 // 											   });
 
 											//$(window).scrollTop(0)
+											$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(){
+													//$(window).off("scroll", initWindowScroll);
+										
+											});	
 										   
 											var scroll_dist = $(this).scrollTop()
 									
@@ -353,10 +357,7 @@ $(document).ready(function() {
 												//console.log(e)
 												//$(window).scrollTop(0)
 												//el.off("scroll", initElScroll);
-												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(){
-													//$(window).off("scroll", initWindowScroll);
-										
-												});	
+												
 											});
 
 											   //return false; 
