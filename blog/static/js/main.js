@@ -328,10 +328,6 @@ $(document).ready(function() {
 								diff =	st - lastScrollTop; 						
 								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
 								
-								if(st == $(this).children().last().height() - $(this).height() || st == 0){
-									el.css({overflow:"hidden"})
-								}
-								
 								if(st > lastScrollTop ){ //////scrolling up 	
 										
 										wheelCheck(diff, el, event)
