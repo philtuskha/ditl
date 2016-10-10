@@ -317,7 +317,7 @@ $(document).ready(function() {
 						
 							$(window).on('touchend', function(e){
 								//e.stopPropagation();
-								console.log("TOUCHEND!!!!!!", e, e.target)
+								console.log("TOUCHEND!!!!!!", e, e.target.offsetParent)
 							
 								el = e.target.offsetParent
 							
