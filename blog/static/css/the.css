@@ -1248,6 +1248,7 @@ visibility:hidden;
 and (max-width:48.125em){
 	body, html {
 		margin-top:0;
+		transition:margin-top 0.5s;
 		/* 
 height  : 100%;
 		overflow: auto;
