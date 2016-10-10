@@ -301,7 +301,7 @@ $(document).ready(function() {
 							});
 							
 							///////attach window events
-							var last_ws = 1;
+							var last_ws = 0;
 							
 							$(window).on('touchmove', function(e){
 								var this_ws = $(this).scrollTop();
@@ -320,8 +320,8 @@ $(document).ready(function() {
 								
 								function chooseTarget(el){
 									console.log("TOUCHEND!!!!!!", e, el)
-									el.css({border:"4px solid cyan"})
-									if(last_ws < 0){
+									
+									if(last_ws < 1){
 										el.css({overflow:"hidden"})
 								
 										toggleHeader(false, el);
