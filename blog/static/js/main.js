@@ -206,6 +206,8 @@ $(document).ready(function() {
 							
 							///fixed sporadic iphone behavior when textarea is pushed
 							$("#id_text").on("focus", function(){
+								event.stopPropagation();
+								
 								$(".post-form-container").css({position:"absolute"})
 							}).on("blur", function(){
 								$(".post-form-container").css({position:"fixed"})
@@ -229,6 +231,7 @@ $(document).ready(function() {
 								});
 								
 								$(window).on('touchend', function(e){
+									e.stopPropagation();
 									console.log("TOUCHEND!!!!!!", e, e.target)
 									
 									console.log("DID I EVEN MAKE IT HERE")
@@ -292,47 +295,47 @@ $(document).ready(function() {
 								
 							}
 							
-							// function touchScroll(diff, el){
+							function touchScroll(diff, el){
+								
+							
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
+								}
+								// console.log
 // 								
-// 							
-// 								//prevent wild swings in header height
-// 								if(diff > $("header>div").height()/2){
-// 									diff = 30
-// 								}else if(diff < "-"+$("header>div").height()/2){
-// 									diff = -30
-// 								}
-// 								// console.log
-// // 								
-// 							
-// 								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
-// 									
-// 								console.log($(window).height(), $("#viewport").height());	
-// 								if(diff > 0){
-// 									
-// 									
-// 									
-// 									///sizing the header
-// 									if($("header").height() <= 0){
-// 										$("header").css({height:"0px"})
-// 										
-// 									}else{
-// 										$("header").css({height:($("header").height() - diff)+"px"})
-// 									}
-// 									
-// 								}else{
-// 									if($("header").height() >= $("header>div").height()){
-// 										$("header").css({height:$("header>div").height()+"px"})
-// 										
-// 									}else{		   
-// 										$("header").css({height:($("header").height() - diff)+"px"})
-// 										
-// 										
-// 										
-// 									}
-// 									
-// 								}
-// 								
-// 							}
+							
+								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
+									
+								console.log($(window).height(), $("#viewport").height());	
+								if(diff > 0){
+									
+									
+									
+									///sizing the header
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
+										
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+									}
+									
+								}else{
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+										
+									}else{		   
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+										
+										
+									}
+									
+								}
+								
+							}
 						
 							// function wheelCheck(diff, el, event){
 // 								touchScroll(diff, el);
@@ -343,7 +346,7 @@ $(document).ready(function() {
 							var diff = 0
 							
 							el.on('touchend', function(e){
-								e.stopPropagation();
+								// e.stopPropagation();
 							
 								if(diff > 0){
 									$("header").css({transition:"height 0.2s"})
@@ -372,7 +375,7 @@ $(document).ready(function() {
 						
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								event.stopPropagation();
+								// event.stopPropagation();
 								
 								$(".content-wrap").css({height: "calc(100vh + 100px"});
 								// $(window).scrollTop(el.scrollTop());
@@ -391,7 +394,7 @@ $(document).ready(function() {
 								}
 								
 								
-								if(diff > 0){ //////scrolling up st > lastScrollTop
+								if( diff > 0){ //////scrolling up st > lastScrollTop
 										
 									///sizing the header
 									if($("header").height() <= 0){
