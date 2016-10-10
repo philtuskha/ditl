@@ -204,7 +204,7 @@ $(document).ready(function() {
 								var diff = 0
 						
 								el.on('touchend', function(e){
-									e.stopPropagation();
+									//e.stopPropagation();
 						
 									if(diff > 0){
 										$("header").css({transition:"height 0.2s"})
@@ -233,7 +233,7 @@ $(document).ready(function() {
 					
 								var lastScrollTop = 0;
 								el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-									event.stopPropagation();
+									//event.stopPropagation();
 							
 									$(".content-wrap").css({height: "calc(100vh + 100px"});
 									// $(window).scrollTop(el.scrollTop());
@@ -293,7 +293,7 @@ $(document).ready(function() {
 							
 							///fixed sporadic iphone behavior when textarea is pushed
 							$("#id_text").on("focus", function(){
-								event.stopPropagation();
+								//event.stopPropagation();
 								
 								$(".post-form-container").css({position:"absolute"})
 							}).on("blur", function(){
@@ -317,9 +317,10 @@ $(document).ready(function() {
 						
 							$(window).on('touchend', function(e){
 								//e.stopPropagation();
-								console.log("TOUCHEND!!!!!!", e, e.target.offsetParent)
+								
 							
-								el = $('.'+e.target.offsetParent.className)
+								 = $('.'+e.target.offsetParent.className)
+								console.log("TOUCHEND!!!!!!", e, el)
 							
 								if(last_ws < 0){
 									el.css({overflow:"hidden"})
