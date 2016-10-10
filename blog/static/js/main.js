@@ -326,12 +326,14 @@ $(document).ready(function() {
 									console.log("TOUCHEND!!!!!!", e, el)
 									
 									if(last_ws < 1){
+										console.log("initialized")
 										el.css({overflow:"hidden"})
 								
 										toggleHeader(false, el);
+										
 								
 									}else{
-								
+										console.log("NOT initialized")
 										toggleHeader(true, el);
 								
 										if(e.target.id != "id_text"){
@@ -351,13 +353,13 @@ $(document).ready(function() {
 									}
 								}
 								
-								if(e.target.parentNode.parentNode.className == "user-view"){
+								if(e.target.parentNode.parentNode.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
 									
 									
 									chooseTarget($(".user-view"));
 									
 								
-								}else if(e.target.parentNode.parentNode.parentNode.parentNode.className == "main-feed"){
+								}else if(e.target.parentNode.parentNode.parentNode.parentNode.className == "main-feed" && $(".main-feed").css("overflow") != "scroll"){
 								
 									
 									chooseTarget($(".main-feed"));
