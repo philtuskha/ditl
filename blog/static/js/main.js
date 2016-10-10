@@ -218,7 +218,7 @@ $(document).ready(function() {
 								
 									setTimeout(function(){
 										$("body").css({"margin-top":$(this).scrollTop()+"px"})
-										$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 											 $(window).scrollTop(0)
 											$("body").css({"margin-top":"0px"})
 											$("body").removeAttr("style")
