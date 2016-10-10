@@ -349,11 +349,11 @@ $(document).ready(function() {
 												//$(window).scrollTop(0)
 												
 												//$(window).scrollTop(0)
-												$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
-													$("html, body").off("scroll", initWindowScroll);
-												
-										
-												});
+												// $("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
+// 													$("html, body").off("scroll", initWindowScroll);
+// 												
+// 										
+// 												});
 												el.off("scroll", initElScroll);
 											});
 											
