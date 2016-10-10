@@ -205,7 +205,7 @@ $(document).ready(function() {
 							if(el.length == $(".user-view").length){
 								var last_ws = 0;
 								$(window).on('touchmove', function(e){
-									var this_ws = this.scrollTop;
+									var this_ws = $(this).scrollTop();
 									console.log("TOUCHStart!!!!", e, last_ws, this_ws )
 									last_ws = this_ws
 								});
