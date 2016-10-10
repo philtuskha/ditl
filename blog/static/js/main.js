@@ -211,6 +211,8 @@ $(document).ready(function() {
 								$(".post-form-container").css({position:"fixed"})
 							});
 							
+							//
+							
 							///attach only once
 							if(el.length == $(".user-view").length){
 								var last_ws = 0;
@@ -232,12 +234,13 @@ $(document).ready(function() {
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
 										
-									}else if(last_ws > 0{
+									}else if(last_ws > 0){
 										
 										
 										if(e.target.id != "id_text"){
 										
-											$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
+											$("body").css({transition:"margin-top 0.5s", "margin-top":"-"+$(this).scrollTop()+"px"})
+											
 											 setTimeout(function(){
 												
 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
