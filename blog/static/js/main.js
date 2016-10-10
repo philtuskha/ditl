@@ -259,7 +259,10 @@ $(document).ready(function() {
 									
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
 												//el.clearQueue()
-												el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+												setTimeout(function(){
+													el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+												}, 1000);
+												
 											});
 
 											   //return false; 
