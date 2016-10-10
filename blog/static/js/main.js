@@ -242,7 +242,8 @@ $(document).ready(function() {
 											
 											
 											
-											$("body").css({"margin-top":"-"+($(this).scrollTop()+44)+"px"})
+											$("body").css({"margin-top":"-"+($(this).scrollTop()-24)+"px"})
+											
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
 											console.log("window scroll top",$(this).scrollTop())
 
