@@ -242,12 +242,13 @@ $(document).ready(function() {
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
 											
 											
-											$("body").css({"margin-top":"-"+$(this).scrollTop()-44+"px"})
+											$("body").css({"margin-top":"-"+$(this).scrollTop()+44+"px"})
 											
 											
 											 setTimeout(function(){
 												$("body").css({transition:"margin-top 0.7s", "margin-top":"0px"})
-												myScroller(el, $(this).scrollTop());
+												// myScroller(el, $(this).scrollTop());
+												el.scrollTop($(this).scrollTop());
 												
 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 													 $(window).scrollTop(0)
