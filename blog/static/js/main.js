@@ -374,12 +374,16 @@ $(document).ready(function() {
 									//chooseTarget($(".user-view"))
 									$(".main-feed").off("touchend");
 									$(".main-feed").off("touchmove");
+									$(".main-feed").css({overflow:"hidden"})
+									$(window).on('touchend', windowEnd)
 									
 								}else if(e.target.id == "posts-ico"){
 									
 									//chooseTarget($(".main-feed"))
 									$(".user-view").off("touchend");
-									$(".user-view").off("touchmove");	
+									$(".user-view").off("touchmove");
+									$(".user-view").css({overflow:"hidden"})
+									$(window).on('touchend', windowEnd)	
 								
 								}else{
 									console.log("not valid target")
