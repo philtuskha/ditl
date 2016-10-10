@@ -318,13 +318,8 @@ $(document).ready(function() {
 							$(window).on('touchend', function(e){
 								//e.stopPropagation();
 								
-							
-								el_name = e.target.offsetParent.className
-								console.log("TOUCHEND!!!!!!",el_name)
-								if(el_name == "user_view" || el_name == "main-feed"){
-								
-									el = $("."+el_name+"")
-									//console.log("TOUCHEND!!!!!!",el)
+								function chooseTarget(el){
+									console.log("TOUCHEND!!!!!!", e, el)
 							
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
@@ -351,6 +346,22 @@ $(document).ready(function() {
 										}
 									}
 								}
+								
+								if(e.target.offsetParent.className == "user-view"){
+			
+									chooseTarget($("."+e.target.offsetParent.className));
+								
+								}else if(e.target.className == "main-feed"){
+								
+									chooseTarget($("."+e.target.offsetParent.className));
+								
+								}else{
+								
+									return false;
+								}
+								
+								
+								
 							});
 						}///end initMobile
 							
