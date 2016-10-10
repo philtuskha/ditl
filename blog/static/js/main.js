@@ -347,7 +347,7 @@ $(document).ready(function() {
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 												//console.log(e)
 												//$(window).scrollTop(0)
-												e.stopPropogation();
+												e.stopPropagation();
 												el.off("scroll", initElScroll);
 												//$(window).scrollTop(0)
 												$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
