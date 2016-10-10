@@ -220,8 +220,8 @@ $(document).ready(function() {
 										el.css({overflow:"scroll"})
 										
 										if(e.target.id != "id_text"){
-											$(window).scrollTop(1)
-											// setTimeout(function(){
+											 setTimeout(function(){
+											 $(window).scrollTop(0)
 // 												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 // 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 // 													 $(window).scrollTop(0)
@@ -234,7 +234,7 @@ $(document).ready(function() {
 // 									
 // 												});							
 // 								
-// 											}, 500);
+ 											}, 30);
 										
 										}
 									}
