@@ -349,11 +349,11 @@ $(document).ready(function() {
 								
 								if(e.target.offsetParent.className == "user-view"){
 			
-									chooseTarget($("."+e.target.offsetParent.className));
+									chooseTarget($(".user-view"));
 								
 								}else if(e.target.className == "main-feed"){
 								
-									chooseTarget($("."+e.target.offsetParent.className));
+									chooseTarget($(".main-feed"));
 								
 								}else{
 								
