@@ -240,7 +240,9 @@ $(document).ready(function() {
 										if(e.target.id != "id_text"){
 											
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
-											$("body").css({"margin-top":"-"+$(this).scrollTop()+"px"})
+											
+											
+											$("body").css({"margin-top":"-"+$(this).scrollTop()-44+"px"})
 											
 											
 											 setTimeout(function(){
