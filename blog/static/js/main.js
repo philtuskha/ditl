@@ -220,7 +220,7 @@ $(document).ready(function() {
 										el.css({overflow:"scroll"})
 										
 										if(e.target.id != "id_text"){
-											$(window).scrollTop(0)
+											$(window).scrollTop(1)
 											// setTimeout(function(){
 // 												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 // 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
