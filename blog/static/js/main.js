@@ -252,10 +252,13 @@ $(document).ready(function() {
 // 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
 // 												   element.stop();
 // 											   });
-											   var scroll_dist = $(this).scrollTop()
-											   el.animate({ scrollTop: scroll_dist}, 250, 'easeOutQuint', function(){
-												   //el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-											   });
+
+											$(window).scrollTop(0)
+										   
+											var scroll_dist = $(this).scrollTop()
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
+												el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+											});
 
 											   return false; 
 	
