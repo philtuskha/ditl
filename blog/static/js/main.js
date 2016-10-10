@@ -219,7 +219,7 @@ $(document).ready(function() {
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px"})
-										//$("body").removeAttr("style")
+										$("body").removeAttr("style")
 										//$("body").off('touchend')
 										console.log("done with window fix")
 										//return;
