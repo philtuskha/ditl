@@ -358,7 +358,7 @@ $(document).ready(function() {
 									}
 								}
 								
-								if(e.target.offsetParent.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
+								if(e.target.offsetParent.className == "user-view" || e.target.offsetParent.offsetParent.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
 									
 									
 									chooseTarget($(".user-view"));
