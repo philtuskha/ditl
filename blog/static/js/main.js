@@ -202,13 +202,13 @@ $(document).ready(function() {
 							el.css({overflow:"hidden"})
 							
 							///main post form
-							$("post-form-container").css({position:"fixed"})
+							$(".post-form-container").css({position:"fixed"})
 							
 							///fixed sporadic iphone behavior when textarea is pushed
 							$("#id_text").on("focus", function(){
-								$("post-form-container").css({position:"absolute"})
+								$(".post-form-container").css({position:"absolute"})
 							}).on("blur", function(){
-								$("post-form-container").css({position:"fixed"})
+								$(".post-form-container").css({position:"fixed"})
 							});
 							
 							///attach only once
