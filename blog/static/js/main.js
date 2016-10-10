@@ -207,10 +207,8 @@ $(document).ready(function() {
 									el.css({overflow:"scroll"})
 								
 								
-								
-								
-									//le.scrollTop(
-									console.log(e.timeStamp)
+									console.log("TOUCHEND!!!!!!", e)
+							
 								
 								
 								
@@ -296,7 +294,7 @@ $(document).ready(function() {
 							var diff = 0
 							
 							el.on('touchend', function(e){
-							console.log("TOUCHEND!!!!!!", e)
+							
 								if(diff > 0){
 									$("header").css({transition:"height 0.2s"})
 									window.getComputedStyle($("header")[0]);
