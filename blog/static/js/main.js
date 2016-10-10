@@ -250,7 +250,7 @@ $(document).ready(function() {
 											   page = $("html, body");
 
 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
-												   element.stop();
+												   el.stop();
 											   });
 
 											$(window).scrollTop(0)
