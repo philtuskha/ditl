@@ -217,39 +217,38 @@ $(document).ready(function() {
 								$(window).on('touchmove', function(e){
 									var this_ws = $(this).scrollTop();
 									console.log("TOUCHStart!!!!", e, last_ws, this_ws )
+									
+									if(last_ws < 0){
+										$("body").css({background:"#595959"})
+									}else{
+										$("body").css({background:"#fff"})
+									}
 									last_ws = this_ws
 								});
 								
 								$(window).on('touchend', function(e){
 									console.log("TOUCHEND!!!!!!", e, e.target)
 									
-									
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
+										
 									}else{
-										el.css({overflow:"scroll"})
+										
 										
 										if(e.target.id != "id_text"){
+										
+											$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 											 setTimeout(function(){
-											
-											 
-											//  $("header").css({"height":"0px"})
-											 
-											 // $("header").css({transition:"height 0.2s", "height":$("header").height()+"px"})
-// 												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 													$("header").css({transition: "none !important", "height":"0px"})
-// 												});
 												
-												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 													 $(window).scrollTop(0)
 													$("body").css({transition: "none !important", "margin-top":"0px"})
 													$("body").removeAttr("style")
+													
+													el.css({overflow:"scroll"})
+													
 													console.log($("body").attr("style"))
-													//$("body").off('touchend')
 													console.log("done with window fix")
-													//return;
-									
 												});							
 // 								
  											}, 30);
