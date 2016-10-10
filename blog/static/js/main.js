@@ -197,9 +197,16 @@ $(document).ready(function() {
 
 							
 						function toggleHeader(el){
-							/////set up page height remove nav bars
-							
+							/////set up styles for mobile						
 							el.css({overflow:"hidden"})
+							$("post-form-container").css({position:"fixed"})
+							
+							///fixed sporadic iphone behavior when textarea is pushed
+							$("#id_text").on("focus", function(){
+								$("post-form-container").css({position:"absolute"})
+							}).on("blur", function(){
+								$("post-form-container").css({position:"fixed"})
+							});
 							
 							///attach only once
 							if(el.length == $(".user-view").length){
@@ -223,7 +230,7 @@ $(document).ready(function() {
 											 setTimeout(function(){
 											 $(window).scrollTop(0);
 											 
-											 $("header").css({"height":"0px"})
+											//  $("header").css({"height":"0px"})
 											 
 											 // $("header").css({transition:"height 0.2s", "height":$("header").height()+"px"})
 // 												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
