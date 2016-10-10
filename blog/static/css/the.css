@@ -632,7 +632,8 @@ top:0px;
 z-index:6;
 height:inherit;
 width:100%;
-display:none;
+display:block;
+background:rgba(45,34,67,0.2);
 }
 #user-top>ul{
 height:42px;
