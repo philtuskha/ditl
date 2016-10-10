@@ -231,6 +231,8 @@ $(document).ready(function() {
 								$(window).on('touchend', function(e){
 									console.log("TOUCHEND!!!!!!", e, e.target)
 									
+									console.log("DID I EVEN MAKE IT HERE")
+									
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
 										
