@@ -199,10 +199,10 @@ $(document).ready(function() {
 						function toggleHeader(el){
 							/////set up page height remove nav bars
 							
-							$('scroll-stop').css({display:'block',border:"1px solid cyan"})
+							$('#scroll-stop').css({display:'block', border:"1px solid cyan"})
 							
 							$(window).on('touchend', function(e){
-								$('scroll-stop').css({display:'none'})
+								$('#scroll-stop').css({display:'none'})
 								
 								
 								
