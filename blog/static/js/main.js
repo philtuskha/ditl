@@ -319,7 +319,7 @@ $(document).ready(function() {
 								//e.stopPropagation();
 								console.log("TOUCHEND!!!!!!", e, e.target.offsetParent)
 							
-								el = e.target.offsetParent
+								el = $('.'+e.target.offsetParent.className)
 							
 								if(last_ws < 0){
 									el.css({overflow:"hidden"})
