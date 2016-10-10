@@ -300,6 +300,10 @@ $(document).ready(function() {
 								$(".post-form-container").css({position:"fixed"})
 							});
 							
+							////////initially set overflow to hidden
+							$(".user-view").css({overflow:"hidden"})
+							$(".main-feed").css({overflow:"hidden"})
+							
 							///////attach window events
 							var last_ws = 0;
 							
@@ -347,13 +351,17 @@ $(document).ready(function() {
 									}
 								}
 								
-								if(e.target.offsetParent.className == "user-view"){
-			
+								if(e.target.parentNode.parentNode.className == "user-view"){
+									
+									
 									chooseTarget($(".user-view"));
+									
 								
-								}else if(e.target.className == "main-feed"){
+								}else if(e.target.parentNode.parentNode.parentNode.parentNode.className == "main-feed"){
 								
+									
 									chooseTarget($(".main-feed"));
+									
 								
 								}else{
 								
