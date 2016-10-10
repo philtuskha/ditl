@@ -386,7 +386,7 @@ $(document).ready(function() {
 									$(window).on('touchend')	
 								
 								}else{
-									console.log("not valid target")
+									console.log("not valid target", e)
 								
 								
 								}
