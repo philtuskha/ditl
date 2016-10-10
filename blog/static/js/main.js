@@ -239,12 +239,13 @@ $(document).ready(function() {
 										
 										if(e.target.id != "id_text"){
 											
+											
+											
+											
+											$("body").css({"margin-top":"-"+($(this).scrollTop()+44)+"px"})
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
-											
-											
-											$("body").css({"margin-top":"-"+$(this).scrollTop()+44+"px"})
-											
-											
+											console.log("window scroll top",$(this).scrollTop())
+
 											 setTimeout(function(){
 												$("body").css({transition:"margin-top 0.7s", "margin-top":"0px"})
 												// myScroller(el, $(this).scrollTop());
