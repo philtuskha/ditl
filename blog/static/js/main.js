@@ -351,11 +351,11 @@ $(document).ready(function() {
 									
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initScroll(e){
 												console.log(e)
-												
-												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(e){
-													el.off("scroll", initWindowScroll);
-										
-												});	
+												$(window).scrollTop(0)
+												// $(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(e){
+// 													el.off("scroll", initWindowScroll);
+// 										
+// 												});	
 											});
 
 											   //return false; 
