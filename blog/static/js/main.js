@@ -292,54 +292,54 @@ $(document).ready(function() {
 								
 							}
 							
-							function touchScroll(diff, el){
-								
-							
-								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-								// console.log
+							// function touchScroll(diff, el){
 // 								
-							
-								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
-									
-								console.log($(window).height(), $("#viewport").height());	
-								if(diff > 0){
-									
-									
-									
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-										
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-									}
-									
-								}else{
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-										
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-										
-										
-									}
-									
-								}
-								
-							}
+// 							
+// 								//prevent wild swings in header height
+// 								if(diff > $("header>div").height()/2){
+// 									diff = 30
+// 								}else if(diff < "-"+$("header>div").height()/2){
+// 									diff = -30
+// 								}
+// 								// console.log
+// // 								
+// 							
+// 								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
+// 									
+// 								console.log($(window).height(), $("#viewport").height());	
+// 								if(diff > 0){
+// 									
+// 									
+// 									
+// 									///sizing the header
+// 									if($("header").height() <= 0){
+// 										$("header").css({height:"0px"})
+// 										
+// 									}else{
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 									}
+// 									
+// 								}else{
+// 									if($("header").height() >= $("header>div").height()){
+// 										$("header").css({height:$("header>div").height()+"px"})
+// 										
+// 									}else{		   
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 										
+// 										
+// 										
+// 									}
+// 									
+// 								}
+// 								
+// 							}
 						
-							function wheelCheck(diff, el, event){
-								touchScroll(diff, el);
-								
-								
-							
-							};
+							// function wheelCheck(diff, el, event){
+// 								touchScroll(diff, el);
+// 								
+// 								
+// 							
+// 							};
 							var diff = 0
 							
 							el.on('touchend', function(e){
@@ -378,22 +378,41 @@ $(document).ready(function() {
 								// $(window).scrollTop(el.scrollTop());
 								//event.preventDefault();
 								var scroll_max = $(this).children().last().height() - $(this).height();
-								
-								
-								
-								
-								
 								var st = $(this).scrollTop();
-								diff =	st - lastScrollTop; 						
+								diff =	st - lastScrollTop; 	
+													
 								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
 								
-								if(st > lastScrollTop ){ //////scrolling up 	
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
+								}
+								
+								
+								if(diff > 0){ //////scrolling up st > lastScrollTop
 										
-										wheelCheck(diff, el, event)
+									///sizing the header
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
+										
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+									}
 
 								}else if(st <= lastScrollTop ){ //////scrolling down
 										
-										wheelCheck(diff, el, event)
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+										
+									}else{		   
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+										
+										
+									}
 
 								}
 								lastScrollTop = st
