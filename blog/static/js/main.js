@@ -375,7 +375,7 @@ $(document).ready(function() {
 									$(".main-feed").off("touchend");
 									$(".main-feed").off("touchmove");
 									$(".main-feed").css({overflow:"hidden"})
-									$(window).on('touchend', windowEnd)
+									$(window).on('touchend')
 									
 								}else if(e.target.id == "posts-ico"){
 									
@@ -383,7 +383,7 @@ $(document).ready(function() {
 									$(".user-view").off("touchend");
 									$(".user-view").off("touchmove");
 									$(".user-view").css({overflow:"hidden"})
-									$(window).on('touchend', windowEnd)	
+									$(window).on('touchend')	
 								
 								}else{
 									console.log("not valid target")
