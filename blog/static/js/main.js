@@ -221,7 +221,7 @@ $(document).ready(function() {
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px"})
 										$("body").removeAttr("style")
-										console.log($("body").attr("style")
+										console.log($("body").attr("style"))
 										//$("body").off('touchend')
 										console.log("done with window fix")
 										//return;
