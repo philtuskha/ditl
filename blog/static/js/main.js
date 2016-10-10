@@ -242,28 +242,40 @@ $(document).ready(function() {
 											
 											
 											
-											$("body").css({"margin-top":"-"+($(this).scrollTop()-24)+"px"})
+											//$("body").css({"margin-top":"-"+($(this).scrollTop()-24)+"px"})
 											
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
 											console.log("window scroll top",$(this).scrollTop())
+											
+											  //  page = $("html, body");
+// 
+// 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
+// 												   element.stop();
+// 											   });
 
-											 setTimeout(function(){
-												$("body").css({transition:"margin-top 0.7s", "margin-top":"0px"})
-												// myScroller(el, $(this).scrollTop());
-												el.scrollTop($(this).scrollTop());
-												
-												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-													 $(window).scrollTop(0)
-													$("body").css({transition: "none !important"})
-													$("body").removeAttr("style")
-													
-													el.css({overflow:"scroll"})
-													
-													
-													console.log("done with window fix")
-												});							
-// 								
- 											}, 2000);
+											   el.animate({ $(this).scrollTop(): position }, 250, 'easeOutQuint', function(){
+												   //el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+											   });
+
+											
+	
+											//  setTimeout(function(){
+// 												$("body").css({transition:"margin-top 2s", "margin-top":"0px"})
+// 												// myScroller(el, $(this).scrollTop());
+// 												el.scrollTop($(this).scrollTop());
+// 												
+// 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 													 $(window).scrollTop(0)
+// 													$("body").css({transition: "none !important"})
+// 													$("body").removeAttr("style")
+// 													
+// 													el.css({overflow:"scroll"})
+// 													
+// 													
+// 													console.log("done with window fix")
+// 												});							
+// // 								
+//  											}, 2000);
 										
 										}
 									}
