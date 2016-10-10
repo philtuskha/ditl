@@ -220,7 +220,7 @@ $(document).ready(function() {
 									
 									if(last_ws < 0){
 										$("body").css({background:"#595959"})
-									}else{
+									}else if(last_ws > 0){
 										$("body").css({background:"#fff"})
 									}
 									last_ws = this_ws
@@ -232,7 +232,7 @@ $(document).ready(function() {
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
 										
-									}else{
+									}else if(last_ws > 0{
 										
 										
 										if(e.target.id != "id_text"){
@@ -251,7 +251,7 @@ $(document).ready(function() {
 													console.log("done with window fix")
 												});							
 // 								
- 											}, 30);
+ 											}, 2000);
 										
 										}
 									}
