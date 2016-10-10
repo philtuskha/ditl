@@ -247,22 +247,22 @@ $(document).ready(function() {
 											console.log("RECOGNIZE STYLE ATTR",$("body").attr("style"))
 											console.log("window scroll top",$(this).scrollTop())
 											
-											  //  page = $("html, body");
-// 
-// 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
-// 												   element.stop();
-// 											   });
+											   page = $("html, body");
+
+											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
+												   element.stop();
+											   });
 
 											$(window).scrollTop(0)
 										   
 											var scroll_dist = $(this).scrollTop()
-											myScroller(el, scroll_dist)
-											// el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
-// 												el.clearQueue()
-// 												//el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-// 											});
+									
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
+												el.clearQueue()
+												//el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+											});
 
-											   return false; 
+											   //return false; 
 	
 											//  setTimeout(function(){
 // 												$("body").css({transition:"margin-top 2s", "margin-top":"0px"})
