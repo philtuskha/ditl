@@ -211,7 +211,7 @@ $(document).ready(function() {
 							
 								
 								
-									if(e.target.id != "id_text")
+									if(e.target.id != "id_text"){
 
 								
 										setTimeout(function(){
