@@ -346,19 +346,21 @@ $(document).ready(function() {
 // 											   });
 
 											//$(window).scrollTop(0)
-											$("html, body").animate({ scrollTop: 0}, 3000, 'easeOutQuint', function initWindowScroll(){
+											$("html, body").animate({ scrollTop: 0}, 200, 'easeOutQuint', function initWindowScroll(){
 												$("html, body").off("scroll", initWindowScroll);
+												
+												el.animate({ scrollTop: scroll_dist}, 2000, 'easeOutQuint', function initElScroll(){
+													//console.log(e)
+													//$(window).scrollTop(0)
+													el.off("scroll", initElScroll);
+												
+												});
 										
 											});	
 										   
 											var scroll_dist = $(this).scrollTop()
 									
-											el.animate({ scrollTop: scroll_dist}, 2000, 'easeOutQuint', function initElScroll(){
-												//console.log(e)
-												//$(window).scrollTop(0)
-												el.off("scroll", initElScroll);
-												
-											});
+											
 
 											   //return false; 
 	
