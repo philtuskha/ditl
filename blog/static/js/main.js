@@ -357,13 +357,13 @@ $(document).ready(function() {
 									}
 								}
 								
-								if(e.target.parentNode.parentNode.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
+								if(e.target.offsetParent.className == "user-view" && $(".user-view").css("overflow") != "scroll"){
 									
 									
 									chooseTarget($(".user-view"));
 									
 								
-								}else if(e.target.parentNode.parentNode.parentNode.parentNode.className == "main-feed" && $(".main-feed").css("overflow") != "scroll"){
+								}else if(e.target.offsetParent.className == "center" && $(".main-feed").css("overflow") != "scroll"){
 								
 									
 									chooseTarget($(".main-feed"));
