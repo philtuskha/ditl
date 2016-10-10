@@ -626,15 +626,6 @@ z-index:4;
 background:rgba(248,248,248,0.96);
 border-bottom: 1px solid #d3d3d3;
 }
-#scroll-stop{
-position:absolute;
-top:0px;
-z-index:6;
-height:inherit;
-width:100%;
-display:block;
-background:rgba(45,34,67,0.2);
-}
 #user-top>ul{
 height:42px;
 list-style:none;
@@ -1256,7 +1247,7 @@ visibility:hidden;
 @media screen
 and (max-width:48.125em){
 	body, html {
-	
+		margin-top:0;
 		/* 
 height  : 100%;
 		overflow: auto;
