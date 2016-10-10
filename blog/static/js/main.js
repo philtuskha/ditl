@@ -206,8 +206,8 @@ $(document).ready(function() {
 								var last_ws = 0;
 								$(window).on('touchmove', function(e){
 									var this_ws = this.scrollTop;
-									console.log("TOUCHStart%^&*", e, last_ws, this_ws )
-									last_ws
+									console.log("TOUCHStart!!!!", e, last_ws, this_ws )
+									last_ws = this_ws
 								});
 								
 								// $(window).on('touchend', function(e){
