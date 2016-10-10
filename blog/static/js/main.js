@@ -228,7 +228,7 @@ $(document).ready(function() {
 										
 										if(e.target.id != "id_text"){
 											 setTimeout(function(){
-											 $(window).scrollTop(0);
+											
 											 
 											//  $("header").css({"height":"0px"})
 											 
@@ -237,17 +237,17 @@ $(document).ready(function() {
 // 													$("header").css({transition: "none !important", "height":"0px"})
 // 												});
 												
-// 												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
-// 												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 													 $(window).scrollTop(0)
-// 													$("body").css({transition: "none !important", "margin-top":"0px"})
-// 													$("body").removeAttr("style")
-// 													console.log($("body").attr("style"))
-// 													//$("body").off('touchend')
-// 													console.log("done with window fix")
-// 													//return;
-// 									
-// 												});							
+												$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
+												$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+													 $(window).scrollTop(0)
+													$("body").css({transition: "none !important", "margin-top":"0px"})
+													$("body").removeAttr("style")
+													console.log($("body").attr("style"))
+													//$("body").off('touchend')
+													console.log("done with window fix")
+													//return;
+									
+												});							
 // 								
  											}, 30);
 										
