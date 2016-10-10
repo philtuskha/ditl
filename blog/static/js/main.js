@@ -198,6 +198,135 @@ $(document).ready(function() {
 							
 						function toggleHeader(el){
 						
+							
+							
+							function touchScroll(diff, el){
+								
+							
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
+								}
+								// console.log
+// 								
+							
+								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
+									
+								console.log($(window).height(), $("#viewport").height());	
+								if(diff > 0){
+									
+									
+									
+									///sizing the header
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
+										
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+									}
+									
+								}else{
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+										
+									}else{		   
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+										
+										
+									}
+									
+								}
+								
+							}/////end touchScroll
+						
+							// function wheelCheck(diff, el, event){
+// 								touchScroll(diff, el);
+// 								
+// 								
+// 							
+// 							};
+							var diff = 0
+							
+							el.on('touchend', function(e){
+								e.stopPropagation();
+							
+								if(diff > 0){
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:"0px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+										// window.getComputedStyle($(".content-wrap")[0]);
+// 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
+									
+									});
+									
+								}else{
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:$("header>div").height()+"px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+										// window.getComputedStyle($(".content-wrap")[0]);
+// 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
+									
+									});
+								}
+							
+							});
+						
+							var lastScrollTop = 0;
+							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
+								event.stopPropagation();
+								
+								$(".content-wrap").css({height: "calc(100vh + 100px"});
+								// $(window).scrollTop(el.scrollTop());
+								//event.preventDefault();
+								var scroll_max = $(this).children().last().height() - $(this).height();
+								var st = $(this).scrollTop();
+								diff =	st - lastScrollTop; 	
+													
+								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
+								
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
+								}
+								
+								
+								if( diff > 0){ //////scrolling up st > lastScrollTop
+										
+									///sizing the header
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
+										
+									}else{
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+									}
+
+								}else if(st <= lastScrollTop ){ //////scrolling down
+										
+									if($("header").height() >= $("header>div").height()){
+										$("header").css({height:$("header>div").height()+"px"})
+										
+									}else{		   
+										$("header").css({height:($("header").height() - diff)+"px"})
+										
+										
+										
+									}
+
+								}
+								lastScrollTop = st
+							
+							});
+							
 							/////set up styles for mobile						
 							el.css({overflow:"hidden"})
 							
@@ -293,134 +422,8 @@ $(document).ready(function() {
 										
 								});
 								
-							}
+							}///end window event listeners
 							
-							function touchScroll(diff, el){
-								
-							
-								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-								// console.log
-// 								
-							
-								// $(".content-wrap").css({height: "calc(100vh + 200px)"});
-									
-								console.log($(window).height(), $("#viewport").height());	
-								if(diff > 0){
-									
-									
-									
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-										
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-									}
-									
-								}else{
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-										
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-										
-										
-									}
-									
-								}
-								
-							}
-						
-							// function wheelCheck(diff, el, event){
-// 								touchScroll(diff, el);
-// 								
-// 								
-// 							
-// 							};
-							var diff = 0
-							
-							el.on('touchend', function(e){
-								// e.stopPropagation();
-							
-								if(diff > 0){
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:"0px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-										// window.getComputedStyle($(".content-wrap")[0]);
-// 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
-									
-									});
-									
-								}else{
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:$("header>div").height()+"px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-										// window.getComputedStyle($(".content-wrap")[0]);
-// 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
-									
-									});
-								}
-							
-							});
-						
-							var lastScrollTop = 0;
-							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								// event.stopPropagation();
-								
-								$(".content-wrap").css({height: "calc(100vh + 100px"});
-								// $(window).scrollTop(el.scrollTop());
-								//event.preventDefault();
-								var scroll_max = $(this).children().last().height() - $(this).height();
-								var st = $(this).scrollTop();
-								diff =	st - lastScrollTop; 	
-													
-								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
-								
-								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-								
-								
-								if( diff > 0){ //////scrolling up st > lastScrollTop
-										
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-										
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-									}
-
-								}else if(st <= lastScrollTop ){ //////scrolling down
-										
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-										
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-										
-										
-										
-									}
-
-								}
-								lastScrollTop = st
-							
-							});
 						}
 					
 						if('ontouchstart' in document.documentElement){
