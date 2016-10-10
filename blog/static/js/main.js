@@ -215,7 +215,7 @@ $(document).ready(function() {
 
 								
 								setTimeout(function(){
-									$("body").css({transition:"margin-top 1s", "margin-top":$(this).scrollTop()+"px"})
+									$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
 									$( "body" ).on("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px"})
@@ -226,7 +226,7 @@ $(document).ready(function() {
 									
 									});							
 								
-								}, 1000);	
+								}, 500);	
 									
 							
 				
