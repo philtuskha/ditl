@@ -348,15 +348,16 @@ $(document).ready(function() {
 												//console.log(e)
 												//$(window).scrollTop(0)
 												el.off("scroll", initElScroll);
-											
-											});
-											
-											//$(window).scrollTop(0)
-											$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
-												$("html, body").off("scroll", initWindowScroll);
+												//$(window).scrollTop(0)
+												$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
 												
 										
+												});
+											
 											});
+											
+											
 												
 											
 										   
