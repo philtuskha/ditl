@@ -320,10 +320,11 @@ $(document).ready(function() {
 								
 							
 								el_name = e.target.offsetParent.className
+								console.log("TOUCHEND!!!!!!",el_name)
 								if(el_name == "user_view" || el_name == "main-feed"){
 								
 									el = $("."+el_name+"")
-									console.log("TOUCHEND!!!!!!",el)
+									//console.log("TOUCHEND!!!!!!",el)
 							
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
