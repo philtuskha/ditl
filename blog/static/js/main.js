@@ -203,46 +203,42 @@ $(document).ready(function() {
 							
 							///attach only once
 							if(el.length == $(".user-view").length){
-								$(window).on('touchend', function(e){
-									el.css({overflow:"scroll"})
-								
-								
-									console.log("TOUCHEND!!!!!!", e, e.target)
-							
-								
-								
-									if(e.target.id != "id_text"){
-
-								
-										setTimeout(function(){
-											$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
-											$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-												 $(window).scrollTop(0)
-												$("body").css({transition: "none !important", "margin-top":"0px"})
-												$("body").removeAttr("style")
-												console.log($("body").attr("style"))
-												//$("body").off('touchend')
-												console.log("done with window fix")
-												//return;
-									
-											});							
-								
-										}, 500);
-										
-									}	
-									
-							
-				
-									
-							
-								
-								
-								
-								
-								
-								
-								
+								var last_ws = 0;
+								$(window).on('touchmove', function(e){
+									var this_ws = this.scrollTop;
+									console.log("TOUCHStart%^&*", e, last_ws, this_ws )
+									last_ws
 								});
+								
+								// $(window).on('touchend', function(e){
+// 									el.css({overflow:"scroll"})
+// 								
+// 								
+// 									console.log("TOUCHEND!!!!!!", e, e.target)
+// 							
+// 								
+// 								
+// 									if(e.target.id != "id_text"){
+// 
+// 								
+// 										setTimeout(function(){
+// 											$("body").css({transition:"margin-top 0.5s", "margin-top":$(this).scrollTop()+"px"})
+// 											$( "body" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 												 $(window).scrollTop(0)
+// 												$("body").css({transition: "none !important", "margin-top":"0px"})
+// 												$("body").removeAttr("style")
+// 												console.log($("body").attr("style"))
+// 												//$("body").off('touchend')
+// 												console.log("done with window fix")
+// 												//return;
+// 									
+// 											});							
+// 								
+// 										}, 500);
+// 										
+// 									}	
+// 								});
+								
 							}
 							
 							function touchScroll(diff, el){
