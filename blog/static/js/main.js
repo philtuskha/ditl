@@ -253,11 +253,11 @@ $(document).ready(function() {
 // 												   element.stop();
 // 											   });
 											   var scroll_dist = $(this).scrollTop()
-											   el.animate({scroll_dist : position }, 250, 'easeOutQuint', function(){
+											   el.animate({ scrollTop: scroll_dist}, 250, 'easeOutQuint', function(){
 												   //el.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
 											   });
 
-											
+											   return false; 
 	
 											//  setTimeout(function(){
 // 												$("body").css({transition:"margin-top 2s", "margin-top":"0px"})
