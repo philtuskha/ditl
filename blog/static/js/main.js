@@ -319,31 +319,35 @@ $(document).ready(function() {
 								//e.stopPropagation();
 								
 							
-								el = $('.'+e.target.offsetParent.className)
-								console.log("TOUCHEND!!!!!!", e, el)
+								el_name = e.target.offsetParent.className
+								if(el_name == "user_view" || el_name == "main-feed"){
+								
+									el = $("."+el_name+"")
+									console.log("TOUCHEND!!!!!!",el)
 							
-								if(last_ws < 0){
-									el.css({overflow:"hidden"})
+									if(last_ws < 0){
+										el.css({overflow:"hidden"})
 								
-									toggleHeader(false, el);
+										toggleHeader(false, el);
 								
-								}else{
+									}else{
 								
-									toggleHeader(true, el);
+										toggleHeader(true, el);
 								
-									if(e.target.id != "id_text"){
+										if(e.target.id != "id_text"){
 									
-										var scroll_dist = $(this).scrollTop() - 44
+											var scroll_dist = $(this).scrollTop() - 44
 									
-										el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 											
-											el.off("scroll", initElScroll);
+												el.off("scroll", initElScroll);
 											
-											$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
-												$("html, body").off("scroll", initWindowScroll);
+												$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
 								
+												});
 											});
-										});
+										}
 									}
 								}
 							});
