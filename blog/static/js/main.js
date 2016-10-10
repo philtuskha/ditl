@@ -357,7 +357,7 @@ $(document).ready(function() {
 								
 								}else{
 								
-									return false;
+									console.log("not valid target")
 								}
 								
 								
