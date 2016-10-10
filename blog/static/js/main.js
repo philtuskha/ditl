@@ -204,7 +204,7 @@ $(document).ready(function() {
 								var diff = 0
 						
 								el.on('touchend', function(e){
-									e.stopPropagation();
+									//e.stopPropagation();
 						
 									if(diff > 0){
 										$("header").css({transition:"height 0.2s"})
@@ -233,7 +233,7 @@ $(document).ready(function() {
 					
 								var lastScrollTop = 0;
 								el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-									event.stopPropagation();
+									//event.stopPropagation();
 							
 									$(".content-wrap").css({height: "calc(100vh + 100px"});
 									// $(window).scrollTop(el.scrollTop());
