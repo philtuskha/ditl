@@ -328,7 +328,7 @@ $(document).ready(function() {
 										
 										elementEvents(false);
 										
-									}else if(last_ws > 0){
+									}else{
 										
 										elementEvents(true);
 										
