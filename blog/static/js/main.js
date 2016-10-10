@@ -344,9 +344,10 @@ $(document).ready(function() {
 // 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
 // 												   el.stop();
 // 											   });
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(){
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 												//console.log(e)
 												//$(window).scrollTop(0)
+												e.stopPropogation();
 												el.off("scroll", initElScroll);
 												//$(window).scrollTop(0)
 												$("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
