@@ -399,7 +399,7 @@ $(document).ready(function() {
 								
 								
 								
-							});
+							});//////end touchend
 						}///end initMobile
 							
 							
