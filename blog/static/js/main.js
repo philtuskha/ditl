@@ -320,7 +320,7 @@ $(document).ready(function() {
 								
 								function chooseTarget(el){
 									console.log("TOUCHEND!!!!!!", e, el)
-							
+									el.css({border:"4px solid cyan"})
 									if(last_ws < 0){
 										el.css({overflow:"hidden"})
 								
