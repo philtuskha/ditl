@@ -344,10 +344,7 @@ $(document).ready(function() {
 // 											   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
 // 												   el.stop();
 // 											   });
-											$("html, body").animate({ scrollTop: 0}, 1000, 'easeOutQuint', function initWindowScroll(){
-													$("html, body").off("scroll", initWindowScroll);
 										
-												});
 											
 											
 											var scroll_dist = $(this).scrollTop()
@@ -357,10 +354,10 @@ $(document).ready(function() {
 												//$(window).scrollTop(0)
 												el.off("scroll", initElScroll);
 												//$(window).scrollTop(0)
-												// $("html, body").animate({ scrollTop: 0}, 500, 'easeOutQuint', function initWindowScroll(){
-// 													$("html, body").off("scroll", initWindowScroll);
-// 										
-// 												});
+												$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
+										
+												});
 												
 											});
 											
