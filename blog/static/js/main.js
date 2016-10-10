@@ -349,11 +349,11 @@ $(document).ready(function() {
 										   
 											var scroll_dist = $(this).scrollTop()
 									
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(e){
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function(){
 												//console.log(e)
 												//$(window).scrollTop(0)
 												//el.off("scroll", initElScroll);
-												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(e){
+												$(window).animate({ scrollTop: 0}, 1000, 'easeOutQuint', function(){
 													//$(window).off("scroll", initWindowScroll);
 										
 												});	
