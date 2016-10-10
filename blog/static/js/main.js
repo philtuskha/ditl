@@ -201,14 +201,16 @@ $(document).ready(function() {
 							
 							el.css({overflow:"hidden"})
 							
+							var lws = 0;
 							$(window).on('touchend', function(e){
 								el.css({overflow:"scroll"})
 								
+								tws = this.scrollTop;
 								
 								
 								
 								//le.scrollTop(
-								
+								console.log(e.timeStamp)
 								
 								
 								
@@ -220,6 +222,7 @@ $(document).ready(function() {
 										 $(window).scrollTop(0)
 										$("body").css({transition: "none !important", "margin-top":"0px"})
 										$("body").removeAttr("style")
+										console.log($("body").attr("style")
 										//$("body").off('touchend')
 										console.log("done with window fix")
 										//return;
