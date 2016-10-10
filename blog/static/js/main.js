@@ -201,11 +201,10 @@ $(document).ready(function() {
 							
 							el.css({overflow:"hidden"})
 							
-							var lws = 0;
+							
 							$(window).on('touchend', function(e){
 								el.css({overflow:"scroll"})
 								
-								tws = this.scrollTop;
 								
 								
 								
