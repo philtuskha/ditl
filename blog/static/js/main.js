@@ -417,7 +417,7 @@ $(document).ready(function() {
 								$(window).off('touchend')
 								setTimeout(function(){
 									setNavBar()
-								}, 500);
+								}, 200);
 							})
 						
 							////start
