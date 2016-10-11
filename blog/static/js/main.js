@@ -326,7 +326,7 @@ $(document).ready(function() {
 								function chooseTarget(el){
 									console.log("TOUCHEND!!!!!!", e, el)
 									
-									if(last_ws < 1){
+									if(last_ws <= 1){
 										console.log("initialized")
 										el.css({overflow:"hidden"})
 										$(window).off('touchend', windowEnd)
