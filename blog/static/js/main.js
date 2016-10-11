@@ -364,9 +364,9 @@ $(document).ready(function() {
 									}
 							
 								}
-								console.log($(".left-holder").css("left"))
+								console.log($(".left-wrap").css("left"))
 								
-								if($(".left-holder").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
+								if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 									
 									
 									chooseTarget($(".user-view"));
