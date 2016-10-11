@@ -277,12 +277,15 @@ $(document).ready(function() {
 								if ($(window).scrollTop() == 0){
 									//////////////stop these element events and start window events via a function
 									el.css({overflow:"hidden"})
-									$(window).on('touchend', function(e){
-										console.log("fires already")
-										$("html, body").scrollTop(1)
-										el.css({overflow:"scroll"})
-										$(window).off('touchend')
-									});
+									setTimeout(function(){
+										$(window).on('touchend', function(e){
+											console.log("fires already")
+											$("html, body").scrollTop(1)
+											el.css({overflow:"scroll"})
+											$(window).off('touchend')
+										});
+									}, 100)
+									
 									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 // 										$("html, body").off("scroll", initWindowScroll);
 // 										el.css({overflow:"scroll"})
