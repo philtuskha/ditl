@@ -573,6 +573,7 @@ function hiddenToggleFunction(){
 							// 
 // 							//////toggle
 							$("header>div>div").on('click', function(){
+								console.log(this.id)
 								if(this.id == "compose-ico"){
 									$(".main-feed").off('touchmove')
 									$(".main-feed").off('touchend')
