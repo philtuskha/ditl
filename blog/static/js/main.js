@@ -424,6 +424,13 @@ $(document).ready(function() {
 							////////initially set overflow to hidden
 							$(".user-view").css({overflow:"hidden"})
 							$(".main-feed").css({overflow:"hidden"})
+							
+							//////toggle
+							$("header>div>div").on('click', function(){
+								setTimeOut(function(){
+									setNavBar()
+								}, 500);
+							})
 						
 							////start
 							setNavBar()
