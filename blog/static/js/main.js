@@ -368,40 +368,19 @@ $(document).ready(function() {
 								
 								if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 									
-									
+									$(".main-feed").off('touchmove')
+									$(".main-feed").off('touchend')
 									chooseTarget($(".user-view"));
 									
 								
 								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
 								
-									
+									$(".user-view")off('touchmove')
+									$(".user-view")off('touchend')
 									chooseTarget($(".main-feed"));
 									
+									
 								}
-								
-								// else if(e.target.id == "compose-ico"){
-// 									
-// 									//chooseTarget($(".user-view"))
-// 									$(".main-feed").off("touchend");
-// 									$(".main-feed").off("touchmove");
-// 									$(".main-feed").css({overflow:"hidden"})
-// 									$(window).on('touchend')
-// 									
-// 								}else if(e.target.id == "posts-ico"){
-// 									
-// 									//chooseTarget($(".main-feed"))
-// 									$(".user-view").off("touchend");
-// 									$(".user-view").off("touchmove");
-// 									$(".user-view").css({overflow:"hidden"})
-// 									$(window).on('touchend')	
-// 								
-// 								}else{
-// 									console.log("not valid target", e)
-// 								
-// 								
-// 								}
-								
-								
 								
 							});//////end touchend
 						
