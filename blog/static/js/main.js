@@ -309,7 +309,7 @@ $(document).ready(function() {
 								
 								function chooseTarget(el){
 									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
-									if(el.css('overflow' == "scroll"){
+									if(el.css("overflow") == "scroll"){
 									
 										el.css({overflow:"hidden"})
 										
