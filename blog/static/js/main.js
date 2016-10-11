@@ -205,6 +205,7 @@ $(document).ready(function() {
 						
 								el.on('touchend', function(e){
 									//e.stopPropagation();
+									console.log("element TOUCHend!!!!", e, last_ws, this_ws )
 						
 									if(diff > 0){
 										$("header").css({transition:"height 0.2s"})
@@ -234,6 +235,7 @@ $(document).ready(function() {
 								var lastScrollTop = 0;
 								el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 									//event.stopPropagation();
+									console.log("element TOUCHmove!!!!", e, last_ws, this_ws )
 							
 									$(".content-wrap").css({height: "calc(100vh + 100px"});
 									// $(window).scrollTop(el.scrollTop());
@@ -282,6 +284,8 @@ $(document).ready(function() {
 							}else{
 								el.off("touchend");
 								el.off("touchmove");
+								$(window).on('touchend')
+								$(window).on('touchmove')
 							}
 						}////////end toggleHeader
 						
@@ -309,7 +313,7 @@ $(document).ready(function() {
 							
 							$(window).on('touchmove', function(e){
 								var this_ws = $(this).scrollTop();
-								console.log("TOUCHStart!!!!", e, last_ws, this_ws )
+								console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
 							
 								if(last_ws < 0){
 									$("body").css({background:"#595959"})
@@ -320,20 +324,19 @@ $(document).ready(function() {
 							});
 						
 							
-							$(window).on('touchend', function windowEnd(e){
+							$(window).on('touchend', function(e){
 								//e.stopPropagation();
 								
 								function chooseTarget(el){
-									console.log("TOUCHEND!!!!!!", e, el)
+									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
 									
 									if(last_ws <= 0){
-										console.log("initialized")
+										console.log("setting up")
 										el.css({overflow:"hidden"})
 										toggleHeader(false, el);
-										$(window).on('touchend', windowEnd)
 								
 									}else{
-										console.log("NOT initialized")
+										console.log("initializing")
 								
 										if(e.target.id != "id_text"){
 									
@@ -350,7 +353,9 @@ $(document).ready(function() {
 											});
 										}
 										
-										$(window).off('touchend', windowEnd)
+										$(window).off('touchend')
+										$(window).off('touchmove')
+										
 										toggleHeader(true, el);
 										el.css({overflow:"scroll"})
 										
