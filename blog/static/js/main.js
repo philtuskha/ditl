@@ -316,12 +316,8 @@ $(document).ready(function() {
 									}else{
 										if(e.target.id != "id_text"){
 											
-											if(el.scrollTop() == 0){
-												var scroll_dist = $(this).scrollTop() - 44
-											}else{
-												var scroll_dist = el.scrollTop()
-											}
-								
+											var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
+											
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 										
 												el.off("scroll", initElScroll);
