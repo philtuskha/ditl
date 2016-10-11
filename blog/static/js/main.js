@@ -518,10 +518,7 @@ function hiddenToggleFunction(){
 						
 									}
 								}else if(last_ws < 1 ){
-									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-										$("html, body").off("scroll", initWindowScroll);
-	
-									});
+									el.css({overflow:"hidden"});
 								
 								}else{
 								
