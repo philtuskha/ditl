@@ -519,7 +519,8 @@ function hiddenToggleFunction(){
 									}
 								}else if(last_ws < 1 ){
 									el.css({overflow:"hidden"});
-								
+									el.off("touchmove")
+									el.off("touchend")
 								}else{
 								
 									el.on("touchmove", function(e){
