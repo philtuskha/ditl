@@ -427,7 +427,7 @@ $(document).ready(function() {
 							
 							//////toggle
 							$("header>div>div").on('click', function(){
-								setTimeOut(function(){
+								setTimeout(function(){
 									setNavBar()
 								}, 500);
 							})
