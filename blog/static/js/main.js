@@ -329,17 +329,11 @@ $(document).ready(function() {
 									if(last_ws <= 0){
 										console.log("initialized")
 										el.css({overflow:"hidden"})
-										$(window).off('touchend', windowEnd)
-										
 										toggleHeader(false, el);
-										
+										$(window).on('touchend', windowEnd)
 								
 									}else{
 										console.log("NOT initialized")
-										el.css({overflow:"scroll"})
-										$(window).on('touchend', windowEnd)
-										
-										toggleHeader(true, el);
 								
 										if(e.target.id != "id_text"){
 									
@@ -355,6 +349,11 @@ $(document).ready(function() {
 												});
 											});
 										}
+										
+										$(window).off('touchend', windowEnd)
+										toggleHeader(true, el);
+										el.css({overflow:"scroll"})
+										
 									}
 								}
 								
