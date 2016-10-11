@@ -464,14 +464,14 @@ function hiddenToggleFunction(){
 								
 								function chooseTarget(el){
 									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+									
 									if(el.css("overflow") == "scroll"){
 									
 										el.css({overflow:"hidden"})
 										
 									}else{
 										if(e.target.id != "id_text"){
-											$(window).off('touchend')
-											$(window).off('touchmove')
+										
 											el.css({overflow:"scroll"})
 											
 											// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
