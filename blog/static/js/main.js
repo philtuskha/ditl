@@ -441,7 +441,141 @@ function hiddenToggleFunction(){
 // 						}
 						
 }				
+						function setNavBar(){
 						
+							///////attach window events
+							var last_ws = 0;
+							
+							$(window).on('touchmove', function(e){
+								var this_ws = $(this).scrollTop();
+								console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
+							
+								if(last_ws < 0){
+									$("body").css({background:"#595959"})
+								}else if(last_ws > 0){
+									$("body").css({background:"#fff"})
+								}
+								last_ws = this_ws
+							});
+						
+							
+							$(window).on('touchend', function(e){
+								//e.stopPropagation();
+								
+								function chooseTarget(el){
+									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+									if(el.css("overflow") == "scroll"){
+									
+										el.css({overflow:"hidden"})
+										
+									}else{
+										if(e.target.id != "id_text"){
+											$(window).off('touchend')
+											$(window).off('touchmove')
+											el.css({overflow:"scroll"})
+											
+											// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+// 										$("html, body").off("scroll", initWindowScroll);
+// 										el.css({overflow:"scroll"})
+// 				
+// 									});
+											var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
+											$("header").css({height:"0px"})
+											
+											el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
+											
+												el.off("scroll", initElScroll);
+												
+												// $("header").css({transition:"height 0.2s"})
+// 												window.getComputedStyle($("header")[0]);
+// 												$("header").css({height:"0px"})
+// 												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 													$( "header" ).css({transition: "none !important"});
+// 						
+// 												});
+												
+												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
+													
+													
+							
+												});
+											});
+										}
+									
+										
+									
+										
+									
+										
+									}
+							
+								}
+								console.log($(".left-wrap").css("left"))
+								
+								if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
+									
+									
+									chooseTarget($(".user-view"));
+									$(".main-feed").css({overflow:"hidden"})
+								
+								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
+								
+									
+									chooseTarget($(".main-feed"));
+									$(".user-view").css({overflow:"hidden"})
+							
+									
+									
+								}
+								
+							});//////end touchend
+						
+						}
+						
+						function initMobile(){
+						
+							///main post form css fixes
+							$(".post-form-container").css({position:"fixed"})
+							
+							///fixed sporadic iphone behavior when textarea is pushed
+							$("#id_text").on("focus", function(){
+								//event.stopPropagation();
+								
+								$(".post-form-container").css({position:"absolute"})
+							}).on("blur", function(){
+								$(".post-form-container").css({position:"fixed"})
+							});
+							
+							////////initially set overflow to hidden
+							$(".user-view").css({overflow:"hidden"})
+							$(".main-feed").css({overflow:"hidden"})
+							
+							
+							// 
+// 							//////toggle
+// 							$("header>div>div").on('click', function(){
+// 								$(".main-feed").off('touchmove')
+// 								$(".main-feed").off('touchend')
+// 								$(".user-view").off('touchmove')
+// 								$(".user-view").off('touchend')
+// 								setTimeout(function(){
+// 									setNavBar()
+// 								}, 200);
+// 							})
+						
+							////start
+							setNavBar()
+							
+						}///end initMobile
+							
+							
+						if('ontouchstart' in document.documentElement){
+							// toggleHeader($(".user-view"))
+// 							toggleHeader($(".main-feed"))
+							initMobile()
+							
+						}
 						
 			
 
