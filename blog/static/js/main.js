@@ -353,7 +353,7 @@ $(document).ready(function() {
 												
 												$("header").css({transition:"height 0.2s"})
 												window.getComputedStyle($("header")[0]);
-												$("header").css({height:$("header>div").height()+"px"})
+												$("header").css({height:"0px"})
 												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 													$( "header" ).css({transition: "none !important"});
 						
