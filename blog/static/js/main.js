@@ -274,13 +274,20 @@ $(document).ready(function() {
 								}
 								
 								///rest nav bar if scrolled 
-								if ($(window).scrollTop() != 1){
+								if ($(window).scrollTop() == 0){
 									//////////////stop these element events and start window events via a function
 									el.off("touchend");
 									el.off("touchmove");
 									
 									setNavBar()
+									
+								}else if ($(window).scrollTop() > 1){
+									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+										$("html, body").off("scroll", initWindowScroll);
+				
+									});
 								}
+								
 					
 							});
 							
