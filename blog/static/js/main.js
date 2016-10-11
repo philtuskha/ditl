@@ -572,15 +572,15 @@ function hiddenToggleFunction(){
 							
 							// 
 // 							//////toggle
-// 							$("header>div>div").on('click', function(){
-// 								$(".main-feed").off('touchmove')
-// 								$(".main-feed").off('touchend')
-// 								$(".user-view").off('touchmove')
-// 								$(".user-view").off('touchend')
-// 								setTimeout(function(){
-// 									setNavBar()
-// 								}, 200);
-// 							})
+							$("header>div>div").on('click', function(){
+								$(".main-feed").off('touchmove')
+								$(".main-feed").off('touchend')
+								$(".user-view").off('touchmove')
+								$(".user-view").off('touchend')
+								setTimeout(function(){
+									setNavBar()
+								}, 200);
+							})
 						
 							////start
 							setNavBar($(".user-view"))
