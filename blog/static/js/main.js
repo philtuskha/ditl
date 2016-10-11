@@ -536,7 +536,7 @@ function hiddenToggleFunction(){
 												$("html, body").off("scroll", initWindowScroll);
 											});
 											
-										}else if(($(window).scrollTop() < 1){
+										}else if($(window).scrollTop() < 1){
 											el.css({overflow:"hidden"});
 											el.off("touchmove")
 											el.off("touchend")
