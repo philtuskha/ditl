@@ -279,17 +279,17 @@ $(document).ready(function() {
 									el.off("touchend");
 									el.off("touchmove");
 									
-									setNavBar(lastScrollTop)
+									setNavBar()
 								}
 					
 							});
 							
 						}////////end toggleHeader
 						
-						function setNavBar(passedScrollTop){
+						function setNavBar(){
 						
 							///////attach window events
-							var last_ws = passedScrollTop;
+							var last_ws = 0;
 							
 							$(window).on('touchmove', function(e){
 								var this_ws = $(this).scrollTop();
@@ -315,8 +315,12 @@ $(document).ready(function() {
 										
 									}else{
 										if(e.target.id != "id_text"){
-								
-											var scroll_dist = $(this).scrollTop() - 44
+											
+											if(el.scrollTop() == 0){
+												var scroll_dist = $(this).scrollTop() - 44
+											}else{
+												var scroll_dist = el.scrollTop()
+											}
 								
 											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 										
@@ -398,7 +402,7 @@ $(document).ready(function() {
 							$(".main-feed").css({overflow:"hidden"})
 						
 							////start
-							setNavBar(0)
+							setNavBar()
 							
 						}///end initMobile
 							
