@@ -577,6 +577,8 @@ function hiddenToggleFunction(){
 								$(".main-feed").off('touchend')
 								$(".user-view").off('touchmove')
 								$(".user-view").off('touchend')
+								$(window).off('touchmove')
+								$(window).off('touchend')
 								setTimeout(function(){
 									setNavBar()
 								}, 200);
