@@ -263,7 +263,7 @@ $(document).ready(function() {
 							
 									});
 							
-								}else(diff < 0{
+								}else if(diff < 0){
 									$("header").css({transition:"height 0.2s"})
 									window.getComputedStyle($("header")[0]);
 									$("header").css({height:$("header>div").height()+"px"})
