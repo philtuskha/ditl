@@ -380,21 +380,21 @@ $(document).ready(function() {
 								
 								if(e.target.id == "compose-ico"){
 									
-									
+									$(window).on('touchend')
 									$(".main-feed").off("touchend");
 									$(".main-feed").off("touchmove");
 									$(".main-feed").css({overflow:"hidden"})
 									chooseTarget($(".user-view"))
-									//$(window).on('touchend')
+									
 									
 								}else if(e.target.id == "posts-ico"){
 									
-									
+									$(window).on('touchend')
 									$(".user-view").off("touchend");
 									$(".user-view").off("touchmove");
 									$(".user-view").css({overflow:"hidden"})
 									chooseTarget($(".main-feed"))
-									//$(window).on('touchend')	
+										
 								
 								}
 								
