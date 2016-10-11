@@ -465,7 +465,7 @@ function hiddenToggleFunction(){
 								function chooseTarget(el){
 									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
 									
-									if(el.css("overflow") == "scroll"){
+									if($(window).scrollTop() != 1 ){ /////el.css("overflow") == "scroll"
 									
 										el.css({overflow:"hidden"})
 										
