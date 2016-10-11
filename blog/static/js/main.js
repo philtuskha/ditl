@@ -531,11 +531,11 @@ function hiddenToggleFunction(){
 									el.on("touchend", function(e){
 										e.stopPropagation();
 										if($(window).scrollTop() > 1){
-										
-											$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-												$("html, body").off("scroll", initWindowScroll);
-											});
-											
+											setTimeout(fuunction(){
+												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
+												});
+											}, 1000)
 										}else if($(window).scrollTop() < 1){
 											el.css({overflow:"hidden"});
 											el.off("touchmove")
