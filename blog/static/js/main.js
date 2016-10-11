@@ -441,7 +441,7 @@ function hiddenToggleFunction(){
 // 						}
 						
 }				
-						function setNavBar(){
+						function setNavBar(el){
 						
 							///////attach window events
 							var last_ws = 0;
@@ -474,6 +474,8 @@ function hiddenToggleFunction(){
 									
 									
 								}else {
+								
+								
 									if(e.target.id != "id_text"){
 								
 										el.css({overflow:"scroll"})
@@ -576,7 +578,7 @@ function hiddenToggleFunction(){
 // 							})
 						
 							////start
-							setNavBar()
+							setNavBar($(".user-view"))
 							
 						}///end initMobile
 							
