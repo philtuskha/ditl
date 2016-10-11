@@ -353,7 +353,7 @@ $(document).ready(function() {
 										
 												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 													$("html, body").off("scroll", initWindowScroll);
-													
+													$("header").css({height:"0px"})
 													toggleHeader(el);
 							
 												});
@@ -414,7 +414,6 @@ $(document).ready(function() {
 								$(".main-feed").off('touchend')
 								$(".user-view").off('touchmove')
 								$(".user-view").off('touchend')
-								$(window).off('touchend')
 								setTimeout(function(){
 									setNavBar()
 								}, 200);
