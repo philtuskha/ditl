@@ -280,7 +280,7 @@ $(document).ready(function() {
 									$(window).on('touchend', function(e){
 										$("html, body").scrollTop(1)
 										el.css({overflow:"scroll"})
-									}
+									});
 									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 // 										$("html, body").off("scroll", initWindowScroll);
 // 										el.css({overflow:"scroll"})
