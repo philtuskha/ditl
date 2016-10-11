@@ -375,8 +375,8 @@ $(document).ready(function() {
 								
 								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
 								
-									$(".user-view")off('touchmove')
-									$(".user-view")off('touchend')
+									$(".user-view").off('touchmove')
+									$(".user-view").off('touchend')
 									chooseTarget($(".main-feed"));
 									
 									
