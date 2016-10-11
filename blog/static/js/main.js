@@ -264,7 +264,7 @@ $(document).ready(function() {
 									});
 							
 								}else if(diff < 0){
-									$("header").css({transition:"height 0.2s"})
+									$("header").css({transition:"height 0.5s"})
 									window.getComputedStyle($("header")[0]);
 									$("header").css({height:$("header>div").height()+"px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
@@ -274,33 +274,33 @@ $(document).ready(function() {
 								}
 								
 								///rest nav bar if scrolled 
-								if ($(window).scrollTop() == 0){
-									//////////////stop these element events and start window events via a function
-									el.css({overflow:"hidden"})
-									setTimeout(function(){
-										// $(window).on('touchend', function(e){
-// 											console.log("fires already")
-// 											$("html, body").scrollTop(1)
-// 											el.css({overflow:"scroll"})
-// 											$(window).off('touchend')
-// 										});
-										el.off('touchmove')
-										el.off('touchend')
-										setNavBar()
-										
-									}, 100)
-									
-									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+								// if ($(window).scrollTop() == 0){
+// 									//////////////stop these element events and start window events via a function
+// 									el.css({overflow:"hidden"})
+// 									setTimeout(function(){
+// 										// $(window).on('touchend', function(e){
+// // 											console.log("fires already")
+// // 											$("html, body").scrollTop(1)
+// // 											el.css({overflow:"scroll"})
+// // 											$(window).off('touchend')
+// // 										});
+// 										el.off('touchmove')
+// 										el.off('touchend')
+// 										setNavBar()
+// 										
+// 									}, 100)
+// 									
+// 									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+// // 										$("html, body").off("scroll", initWindowScroll);
+// // 										el.css({overflow:"scroll"})
+// // 				
+// // 									});
+// 								}else if ($(window).scrollTop() > 1){
+// 									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 // 										$("html, body").off("scroll", initWindowScroll);
-// 										el.css({overflow:"scroll"})
 // 				
 // 									});
-								}else if ($(window).scrollTop() > 1){
-									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-										$("html, body").off("scroll", initWindowScroll);
-				
-									});
-								}
+// 								}
 								
 					
 							});
