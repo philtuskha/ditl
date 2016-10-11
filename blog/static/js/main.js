@@ -226,7 +226,7 @@ $(document).ready(function() {
 								}
 								
 								///rest nav bar if scrolled 
-								if ($(window).scrollTop() < 1){
+								if ($(window).scrollTop() != 1){
 									//////////////stop these element events and start window events via a function
 									el.off("touchend");
 									el.off("touchmove");
@@ -240,7 +240,7 @@ $(document).ready(function() {
 				
 							var lastScrollTop = 0;
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-								console.log("element TOUCHmove!!!!", event )
+								console.log("element TOUCHmove!!!! ----- window scrollTop: ", $(window).scrollTop() )
 						
 								$(".content-wrap").css({height: "calc(100vh + 100px"});
 								// $(window).scrollTop(el.scrollTop());
