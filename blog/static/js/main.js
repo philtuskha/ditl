@@ -530,7 +530,17 @@ function hiddenToggleFunction(){
 									})
 									el.on("touchend", function(e){
 										e.stopPropagation();
+										if($(window).scrollTop() > 1){
 										
+											$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").off("scroll", initWindowScroll);
+											});
+											
+										}else if(($(window).scrollTop() < 1){
+											el.css({overflow:"hidden"});
+											el.off("touchmove")
+											el.off("touchend")
+										}
 										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
 									})
 								}
