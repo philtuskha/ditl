@@ -517,10 +517,23 @@ function hiddenToggleFunction(){
 						
 						
 									}
+								}else if(last_ws < 1 ){
+									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+										$("html, body").off("scroll", initWindowScroll);
+	
+									});
+								
 								}else{
 								
 									el.on("touchmove", function(e){
 										e.stopPropagation();
+										
+										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
+									})
+									el.on("touchend", function(e){
+										e.stopPropagation();
+										
+										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
 									})
 								}
 					
