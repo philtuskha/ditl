@@ -462,78 +462,69 @@ function hiddenToggleFunction(){
 								
 								
 								
-								if(last_ws > 1 ){ /////el.css("overflow") == "scroll"
+								 /////el.css("overflow") == "scroll"
 									
 										
 										
-										
-	
-								
-									if(e.target.id != "id_text"){
-								
-										el.css({overflow:"scroll"})
-										$(window).one('touchend', function(e){
-											//e.stopPropagation();
 							
-											function chooseTarget(el){
-												console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
-												
-												var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-									
-												el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
-									
-													el.off("scroll", initElScroll);
-										
-													$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-														$("html, body").off("scroll", initWindowScroll);
-											
-											
-					
-													});
-												});
-									
-						
-											}
-											console.log($(".left-wrap").css("left"))
-							
-											if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
-								
-								
-												chooseTarget($(".user-view"));
-												$(".main-feed").css({overflow:"hidden"})
-							
-											}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
-							
-								
-												chooseTarget($(".main-feed"));
-												$(".user-view").css({overflow:"hidden"})
-						
-								
-								
-											}
-							
-										});//////end touchend
-									
-										// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-// 										$("html, body").off("scroll", initWindowScroll);
-// 										el.css({overflow:"scroll"})
-// 				
-// 									});
-										
-									}
 							
 									
 									
-								}else {
-									el.css({overflow:"hidden"})
 								
-								}
 									
 									
 								
 								
 							});
+							
+							$(window).on('touchend', function(e){
+									//e.stopPropagation();
+									
+								if(last_ws > 1 ){
+									function chooseTarget(el){
+										console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+										
+										var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
+							
+										el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
+							
+											el.off("scroll", initElScroll);
+								
+											$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").off("scroll", initWindowScroll);
+									
+									
+			
+											});
+										});
+							
+				
+									}
+									console.log($(".left-wrap").css("left"))
+					
+									if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 						
+						
+										chooseTarget($(".user-view"));
+										$(".main-feed").css({overflow:"hidden"})
+					
+									}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
+					
+						
+										chooseTarget($(".main-feed"));
+										$(".user-view").css({overflow:"hidden"})
+				
+						
+						
+									}
+								}else{
+								
+									el.on("touchmove", function(e){
+										e.stopPropagation();
+									})
+								}
+					
+								});//////end touchend
 							
 							
 						
