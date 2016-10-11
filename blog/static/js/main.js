@@ -277,11 +277,15 @@ $(document).ready(function() {
 								if ($(window).scrollTop() == 0){
 									//////////////stop these element events and start window events via a function
 									el.css({overflow:"hidden"})
-									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-										$("html, body").off("scroll", initWindowScroll);
+									$(window).on('touchend', function(e){
+										$("html, body").scrollTop(1)
 										el.css({overflow:"scroll"})
-				
-									});
+									}
+									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+// 										$("html, body").off("scroll", initWindowScroll);
+// 										el.css({overflow:"scroll"})
+// 				
+// 									});
 									
 								}else if ($(window).scrollTop() > 1){
 									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
