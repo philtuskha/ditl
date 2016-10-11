@@ -466,15 +466,8 @@ function hiddenToggleFunction(){
 									
 										
 										
-										el.css({overflow:"hidden"})
-									
-									
-									
-									
-									
-									
-								}else {
-								
+										
+	
 								
 									if(e.target.id != "id_text"){
 								
@@ -529,10 +522,10 @@ function hiddenToggleFunction(){
 										
 									}
 							
-								
-							
-								
-							
+									
+									
+								}else {
+									el.css({overflow:"hidden"})
 								
 								}
 									
