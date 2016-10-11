@@ -231,8 +231,6 @@ $(document).ready(function() {
 									el.off("touchend");
 									el.off("touchmove");
 									
-									el.css({overflow:"hidden"})
-									
 									setNavBar()
 								}
 					
@@ -311,28 +309,33 @@ $(document).ready(function() {
 								
 								function chooseTarget(el){
 									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
-								
-									if(e.target.id != "id_text"){
-								
-										var scroll_dist = $(this).scrollTop() - 44
-								
-										el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
+									if(el.css('overflow' == "scroll"){
+									
+										el.css({overflow:"hidden"})
 										
-											el.off("scroll", initElScroll);
+									}else{
+										if(e.target.id != "id_text"){
+								
+											var scroll_dist = $(this).scrollTop() - 44
+								
+											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
 										
-											$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
-												$("html, body").off("scroll", initWindowScroll);
+												el.off("scroll", initElScroll);
+										
+												$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
+													$("html, body").off("scroll", initWindowScroll);
 							
+												});
 											});
-										});
+										}
+									
+										$(window).off('touchend')
+										$(window).off('touchmove')
+									
+										toggleHeader(el);
+									
+										el.css({overflow:"scroll"})
 									}
-									
-									$(window).off('touchend')
-									$(window).off('touchmove')
-									
-									toggleHeader(el);
-									
-									el.css({overflow:"scroll"})
 							
 								}
 								
