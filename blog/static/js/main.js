@@ -346,18 +346,18 @@ $(document).ready(function() {
 // 				
 // 									});
 											var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-											
+											$("header").css({height:"0px"})
 											el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
 											
 												el.off("scroll", initElScroll);
 												
-												$("header").css({transition:"height 0.2s"})
-												window.getComputedStyle($("header")[0]);
-												$("header").css({height:"0px"})
-												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-													$( "header" ).css({transition: "none !important"});
-						
-												});
+												// $("header").css({transition:"height 0.2s"})
+// 												window.getComputedStyle($("header")[0]);
+// 												$("header").css({height:"0px"})
+// 												$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 													$( "header" ).css({transition: "none !important"});
+// 						
+// 												});
 												
 												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 													$("html, body").off("scroll", initWindowScroll);
