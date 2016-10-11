@@ -263,6 +263,7 @@ $(document).ready(function() {
 										setNavBar()
 										
 									}, 100)
+								}
 					
 							});
 							
