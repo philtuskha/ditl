@@ -201,42 +201,8 @@ $(document).ready(function() {
 							
 						function toggleHeader(el){
 							var diff = 0
-							
-							el.on('touchend', function(e){
-								//e.stopPropagation();
-								console.log("element TOUCHend!!!!", e )
-					
-								if(diff > 0){
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:"0px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-							
-									});
-							
-								}else{
-									$("header").css({transition:"height 0.2s"})
-									window.getComputedStyle($("header")[0]);
-									$("header").css({height:$("header>div").height()+"px"})
-									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-										$( "header" ).css({transition: "none !important"});
-							
-									});
-								}
-								
-								///rest nav bar if scrolled 
-								if ($(window).scrollTop() != 1){
-									//////////////stop these element events and start window events via a function
-									el.off("touchend");
-									el.off("touchmove");
-									
-									setNavBar()
-								}
-					
-							});
-				
 							var lastScrollTop = 0;
+							
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 								console.log("element TOUCHmove!!!! ----- window scrollTop: ", $(window).scrollTop() )
 						
@@ -284,12 +250,46 @@ $(document).ready(function() {
 					
 							});
 							
+							el.on('touchend', function(e){
+								//e.stopPropagation();
+								console.log("element TOUCHend!!!!", e )
+					
+								if(diff > 0){
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:"0px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+							
+									});
+							
+								}else{
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:$("header>div").height()+"px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+							
+									});
+								}
+								
+								///rest nav bar if scrolled 
+								if ($(window).scrollTop() != 1){
+									//////////////stop these element events and start window events via a function
+									el.off("touchend");
+									el.off("touchmove");
+									
+									setNavBar(lastScrollTop)
+								}
+					
+							});
+							
 						}////////end toggleHeader
 						
-						function setNavBar(){
+						function setNavBar(passedScrollTop){
 						
 							///////attach window events
-							var last_ws = 0;
+							var last_ws = passedScrollTop;
 							
 							$(window).on('touchmove', function(e){
 								var this_ws = $(this).scrollTop();
@@ -398,7 +398,7 @@ $(document).ready(function() {
 							$(".main-feed").css({overflow:"hidden"})
 						
 							////start
-							setNavBar()
+							setNavBar(0)
 							
 						}///end initMobile
 							
