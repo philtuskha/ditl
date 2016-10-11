@@ -199,7 +199,7 @@ $(document).ready(function() {
 						
 						
 							
-						function toggleHeader(on, el){
+						function toggleHeader(el){
 							var diff = 0
 							
 							el.on('touchend', function(e){
@@ -224,7 +224,8 @@ $(document).ready(function() {
 							
 									});
 								}
-
+								
+								///rest nav bar if scrolled 
 								if ($(window).scrollTop() < 1){
 									//////////////stop these element events and start window events via a function
 									el.off("touchend");
