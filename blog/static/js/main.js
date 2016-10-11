@@ -215,37 +215,37 @@ $(document).ready(function() {
 								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
 						
 								//prevent wild swings in header height
-								if(diff > $("header>div").height()/2){
-									diff = 30
-								}else if(diff < "-"+$("header>div").height()/2){
-									diff = -30
-								}
-						
-						
-								if( diff > 0){ //////scrolling up st > lastScrollTop
-								
-									///sizing the header
-									if($("header").height() <= 0){
-										$("header").css({height:"0px"})
-								
-									}else{
-										$("header").css({height:($("header").height() - diff)+"px"})
-								
-									}
-
-								}else if(st <= lastScrollTop ){ //////scrolling down
-								
-									if($("header").height() >= $("header>div").height()){
-										$("header").css({height:$("header>div").height()+"px"})
-								
-									}else{		   
-										$("header").css({height:($("header").height() - diff)+"px"})
-								
-								
-								
-									}
-
-								}
+								// if(diff > $("header>div").height()/2){
+// 									diff = 30
+// 								}else if(diff < "-"+$("header>div").height()/2){
+// 									diff = -30
+// 								}
+// 						
+// 						
+// 								if( diff > 0){ //////scrolling up st > lastScrollTop
+// 								
+// 									///sizing the header
+// 									if($("header").height() <= 0){
+// 										$("header").css({height:"0px"})
+// 								
+// 									}else{
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 								
+// 									}
+// 
+// 								}else if(st <= lastScrollTop ){ //////scrolling down
+// 								
+// 									if($("header").height() >= $("header>div").height()){
+// 										$("header").css({height:$("header>div").height()+"px"})
+// 								
+// 									}else{		   
+// 										$("header").css({height:($("header").height() - diff)+"px"})
+// 								
+// 								
+// 								
+// 									}
+// 
+// 								}
 								lastScrollTop = st
 					
 							});
@@ -255,7 +255,7 @@ $(document).ready(function() {
 								console.log("element TOUCHend!!!!", e )
 					
 								if(diff > 0){
-									$("header").css({transition:"height 0.2s"})
+									$("header").css({transition:"height 0.5s"})
 									window.getComputedStyle($("header")[0]);
 									$("header").css({height:"0px"})
 									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
