@@ -322,7 +322,7 @@ $(document).ready(function() {
 										
 												el.off("scroll", initElScroll);
 										
-												$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 													$("html, body").off("scroll", initWindowScroll);
 							
 												});
