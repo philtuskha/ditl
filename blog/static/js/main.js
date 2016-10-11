@@ -283,7 +283,7 @@ $(document).ready(function() {
 // 									
 // 								}else if 
 
-								($(window).scrollTop() > 1){
+								if ($(window).scrollTop() > 1){
 									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 										$("html, body").off("scroll", initWindowScroll);
 				
