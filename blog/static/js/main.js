@@ -573,15 +573,23 @@ function hiddenToggleFunction(){
 							// 
 // 							//////toggle
 							$("header>div>div").on('click', function(){
-								$(".main-feed").off('touchmove')
-								$(".main-feed").off('touchend')
-								$(".user-view").off('touchmove')
-								$(".user-view").off('touchend')
-								$(window).off('touchmove')
-								$(window).off('touchend')
-								setTimeout(function(){
-									setNavBar()
-								}, 200);
+								if(this.id == "compose-ico"){
+									$(".main-feed").off('touchmove')
+									$(".main-feed").off('touchend')
+									$(window).off('touchmove')
+									$(window).off('touchend')
+									setTimeout(function(){
+										setNavBar($(".user-view"))
+									}, 200);
+								}else{
+									$(".user-view").off('touchmove')
+									$(".user-view").off('touchend')
+									$(window).off('touchmove')
+									$(window).off('touchend')
+									setTimeout(function(){
+										setNavBar($(".main-feed"))
+									}, 200);
+								}
 							})
 						
 							////start
