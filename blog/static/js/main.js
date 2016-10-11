@@ -200,114 +200,95 @@ $(document).ready(function() {
 						
 							
 						function toggleHeader(on, el){
-							if(on){
-								var diff = 0
+							var diff = 0
+							
+							el.on('touchend', function(e){
+								//e.stopPropagation();
+								console.log("element TOUCHend!!!!", e )
+					
+								if(diff > 0){
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:"0px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+							
+									});
+							
+								}else{
+									$("header").css({transition:"height 0.2s"})
+									window.getComputedStyle($("header")[0]);
+									$("header").css({height:$("header>div").height()+"px"})
+									$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+										$( "header" ).css({transition: "none !important"});
+							
+									});
+								}
+
+								if ($(window).scrollTop() < 1){
+									//////////////stop these element events and start window events via a function
+									el.off("touchend");
+									el.off("touchmove");
+									
+									el.css({overflow:"hidden"})
+									
+									setNavBar()
+								}
+					
+							});
+				
+							var lastScrollTop = 0;
+							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
+								console.log("element TOUCHmove!!!!", event )
 						
-								el.on('touchend', function(e){
-									//e.stopPropagation();
-									console.log("element TOUCHend!!!!", e, last_ws, this_ws )
+								$(".content-wrap").css({height: "calc(100vh + 100px"});
+								// $(window).scrollTop(el.scrollTop());
+								var scroll_max = $(this).children().last().height() - $(this).height();
+								var st = $(this).scrollTop();
+								diff =	st - lastScrollTop; 	
+											
+								console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
 						
-									if(diff > 0){
-										$("header").css({transition:"height 0.2s"})
-										window.getComputedStyle($("header")[0]);
-										$("header").css({height:"0px"})
-										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-											$( "header" ).css({transition: "none !important"});
-											// window.getComputedStyle($(".content-wrap")[0]);
-	// 										$(".content-wrap").css({height: "calc(100vh - 36px)"});
+								//prevent wild swings in header height
+								if(diff > $("header>div").height()/2){
+									diff = 30
+								}else if(diff < "-"+$("header>div").height()/2){
+									diff = -30
+								}
+						
+						
+								if( diff > 0){ //////scrolling up st > lastScrollTop
 								
-										});
+									///sizing the header
+									if($("header").height() <= 0){
+										$("header").css({height:"0px"})
 								
 									}else{
-										$("header").css({transition:"height 0.2s"})
-										window.getComputedStyle($("header")[0]);
+										$("header").css({height:($("header").height() - diff)+"px"})
+								
+									}
+
+								}else if(st <= lastScrollTop ){ //////scrolling down
+								
+									if($("header").height() >= $("header>div").height()){
 										$("header").css({height:$("header>div").height()+"px"})
-										$( "header" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-											$( "header" ).css({transition: "none !important"});
-											// window.getComputedStyle($(".content-wrap")[0]);
-	// 										$(".content-wrap").css({height: "calc(100vh - 111px)"});
 								
-										});
+									}else{		   
+										$("header").css({height:($("header").height() - diff)+"px"})
+								
+								
+								
 									}
-						
-								});
+
+								}
+								lastScrollTop = st
 					
-								var lastScrollTop = 0;
-								el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
-									//event.stopPropagation();
-									console.log("element TOUCHmove!!!!", e, last_ws, this_ws )
-							
-									$(".content-wrap").css({height: "calc(100vh + 100px"});
-									// $(window).scrollTop(el.scrollTop());
-									//event.preventDefault();
-									var scroll_max = $(this).children().last().height() - $(this).height();
-									var st = $(this).scrollTop();
-									diff =	st - lastScrollTop; 	
-												
-									console.log("edges: ", el.scrollTop(), $(this).children().last().height() - $(this).height() )
-							
-									//prevent wild swings in header height
-									if(diff > $("header>div").height()/2){
-										diff = 30
-									}else if(diff < "-"+$("header>div").height()/2){
-										diff = -30
-									}
-							
-							
-									if( diff > 0){ //////scrolling up st > lastScrollTop
-									
-										///sizing the header
-										if($("header").height() <= 0){
-											$("header").css({height:"0px"})
-									
-										}else{
-											$("header").css({height:($("header").height() - diff)+"px"})
-									
-										}
-
-									}else if(st <= lastScrollTop ){ //////scrolling down
-									
-										if($("header").height() >= $("header>div").height()){
-											$("header").css({height:$("header>div").height()+"px"})
-									
-										}else{		   
-											$("header").css({height:($("header").height() - diff)+"px"})
-									
-									
-									
-										}
-
-									}
-									lastScrollTop = st
-						
-								});
-							}else{
-								el.off("touchend");
-								el.off("touchmove");
-								$(window).on('touchend')
-								$(window).on('touchmove')
-							}
-						}////////end toggleHeader
-						
-						
-						function initMobile(){
-						
-							///main post form css fixes
-							$(".post-form-container").css({position:"fixed"})
-							
-							///fixed sporadic iphone behavior when textarea is pushed
-							$("#id_text").on("focus", function(){
-								//event.stopPropagation();
-								
-								$(".post-form-container").css({position:"absolute"})
-							}).on("blur", function(){
-								$(".post-form-container").css({position:"fixed"})
 							});
 							
-							////////initially set overflow to hidden
-							$(".user-view").css({overflow:"hidden"})
-							$(".main-feed").css({overflow:"hidden"})
-							
+						}////////end toggleHeader
+						
+						function setNavBar(){
+						
 							///////attach window events
 							var last_ws = 0;
 							
@@ -329,43 +310,30 @@ $(document).ready(function() {
 								
 								function chooseTarget(el){
 									console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
-									
-									if(last_ws <= 0){
-										console.log("setting up")
-										el.css({overflow:"hidden"})
-										toggleHeader(false, el);
 								
-									}else{
-										console.log("initializing")
+									if(e.target.id != "id_text"){
 								
-										if(e.target.id != "id_text"){
-									
-											var scroll_dist = $(this).scrollTop() - 44
-									
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
-											
-												el.off("scroll", initElScroll);
-											
-												$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
-													$("html, body").off("scroll", initWindowScroll);
+										var scroll_dist = $(this).scrollTop() - 44
 								
-												});
+										el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
+										
+											el.off("scroll", initElScroll);
+										
+											$("html, body").animate({ scrollTop: 1}, 2000, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").off("scroll", initWindowScroll);
+							
 											});
-										}
-										
-										$(window).off('touchend')
-										$(window).off('touchmove')
-										
-										toggleHeader(true, el);
-										el.css({overflow:"scroll"})
-										
+										});
 									}
+									
+									$(window).off('touchend')
+									$(window).off('touchmove')
+									
+									toggleHeader(el);
+									
+									el.css({overflow:"scroll"})
+							
 								}
-								
-								//////////
-								//////////
-								////////
-								///instead of searching through the event, determine which view you are on (compose or post) by looking at the dom
 								
 								if($(".left-holder").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 									
@@ -404,6 +372,30 @@ $(document).ready(function() {
 								
 								
 							});//////end touchend
+						
+						}
+						
+						function initMobile(){
+						
+							///main post form css fixes
+							$(".post-form-container").css({position:"fixed"})
+							
+							///fixed sporadic iphone behavior when textarea is pushed
+							$("#id_text").on("focus", function(){
+								//event.stopPropagation();
+								
+								$(".post-form-container").css({position:"absolute"})
+							}).on("blur", function(){
+								$(".post-form-container").css({position:"fixed"})
+							});
+							
+							////////initially set overflow to hidden
+							$(".user-view").css({overflow:"hidden"})
+							$(".main-feed").css({overflow:"hidden"})
+						
+							////start
+							setNavBar()
+							
 						}///end initMobile
 							
 							
