@@ -278,12 +278,13 @@ $(document).ready(function() {
 									//////////////stop these element events and start window events via a function
 									el.css({overflow:"hidden"})
 									setTimeout(function(){
-										$(window).on('touchend', function(e){
-											console.log("fires already")
-											$("html, body").scrollTop(1)
-											el.css({overflow:"scroll"})
-											$(window).off('touchend')
-										});
+										// $(window).on('touchend', function(e){
+// 											console.log("fires already")
+// 											$("html, body").scrollTop(1)
+// 											el.css({overflow:"scroll"})
+// 											$(window).off('touchend')
+// 										});
+										setNavBar()
 									}, 100)
 									
 									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
