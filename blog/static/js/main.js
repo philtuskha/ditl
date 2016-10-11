@@ -322,26 +322,30 @@ $(document).ready(function() {
 										
 									}else{
 										if(e.target.id != "id_text"){
+											$(window).off('touchend')
+											$(window).off('touchmove')
+											el.css({overflow:"scroll"})
+											
 											
 											var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 											
-											el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutQuint', function initElScroll(e){
+											el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
 										
 												el.off("scroll", initElScroll);
 										
-												$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
+												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 													$("html, body").off("scroll", initWindowScroll);
+													toggleHeader(el);
 							
 												});
 											});
 										}
 									
-										$(window).off('touchend')
-										$(window).off('touchmove')
+										
 									
-										toggleHeader(el);
+										
 									
-										el.css({overflow:"scroll"})
+										
 									}
 							
 								}
