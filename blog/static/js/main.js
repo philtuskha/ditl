@@ -370,12 +370,14 @@ $(document).ready(function() {
 									
 									
 									chooseTarget($(".user-view"));
-									
+									$(".main-feed").css({overflow:"hidden"})
 								
 								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
 								
 									
 									chooseTarget($(".main-feed"));
+									$(".user-view").css({overflow:"hidden"})
+							
 									
 									
 								}
