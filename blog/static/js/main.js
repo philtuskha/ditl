@@ -284,7 +284,10 @@ $(document).ready(function() {
 // 											el.css({overflow:"scroll"})
 // 											$(window).off('touchend')
 // 										});
+										el.off('touchmove')
+										el.off('touchend')
 										setNavBar()
+										
 									}, 100)
 									
 									// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
