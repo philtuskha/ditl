@@ -368,15 +368,13 @@ $(document).ready(function() {
 								
 								if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
 									
-									$(".main-feed").off('touchmove')
-									$(".main-feed").off('touchend')
+									
 									chooseTarget($(".user-view"));
 									
 								
 								}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
 								
-									$(".user-view").off('touchmove')
-									$(".user-view").off('touchend')
+									
 									chooseTarget($(".main-feed"));
 									
 									
@@ -406,6 +404,11 @@ $(document).ready(function() {
 							
 							//////toggle
 							$("header>div>div").on('click', function(){
+								$(".main-feed").off('touchmove')
+								$(".main-feed").off('touchend')
+								$(".user-view").off('touchmove')
+								$(".user-view").off('touchend')
+								
 								setTimeout(function(){
 									setNavBar()
 								}, 500);
