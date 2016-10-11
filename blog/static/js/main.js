@@ -206,7 +206,7 @@ $(document).ready(function() {
 							el.on('touchmove', function(event){ ///mousewheel DomMouseWheel
 								console.log("element TOUCHmove!!!! ----- window scrollTop: ", $(window).scrollTop() )
 						
-								$(".content-wrap").css({height: "calc(100vh + 100px"});
+								$(".content-wrap").css({height: "calc(100vh + 400px"});
 								// $(window).scrollTop(el.scrollTop());
 								var scroll_max = $(this).children().last().height() - $(this).height();
 								var st = $(this).scrollTop();
