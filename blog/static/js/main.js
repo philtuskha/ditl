@@ -440,7 +440,9 @@ function hiddenToggleFunction(){
 // 							
 // 						}
 						
-}				
+}	
+
+			
 						function setNavBar(){
 						
 							///////attach window events
@@ -475,7 +477,6 @@ function hiddenToggleFunction(){
 									///define el
 									var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
 									
-									
 									if(last_ws > 1 ){
 										// function chooseTarget(el){
 									
@@ -484,34 +485,15 @@ function hiddenToggleFunction(){
 										var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 						
 										el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
-						
 											el.off("scroll", initElScroll);
+											
+											el.css({overflow:"scroll"})
 							
 											$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 												$("html, body").off("scroll", initWindowScroll);
 		
 											});
 										});
-							
-				
-// 										}
-										// console.log($(".left-wrap").css("left"))
-// 					
-// 										if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
-// 						
-// 						
-// 											chooseTarget($(".user-view"));
-// 											$(".main-feed").css({overflow:"hidden"})
-// 					
-// 										}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
-// 					
-// 						
-// 											chooseTarget($(".main-feed"));
-// 											$(".user-view").css({overflow:"hidden"})
-// 				
-// 						
-// 						
-// 										}
 									
 									
 									}else if(last_ws < 1 ){
@@ -597,8 +579,7 @@ function hiddenToggleFunction(){
 							
 							
 						if('ontouchstart' in document.documentElement){
-							// toggleHeader($(".user-view"))
-// 							toggleHeader($(".main-feed"))
+							
 							initMobile()
 							
 						}
