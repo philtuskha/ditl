@@ -466,7 +466,7 @@ function hiddenToggleFunction(){
 								console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
 								eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
 								
-								console.log(eventArray[$.inArray("user_view", eventArray)]);
+								console.log(eventArray[$.inArray("user-view", eventArray)]);
 								
 								if(last_ws > 1 ){
 									function chooseTarget(el){
