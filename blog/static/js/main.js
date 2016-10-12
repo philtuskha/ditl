@@ -1,9 +1,9 @@
 $(document).ready(function() {
 	
 	///hacky way to make this site look right in phone
-	if ($(window).width() < 600) { 
-		$('meta[name=viewport]').attr('content','initial-scale=0.8, maximum-scale=0.8, user-scalable=no');
-	} 
+	// if ($(window).width() < 600) { 
+// 		$('meta[name=viewport]').attr('content','initial-scale=0.8, maximum-scale=0.8, user-scalable=no');
+// 	} 
 	
 	
 	// $('.content-wrap').on('touchmove', function (e){
@@ -458,30 +458,15 @@ function hiddenToggleFunction(){
 								last_ws = this_ws
 								
 								
-								
-								
-								
-								
-								 /////el.css("overflow") == "scroll"
-									
-										
-										
-							
-							
-									
-									
-								
-									
-									
-								
-								
-							});
+							});//////end window touchmove
 							
 							$(window).on('touchend', function(e){
 									//e.stopPropagation();
-									
+								
+								console.log($(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
 								if(last_ws > 1 ){
 									function chooseTarget(el){
+									
 										console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
 										
 										var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
@@ -517,6 +502,8 @@ function hiddenToggleFunction(){
 						
 						
 									}
+									
+									
 								}else if(last_ws < 1 ){
 									el.css({overflow:"hidden"});
 									el.off("touchmove")
@@ -526,7 +513,7 @@ function hiddenToggleFunction(){
 									el.on("touchmove", function(e){
 										e.stopPropagation();
 										
-										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
+										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactaly shut this off, make element hidden start fresh
 									})
 									el.on("touchend", function(e){
 										e.stopPropagation();
@@ -545,7 +532,7 @@ function hiddenToggleFunction(){
 									})
 								}
 					
-								});//////end touchend
+								});//////end window touchend
 							
 							
 						
