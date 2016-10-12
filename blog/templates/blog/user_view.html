@@ -2,12 +2,14 @@
 <div id="user-top">
 	<ul data-timediff="{{ timediff }}">
 		<li>
-			<svg width="40" height="40" class="chart">
-				<circle r="10" cx="20" cy="20" class="pie" fill=url('#grad2')/>
+			<svg width="100%" height="100%" class="chart">
+				<circle r="25%" cx="50%" cy="50%" class="pie" fill=url('#grad2')/>
 			</svg>
 		</li><li>
 			<h3>User {{ user.id }}</h3>
 		
+		</li><li>
+			<span id="time-text-small"></span>
 		</li>
 	</ul>
 	<p><span id="time-text"></span></p>

@@ -463,7 +463,6 @@ function hiddenToggleFunction(){
 							});//////end window touchmove
 							
 							$(window).on('touchend', function(e){
-									//e.stopPropagation();
 								
 								console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
 								
@@ -478,7 +477,6 @@ function hiddenToggleFunction(){
 									var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
 									
 									if(last_ws > 1 ){
-										// function chooseTarget(el){
 									
 										console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
 									
@@ -506,7 +504,6 @@ function hiddenToggleFunction(){
 										el.on("touchmove", function(e){
 											e.stopPropagation();
 										
-											/////////in here write stuff to sense the scroll top of the window if it's not 1 exactaly shut this off, make element hidden start fresh
 										})
 										el.on("touchend", function(e){
 											e.stopPropagation();
@@ -521,7 +518,6 @@ function hiddenToggleFunction(){
 												el.off("touchmove")
 												el.off("touchend")
 											}
-											/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
 										})
 									}
 					
@@ -533,45 +529,22 @@ function hiddenToggleFunction(){
 						function initMobile(){
 						
 							///main post form css fixes
-							$(".post-form-container").css({position:"fixed"})
+							$(".post-form-container").css({position:"fixed", width:"50%"})
 							
 							///fixed sporadic iphone behavior when textarea is pushed
 							$("#id_text").on("focus", function(){
 								//event.stopPropagation();
 								
-								$(".post-form-container").css({position:"absolute"})
+								$(".post-form-container").css({position:"absolute", width:"100%"})
 							}).on("blur", function(){
-								$(".post-form-container").css({position:"fixed"})
+								$(".post-form-container").css({position:"fixed", width:"50%"})
 							});
 							
 							////////initially set overflow to hidden
 							$(".user-view").css({overflow:"hidden"})
 							$(".main-feed").css({overflow:"hidden"})
 							
-							
-							// 
-// 							//////toggle
-							// $("header>div>div").on('click', function(){
-// 								console.log(this.id)
-// 								if(this.id == "compose-ico"){
-// 									$(".main-feed").off('touchmove')
-// 									$(".main-feed").off('touchend')
-// 									$(window).off('touchmove')
-// 									$(window).off('touchend')
-// 									setTimeout(function(){
-// 										setNavBar($(".user-view"))
-// 									}, 200);
-// 								}else{
-// 									$(".user-view").off('touchmove')
-// 									$(".user-view").off('touchend')
-// 									$(window).off('touchmove')
-// 									$(window).off('touchend')
-// 									setTimeout(function(){
-// 										setNavBar($(".main-feed"))
-// 									}, 200);
-// 								}
-// 							})
-						
+				
 							////start
 							setNavBar()
 							
@@ -1139,6 +1112,7 @@ function refreshOpenThread(){
 		 var minutes = (hrs % 1) * 60
 		 	 hrs = Math.floor(hrs)
 		     minutes = Math.floor(minutes)
+		     minutes = minutes.toString().length === 1 ? "0"+ minutes.toString() : minutes
 		     
 		//console.log("hrs, min: ", hrs , minutes)
 		if(time < 49.9){
@@ -1153,7 +1127,8 @@ function refreshOpenThread(){
 				$( "circle.pie" ).css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'linear', transitionDuration: cssTime });
 			});
 			
-			$("#time-text").html(hrs+" hrs & "+minutes+" min remaining")
+			$("#time-text").html(hrs+" hrs & "+minutes+" min left")
+			$("#time-text-small").html(hrs+":"+minutes+" left")
 	
 		}else{
 	
@@ -1435,18 +1410,20 @@ function refreshOpenThread(){
 			setTimeout(function(){
 		   	if(theSpan.parent().prop("tagName") == "P"){
 // 		   		response titles
-				var red = "#fffaf5"; ///actually yellow
-				var salmon = "#ffd9cc";
+				var red = "#fff";//"#fbf9ea"; ///actually yellow
+				var salmon = "#bdbfc2"; //another grey blue, lighter
+				var white = "#9fa3a7"; ///actually dark blue/grey
 			}else{
 // 				main title
 				var red ="#fef8cd";//#ef7578
 				var salmon = "#ffbaa2";
+				var white = "#fff";
 				
 			}	theSpan.css({color: salmon, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 				theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 					theSpan.css({color: red, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-						theSpan.css({color: '#ffffff', transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+						theSpan.css({color: white, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					});
 				});
 		
