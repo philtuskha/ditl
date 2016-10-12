@@ -470,8 +470,9 @@ function hiddenToggleFunction(){
 								console.log(eventArray[$.inArray("user-view", eventArray)]);
 								
 								if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
-								console.log($("."+eventArray[$.inArray("user-view", eventArray)]));	
-									var el = $("."+eventArray[$.inArray("user-view", eventArray)]) ||  $("."+eventArray[$.inArray("user-view", eventArray)]) 
+								console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
+									
+									var el = $("."+eventArray[$.inArray("user-view", eventArray)]) ||  $("."+eventArray[$.inArray("main-feed", eventArray)]) 
 									
 									if(last_ws > 1 ){
 										// function chooseTarget(el){
