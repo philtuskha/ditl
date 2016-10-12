@@ -463,7 +463,8 @@ function hiddenToggleFunction(){
 							$(window).on('touchend', function(e){
 									//e.stopPropagation();
 								
-								console.log($(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
+								console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
+								
 								if(last_ws > 1 ){
 									function chooseTarget(el){
 									
