@@ -441,7 +441,7 @@ function hiddenToggleFunction(){
 // 						}
 						
 }				
-						function setNavBar(el){
+						function setNavBar(){
 						
 							///////attach window events
 							var last_ws = 0;
@@ -464,82 +464,85 @@ function hiddenToggleFunction(){
 									//e.stopPropagation();
 								
 								console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
-								eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
+								
+								var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
 								
 								console.log(eventArray[$.inArray("user-view", eventArray)]);
 								
-								if(last_ws > 1 ){
-									function chooseTarget(el){
+								if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
+								console.log($("."+eventArray[$.inArray("user-view", eventArray)]));	
+									var el = $("."+eventArray[$.inArray("user-view", eventArray)]) ||  $("."+eventArray[$.inArray("user-view", eventArray)]) 
+									
+									if(last_ws > 1 ){
+										// function chooseTarget(el){
 									
 										console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
-										
+									
 										var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-							
+						
 										el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
-							
+						
 											el.off("scroll", initElScroll);
-								
+							
 											$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 												$("html, body").off("scroll", initWindowScroll);
-									
-									
-			
+		
 											});
 										});
 							
 				
-									}
-									console.log($(".left-wrap").css("left"))
-					
-									if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
-						
-						
-										chooseTarget($(".user-view"));
-										$(".main-feed").css({overflow:"hidden"})
-					
-									}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
-					
-						
-										chooseTarget($(".main-feed"));
-										$(".user-view").css({overflow:"hidden"})
-				
-						
-						
-									}
+// 										}
+										// console.log($(".left-wrap").css("left"))
+// 					
+// 										if($(".left-wrap").css("left") == "0px"){//// && $(".user-view").css("overflow") != "scroll"
+// 						
+// 						
+// 											chooseTarget($(".user-view"));
+// 											$(".main-feed").css({overflow:"hidden"})
+// 					
+// 										}else{////$(".left-holder").css("left") == "" && $(".main-feed").css("overflow") != "scroll"
+// 					
+// 						
+// 											chooseTarget($(".main-feed"));
+// 											$(".user-view").css({overflow:"hidden"})
+// 				
+// 						
+// 						
+// 										}
 									
 									
-								}else if(last_ws < 1 ){
-									el.css({overflow:"hidden"});
-									el.off("touchmove")
-									el.off("touchend")
-								}else{
-								
-									el.on("touchmove", function(e){
-										e.stopPropagation();
+									}else if(last_ws < 1 ){
+										el.css({overflow:"hidden"});
+										el.off("touchmove")
+										el.off("touchend")
 										
-										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactaly shut this off, make element hidden start fresh
-									})
-									el.on("touchend", function(e){
-										e.stopPropagation();
-										if($(window).scrollTop() > 1){
-											setTimeout(function(){
-												$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-													$("html, body").off("scroll", initWindowScroll);
-												});
-											}, 1000)
-										}else if($(window).scrollTop() < 1){
-											el.css({overflow:"hidden"});
-											el.off("touchmove")
-											el.off("touchend")
-										}
-										/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
-									})
-								}
+									}else{
+								
+										el.on("touchmove", function(e){
+											e.stopPropagation();
+										
+											/////////in here write stuff to sense the scroll top of the window if it's not 1 exactaly shut this off, make element hidden start fresh
+										})
+										el.on("touchend", function(e){
+											e.stopPropagation();
+											if($(window).scrollTop() > 1){
+												setTimeout(function(){
+													$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+														$("html, body").off("scroll", initWindowScroll);
+													});
+												}, 1000)
+											}else if($(window).scrollTop() < 1){
+												el.css({overflow:"hidden"});
+												el.off("touchmove")
+												el.off("touchend")
+											}
+											/////////in here write stuff to sense the scroll top of the window if it's not 1 exactally shut this off, make element hidden start fresh
+										})
+									}
 					
-								});//////end window touchend
+								}/////end if event in array			
+							});//////end window touchend
 							
-							
-						
 						}
 						
 						function initMobile(){
@@ -563,29 +566,29 @@ function hiddenToggleFunction(){
 							
 							// 
 // 							//////toggle
-							$("header>div>div").on('click', function(){
-								console.log(this.id)
-								if(this.id == "compose-ico"){
-									$(".main-feed").off('touchmove')
-									$(".main-feed").off('touchend')
-									$(window).off('touchmove')
-									$(window).off('touchend')
-									setTimeout(function(){
-										setNavBar($(".user-view"))
-									}, 200);
-								}else{
-									$(".user-view").off('touchmove')
-									$(".user-view").off('touchend')
-									$(window).off('touchmove')
-									$(window).off('touchend')
-									setTimeout(function(){
-										setNavBar($(".main-feed"))
-									}, 200);
-								}
-							})
+							// $("header>div>div").on('click', function(){
+// 								console.log(this.id)
+// 								if(this.id == "compose-ico"){
+// 									$(".main-feed").off('touchmove')
+// 									$(".main-feed").off('touchend')
+// 									$(window).off('touchmove')
+// 									$(window).off('touchend')
+// 									setTimeout(function(){
+// 										setNavBar($(".user-view"))
+// 									}, 200);
+// 								}else{
+// 									$(".user-view").off('touchmove')
+// 									$(".user-view").off('touchend')
+// 									$(window).off('touchmove')
+// 									$(window).off('touchend')
+// 									setTimeout(function(){
+// 										setNavBar($(".main-feed"))
+// 									}, 200);
+// 								}
+// 							})
 						
 							////start
-							setNavBar($(".user-view"))
+							setNavBar()
 							
 						}///end initMobile
 							
