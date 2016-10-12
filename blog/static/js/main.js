@@ -472,7 +472,12 @@ function hiddenToggleFunction(){
 								if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
 								console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
 									
-									var el = $("."+eventArray[$.inArray("user-view", eventArray)]) ||  $("."+eventArray[$.inArray("main-feed", eventArray)]) 
+									///define el
+									if($("."+eventArray[$.inArray("user-view", eventArray)])[0].length > 0){
+										var el = $("."+eventArray[$.inArray("user-view", eventArray)]) 
+									}else{
+										var el = $("."+eventArray[$.inArray("main-feed", eventArray)]) 
+									}
 									
 									if(last_ws > 1 ){
 										// function chooseTarget(el){
