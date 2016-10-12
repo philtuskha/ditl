@@ -464,6 +464,9 @@ function hiddenToggleFunction(){
 									//e.stopPropagation();
 								
 								console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
+								eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
+								
+								console.log(eventArray[JQuery.inArray("user_view", eventArray)]);
 								
 								if(last_ws > 1 ){
 									function chooseTarget(el){
