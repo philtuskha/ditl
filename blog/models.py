@@ -11,9 +11,13 @@ class UserProfile(models.Model):
 	yesterday = timezone.now() - timezone.timedelta(days=1)
 	
 	user = models.OneToOneField('auth.User', related_name='profile')
-	#last_thread = models.DateTimeField(default=yesterday) # choices=status_choices, default='neutral')
-	#curr_thread = models.CharField(max_length=200, null=True)
 	favorites = models.CharField(max_length=200, null=True)
+	activity_threads = models.IntegerField(default=0)
+	activity_responses = models.IntegerField(default=0)
+	activity_votes = models.IntegerField(default=0)
+	last_thread = models.CharField(max_length=200, null=True)
+	last_response = models.CharField(max_length=200, null=True)
+	last_vote = models.CharField(max_length=200, null=True)
 	
 	def __unicode__(self):
 		return self.user.username
@@ -33,8 +37,8 @@ class Thread(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     is_thread = models.BooleanField(default=True)
+    is_active=models.IntegerField(default=0)
     resp_count = models.IntegerField(default=0)
-    vote_count = models.IntegerField(default=0)
     created_date = models.DateTimeField(
             default=timezone.now)
     published_date = models.DateTimeField(
@@ -56,7 +60,6 @@ class Response(models.Model):
 	text=models.TextField()
 	is_thread=models.BooleanField(default=False)
 	is_active=models.IntegerField(default=0)
- 	vote_count = models.IntegerField(default=0)
 	created_date=models.DateTimeField(default=timezone.now)
 	published_date=models.DateTimeField(blank=True,null=True)
 	

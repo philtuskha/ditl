@@ -901,7 +901,8 @@ function refreshOpenThread(){
 			///////
 			if(option_data == "TR" && curr_vote != "TR"){
 				message = "Three troll votes and this comment is deleted. Sure you want to mark this comment Troll?"
-				if(myAlert('confirm', message, obj, vote)){
+				alert_array =['confirm', message, obj, vote]
+				if(myAlert(alert_array)){
 					alert('this returned true!!')
 				}
 		
@@ -917,7 +918,8 @@ function refreshOpenThread(){
 		
 			curr = $(this);
 			message = "Are you sure you want to delete this post?";
-			myAlert('confirm', message, curr, deletePost);
+			alert_array = ['confirm', message, curr, deletePost]
+			myAlert(alert_array);
 			
 		});////end of Click
 	}//////end of attach_details   
@@ -1218,8 +1220,8 @@ function refreshOpenThread(){
 		
 	
 	}
-	
-	function myAlert(type, message, el, func) {
+	//alert_array[type, message, element, function]
+	function myAlert(alert_array) {
 	
 		var alertDivWrapper = document.createElement("div");
 		var alertDiv = document.createElement("div");
@@ -1238,15 +1240,15 @@ function refreshOpenThread(){
 		
 		var okBtn = document.createElement("input");
 		okBtn.setAttribute("type", "submit" );
-		okBtn.setAttribute("value", "yes" );
-		okBtn.setAttribute("id", "yes" );
+		okBtn.setAttribute("value", "ok" );
+		okBtn.setAttribute("id", "ok" );
 		
 		/////append message & okbtn
-		div.innerHTML = '<p>' + message + '</p>';
+		div.innerHTML = '<p>' + alert_array[1] + '</p>';
 		
 		
 		///////on
-		if(type == "confirm"){
+		if(alert_array[0] == "confirm"){
 			var notOkBtn = document.createElement("input");
 			notOkBtn.setAttribute("type", "submit" );
 			notOkBtn.setAttribute("value", "no" );
@@ -1266,17 +1268,24 @@ function refreshOpenThread(){
 		alertDivWrapper.appendChild(alertDiv);
     	document.body.appendChild(alertDivWrapper);
     	
-    	
-    	$('#yes').click(function(){
-    		func(el);
-    		$(this).parent().parent().parent().remove()
-    		return true;
-    	});
-    	
-    	$('#no').click(function(){
-    		$(this).parent().parent().parent().remove()
-    		return false;
-    	});
+    	if(alert_array[0] == "confirm"){
+			$('#ok').click(function(){
+				alert_array[3](alert_array[2]);
+				$(this).parent().parent().parent().remove()
+				return true;
+			});
+		
+			$('#no').click(function(){
+				$(this).parent().parent().parent().remove()
+				return false;
+			});
+		}else{
+		
+			$('#ok').click(function(){
+				$(this).parent().parent().parent().remove()
+				return true;
+			});
+		}
     	
     	$('.my-alert-wrapper').click(function(){
     		$(this).remove()
@@ -1290,17 +1299,35 @@ function refreshOpenThread(){
 	
 	/////////delete posts although just works for responses right now
 	function deletePost(el){
-		pk = el.data("post")
-		container = el.parent().parent();
+		var pk = el.data("post")
+		var container = el.parent().parent();
+		
+		//only responses have ...
+		if(el.data("thread")){
+			var thread_id = el.data("thread");
+			var post_type = "response";
+		//////treads	
+		}else{
+			var thread_id = el.data("post")
+			var post_type = "thread";
+		}
+		
+		
 		$.ajax({
 				type: "POST",
 				url: "/delete_post/",
-				data: {"pk": pk, "post_type": "response" },
+				data: {"pk": pk, "thread_id": thread_id, "post_type": post_type },
 				success: function(response) {
-					container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
-					container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-						container.remove();
-					});
+					if (response.delete_or_hide == "delete"){
+						container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
+						container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+							container.remove();
+						});
+					}else{
+						el.parent().addClass("bubble-deleted")
+						el.parent().html("<p></p>")
+						container.find(".date-user").html("Deleted")
+					}
 	
 				}
 		});
@@ -1353,21 +1380,38 @@ function refreshOpenThread(){
 			url: "/vote/",
 			data: obj[0],
 			success: function(post) {
-				////reset vote on ul data tag, reset all backgrounds to grey
-				obj[1].parent().data("bind", post.option);
-				obj[1].parent().children('li').each(function(){
-					 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
-				});
+				
+				function confirmedVote(){
+					////reset vote on ul data tag, reset all backgrounds to grey
+					obj[1].parent().data("bind", post.option);
+					obj[1].parent().children('li').each(function(){
+						 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
+					});
 
-				///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
-				if(post.deleted){
-					obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
-					obj[1].parent().data("bind", '');
+					///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
+					if(post.num < 0){
+						obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
+						obj[1].parent().data("bind", '');
 
-				}else{
-					obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
+					}else{
+						obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
+					}
 				}
-
+			
+				if(post.t_check == "warning" && post.option == "TR" && post.num > 0){
+					alert_array = ['alert', post.message]
+					myAlert(alert_array)
+					confirmedVote()
+					
+				
+				}else if(post.t_check == "restricted" && post.option == "TR"  && post.num > 0){
+					alert_array = ['alert', post.message]
+					myAlert(alert_array)
+				
+				}else{
+					confirmedVote()
+				}
+				
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) { 
 				console.log(XMLHttpRequest.responseText.slice(0,34));

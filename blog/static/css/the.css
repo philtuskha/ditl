@@ -215,9 +215,9 @@ transform: scale(-1, 1);
 }
 
 #drop-top{
-position:static;
-top:0;
-left:0;
+float:left;
+overflow:auto;
+display:inline-block;
 width:100%;
 z-index:1;
 min-height:40px;
@@ -780,7 +780,7 @@ margin-left:20px;
   color:#333;
 }
 
-.middle-box:hover .respo-vote-right{
+.bubble-middle:hover .respo-vote-right{
 opacity:1.0;
 }
 
@@ -805,7 +805,11 @@ float:right;
 color:#333;
 }
 
-.middle-user-box:hover .respo-vote-left{
+.ti:hover .respo-vote-left{
+opacity:1.0;
+}
+
+.bubble-user:hover .respo-vote-left{
 opacity:1.0;
 }
 
@@ -900,7 +904,6 @@ vertical-align:middle;
   margin-left:20px;
   border-radius: 8px;
   background: #eee; /*#f3fee7;#e6fdcd; #e6f0ff; linear-gradient(top, #f9d835, #f3961c); */
-
 }
 .bubble-middle p{
 padding:0px 0px 2px 0px;
@@ -917,6 +920,7 @@ width:100%;
   border-style: solid;
   border-color: #eee transparent;
 }
+
 .bubble-user {
   position: relative;
   max-width:78%;
@@ -946,6 +950,32 @@ width: 0;
 border-width: 10px 10px 0;
 border-style: solid;
 border-color: #e0e5eb transparent;
+}
+
+.bubble-trolled{
+	background: #666;
+	color:#fff;
+	padding:8px 10px 4px;
+	font-size:14px;
+}
+.bubble-trolled:after{
+	border-color: #666 transparent;
+}
+.bubble-deleted{
+	background: #f2f2f2;
+	color:#b3b3b3;
+	font-size:12px;
+	width:50%;
+	-webkit-filter: blur(3px);
+	filter: blur(3px);
+	cursor:pointer;
+	transition:all ease 0.6s;
+}
+.bubble-deleted:after{
+	border-color: #f2f2f2 transparent;
+}
+.date-deleted{
+margin-top:8px;
 }
 .sorter {
 position:static;

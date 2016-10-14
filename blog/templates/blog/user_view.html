@@ -19,65 +19,126 @@
 	 <div id="user-view-spacer"></div>
 	 <div class="user-box-container" data-thread ="{{ curr_thread.id }}">
 		 {% if curr_thread %}
-		 <div class="user-box" >
-			{% if curr_thread.author == user %}
-			<div class="ti">
-			{% else %}
-			<div class="ti-other">
-			{% endif %}
 		 
-				{{ curr_thread.text|linebreaks }}
-			 </div>
-		 
-			 <p class="date-user">
-				You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %}
-			 </p>		
-		
-		 </div>
-
-		 {% for response in respo %}
-			{% if response.author == user %}
-			<div class="middle-user-box">
-				<div class="bubble-user">
-					{% if response.is_active == 0 %}
-					<div class="respo-vote-left" data-post="{{ response.pk }}">
+		 {% if curr_thread.is_active == 0 %}
+			 <div class="user-box" >
+				<div class="ti">
+					<div class="respo-vote-left" data-post="{{ curr_thread.id }}">
 						<span class="close-btn"></span>
 					</div>
+					{{ curr_thread.text|linebreaks }}
+				 </div>
+		 
+				 <p class="date-user">
+					You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %}
+				 </p>		
+		
+			 </div>
+
+				 {% for response in respo %}
+					{% if response.author == user %}
+							<div class="middle-user-box">
+						{% if response.is_active == 0 %}
+								<div class="bubble-user">
+									<div class="respo-vote-left" data-post="{{ response.pk }}" data-thread="{{ curr_thread.id }}" >
+										<span class="close-btn"></span>
+									</div>
+									<p>
+										{{ response.text|linebreaks }}
+									</p>
+						{% elif response.is_active == 1 %}	
+								<div class="bubble-user  bubble-deleted show-comment">
+									<p>
+										
+									</p>
+						{% else %}	
+								<div class="bubble-user bubble-trolled">
+									<p>This comment has been marked as troll >:( </p>
+						{% endif %}
+					{% else %}
+							<div class="middle-box">
+						{% if response.is_active == 0 %}
+								<div class="bubble-middle">
+									<div class="respo-vote-right">
+										<ul class="vote-list-response" data-post="{{ response.pk }} "data-bind="{% get_votes_r response.pk response.rvote_set request.user %}" data-type="response">
+											<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
+										</ul>
+									</div>
+									<p>
+										{{ response.text|linebreaks }}
+									</p>
+						{% elif response.is_active == 1 %}	
+								<div class="bubble-middle bubble-deleted">
+									<p>
+									
+									</p>
+						{% else %}	
+								<div class="bubble-middle bubble-trolled">
+									<p>This comment has been marked as troll >:( </p>
+								
+						{% endif %}
 					{% endif %}
-			{% else %}
-			<div class="middle-box">
-				<div class="bubble-middle">
-					{% if response.is_active == 0 %}
-					<div class="respo-vote-right">
-						<ul class="vote-list-response" data-post="{{ response.pk }}" data-bind="{% get_votes_r response.pk response.rvote_set request.user %}" data-type="response">
-							<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
-						</ul>
+					
 					</div>
+		
+					{% if response.author == user %}
+						{% if response.is_active == 0 %}
+							 <p class="date-user">
+							  You posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+							</p>
+						{% elif response.is_active == 1 %}
+							<p class="date-user">
+							  You deleted this comment
+							</p>
+						{% else %}
+							<p class="date-user">
+							  You posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+							</p>
+						{% endif %}
+					
+					{% else %}
+						{% if response.is_active == 0 %}
+							 <p class="date-middle">
+								<span class="post-user-respo">User {{ response.author_id }}</span> posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+							 </p>
+					 	{% elif response.is_active == 1 %}
+							<p class="date-middle">
+							  <span class="post-user-respo">User {{ response.author_id }}</span> deleted their comment
+							</p>
+						{% else %}
+							<p class="date-middle">
+								<span class="post-user-respo">User {{ response.author_id }}</span> posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
+							 </p>
+						{% endif %}
 					{% endif %}
-			{% endif %}
-				<p>
-				{% if response.is_active == 0 %}
-					{{ response.text|linebreaks }}
-				{% elif response.is_active == 1 %}
-					<span class="deleted">This response has been deleted by the user</span>
-				{% else %}
-					<span class="trolled">There is a troll in our midst >:( </span>
-				{% endif %}
-				</p>
-			</div>
 		
-			{% if response.author == user %}
-			 <p class="date-user">
-			  You posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
-			</p>
-			{% else %}
-			 <p class="date-middle">
-				<span class="post-user-respo">User {{ response.author_id }}</span> posted at {{ response.published_date.time }} <b>|</b> {% get_votes response.pk response.rvote_set %}
-			 </p>
-			{% endif %}
+				 </div>
+				 {% endfor %}
+			 {% elif curr_thread.is_active == 1 %}
+			 	 <div class="user-box" >
+					<div class="ti bubble-deleted">
+						<span class="deleted">This thread has been deleted</span>
+					 </div>	
+					
+					<p class="date-user">
+						You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %} <br>
+						<br>There were comments on this thread. You have to<br>
+						 wait until the thread has expired to post a new one.<br>
+						Or, you can restore this thread by clicking on it.<br> 
+					 </p>
+				 </div>
+			 {% else %}
+			 	 <div class="user-box bubble-trolled" >
+					<div class="ti">
+						<span class="trolled">This thread has been troll voted >:( </span>
+					 </div>
+		 
+					 <p class="date-user">
+						You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %}
+					 </p>		
 		
-		 </div>
-		 {% endfor %}
+				 </div>
+			{% endif %} 
 		 {% endif %}
 	</div>
 </div>

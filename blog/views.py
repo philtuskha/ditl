@@ -9,111 +9,185 @@ from .models import Thread, TVote, Response, RVote, UserProfile, User
 from .forms import ThreadForm, TVoteForm, ResponseForm, RVoteForm
 from django.contrib.auth.models import Permission
 from nltk import sent_tokenize, word_tokenize, pos_tag
+import ast
 
 
+def activity(type, increment, date, me):
+    profile_object = UserProfile.objects.get(user_id=me)
+    
+    if type is "thread":
+        profile_object.activity_threads += increment
+        profile_object.last_thread = date
+        
+    elif type is "response":
+        profile_object.activity_responses += increment
+        profile_object.last_response = date
+        
+    elif type is "vote":
+        profile_object.activity_votes += increment
+        profile_object.last_vote = date
+    
+        
+    profile_object.save()
+    
 
-def faves(vote_post_id, thread, add_subtract_faves, me):
+
+def faves(type, vote_post_id, thread, add_subtract_faves, me):
     #storing favorite users to my profile, a.k.a. people's threads you respond to 
-    faves = UserProfile.objects.get(user_id=me)
+    fave_object = UserProfile.objects.get(user_id=me)
     
     if thread.id is not vote_post_id:
        
-        if faves.favorites is None:
+        if fave_object.favorites is None:
             fave_dict = {}
-            fave_dict[thread.author_id] = add_subtract_faves
+            fave_array = []
+            
+            if type is "vote":
+                fave_array.append(add_subtract_faves)
+                fave_array.append(0)
+                
+                fave_dict[thread.author_id] = fave_array
+            else:
+                fave_array.append(0)
+                fave_array.append(add_subtract_faves)
+                
+                fave_dict[thread.author_id] = fave_array
         
         else:
-            fave_dict = json.loads(faves.favorites)
-        
-            if str(thread.author_id) in fave_dict:
-                fave_dict[str(thread.author_id)] += add_subtract_faves
-            else:
-                fave_dict[thread.author_id] = add_subtract_faves
+            fave_dict = json.loads(fave_object.favorites)
             
-        faves.favorites = json.dumps(fave_dict)
-        faves.save()
+            if str(thread.author_id) in fave_dict:
+                if type is "vote":
+                    fave_dict[str(thread.author_id)][0] += add_subtract_faves
+                else:
+                    fave_dict[str(thread.author_id)][1] += add_subtract_faves
+                    
+            else:
+                fave_array = []
+                
+                if type is "vote":
+                    fave_array.append(add_subtract_faves)
+                    fave_array.append(0)
+                
+                    fave_dict[thread.author_id] = fave_array
+                else:
+                    fave_array.append(0)
+                    fave_array.append(add_subtract_faves)
+                
+                    fave_dict[thread.author_id] = fave_array
+            
+        fave_object.favorites = json.dumps(fave_dict)
+        fave_object.save()
         
-   
+
+def post_status(post_object, type, post_id):
+
+    if type == "thread":
+        troll_votes = TVote.objects.filter(post=post_id, option="TR")
+        
+    elif type == "response":
+        troll_votes = RVote.objects.filter(post=post_id, option="TR")
+    
+    
+    if troll_votes.count() >= 2:
+        post_object.is_active = 2
+        post_object.save()
+    else:
+        post_object.is_active = 0
+        post_object.save()
+        
+
 def vote(request):
     if request.method=="POST":
-        
+        user_thread_votes = TVote.objects.filter(user=request.user)
+        user_respo_votes = RVote.objects.filter(user=request.user)
+            
         #check whether the vote is for thread or response
         if request.POST.get('post_type') == "thread":
-            tv=TVote.objects.all()
             form=TVoteForm(request.POST)
-            old_vote = TVote.objects.filter(post=request.POST.get('post'), user=request.user)
-            count = Thread.objects.get(id=request.POST.get('post'))
+            old_vote = user_thread_votes.filter(post=request.POST.get('post'))
+            post_object = Thread.objects.get(id=request.POST.get('post'))
             
         elif request.POST.get('post_type') == "response":
-            tv=RVote.objects.all()
             form=RVoteForm(request.POST)
-            old_vote = RVote.objects.filter(post=request.POST.get('post'), user=request.user)
-            count = Response.objects.get(id=request.POST.get('post'))
+            old_vote = user_respo_votes.filter(post=request.POST.get('post'))
+            post_object = Response.objects.get(id=request.POST.get('post'))
         
         
         if form.is_valid():
             #add or subtract from your favorites in UserProfile
-            add_subtract_faves = 0    
+            add_subtract_faves = 0 
+
+            def troll_vote_status(user_thread_votes, user_respo_votes):
+                thread_vote_count = user_thread_votes.filter(option="TR").count()
+                respo_vote_count = user_respo_votes.filter(option="TR").count()
+    
+                vote_count = thread_vote_count + respo_vote_count
+    
+                if vote_count is 6:
+                    #send WARNING notification message to notification center
+                    return ("warning", """Whoa, pump the brakes there, Troll Hunter.  
+                                            You can only have six troll votes at any given time.  
+                                            One more troll vote, and you will have your troll voting privileges revoked. """)
         
+                elif vote_count > 6:
+                    #send RESTRICTED notification message to notification center
+                    return ("restricted", """Troll Hunter.  
+                                            Your troll voting is now restricted. 
+                                            You can still vote positively, but we don't allow vigilante troll hunting.
+                                            Delete some of your troll votes.
+                                            Or, just wait until tomorrow.""")
+                                        
+                else:
+                    return ("ok", "")   
+            
+            def which_vote(num):
+            
+                if num > 0:
+                    vote.user=request.user
+                    vote.published_date=timezone.now()
+                    vote.save()
+                
+                #add or subtract from your favorites in UserProfile
+                if request.POST.get('option') == "SE":
+                    add_subtract_faves = num
+                else:
+                    add_subtract_faves = -1 * num
+                    
+                    #only if troll vote, check/set status 
+                    post_status(post_object, request.POST.get('post_type'), request.POST.get('post'))
+                    
+                t_check, message = troll_vote_status(user_thread_votes, user_respo_votes)
+                
+                
+                
+                faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
+                activity("vote", num, timezone.now(), request.user.id)
+                
+                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 't_check': t_check, 'message': message}
+                return HttpResponse(json.dumps(data), content_type='application/json')
+                
+                
             vote=form.save(commit=False)
             #checking to see if post has already been voted for, voting for or revoting thereafter
             if old_vote.count() > 0 and old_vote[0].option != request.POST.get('option'):
+                
                 old_vote.delete()
-            
-                vote.user=request.user
-                vote.published_date=timezone.now()
-                vote.save()
-                
-                #add or subtract from your favorites in UserProfile
-                if request.POST.get('option') == "SE":
-                    add_subtract_faves = 1
-                else:
-                    add_subtract_faves = -1
-                
-                faves(request.POST.get('post'), count, add_subtract_faves, request.user.id)
-                
-                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'deleted': False}
-                return HttpResponse(json.dumps(data), content_type='application/json')
+                return which_vote(1)
                 
             elif old_vote.count() > 0 and old_vote[0].option == request.POST.get('option'):
+                
                 old_vote.delete()
-                
-                count.vote_count = count.vote_count - 1
-                count.save()
-                
-                #add or subtract from your favorites in UserProfile
-                if request.POST.get('option') == "SE":
-                    add_subtract_faves = -1
-                else:
-                    add_subtract_faves = 1
-                
-                faves(request.POST.get('post'), count, add_subtract_faves, request.user.id)
-                
-                
-                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'deleted': True}
-                return HttpResponse(json.dumps(data), content_type='application/json')  
+                return which_vote(-1)
                 
             else:
-                count.vote_count = count.vote_count + 1
-                count.save()
+                
+                return which_vote(1)
+                
+                
             
-                vote.user=request.user
-                vote.published_date=timezone.now()
-                vote.save()
-                
-                #add or subtract from your favorites in UserProfile
-                if request.POST.get('option') == "SE":
-                    add_subtract_faves = 1
-                else:
-                    add_subtract_faves = -1
-                
-                faves(request.POST.get('post'), count, add_subtract_faves, request.user.id)
-                    
-                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'deleted': False}
-                return HttpResponse(json.dumps(data), content_type='application/json')
                 
         else:
-            #data = {'message': "%s and %s added" % (request.POST.get('option'), request.POST.get('post'))}
             terror = form.errors
             return HttpResponse(json.dumps(terror), content_type='application/json')
 
@@ -139,21 +213,50 @@ def thread_new(request):
 
 def delete_post(request):
     if request.method=="POST" and request.is_ajax():
-    
-        #check whether the vote is for thread or response
+        respos_to_thread = Response.objects.filter(thread_id=request.POST.get('thread_id'))
+        
+        #check whether the delete is for thread or response
         if request.POST.get('post_type') == "thread":
-            delete_this = Thread.objects.filter(pk=request.POST.get('pk'), user=request.user)
-            delete_this.delete()
+            delete_this = Thread.objects.get(pk=request.POST.get('pk'), author=request.user)
+            print respos_to_thread.count()
             
-            data = {'message': "%s and %s deleted" % (request.POST.get('title'), request.POST.get('text'))}
-            return HttpResponse(json.dumps(data), content_type='application/json')
+            if respos_to_thread.count() == 0:
+                delete_this.delete()
             
+                activity("thread", -1, timezone.now(), request.user.id)
+                
+                delete_or_hide = "delete"
+                
+            else:
+                delete_this.is_active = 1
+                delete_this.save()
+                
+                delete_or_hide = "hide"
+            
+                
+    
         elif request.POST.get('post_type') == "response":
-            delete_this = Response.objects.filter(pk=request.POST.get('pk'), author=request.user)
-            delete_this.delete()
+            last_response = respos_to_thread.order_by("pk").reverse()[0]
+            last_response_id = last_response.id
             
-            data = {'message': "%s response deleted" % request.POST.get('pk')}
-            return HttpResponse(json.dumps(data), content_type='application/json')
+            if last_response_id == int(request.POST.get('pk')):
+                delete_this = respos_to_thread.filter(pk=request.POST.get('pk'), author=request.user)
+                delete_this.delete()
+            
+                activity("response", -1, timezone.now(), request.user.id)
+                
+                delete_or_hide = "delete"
+                
+            else:
+                hide_this = respos_to_thread.get(pk=request.POST.get('pk'), author=request.user)
+                hide_this.is_active = 1
+                hide_this.save()
+                
+                delete_or_hide = "hide"
+
+            
+        data = {'delete_or_hide': delete_or_hide}
+        return HttpResponse(json.dumps(data), content_type='application/json')
         
         
     
@@ -188,12 +291,8 @@ def add_thread(request):
                 thread.author = request.user
                 thread.published_date = timezone.now()
                 thread.save()
-            
-                #add last_thread date and time to user profile
-                #lt, created = UserProfile.objects.update_or_create(user=request.user, defaults={'last_thread':timezone.now()})
-            
-                #add current thread from user
-                #ct, created = UserProfile.objects.update_or_create(user=request.user, defaults={'curr_thread':thread.id}) 
+                
+                activity("thread", 1, timezone.now(), request.user.id)
                 
                 data = {'message': "%s and %s added" % (request.POST.get('title'), request.POST.get('text'))}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -212,6 +311,8 @@ def add_thread(request):
                 curr_count.resp_count = curr_count.resp_count + 1
                 curr_count.save() 
                 
+                activity("response", 1, timezone.now(), request.user.id)
+                
                 data = {"message": "thanks"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
                 
@@ -228,7 +329,8 @@ def add_thread(request):
                 curr_count.resp_count = Response.objects.filter(thread=request.POST.get('is_thread')).count()
                 curr_count.save() 
                 
-                faves(request.POST.get('is_thread'), response.thread, 1, request.user.id)
+                faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
+                activity("response", 1, timezone.now(), request.user.id)
                 
                 data = {"message": "thanks"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -419,7 +521,7 @@ def status(request):
     t_status = 0
     t_total_votes = 0.0
     t_options=(('TR',-2),('SE',6))
-
+    
     tvotes = {}
     for ts in t_options:
          tvotes[ts[0]] = TVote.objects.filter(post__author=request.user, option=ts[0]).exclude(user=request.user).count() 
@@ -470,6 +572,25 @@ def status(request):
          user_votes[i[0]] = t_count + r_count
          total_votes = total_votes + t_count + r_count
     
+    
+    profile = UserProfile.objects.all()
+    
+    fave_votes = 0
+    fave_respo = 0
+    for p in profile:
+        
+        if p.favorites:
+            fave_dict = json.loads(p.favorites)
+             
+            for user, val in fave_dict.items(): 
+                if int(user) == request.user.id:
+                     fave_votes += val[0]
+                     fave_respo += val[1]
+    
+    favorited = "you recieved %s votes and %s responses" % (fave_votes, fave_respo)
+        
+    
+    
     #adding total_votes * .001 to status to encourage voting
     status = status + (0.001 * total_votes)
     
@@ -490,7 +611,7 @@ def status(request):
         
 #   user_votes = TVote.objects.filter(user=request.user, option="DL").count()
 #   user_votes = TVote.objects.all()
-    return render(request,'blog/status.html',{'user':user, 'status':status, 'tvotes':tvotes, 'rvotes':rvotes, 'user_votes':user_votes, 'total_votes':total_votes})
+    return render(request,'blog/status.html',{'user':user, 'status':status, 'favorited':favorited, 'tvotes':tvotes, 'rvotes':rvotes, 'user_votes':user_votes, 'total_votes':total_votes})
 
 def home(request):
     #default load before ajax reload JIC
