@@ -974,6 +974,19 @@ border-color: #e0e5eb transparent;
 .bubble-deleted:after{
 	border-color: #f2f2f2 transparent;
 }
+.bubble-deleted-user{
+	background: #f2f2f2;
+	color:#b3b3b3;
+	font-size:12px;
+	width:50%;
+	-webkit-filter: blur(3px);
+	filter: blur(3px);
+	cursor:pointer;
+	transition:all ease 0.6s;
+}
+.bubble-deleted-user:after{
+	border-color: #f2f2f2 transparent;
+}
 .date-deleted{
 margin-top:8px;
 }
@@ -1103,8 +1116,6 @@ font-size:14px;
 circle.pie {	
 fill: #ffc7b3;/* #ccfff5; #39e8ff; #e6fffa;*/
 stroke: #f28c8c;/* #dcc9a3 #66d9ff #ff6666; */
-stroke-width: 30;
-stroke-dasharray: 0 106; /* 2π × 25 ≈ 158 */
 height:20px;
 width:20px;
 }

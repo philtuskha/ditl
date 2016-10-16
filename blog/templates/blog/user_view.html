@@ -47,7 +47,7 @@
 										{{ response.text|linebreaks }}
 									</p>
 						{% elif response.is_active == 1 %}	
-								<div class="bubble-user  bubble-deleted show-comment">
+								<div class="bubble-user  bubble-deleted-user show-comment" data-post="{{ response.pk }}" data-type="response">
 									<p>
 										
 									</p>
@@ -116,15 +116,15 @@
 				 {% endfor %}
 			 {% elif curr_thread.is_active == 1 %}
 			 	 <div class="user-box" >
-					<div class="ti bubble-deleted">
+					<div class="ti bubble-deleted-user" data-post="{{ curr_thread.id }}" data-type="thread">
 						<span class="deleted">This thread has been deleted</span>
 					 </div>	
 					
 					<p class="date-user">
 						You posted at {{ curr_thread.published_date.time }} <b>|</b> {% get_votes curr_thread.pk curr_thread.tvote_set %} <br>
-						<br>There were comments on this thread. You have to<br>
-						 wait until the thread has expired to post a new one.<br>
-						Or, you can restore this thread by clicking on it.<br> 
+						<br>There were comments on this thread. You have to
+						 wait until the thread has expired to post a new one.
+						You can restore this thread by clicking on it.
 					 </p>
 				 </div>
 			 {% else %}

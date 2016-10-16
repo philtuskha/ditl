@@ -211,6 +211,23 @@ def thread_new(request):
     return render(request, 'blog/thread_edit.html', {'form': form})
 
 
+def restore_post(request):
+    if request.method=="POST" and request.is_ajax():
+        if request.POST.get('type') == "response":
+            respo_restore = Response.objects.get(id=request.POST.get('post_id'))
+            respo_restore.is_active = 0
+            respo_restore.save()
+            
+        else:
+            thread_restore = Thread.objects.get(id=request.POST.get('post_id'))
+            thread_restore.is_active = 0
+            thread_restore.save()
+            
+        data = {'restored': "true"}
+        return HttpResponse(json.dumps(data), content_type='application/json')
+        
+
+
 def delete_post(request):
     if request.method=="POST" and request.is_ajax():
         respos_to_thread = Response.objects.filter(thread_id=request.POST.get('thread_id'))
@@ -279,6 +296,7 @@ def add_thread(request):
             time_check = True
             
         else:
+            active_check = Thread.objects.get(id=request.POST.get('id')).is_active
             form = ResponseForm(request.POST)
             time_check = False
         
@@ -298,7 +316,7 @@ def add_thread(request):
                 return HttpResponse(json.dumps(data), content_type='application/json')
             
             
-            elif form.is_valid() and time_check == False:
+            elif form.is_valid() and time_check == False and active_check == 0:
                 curr_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
             
                 response = form.save(commit=False)
@@ -313,12 +331,17 @@ def add_thread(request):
                 
                 activity("response", 1, timezone.now(), request.user.id)
                 
-                data = {"message": "thanks"}
+                data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
+                
+            else:
+            
+                data = {"active": "False"}
+                return HttpResponse(json.dumps(data), content_type='application/json')    
                 
         
         else:
-            if form.is_valid():
+            if form.is_valid() and active_check == 0:
                 response = form.save(commit=False)
                 response.thread = Thread.objects.get(pk=request.POST.get('is_thread'))
                 response.author = request.user
@@ -332,9 +355,13 @@ def add_thread(request):
                 faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
                 activity("response", 1, timezone.now(), request.user.id)
                 
-                data = {"message": "thanks"}
+                data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
+            else:
             
+                data = {"active": "False"}
+                return HttpResponse(json.dumps(data), content_type='application/json')
+                
     else:
         form = ThreadForm()
     return render(request, 'blog/thread_edit.html', {'form': form})
@@ -349,7 +376,6 @@ def user_view(request):
         
             diff = timezone.now() - curr_thread.published_date
             timediff = diff.total_seconds()
-            timediff = (timediff/86400) * 49.9
     
             respo = Response.objects.filter(published_date__lte=timezone.now(), thread=curr_thread.id).order_by('published_date')
         else:
@@ -363,29 +389,31 @@ def user_view(request):
         return render(request, 'blog/user_view.html', {})
 
 
-def return_last_id_from_table(request, table, value):
-    get_request_value = request.GET.get(value)
-
-    if get_request_value:
-        count = table.objects.filter(id__gte=get_request_value).count()
-        return_value = get_request_value + count
-        
-    else:
-        try:
-            return_value = table.objects.all().order_by("pk").reverse()[0].id
-        except (IndexError, ValueError):         #list index out of range
-            return_value = 0
-    
-    return return_value        
+           
     
     
 def update_page(request):
     # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
     
-    last_thread = return_last_id_from_table(request, Thread, 'last_thread')
-    last_response = return_last_id_from_table(request, Response, 'last_response')
-    last_tvote = return_last_id_from_table(request, TVote, 'last_tvote')
-    last_rvote = return_last_id_from_table(request, RVote, 'last_rvote')
+    def return_last_id_from_table(table, value):
+        get_request_value = request.GET.get(value)
+
+        if get_request_value:
+            count = table.objects.filter(id__gte=get_request_value).count()
+            return_value = get_request_value + count
+        
+        else:
+            try:
+                return_value = table.objects.all().order_by("pk").reverse()[0].id
+            except (IndexError, ValueError):         #list index out of range
+                return_value = 0
+    
+        return return_value 
+    
+    last_thread = return_last_id_from_table(Thread, 'last_thread')
+    last_response = return_last_id_from_table(Response, 'last_response')
+    last_tvote = return_last_id_from_table(TVote, 'last_tvote')
+    last_rvote = return_last_id_from_table(RVote, 'last_rvote')
     
     try:
         my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
@@ -397,12 +425,17 @@ def update_page(request):
     else:
         my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
-        my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).exclude(user_id=request.user.id).count()
+        my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).count()
+        
+        #check for new inactive reponses
+        my_thread_active = my_last_thread.is_active
+        my_deleted = my_thread_respo.filter(is_active=1).count()
+        my_trolled = my_thread_respo.filter(is_active=2).count()
         
         #you can do this better
         x = 0
         for r in my_thread_respo:
-            x += RVote.objects.filter(post_id=r.id).exclude(user_id=request.user.id).count()
+            x += RVote.objects.filter(post_id=r.id).count()
        
         my_last_thread_rvote = x
         
@@ -431,10 +464,19 @@ def update_page(request):
         
     diff = timezone.now() - my_last_thread.published_date
     timediff = diff.total_seconds()
-    timediff = (timediff/86400) * 49.9
         
       
-    data = {'last_thread': last_thread, 'last_response': last_response, 'last_tvote': last_tvote, 'last_rvote': last_rvote, 'my_last_thread_responses': my_last_thread_responses, 'my_last_thread_tvote': my_last_thread_tvote, 'my_last_thread_rvote': my_last_thread_rvote, 'timediff': timediff}
+    data = {'last_thread': last_thread, 
+            'last_response': last_response, 
+            'last_tvote': last_tvote, 
+            'last_rvote': last_rvote, 
+            'my_last_thread_responses': my_last_thread_responses, 
+            'my_last_thread_tvote': my_last_thread_tvote, 
+            'my_last_thread_rvote': my_last_thread_rvote, 
+            'timediff': timediff, 
+            "my_deleted": my_deleted, 
+            "my_trolled": my_trolled, 
+            "my_thread_active": my_thread_active}
     return HttpResponse(json.dumps(data), content_type='application/json')
         
 

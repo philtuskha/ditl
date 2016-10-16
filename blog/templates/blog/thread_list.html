@@ -3,7 +3,7 @@
 	{% for thread in threads %}
 	
 	<div class="thread" id="{{ thread.pk }}">
-		<div class="post-user"> <p><span>U</span><span>s</span><span>e</span><span>r</span> <span>{{ thread.author_id }}</span></p> <p>posted at {{ thread.published_date.time }} today</p></div>
+		<div class="post-user" data-thread="{{ thread.pk }}"> <p><span>U</span><span>s</span><span>e</span><span>r</span> <span>{{ thread.author_id }}</span></p> <p>posted at {{ thread.published_date.time }} today</p></div>
 		<h1><a class="expand-thread" id="{% url 'thread_detail' pk=thread.pk %}">
 			<svg width="32" height="32" class="small-chart">
 				<circle r="8" cx="16" cy="16" style="stroke-dasharray:{% time_since_post thread.published_date %}, 49.9" class="small-pie" />

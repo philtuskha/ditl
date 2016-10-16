@@ -18,8 +18,8 @@ $(document).ready(function() {
 // 			e.preventDefault();
 // 	});
 	
-	$("circle").css({'strokeDashoffset':$("#user-top>ul").data("timediff")})
-
+	// $("circle").css({'strokeDashoffset':$("#user-top>ul").data("timediff")})
+/*
 	function loadThread(pKey, pValue){
 
 	/////////evaluate local storage here!!!!, values 
@@ -97,6 +97,8 @@ $(document).ready(function() {
             	window.getComputedStyle($(".center")[0]);
             	$(".center")[0].style.opacity = 1;
             	
+            	
+function hiddenToggleFunction(){	            	
 
 /////maintain good desktop working example
         			// function toggleHeader(el){
@@ -197,7 +199,7 @@ $(document).ready(function() {
 
 							
 						
-function hiddenToggleFunction(){				
+			
 							
 						// function toggleHeader(el){
 // 							var diff = 0
@@ -638,10 +640,11 @@ function hiddenToggleFunction(){
 							
 // 								///////scroll to the bottom response
 							handle.find('textarea').click(function(){
-								myScroller(handle.children('.response-container'), handle.children('.response-container').prop('scrollHeight')-handle.children('.response-container').parent().height())
+								Scroller.myScroller(handle.children('.response-container'), handle.children('.response-container').prop('scrollHeight')-handle.children('.response-container').parent().height())
 							});
-								
-					
+							
+							/////attach click event to deleted threads 	
+							restorePost();
 							
 							function addResponse(){  
 								
@@ -662,24 +665,25 @@ function hiddenToggleFunction(){
 									type: "POST",
 									url: "/ajax/add/",
 									dataType: "json",
-									data: { "title": curr_title, "text": curr_text, "is_thread":  curr_is_thread },
+									data: { "id": curr_id, "title": curr_title, "text": curr_text, "is_thread":  curr_is_thread },
 									success: function(response) {
-
-										$.ajax({
-											type: "GET",
-											url: "/thread_detail_detail/"+curr_id+"/",
-											success: function(data) {
-												curr_container.html(data)
-												//console.log();
-												clear_text.val("")
-            									console.log(curr_container.prop('scrollHeight'), curr_container.parent().height())
-												myScroller(curr_container, curr_container.prop('scrollHeight')-curr_container.parent().height())
-// 													curr_container.css({'border':'1px solid purple'})
-												attach_details(handle);
+										if(response.active == "True"){
+											$.ajax({
+												type: "GET",
+												url: "/thread_detail_detail/"+curr_id+"/",
+												success: function(data) {
+													curr_container.html(data)
+													//console.log();
+													clear_text.val("")
+													console.log(curr_container.prop('scrollHeight'), curr_container.parent().height())
+													Scroller.myScroller(curr_container, curr_container.prop('scrollHeight')-curr_container.parent().height())
+	// 													curr_container.css({'border':'1px solid purple'})
+													attach_details(handle);
 												
 												
-											}
-										});
+												}
+											});
+										}
 											
 									},
 									error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -695,6 +699,7 @@ function hiddenToggleFunction(){
 							$("#id_text_r").keydown(function(e){
 								if(e.keyCode == '13' )
 								{
+									e.preventDefault();
 									addResponse($(this))
 								}
 							});
@@ -713,54 +718,331 @@ function hiddenToggleFunction(){
 	///load middle threads 
     loadThread('big', 'dummy');
 
+*/	
+	var OneThread = (function(){
+		var _stylePopUp = function(handle){
 	
-	
-	
-	// update user view function
-	function reload(curr_position, is_scroll){
-		
-		$.ajax({
-            type: "GET",
-            url: "/user_view/",
-            success: function(data) {
-            	$("#user").html(data)
-            	
-            	///get time since last post
-            	currThreadTime($("#user-top>ul").data("timediff"));
-            	$(".user-view").scrollTop(curr_position);
-				// if(is_scroll){
-// 					/////scroll user-view to look like texting
-// 					$(".user-view").scrollTop(curr_position);
-// 					setTimeout(function(){
-// 						scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-// 						myScroller($(".user-view"), scroll_diff);        	
-// 					},30);
-//             	}else{
-//             		$(".user-view").scrollTop(curr_position);
-//             	}
-				
-								
-				
-				////making spacer smoothly transition
-				$("#user-view-spacer").height($(".user-view").height() - $(".user-box-container").height() + $(".user-box-container").children().first().height())
-				window.getComputedStyle($("#user-view-spacer")[0]);
-				$("#user-view-spacer").height($(".user-view").height() - $(".user-box-container").height())
-				
-				attach_details($('.user-box-container'));
-				
+			// use instead of settimeout to make magic transition happen
+			// window.getComputedStyle($(this)[0]);
 
+			//transition magic
+			setTimeout(function () {
+				var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+
+				$("#thread-wrapper-pop").css({opacity:1});
+			
+				var pop_style = (center_check == 1) ? ["100%", "0"] : (center_check < 1 && center_check > 0.5) ? ["70%", "30%"] : ["47%", "32%"]
+			
+				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:"100vh"});
+			
+				handle.parent().css({height:"calc(100vh - 163px)"});
+				handle.css({height:"calc(100vh - 163px)"});
+			}, 30);
+		
+		}
+		var _addToStorage = function(curr_id, handle){
+		
+			////////add thread to localStorage if open
+				if(handle.html() != "" ){
+					localStorage.setItem('open_thread', curr_id);
+				}else{
+					localStorage.setItem('open_thread', '');
+				}
+		}
 	
-        	}
-        });
-    }///end reload()
-    
-    
-    //////initial load left side user-view
-    reload($(".user-view").scrollTop(), true);
- 
- 	function updatePage(){
+		var _bindThreadEvents = function(curr_el){
+			var container = curr_el.children().last().children().first().children('.response-container')
+			//attach charCount to response form
+			$("#id_text_r").on("keyup", function(){
+				charCount(curr_el);	
+			});
+		
+			///////scroll to the bottom response on click
+			$("#id_text_r").on("click", function(){
+				Scroller.myScroller(container, container.prop('scrollHeight') - container.parent().height())
+			});
+		}
+	
+		var loadCurrThread = function(curr_el, handle){
+			var curr_id = curr_el.attr("id"),
+				curr_url = "/thread/"+curr_id+"/";
+	
+			$.ajax({
+			type: "GET",
+			url: curr_url,
+			success: function(data) {
+		
+					//showResponses(thread,data)
+					handle.html(data);
+			
+					///like it says
+					 _stylePopUp(handle);
+			 
+					//call the function attach_details function, change this eventually 
+					attach_details(handle);
+			
+					//add current thread to storage (what is this for?, again)
+					_addToStorage(curr_id, handle)
+			
+					/////attach restore click event to deleted threads 	
+					restorePost();
+			
+					_bindThreadEvents(curr_el)
+					
+					AddPost.bindAddPost($("#id_text_r"))
+				
+				}
+			})
+		}
+	
+		var _bindCloseBtn = function(){
+			///attach functionality to 
+			$(".close-btn").on("click",function(){
+				/////change this function eventually
+				closeThread();
+			});
+		}
+	
+		var openPopUp = function(curr_el){
+			var thread_div_pop = $("#thread-div-pop");
+
+			thread_div_pop.html(curr_el.html());
+			//setup
+		
+			///////add close button to top of open thread
+			thread_div_pop.children(".post-user").append("<span class='close-btn'></span>")
+		
+			_bindCloseBtn()
+		
+			//remove triange from responses class
+			thread_div_pop.find(".rotate-arrow").remove()
+		
+			//var handle = $("#thread-div-pop").find(".details")
+			var handle = thread_div_pop.find(".details")
+		
+			///get position of thread you are clicking on
+			var this_thread_position = curr_el.offset().top - $(window).scrollTop() +"px"
+		
+			//display pop up
+			$("#thread-wrapper-pop").css({display:"block"});
+			thread_div_pop.css({display:"block", top:this_thread_position, height:curr_el.height()+"px"});
+		
+			//////
+			loadCurrThread(curr_el, handle)
+		
+		}
+	
+		return{
+			openPopUp: openPopUp,
+			loadCurrThread: loadCurrThread
+		}
+	
+	})()
+	
+	
+	var AllThreads = (function(){
+	
+		var _getLocalStorage = function(){
+		
+			var pData = {}, //start object
+				filter_text = "",
+				order_text = "",
+				filter = $("#filter"),
+				order = $("#order");
+			
+			
+			for (var i = 0; i < localStorage.length; i++){
+		
+				var key = localStorage.key(i),
+					value = localStorage.getItem(key),
+					filter_options = {
+						my: "<div id='my'>my convos<div class='close-filter'></div></div>",
+						faves: "<div id='faves'>favorite users<div class='close-filter'></div></div>",
+						contains: '<div id="contains">"'+value+'"<div class="close-filter"></div></div>'
+					};
+				
+				if (value != ""){
+					pData[key] = value; //add to object
+		
+					order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
+					order.html(order_text)
+			
+					filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
+				
+				}	
+			}
+			
+			filter.html(filter_text)
+		
+			return pData
+		}
+	
+		var _closeFilter = function(element){
+			var blank = "",
+				el_parent_id = element.parent().attr('id');
+			
+			///remove from storage	
+			localStorage.setItem(el_parent_id, blank);
+		
+			///load the whole 
+			AllThreads.load(el_parent_id, blank);
+		
+			///style sorter assosiated with this, change this to remove attribute 
+			$(".sorter").find("[data-"+el_parent_id+"]").css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"}).children('span').first().css({width:""});
+		
+			console.log($(".sorter").find("[data-"+el_parent_id+"]"))
+		}
+	
+		var _bindFilterClose = function(){
+			$(".close-filter").on("click", function(){
+				_closeFilter($(this))
+			});
+		
+		}
+	
+		var _addCurrKeyValue = function(pData, pKey, pValue){
+			if (pValue != ""){
+				pData[pKey] = pValue;
+			}
+			return pData
+		} 
+	
+	
+		var _bindEachThread = function(){
+			$('.main-feed').children().last().find(".thread").on("click",function(){
+				////attach to each Thread 
+				OneThread.openPopUp($(this))
+			});
+		}
+		var _styleAfterSucess = function(){
+			////remove
+			$("#id_title").val("")
+			$("#id_text").val("")
+		
+		
+			window.getComputedStyle($(".center")[0]);
+			$(".center")[0].style.opacity = 1;
+		}
+	
+		var _loadResponse = function(pData , pKey, pValue){
+			$.ajax({
+				type: "GET",
+				url: "/thread_list",
+				data: pData,
+				success: function(data) {
+					console.log("data length: ", data.length)
+					var main_feed = $(".main-feed");
+				
+					if(pKey == "start_end" ){
+						main_feed.append('<div id="'+pValue+'">' + data + '</div>')
+					
+					}else{
+						if(data.length > 31 ){
+							main_feed.html('<div id="0,10">' + data + '</div')
+						}else if(data.length == 31){
+							main_feed.html('<div id="no-results"><h1>SORRY, NO POSTS MATCH YOUR QUERY :(</h1></div>')
+						}else{
+							//do nothing. this is for when no user is logged in
+						}
+					
+					}
+				
+					///like it says  
+					_styleAfterSucess()
+				
+		
+					//bind each thread to click that opens up that thread
+					_bindEachThread()
+				}
+			});
+		}
+	
+		var load = function(pKey, pValue){
+			/////get Localstorage, find what parameters are already set
+			pData = _getLocalStorage()
+		
+			///bind filter closing functionality
+			_bindFilterClose()
+		
+			/////add current parameters to parameter object
+			pData = _addCurrKeyValue(pData, pKey, pValue)
+		
+			_loadResponse(pData, pKey, pValue)
+		
+		
+		}
+		
+		var init = function(){
+			load("_", "_")
+		}
+		
+		init()
+		
+		return{
+			load: load
+		}
+	})()	
+
+
+	var UserView = (function () {
+	
+		var _init = function(){
+			var start_position = 0,
+				start_scroll = false;
+				
+			load(start_position, start_scroll)
+		}
+			
+		var load = function(curr_position, is_scroll){
+		
+			console.log(curr_position, is_scroll)
+			
+			$.ajax({
+			type: "GET",
+			url: "/user_view/",
+			success: function(data) {
+				/////have to reference elements by name instead of assigning variables to get current state. better way?
+					
+				///load data into compartment
+				$("#user").html(data)
+				
+				if(is_scroll){
+				
+					/////scroll user-view to look like texting
+					$(".user-view").scrollTop(curr_position);
+					setTimeout(function(){
+						var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+					
+						Scroller.myScroller($(".user-view"), scroll_diff);        	
+					},30);
+					
+				}else{
+					$(".user-view").scrollTop(curr_position);
+				}
+			
+				///////other stuff to do at the end
+				///get time since last post
+				Timer.addTime($("#user-top>ul").data("timediff"));
+				///attach voting options to comments
+				attach_details($('.user-box-container'));
+				////attach restore option to deleted posts
+				restorePost();
+
+				}
+			});
+		}
+	
+		_init()
+		
+		return{
+			load: load
+		}
+		
+	})(); 
+	
+ 	(function updatePage(){
+ 		
  		//check for local storage 'curr_page_state' deal with user first time visiting the site with no local storage item 'curr_page_state'
- 		//console.log(localStorage.getItem('curr_page_state') === null);
 		if(localStorage.getItem('curr_page_state') === null){
 			
 			var state = {};
@@ -785,78 +1067,173 @@ function hiddenToggleFunction(){
 				//console.log(data, last_state)				
 				//update thread
 				if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
-					loadThread('big', 'dummy');	 
+					AllThreads.load('_', '_');	 
 				} 
 				//update user_view with scroll --- responses
 				if(data.my_last_thread_responses != last_state.my_last_thread_responses){
-					reload($(".user-view").scrollTop(), true);
+					UserView.load($(".user-view").scrollTop(), true);
 				}
 				//update user_view without scroll --- votes
-				if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote){
-					reload($(".user-view").scrollTop(), false);
+				if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
+					UserView.load($(".user-view").scrollTop(), false);
 				}
+				
 				////update user clock
-				 currThreadTime(data.timediff)
+				 Timer.addTime(data.timediff)
 				
 				
 				//store in localStorage
 				localStorage.setItem('curr_page_state', JSON.stringify(data));
  			}
  		});
- 		 setTimeout(updatePage, 10000);
- 	}/////end updatePage
+ 		setTimeout(updatePage, 10000)
+ 	})(); /////end updatePage
  	
 
     // add new thread
 	
+	function restorePost(){
 	
-	function addPost(){
-		//console.log($("#id_title").val(), $("#id_text").val(), $("#id_is_thread").val())
-		post_text = $("#id_text").val()
-		if(post_text.length < 32){
-			post_title = post_text
-		}else{
-			post_title = post_text.slice(0,32) + "..."
-		}
-
-// 		console.log({ "title": post_title, post_text, "is_thread": $("#id_is_thread").val() })
-		$.ajax({
-			type: "POST",
-			url: "/ajax/add/",
-			dataType: "json",
-			data: { "title": post_title, "text": post_text, "is_thread": $("#id_is_thread").val() },
-			success: function(data) {
-				//reload the user view
-				reload($(".user-view").scrollTop(), true);
-				
-				///clear textarea
-				$("#id_text").val('')
-				$("#char-count").html(142)
-				
-				////check if thread is visible and check what the local storage is
-				check_handle = $('#'+localStorage.getItem('open_thread')).parent().parent().next().children('div:first-child').html()
-				
-				// check if open local storage for open thread  DONT NEED ANYMORE JUST EXCLUDED CURRENT THREAD IN DJANGO VIEWS
-// 				if (parseInt(localStorage.getItem('open_thread').split("_")[2]) == $('.user-box-container').data('thread') && check_handle != undefined){
-// 					refreshOpenThread();
-// 				}
-				
+		$(".bubble-deleted-user").off("click");
+		$(".bubble-deleted-user").on("click", function(){
+			console.log($(this).data("type"))
+			
+			var type = $(this).data("type")
+			
+			if(type == 'response'){
+				post_id = $(this).data("post")
+			}else{
+				post_id = $(this).data("post")
 			}
+			
+			$.ajax({
+				type: "POST",
+				url: "/restore_post/",
+				dataType: "json",
+				data: { "type": type, "post_id": post_id},
+				success: function(data) {
+					//if(data.active == "True"){
+					//updatePage()
+					//}
+				}
+			});
+	
 		});
+	}///end of restorePost
 	
-	}
 	
-	$('.post-btn').click(function(){
-		addPost()
-	});////end of POST
+	var AddPost = (function(){
+		
+			var _currState = function(key_target){
+				var text_id_check = (key_target.attr("id") == $("#id_text").attr("id"))
+					curr_id = text_id_check ? $(".user-box-container").data("thread") : key_target.next().next().val(),
+					post_text = key_target.val(),
+					post_title = (post_text.length < 32) ? post_text : post_text.slice(0,32) + "...",
+					post_type = text_id_check ? $("#id_is_thread").val() : $("#id_is_thread_r").val();
+			
+				return [curr_id, post_text, post_title, post_type];
+			}
+		
+			var bindAddPost = function(key_target){
+				key_target.parent().parent().find('button').on("click", function(){
+					_loadAddPost(key_target)
+				});
+		
+				key_target.on("keydown", function(e){
+					if(e.keyCode == '13' ){	
+						e.preventDefault();
+						_loadAddPost(key_target)
+					}
+				});
+			};
+		
+			var _loadAddPost = function(key_target){
+				var state = _currState(key_target)
+				console.log(state)
+				$.ajax({
+					type: "POST",
+					url: "/ajax/add/",
+					dataType: "json",
+					data: { "id": state[0], "title": state[1], "text": state[2], "is_thread": state[3] },
+					success: function(data) {
+						/////split these two options off into there own private funtions
+						if(data.active == "True" && key_target.attr("id") == $("#id_text").attr("id")){
+							
+							//reload the user view
+							UserView.load($(".user-view").scrollTop(), true);
+							///
+						
+							///clear textarea
+							key_target.val('')
+			
+							
+							char_count = $("#char-count");
+							///reset character count
+							char_count.html(142)
+						
+						}else if(data.active == "True" && key_target.attr("id") != $("#id_text").attr("id")){
+							
+							var handle = $("#thread-div-pop").find(".details"),
+								curr_el = $('#'+state[0]),
+								curr_container = key_target.parent().parent().prev(),
+								curr_scroll_top = curr_container.scrollTop();
+							
+							///load new response in container
+							// curr_container.html(data)
+							OneThread.loadCurrThread(curr_el, handle)
+							///clear textarea
+							key_target.val("")
+							
+							// console.log(curr_container.prop('scrollHeight'), curr_container.parent().height())
+							//
+							//
+							//
+							//
+							//
+							//
+							//figure out the best way to implement scroll here
+							//
+							//
+							//
+							//
+							//
+							//
+							/
+							curr_container.scrollTop(curr_scroll_top)
+							setTimeout(function(){
+								//scroll to bottom
+								Scroller.myScroller(curr_container, curr_container.height() - curr_container.parent().height())
+							},30)
+							//attach voting and delete 
+							attach_details(handle);
+							
+							char_count = $("#char-count");
+							///reset character count
+							char_count.html(142)
+							
+						}else{
+							///////throw error into custom error console (as of yet made), like inbox.google "offline"
+						}
+					}
+				});
+			};
+		
+			var _init = function(){
+				var key_target = $("#id_text");
+				
+				bindAddPost(key_target);
+			}
+		
+			_init();
+			
+			return {
+				bindAddPost: bindAddPost
+			}
+
+	})();
+
 	
-	$("#id_text").keydown(function(e){
-		if(e.keyCode == '13' )
-		{
-			addPost()
-		}
-	});
-	
+
 	
 ////////function that refreshes the main open thread	
 function refreshOpenThread(){
@@ -870,7 +1247,7 @@ function refreshOpenThread(){
 			////////attach vote/delete
 			attach_details(handle);
 			/////////scroll to the bottom of div
-			myScroller(handle.children('.response-container'), handle.children('.response-container').prop('scrollHeight')-564)
+			Scroller.myScroller(handle.children('.response-container'), handle.children('.response-container').prop('scrollHeight')-564)
 			 
 			}
 	});
@@ -990,13 +1367,13 @@ function refreshOpenThread(){
 				
 				if(localStorage.getItem(key) == value){
 					localStorage.setItem(key,"");
-					loadThread(key, "");
+					AllThreads.load(key, "");
 					this_div.css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"});
 					this_div.children('span').first().css({width:""})
 					
 				}else{
 					localStorage.setItem(key,value);
-					loadThread(key, value);
+					AllThreads.load(key, value);
 				
 					if(key == "contains" || key == "pub" || key == "pop"){
 						this_div.parent().children().css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"});
@@ -1024,7 +1401,7 @@ function refreshOpenThread(){
     
     /////////scroll to top when you get too far down
     $('.scroll-to-top').click(function(){
-		myScroller($(".main-feed"), $(".main-feed").offset().top);
+		Scroller.myScroller($(".main-feed"), $(".main-feed").offset().top);
 	});	
 	
 	/////////search threads
@@ -1033,25 +1410,6 @@ function refreshOpenThread(){
 		//alert($(this).prev().val())
 	})
  
-
-//////////doing this with python on load, k.i.s.s.
-// 	function smallPies(){
-// 		$( "circle.small-pie" ).each(function(){
-// 			off = $(this).data('sda')/10000;
-// 			off = off.toString();
-// 			off = off + ", 49.9"
-// 			//$(this).css({strokeDasharray:off});
-// 			// $(this).animate({strokeDasharray:off}, 800, function(){
-// // 				console.log(off)
-// // 			});
-// 			//$(this).css({strokeDasharray: off, transition: "stroke-dasharray", transitionTimingFunction:'ease', transitionDuration: '20s' });
-// 
-// 		
-// 		});
-// 	
-// 	
-// 	}
-
 
 
 	function loadSideBar(){
@@ -1069,80 +1427,97 @@ function refreshOpenThread(){
 
 	
 	
-///// scroll to see pie timer when you focus on post form
-	(function tinyScroll() {
+///// scroll to see latest comment when you focus on post form
+	(function() {
 		$('#id_text').on('focus', function() {	
 			
-			/////scroll user view to bottom of texts
+			/////scroll user view to bottom to see latest comment
 			var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+			Scroller.myScroller($(".user-view"), scroll_diff);
 			
-			myScroller($(".user-view"), scroll_diff);
-			
-			// $("header").css({height:0})
-// 			$(".content-wrap").css({height:"calc(100vh - 36px)"})
-			
-
-		}).on('blur', function() {
-			
-			// $("header").css({height:$("header>div").css("height")})
-// 			$(".content-wrap").css({height:"calc(100vh - 126px)"})
-		
-		});
+		})
 	})();
 	
 	
-	///////blocks weirrd jitter on manual scroll
-	function myScroller(element, position){
-		page = $("html, body");
-
-	   page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
-		   element.stop();
-	   });
-
-	   element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
-		   element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-	   });
-
-	   return false; 
 	
-	}	
+	var Scroller = (function(){
+		var page = $("html, body");
+	 
+		var _bindElOff = function(element){
+			page.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
+			   element.stop();
+		   });
+		}
 
-////////start pie timer
-	function currThreadTime(startTime) {
-		var time = parseFloat(startTime, 10);
-		 var hrs = 24 - (time/49.9 * 24)
-		 var minutes = (hrs % 1) * 60
-		 	 hrs = Math.floor(hrs)
-		     minutes = Math.floor(minutes)
-		     minutes = minutes.toString().length === 1 ? "0"+ minutes.toString() : minutes
-		     
-		//console.log("hrs, min: ", hrs , minutes)
-		if(time < 49.9){
-			var off_set = (time / 49.9) * 106.2;
-			off_set = off_set.toString() + ' 106.2';
-			var cssTime = 86400 - time
-			cssTime = cssTime + "s"
-// 			stroke: '#ff668c', , stroke: '#f28c8c'
-			$( "circle.pie" ).css({strokeDasharray: off_set, transition: "stroke-dasharray", transitionTimingFunction:'ease', transitionDuration: '1s' });
+
+		var myScroller = function(element, position){
+			_bindElOff(element);
+
+		element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
+			element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+		});
+
+		   return false; 
+
+		}
+
+		return{
+			myScroller: myScroller
+		}
+
+	})()
 	
-			$( "circle.pie" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-				$( "circle.pie" ).css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'linear', transitionDuration: cssTime });
-			});
-			
-			$("#time-text").html(hrs+" hrs & "+minutes+" min left")
-			$("#time-text-small").html(hrs+":"+minutes+" left")
-	
-		}else{
-	
-			$( "circle.pie" ).css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'ease', transitionDuration: '2s' });
-			$( "circle.pie" ).one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-				$( "circle.pie" ).css({transition: "none !important"});
+
+	var Timer = (function(){
 		
-			});
+		var _getCurrTime = function(startTime){
+			var time = parseFloat(startTime, 10),
+				hrs = 24 - (time/86400 * 24),
+				minutes = (hrs % 1) * 60;
+		 
+				 hrs = Math.floor(hrs)
+				 minutes = Math.floor(minutes)
+				 minutes = minutes.toString().length === 1 ? "0"+ minutes.toString() : minutes
+			 
+				 return [time, hrs, minutes]
+			 
 		}
 	
+		var addTime = function(startTime){
+			var clock = $( "circle.pie" ),
+			time_div = $("#time-text"),
+			time_div_small = $("#time-text-small")
+			radius = clock.parent().height()/2;
+			circumference = 2 * Math.PI * radius
 		
-	}/////end of pie timer	
+			time_parts = _getCurrTime(startTime)
+			console.log(circumference, time_parts)
+			if(time_parts[0] < 86400){
+				var off_set = (time_parts[0] / 86400) * circumference/2;//off_set.toString()
+				off_set = (off_set).toString() + ' ' + circumference.toString();
+				var stroke_w = radius + "px"
+	
+				clock.css({strokeWidth: stroke_w, strokeDasharray: off_set, transition: "stroke-dasharray", transitionTimingFunction:'ease', transitionDuration: '1s' });
+
+				time_div.html(time_parts[1]+" hrs & "+time_parts[2]+" min left")
+				time_div_small.html(time_parts[1]+":"+time_parts[2]+" left")
+	
+			}else{
+	
+				clock.css({strokeDasharray: '106.2 106.2', transition: "all", transitionTimingFunction:'ease', transitionDuration: '2s' });
+				clock.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+					clock.css({transition: "none !important"});
+		
+				});
+			}
+
+		}
+		
+		return{
+			addTime: addTime
+		}
+
+	})()
 	
 	/////////pop up window for status and notifications
 	$('#fixed-top-left>ul>li').on('click', function(){
@@ -1324,7 +1699,7 @@ function refreshOpenThread(){
 							container.remove();
 						});
 					}else{
-						el.parent().addClass("bubble-deleted")
+						el.parent().addClass("bubble-deleted-user")
 						el.parent().html("<p></p>")
 						container.find(".date-user").html("Deleted")
 					}
@@ -1640,7 +2015,7 @@ function refreshOpenThread(){
 	
 	
 	////////when all is loaded, updatePage
-	updatePage();
+	//updatePage();
 	
 	////dealing with iphone bars
 	//$(window).scrollTop("44px")

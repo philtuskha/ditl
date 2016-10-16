@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^vote/$', views.vote, name='vote'),
     url(r'^update_page/$', views.update_page, name='update_page'),
     url(r'^delete_post/$', views.delete_post, name='delete_post'),
+    url(r'^restore_post/$', views.restore_post, name='restore_post'),
     url(r'^thread/new/$', views.thread_new, name='thread_new'),
     url(r'^$', views.home, name='home'),
     url(r'^ajax/add/$', views.add_thread, name='add_thread'),
