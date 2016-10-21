@@ -18,7 +18,6 @@ $(document).ready(function() {
 // 			e.preventDefault();
 // 	});
 	
-	// $("circle").css({'strokeDashoffset':$("#user-top>ul").data("timediff")})
 /*
 	function loadThread(pKey, pValue){
 
@@ -720,7 +719,7 @@ function hiddenToggleFunction(){
 
 */	
 	var OneThread = (function(){
-		var _stylePopUp = function(handle){
+		var _transitionPopUp = function(handle){
 	
 			// use instead of settimeout to make magic transition happen
 			// window.getComputedStyle($(this)[0]);
@@ -750,22 +749,21 @@ function hiddenToggleFunction(){
 				}
 		}
 	
-		var _bindThreadEvents = function(curr_el){
-			var container = curr_el.children().last().children().first().children('.response-container')
-			//attach charCount to response form
-			$("#id_text_r").on("keyup", function(){
-				charCount(curr_el);	
-			});
-		
+		var _bindThreadEvents = function(handle){
+			console.log("handle: ", handle)
+			
 			///////scroll to the bottom response on click
 			$("#id_text_r").on("click", function(){
-				Scroller.myScroller(container, container.prop('scrollHeight') - container.parent().height())
+				Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
 			});
+			
+			////attach character counter
+			Character.bindCharCount($("#id_text_r"))
 		}
 	
-		var loadCurrThread = function(curr_el, handle){
-			var curr_id = curr_el.attr("id"),
-				curr_url = "/thread/"+curr_id+"/";
+		var loadCurrThread = function(curr_id, handle, reload){
+			var curr_url = "/thread/"+curr_id+"/",
+				curr_position = handle.children().first().scrollTop();
 	
 			$.ajax({
 			type: "GET",
@@ -775,31 +773,83 @@ function hiddenToggleFunction(){
 					//showResponses(thread,data)
 					handle.html(data);
 			
+					
 					///like it says
-					 _stylePopUp(handle);
+					 _transitionPopUp(handle);
 			 
 					//call the function attach_details function, change this eventually 
-					attach_details(handle);
+					AttachVoteDelete.run(handle);
 			
 					//add current thread to storage (what is this for?, again)
 					_addToStorage(curr_id, handle)
 			
-					/////attach restore click event to deleted threads 	
-					restorePost();
+					/////attach restore click event to deleted (hidden) threads 	
+					RestorePost.bind(handle);
 			
-					_bindThreadEvents(curr_el)
+					_bindThreadEvents(handle)
 					
+					///attach AddPost functionality
 					AddPost.bindAddPost($("#id_text_r"))
+					
+					
+					handle.children().first().scrollTop(curr_position)
+					
+					if(reload){
+						
+						setTimeout(function(){
+							  
+							Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
+						}, 30)
+						
+					
+					}
 				
 				}
 			})
 		}
-	
-		var _bindCloseBtn = function(){
-			///attach functionality to 
+		
+		var _closeThread = function(){
+			var thread_id = localStorage.getItem('open_thread'),
+				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px",
+				center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width(),
+				wrapper = $("#thread-wrapper-pop"),
+				div = $("#thread-div-pop");
+		
+			$("#thread-wrapper-pop").css({opacity:0});
+		
+			if(center_check == 1){
+		
+				div.css({width:"100%", left:"0", height:"168px",top:this_thread_position});
+			
+			}else if(center_check < 1 && center_check > 0.5){	
+		
+				div.css({width:"68%", left:"42%", height:"168px",top:this_thread_position});
+			
+			}else{
+				div.css({width:"45%", left:"33%", height:"168px",top:this_thread_position});
+			}
+			
+			div.find(".details").css({height:"0px"});
+			div.find(".white-space").css({height:"0px"});
+			$("#close-btn").css({opacity:0})
+		
+			setTimeout(function(){
+				wrapper.css({display:"none"});
+				div.css({display:"none"});
+				wrapper.css({opacity:1});
+								
+			
+			}, 500);
+		}
+		
+		var _bindClose = function(){
 			$(".close-btn").on("click",function(){
 				/////change this function eventually
-				closeThread();
+				_closeThread();
+			});
+			
+			$("#thread-wrapper-pop").on("click",function(){
+				_closeThread();
 			});
 		}
 	
@@ -812,7 +862,7 @@ function hiddenToggleFunction(){
 			///////add close button to top of open thread
 			thread_div_pop.children(".post-user").append("<span class='close-btn'></span>")
 		
-			_bindCloseBtn()
+			_bindClose()
 		
 			//remove triange from responses class
 			thread_div_pop.find(".rotate-arrow").remove()
@@ -828,7 +878,7 @@ function hiddenToggleFunction(){
 			thread_div_pop.css({display:"block", top:this_thread_position, height:curr_el.height()+"px"});
 		
 			//////
-			loadCurrThread(curr_el, handle)
+			loadCurrThread(curr_el.attr("id"), handle, false)
 		
 		}
 	
@@ -837,7 +887,7 @@ function hiddenToggleFunction(){
 			loadCurrThread: loadCurrThread
 		}
 	
-	})()
+	})();
 	
 	
 	var AllThreads = (function(){
@@ -849,26 +899,28 @@ function hiddenToggleFunction(){
 				order_text = "",
 				filter = $("#filter"),
 				order = $("#order");
-			
-			
+
 			for (var i = 0; i < localStorage.length; i++){
-		
-				var key = localStorage.key(i),
-					value = localStorage.getItem(key),
-					filter_options = {
-						my: "<div id='my'>my convos<div class='close-filter'></div></div>",
-						faves: "<div id='faves'>favorite users<div class='close-filter'></div></div>",
-						contains: '<div id="contains">"'+value+'"<div class="close-filter"></div></div>'
-					};
+				var key = localStorage.key(i);
 				
-				if (value != ""){
-					pData[key] = value; //add to object
-		
-					order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
-					order.html(order_text)
-			
-					filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
+				if(key != "curr_page_state"){
 				
+					var value = localStorage.getItem(key),
+						filter_options = {
+							my: "<div id='my'>my convos<div class='close-filter'></div></div>",
+							faves: "<div id='faves'>favorite users<div class='close-filter'></div></div>",
+							contains: '<div id="contains">"'+value+'"<div class="close-filter"></div></div>'
+						};
+				
+					if (value != ""){
+						pData[key] = value; //add to object
+		
+						order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
+						order.html(order_text)
+					
+						filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
+				
+					}	
 				}	
 			}
 			
@@ -888,7 +940,11 @@ function hiddenToggleFunction(){
 			AllThreads.load(el_parent_id, blank);
 		
 			///style sorter assosiated with this, change this to remove attribute 
-			$(".sorter").find("[data-"+el_parent_id+"]").css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"}).children('span').first().css({width:""});
+			$(".sorter").find("[data-"+el_parent_id+"]").css({background:'transparent'});
+			
+			if(el_parent_id == "contains"){
+				$("#search-text").attr("placeholder","Search")
+			}
 		
 			console.log($(".sorter").find("[data-"+el_parent_id+"]"))
 		}
@@ -956,7 +1012,8 @@ function hiddenToggleFunction(){
 				}
 			});
 		}
-	
+		
+		
 		var load = function(pKey, pValue){
 			/////get Localstorage, find what parameters are already set
 			pData = _getLocalStorage()
@@ -973,6 +1030,7 @@ function hiddenToggleFunction(){
 		}
 		
 		var init = function(){
+			localStorage.setItem("contains", "")
 			load("_", "_")
 		}
 		
@@ -981,11 +1039,18 @@ function hiddenToggleFunction(){
 		return{
 			load: load
 		}
-	})()	
+	})();	
 
 
 	var UserView = (function () {
-	
+		var _bindUVEvents = function(handle){
+			///////scroll to the bottom response on click
+			$("#id_text").on("click", function(){
+				var scroll_diff = handle.children().last().height() - handle.height();
+				Scroller.myScroller(handle, scroll_diff)
+			});
+		}
+		
 		var _init = function(){
 			var start_position = 0,
 				start_scroll = false;
@@ -994,8 +1059,6 @@ function hiddenToggleFunction(){
 		}
 			
 		var load = function(curr_position, is_scroll){
-		
-			console.log(curr_position, is_scroll)
 			
 			$.ajax({
 			type: "GET",
@@ -1020,13 +1083,16 @@ function hiddenToggleFunction(){
 					$(".user-view").scrollTop(curr_position);
 				}
 			
-				///////other stuff to do at the end
+				_bindUVEvents($(".user-view"))
+				
 				///get time since last post
 				Timer.addTime($("#user-top>ul").data("timediff"));
+				
 				///attach voting options to comments
-				attach_details($('.user-box-container'));
+				AttachVoteDelete.run($('.user-box-container'));
+				
 				////attach restore option to deleted posts
-				restorePost();
+				RestorePost.bind($(".user-view"));
 
 				}
 			});
@@ -1040,98 +1106,17 @@ function hiddenToggleFunction(){
 		
 	})(); 
 	
- 	(function updatePage(){
- 		
- 		//check for local storage 'curr_page_state' deal with user first time visiting the site with no local storage item 'curr_page_state'
-		if(localStorage.getItem('curr_page_state') === null){
-			
-			var state = {};
-			localStorage.setItem('curr_page_state', JSON.stringify(state))
-			last_state = state;
-			
-		}else{
-			var state = localStorage.getItem('curr_page_state');
-			var last_state = []
-			last_state = JSON.parse(state);
-		}
 
-				
-		
- 		$.ajax({
-			type: "POST",
-			url: "/update_page/",
-			dataType: "json",
-			data: last_state,
-			success: function(data) {
- 
-				//console.log(data, last_state)				
-				//update thread
-				if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
-					AllThreads.load('_', '_');	 
-				} 
-				//update user_view with scroll --- responses
-				if(data.my_last_thread_responses != last_state.my_last_thread_responses){
-					UserView.load($(".user-view").scrollTop(), true);
-				}
-				//update user_view without scroll --- votes
-				if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
-					UserView.load($(".user-view").scrollTop(), false);
-				}
-				
-				////update user clock
-				 Timer.addTime(data.timediff)
-				
-				
-				//store in localStorage
-				localStorage.setItem('curr_page_state', JSON.stringify(data));
- 			}
- 		});
- 		setTimeout(updatePage, 10000)
- 	})(); /////end updatePage
- 	
-
-    // add new thread
-	
-	function restorePost(){
-	
-		$(".bubble-deleted-user").off("click");
-		$(".bubble-deleted-user").on("click", function(){
-			console.log($(this).data("type"))
-			
-			var type = $(this).data("type")
-			
-			if(type == 'response'){
-				post_id = $(this).data("post")
-			}else{
-				post_id = $(this).data("post")
-			}
-			
-			$.ajax({
-				type: "POST",
-				url: "/restore_post/",
-				dataType: "json",
-				data: { "type": type, "post_id": post_id},
-				success: function(data) {
-					//if(data.active == "True"){
-					//updatePage()
-					//}
-				}
-			});
-	
-		});
-	}///end of restorePost
-	
-	
-	var AddPost = (function(){
+ 	var AddPost = (function(){
 		
 			var _currState = function(key_target){
 				var text_id_check = (key_target.attr("id") == $("#id_text").attr("id"))
 					curr_id = text_id_check ? $(".user-box-container").data("thread") : key_target.next().next().val(),
 					post_text = key_target.val(),
-					post_title = (post_text.length < 32) ? post_text : post_text.slice(0,32) + "...",
+					post_title = (key_target.val() < 32) ? key_target.val() : key_target.val().slice(0,32) + "...",
 					post_type = text_id_check ? $("#id_is_thread").val() : $("#id_is_thread_r").val();
 			
-				return [curr_id, post_text, post_title, post_type];
+				return [curr_id, post_title, post_text, post_type];
 			}
 		
 			var bindAddPost = function(key_target){
@@ -1146,9 +1131,34 @@ function hiddenToggleFunction(){
 					}
 				});
 			};
-		
+			
+			var _succesUserView = function(key_target){
+			
+				//reload the user view
+				UserView.load($(".user-view").scrollTop(), true);
+			
+				///clear textarea
+				key_target.val('')
+
+				///reset character counter
+				$("#char-count").html(142)
+				
+			};
+			
+			var _successThread = function(curr_id, handle){
+				
+				OneThread.loadCurrThread(curr_id, handle, true)
+			
+			}
+			
 			var _loadAddPost = function(key_target){
-				var state = _currState(key_target)
+			
+				var state = _currState(key_target),
+				    handle = $("#thread-div-pop").find(".details"),
+					curr_id = state[0],
+					curr_container = key_target.parent().parent().prev(),
+					curr_scroll_top = curr_container.scrollTop();
+					
 				console.log(state)
 				$.ajax({
 					type: "POST",
@@ -1159,57 +1169,14 @@ function hiddenToggleFunction(){
 						/////split these two options off into there own private funtions
 						if(data.active == "True" && key_target.attr("id") == $("#id_text").attr("id")){
 							
-							//reload the user view
-							UserView.load($(".user-view").scrollTop(), true);
-							///
-						
-							///clear textarea
-							key_target.val('')
-			
+							_succesUserView(key_target);
 							
-							char_count = $("#char-count");
-							///reset character count
-							char_count.html(142)
 						
 						}else if(data.active == "True" && key_target.attr("id") != $("#id_text").attr("id")){
 							
-							var handle = $("#thread-div-pop").find(".details"),
-								curr_el = $('#'+state[0]),
-								curr_container = key_target.parent().parent().prev(),
-								curr_scroll_top = curr_container.scrollTop();
 							
-							///load new response in container
-							// curr_container.html(data)
-							OneThread.loadCurrThread(curr_el, handle)
-							///clear textarea
-							key_target.val("")
+							_successThread(curr_id, handle);
 							
-							// console.log(curr_container.prop('scrollHeight'), curr_container.parent().height())
-							//
-							//
-							//
-							//
-							//
-							//
-							//figure out the best way to implement scroll here
-							//
-							//
-							//
-							//
-							//
-							//
-							/
-							curr_container.scrollTop(curr_scroll_top)
-							setTimeout(function(){
-								//scroll to bottom
-								Scroller.myScroller(curr_container, curr_container.height() - curr_container.parent().height())
-							},30)
-							//attach voting and delete 
-							attach_details(handle);
-							
-							char_count = $("#char-count");
-							///reset character count
-							char_count.html(142)
 							
 						}else{
 							///////throw error into custom error console (as of yet made), like inbox.google "offline"
@@ -1230,214 +1197,227 @@ function hiddenToggleFunction(){
 				bindAddPost: bindAddPost
 			}
 
-	})();
-
-	
-
-	
-////////function that refreshes the main open thread	
-function refreshOpenThread(){
-	handle = $('#'+localStorage.getItem('open_thread')).parent().parent().next().children('div:first-child')
- 	$.ajax({
-		type: "GET",
-		url: localStorage.getItem('open_thread').replace(/_/g,'/'),
-		success: function(data) {
-			//////add content
-			handle.html(data); 
-			////////attach vote/delete
-			attach_details(handle);
-			/////////scroll to the bottom of div
-			Scroller.myScroller(handle.children('.response-container'), handle.children('.response-container').prop('scrollHeight')-564)
-			 
-			}
-	});
-	
-			
-}  
-
-//////////function that re-attaches voting and deleting of threads
- function attach_details(handle){
- 
- //console.log(handle)
-		///make sure vote is represented visually for each response 
-		handle.find(".vote-list-response").each(function( index ) {
-				$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
-		});
-	
-	
-		//////attach click to each response for voting option
-		handle.find(".vote-list-response li").click(function(){
-	
-			option_data = $(this).data("vote")
-			post_data = $(this).parent().data("post")
-			curr_vote = $(this).parent().data("bind")
-			vote_type = $(this).parent().data("type")
-			this_inside = $(this)
-			obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote]
-			//console.log(obj)
-			///////
-			if(option_data == "TR" && curr_vote != "TR"){
-				message = "Three troll votes and this comment is deleted. Sure you want to mark this comment Troll?"
-				alert_array =['confirm', message, obj, vote]
-				if(myAlert(alert_array)){
-					alert('this returned true!!')
-				}
-		
-			}else{
-				vote(obj)
-			}
-
-		});////end of .vote-list-response li Click
-	
-	
-		////////attach delete response click
-		handle.find(".respo-vote-left").click(function(){
-		
-			curr = $(this);
-			message = "Are you sure you want to delete this post?";
-			alert_array = ['confirm', message, curr, deletePost]
-			myAlert(alert_array);
-			
-		});////end of Click
-	}//////end of attach_details   
-    //add new response
+	})();	
 
 
-    // CSRF code
-    function getCookie(name) {
-        var cookieValue = null;
-        var i = 0;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (i; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-    $.ajaxSetup({
-        crossDomain: false, // obviates need for sameOrigin test
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type)) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    }); 
-
-
-	
- ///////////set the sorter functions ADD EVALUATE LOCAL STORAGE AND STYLE THE BUTTONS TO BE ON WHEN ON!!  
- 	 $('.sorter div').each(function(){
-			var this_div = $(this);
-			
-			if(!$.isEmptyObject(this_div.data())){
-				$.each(this_div.data(), function(key, value) {
-				
-					//console.log(this_div.data())
-					if(localStorage.getItem(key) == value){
-						this_div.css({background: 'rgb(251, 249, 234)', 'border-bottom':'1px solid #e6e6e6'});
-						this_div.children('span').first().css({width:"22px"});
-						
-					}//dope green blue rgb(239, 243, 242)224, 229, 235
+	var Vote = (function(){
+			var _confirmedVote = function(obj, post){
+				////reset vote on ul data tag, reset all backgrounds to grey
+				obj[1].parent().data("bind", post.option);
+				obj[1].parent().children('li').each(function(){
+					 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
 				});
-			}
-    	});
 
+				///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
+				if(post.num < 0){
+					obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
+					obj[1].parent().data("bind", '');
 
-    $('.sorter .sort, .sorter .keyword').on(' click',function(){
-    	var this_div = $(this);
-		$(".center")[0].style.opacity = 0;
-    	if(!$.isEmptyObject(this_div.data())){
-			$.each(this_div.data(), function(key, value) {
-			
-				if(this_div.attr('rel')){
-					localStorage.setItem(this_div.attr('rel'),"");
-				}
-				
-				if(localStorage.getItem(key) == value){
-					localStorage.setItem(key,"");
-					AllThreads.load(key, "");
-					this_div.css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"});
-					this_div.children('span').first().css({width:""})
-					
 				}else{
-					localStorage.setItem(key,value);
-					AllThreads.load(key, value);
+					obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
+				}
+			}
+	
+			var makeVote = function(obj){
+	
+				$.ajax({
+					type: "POST",
+					url: "/vote/",
+					data: obj[0],
+					success: function(post) {
+		
+						if(post.t_check == "warning" && post.option == "TR" && post.num > 0){
+							Alert.loadAlert(['alert', post.message])
+							_confirmedVote(obj, post)
 				
-					if(key == "contains" || key == "pub" || key == "pop"){
-						this_div.parent().children().css({background:'rgb(252,252,252)','border-bottom':'1px solid transparent', left:"0"});
-						this_div.parent().children('div').children('.sort-arrow').css({width:""})
-						// this_div.parent().children('div').attr('class','sort')
+			
+						}else if(post.t_check == "restricted" && post.option == "TR"  && post.num > 0){
+							Alert.loadAlert(['alert', post.message])
+			
+						}else{
+							_confirmedVote(obj, post)
+						}
+			
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) { 
+						console.log(XMLHttpRequest.responseText.slice(0,34));
+						///////////this will return string 'IntegrityError' when the voter has voted for post already
 
 					}
-					this_div.css({background: 'rgb(251, 249, 234)','border-bottom':'1px solid #e6e6e6'});
-					this_div.children('span').first().css({width:"22px"});
+				});
+			}
+	
+			return{
+				makeVote: makeVote
+			}
+
+		})();
+		
+	
+	var DeletePost = (function(){
+	
+		var _remove = function(container){
+			container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
+			container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+				container.remove();
+			});
+		}
+	
+		var _hide = function(el, container){
+			el.parent().addClass("bubble-deleted-user")
+			el.parent().html("<p></p>")
+			container.find(".date-user").html("Deleted")
+		}
+	
+		var _threadOrResponse = function(el){
+			var pk = el.data("post"),
+				container = el.parent().parent();
+		
+			//only responses have ...
+			if(el.data("thread")){
+				var thread_id = el.data("thread"),
+					post_type = "response";
+				
+			//////treads	
+			}else{
+				var thread_id = el.data("post"),
+					post_type = "thread";
+			}
+		
+			return {"pk": pk, "thread_id": thread_id, "post_type": post_type }
+		
+		}
+	
+		var run = function(el){
+			var container = el.parent().parent(), 
+				obj = _threadOrResponse(el, container);
+		
+			$.ajax({
+				type: "POST",
+				url: "/delete_post/",
+				data: obj,
+				success: function(response) {
+					if (response.delete_or_hide == "delete"){
+						_remove(container);
 					
-					// this_div.attr('class','sort sort-selected')
-// 						this_div.children().first().attr('class','sort-arrow sort-arrow-on')
-				
-				
-			
+					}else{
+						_hide(el, container);
+					
+					}
+
 				}
 			});
 		}
-		//if mobile version, hide sorter panel
-		// if($('.sorter').css("z-index") == '6'){
-// 			$('.sorter').css({right:'-100%'})	
-// 		}
 		
-    });
-    
-    /////////scroll to top when you get too far down
-    $('.scroll-to-top').click(function(){
-		Scroller.myScroller($(".main-feed"), $(".main-feed").offset().top);
-	});	
+		return{
+			run: run
+		}
 	
-	/////////search threads
-	$('#search-threads').click(function(){
-		loadThread('contains', $(this).prev().val());
-		//alert($(this).prev().val())
-	})
- 
-
-
-	function loadSideBar(){
-		$.ajax({
-            type: "GET",
-            url: "/time_since/",
-            success: function(data) {
-            	$("#keywords").html(data)
-            	//currThreadTime(data.slice(16, 19).replace('<','').replace('/',''));
-
-	
-        	}
-        });
-	}
-
-	
-	
-///// scroll to see latest comment when you focus on post form
-	(function() {
-		$('#id_text').on('focus', function() {	
-			
-			/////scroll user view to bottom to see latest comment
-			var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-			Scroller.myScroller($(".user-view"), scroll_diff);
-			
-		})
 	})();
 	
+	
+	var AttachVoteDelete = (function(){
+	 
+ 		var _styleEach = function(handle){
+			///make sure vote is represented visually for each response 
+			handle.find(".vote-list-response").each(function( index ) {
+					$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
+			});
+		}
+	
+		var _bindVotes = function(handle){
+			//////attach click to each response for voting option
+			handle.find(".vote-list-response li").click(function(){
+	
+				var option_data = $(this).data("vote"),
+					post_data = $(this).parent().data("post"),
+					curr_vote = $(this).parent().data("bind"),
+					vote_type = $(this).parent().data("type"),
+					this_inside = $(this),
+					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
+			
+				if(option_data == "TR" && curr_vote != "TR"){
+					message = "<h2>Three troll votes and this comment is deleted.<span></span></h2> <p>Are you sure you want to mark <br>this comment as Troll?</p>"
+					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+		
+				}else if(option_data == "SE" && curr_vote == "SE"){
+					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
+					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+				}else{
+					Vote.makeVote(obj)
+				}
+
+			});
+		}
+		
+		var _bindDelete = function(handle){
+			////////attach delete response click
+			handle.find(".respo-vote-left").click(function(){
+		
+				curr = $(this);
+				message = "<h2>Are you sure you want to delete this post?<span></span></h2>";
+				Alert.loadAlert(['confirm', message, curr, DeletePost.run]);
+			
+			});
+		}
+		
+		var run = function(handle){
+		
+			_styleEach(handle)
+			_bindVotes(handle)
+			_bindDelete(handle)
+		}
+		
+		return{
+			run:run
+		}
+		
+	})();
+	
+	
+	var RestorePost = (function(){
+		
+		var _reloadHandle = function(handle){
+			console.log(handle)
+			if (handle[0].className == "user-view"){
+				UserView.load($(".user-view").scrollTop(), false);
+			}else{
+				var curr_id = handle.parent().parent().find(".post-user").data("thread");
+				console.log(handle.parent().parent().parent().parent().parent(), curr_id)
+				OneThread.loadCurrThread(curr_id, handle, false)
+			}
+		}
+		
+		var _restore = function(el, handle){
+			var type = el.data("type"),
+				post_id = el.data("post")
+		
+			$.ajax({
+				type: "POST",
+				url: "/restore_post/",
+				dataType: "json",
+				data: { "type": type, "post_id": post_id},
+				success: function(data) {
+					console.log(data.restored)
+					if(data.restored == "true"){
+						_reloadHandle(handle)
+					}
+				}
+			});
+		}
+	
+		var bind = function(handle){
+			handle.find(".bubble-deleted-user").on("click", function(){
+				_restore($(this), handle)	
+			
+			});
+		}
+	
+		return{
+			bind: bind
+		}
+
+	})();
 	
 	
 	var Scroller = (function(){
@@ -1465,7 +1445,7 @@ function refreshOpenThread(){
 			myScroller: myScroller
 		}
 
-	})()
+	})();
 	
 
 	var Timer = (function(){
@@ -1517,332 +1497,610 @@ function refreshOpenThread(){
 			addTime: addTime
 		}
 
-	})()
-	
-	/////////pop up window for status and notifications
-	$('#fixed-top-left>ul>li').on('click', function(){
-		
-		var this_li = $(this);
-		var type = $(this).data('type');
-		
-		if($('#pop-up-wrapper').length && $('#pop-up-wrapper').data('type') == type){
-		
-			$('#pop-up-wrapper').remove()
+	})();
 
-		}else{
+	
+	var Alert = (function(){
+		
+		var _createAlertBox = function(alert_array){
+			var alertDivWrapper = document.createElement("div");
+			var alertDiv = document.createElement("div");
+			var div = document.createElement("div");
+		
+			alertDivWrapper.style.opacity = 0;
+			alertDiv.style.opacity = 0;
+			alertDiv.style.top = 0;
+		
+			//////transition magic
+			setTimeout(function () {
+				alertDivWrapper.style.opacity = 1;
+				alertDiv.style.opacity = 1;
+				alertDiv.style.top = '100px';
+			}, 0);
+		
+			var okBtn = document.createElement("input");
+			okBtn.setAttribute("type", "submit" );
+			okBtn.setAttribute("value", "ok" );
+			okBtn.setAttribute("id", "ok" );
+		
+			/////append message & okbtn
+			div.innerHTML = alert_array[1];
+		
+		
+			///////on
+			if(alert_array[0] == "confirm"){
+				var notOkBtn = document.createElement("input");
+				notOkBtn.setAttribute("type", "submit" );
+				notOkBtn.setAttribute("value", "no" );
+				notOkBtn.setAttribute("id", "no" );
 			
-			if(this_li.data('hold') == "off"){
-				
-				this_li.data('hold', 'on');
-				
-				$('#pop-up-wrapper').remove()
-				$.ajax({
-					type: "GET",
-					url: "/"+type+"/",
-					success: function(data) {
-				
-						this_li.data('hold', 'off');
-						//console.log($(this).data('hold'));
-						myPopUp(data, type);
-					
-						$('body').on('click', function removePop(e){
-							e.stopPropagation()
-							
-							if ( e.toElement.id == "pop-up-wrapper" || e.toElement.id == "pop-up" || e.toElement.parentNode.id == "pop-up-wrapper" || e.toElement.parentNode.id == "pop-up4") 
-							{
-								return false;
-							}else{
-								$('#pop-up-wrapper').remove();
-								$('body').off('click',removePop);
-							
-							}
-						});
+				/////append notOkBtn
+				div.appendChild(notOkBtn);
+			}
+		
+			div.appendChild(okBtn);
+		
+			alertDivWrapper.setAttribute("class", "my-alert-wrapper" );
+			alertDiv.setAttribute("class", "my-alert" );
+		
+			///////append all else
+			alertDiv.appendChild(div);
+			alertDivWrapper.appendChild(alertDiv);
+			document.body.appendChild(alertDivWrapper);
+		
+		}
+		
+		var _bindBtns = function(alert_array){
+			
+			if(alert_array[0] == "confirm"){
+				$('#ok').click(function(){
+					alert_array[3](alert_array[2]);
+					$(this).parent().parent().parent().remove()
+					return true;
+				});
+		
+				$('#no').click(function(){
+					$(this).parent().parent().parent().remove()
+					return false;
+				});
+				$('body').on('keydown', function(e){
+					if(e.keyCode == '13' ){	
+						//e.preventDefault();
+						alert_array[3](alert_array[2]);
+						$(".my-alert-wrapper").remove();
+						$('body').off('keydown')
+						return false;
+					}
+				});
+			}else{
+		
+				$('#ok').click(function(){
+					$(this).parent().parent().parent().remove()
+					return true;
+				});
+				$('body').on('keydown', function(e){
+					if(e.keyCode == '13' ){	
+						//e.preventDefault();
+						$(".my-alert-wrapper").remove();
+						$('body').off('keydown')
+						return false;
 					}
 				});
 			}
-		}	
 		
-	});
-	
-	function myPopUp(data, type) {
 		
-		var popUpWrapper = document.createElement("div");
-		var popUpDiv = document.createElement("div");
+		}
 		
-		popUpDiv.innerHTML = data
-	
-		popUpWrapper.setAttribute("id", "pop-up-wrapper" );
-		popUpWrapper.setAttribute("data-type", type );
-		popUpDiv.setAttribute("id", "pop-up" );
-	
-		///////append all else
+		var loadAlert = function(alert_array){
+		
+			//alert_array[type, message, element, function]
+			_createAlertBox(alert_array)	
+			_bindBtns(alert_array)
 			
-		popUpWrapper.appendChild(popUpDiv);
-		document.body.appendChild(popUpWrapper);
+		}
+		
+		return{
+			loadAlert: loadAlert
+			
+		}
+		
+	
+	})();
+	
 
-		popUpWrapper.style.opacity = 0;
-		popUpDiv.style.opacity = 0;
-		popUpWrapper.style.left = "-40px";
-		popUpDiv.style.left = "-40px";
+	var Character = (function(){
+		
+		var _charCount = function(this_text){
+
+			var count = 142 - this_text.val().length;
 	
-		setTimeout(function () {
-			popUpWrapper.style.opacity = 1;
-			popUpDiv.style.opacity = 1;
-			popUpWrapper.style.left = "25px";
-			popUpDiv.style.left = "25px";
-		}, 30);
-		
-		
+			if(count > 0){
 	
-	}
-	//alert_array[type, message, element, function]
-	function myAlert(alert_array) {
-	
-		var alertDivWrapper = document.createElement("div");
-		var alertDiv = document.createElement("div");
-		var div = document.createElement("div");
-		
-		alertDivWrapper.style.opacity = 0;
-		alertDiv.style.opacity = 0;
-		alertDiv.style.top = 0;
-		
-		//////transition magic
-		setTimeout(function () {
-		  	alertDivWrapper.style.opacity = 1;
-			alertDiv.style.opacity = 1;
-			alertDiv.style.top = '100px';
-		}, 0);
-		
-		var okBtn = document.createElement("input");
-		okBtn.setAttribute("type", "submit" );
-		okBtn.setAttribute("value", "ok" );
-		okBtn.setAttribute("id", "ok" );
-		
-		/////append message & okbtn
-		div.innerHTML = '<p>' + alert_array[1] + '</p>';
-		
-		
-		///////on
-		if(alert_array[0] == "confirm"){
-			var notOkBtn = document.createElement("input");
-			notOkBtn.setAttribute("type", "submit" );
-			notOkBtn.setAttribute("value", "no" );
-			notOkBtn.setAttribute("id", "no" );
-			
-			/////append notOkBtn
-			div.appendChild(notOkBtn);
-		}
-		
-		div.appendChild(okBtn);
-		
-		alertDivWrapper.setAttribute("class", "my-alert-wrapper" );
-		alertDiv.setAttribute("class", "my-alert" );
-		
-		///////append all else
-		alertDiv.appendChild(div);
-		alertDivWrapper.appendChild(alertDiv);
-    	document.body.appendChild(alertDivWrapper);
-    	
-    	if(alert_array[0] == "confirm"){
-			$('#ok').click(function(){
-				alert_array[3](alert_array[2]);
-				$(this).parent().parent().parent().remove()
-				return true;
-			});
-		
-			$('#no').click(function(){
-				$(this).parent().parent().parent().remove()
-				return false;
-			});
-		}else{
-		
-			$('#ok').click(function(){
-				$(this).parent().parent().parent().remove()
-				return true;
-			});
-		}
-    	
-    	$('.my-alert-wrapper').click(function(){
-    		$(this).remove()
-    		return false;
-    	});
-    	
-	}
-	
-	
-	///////////////functions here for myAlert (confirm style)
-	
-	/////////delete posts although just works for responses right now
-	function deletePost(el){
-		var pk = el.data("post")
-		var container = el.parent().parent();
-		
-		//only responses have ...
-		if(el.data("thread")){
-			var thread_id = el.data("thread");
-			var post_type = "response";
-		//////treads	
-		}else{
-			var thread_id = el.data("post")
-			var post_type = "thread";
-		}
-		
-		
-		$.ajax({
-				type: "POST",
-				url: "/delete_post/",
-				data: {"pk": pk, "thread_id": thread_id, "post_type": post_type },
-				success: function(response) {
-					if (response.delete_or_hide == "delete"){
-						container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
-						container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-							container.remove();
-						});
-					}else{
-						el.parent().addClass("bubble-deleted-user")
-						el.parent().html("<p></p>")
-						container.find(".date-user").html("Deleted")
-					}
-	
-				}
-		});
-	}//////end of deletePost
-	
-	
-	
-	/////////delete posts although just works for responses right now
-	function showResponses(this_thread, data){
-		
-		var thread_wrapper = document.createElement("div");
-		var thread_div = document.createElement("div");
-		var details_div = document.createElement("div");
-		
-		///get position of thread you are clicking on
-		this_thread_position = this_thread.offset().top - $(window).scrollTop() +"px"
-		
-		thread_wrapper.style.opacity = 0;
-		thread_wrapper.id = "thread-wrapper-pop";
-		
-		thread_div.style.top = this_thread_position;
-		thread_div.id = "thread-div-pop";
-		thread_div.style.height = "612px";
-		thread_div.innerHTML = "<div class="+this_thread.attr('class')+">"+this_thread.html()+"</div>";
-		
-		details_div.innerHTML = data;
-		
-		//////transition magic
-		setTimeout(function () {
-		  	thread_wrapper.style.opacity = 1;
-			thread_div.style.top = "34px";
-			thread_div.style.height = "calc(100vh - 34px)";
-			
-		}, 0);
-		
-		///////append all else
-		thread_div.appendChild(details_div);
-		thread_wrapper.appendChild(thread_div);
-    	document.body.appendChild(thread_wrapper);		
+				this_text.parent().next().html(count);
+				this_text.parent().next().data("max_char", this_text.val());
 				
-	}//////end of showResponses
+			}else{
 	
+				this_text.parent().next().html("<span style='color:red;'>0</span>");
+				this_text.val(this_text.parent().next().data("max_char"));	
+			}
+		}
+		
+		
+		var bindCharCount = function(this_text){
+			////////limit characters that you can post to 142
+			$(this_text).on("keyup", function(){
+				_charCount(this_text);	
+			});
+			
+		}
+		
+		var _init = function(){
+			bindCharCount($("#id_text"))
+		}
+		
+		_init()
+		
+		return{
+			bindCharCount: bindCharCount
+		}
 	
 		
-	//////////voting for threads and responses
-	function vote(obj){
-	//console.log(this_inside)
-		$.ajax({
-			type: "POST",
-			url: "/vote/",
-			data: obj[0],
-			success: function(post) {
-				
-				function confirmedVote(){
-					////reset vote on ul data tag, reset all backgrounds to grey
-					obj[1].parent().data("bind", post.option);
-					obj[1].parent().children('li').each(function(){
-						 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
-					});
+	})();	
 
-					///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
-					if(post.num < 0){
-						obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
-						obj[1].parent().data("bind", '');
 
-					}else{
-						obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
-					}
-				}
-			
-				if(post.t_check == "warning" && post.option == "TR" && post.num > 0){
-					alert_array = ['alert', post.message]
-					myAlert(alert_array)
-					confirmedVote()
+	var Keywords = (function(){ 
+		
+		var load = function(){
+			$.ajax({
+				type: "GET",
+				url: "/time_since/",
+				success: function(data) {
+					$("#keywords").html(data)
 					
-				
-				}else if(post.t_check == "restricted" && post.option == "TR"  && post.num > 0){
-					alert_array = ['alert', post.message]
-					myAlert(alert_array)
-				
-				}else{
-					confirmedVote()
 				}
-				
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) { 
-				console.log(XMLHttpRequest.responseText.slice(0,34));
-				///////////this will return string 'IntegrityError' when the voter has voted for post already
+			});
+		}
+		
+		return{
+			load: load
+		}
+    })();
 
+
+	//init Sorter
+	(function(){        ///// var Sorter = 
+		
+		var _initStyleStorage = function(){
+			$('.sorter div').each(function(){
+				var this_div = $(this);
+			
+				if(!$.isEmptyObject(this_div.data())){
+					$.each(this_div.data(), function(key, value) {
+						
+						if(key != "contains"){
+							//console.log(this_div.data())
+							if(localStorage.getItem(key) == value){
+								this_div.css({background: 'rgba(251, 249, 234, 0.5)'});
+						
+							}//dope green blue rgb(239, 243, 242)224, 229, 235
+						}
+					});
+				}
+			});
+			
+			
+		}
+		var _query = function(this_div){
+			$(".center")[0].style.opacity = 0;
+				if(!$.isEmptyObject(this_div.data())){
+					$.each(this_div.data(), function(key, value) {
+			
+						if(this_div.attr('rel')){
+							localStorage.setItem(this_div.attr('rel'),"");
+						}
+				
+						if(localStorage.getItem(key) == value){
+							localStorage.setItem(key,"");
+							AllThreads.load(key, "");
+							this_div.css({background:'transparent'});
+					
+						}else{
+							localStorage.setItem(key,value);
+							AllThreads.load(key, value);
+							console.log(key)
+							if(key == "pub" || key == "pop"){
+								this_div.parent().children().css({background:'transparent'});
+								
+								
+								// this_div.parent().children('div').attr('class','sort')
+
+							}else if(key == "contains"){
+								$("#keywords>div").children().css({background:'transparent'});
+								$("#search-box").css({background:'transparent'});
+								$("#search-box").data("contains","");
+								$('#search-text').attr("placeholder","Search");
+								
+							}
+							
+							this_div.css({background: 'rgba(251, 249, 234, 0.5)'});
+					
+							// this_div.attr('class','sort sort-selected')
+		// 						this_div.children().first().attr('class','sort-arrow sort-arrow-on')
+				
+				
+			
+						}
+					});
+				}
+		}
+		
+		var _bindEach = function(){
+			 $('.sorter .sort, .sorter .keyword').on(' click',function(){
+				var this_div = $(this);
+				_query(this_div)
+		
+			});
+			
+			$('#search-text').on('focus', function(){
+				$(this).parent().css({background:"rgba(251, 249, 234, 0.5)"})
+				$(this).attr("placeholder", "Search")
+			})
+			$('#search-text').on('blur', function(){
+				$(this).parent().css({background:"transparent"})
+			})
+			$('#search-text').on('keydown', function(e){
+				if(e.keyCode == '13' ){	
+					e.preventDefault();
+					$(this).parent().data("contains", $(this).val())
+					
+					_query($(this).parent())
+					$(this).attr("placeholder", '"'+$(this).val()+'"')
+					$(this).val("")
+					$(this).blur()
+				}
+			});
+			$('#search-threads').click(function(){
+				$(this).parent().data("contains", $(this).next().val())
+				_query($(this).parent())
+				$(this).next().attr("placeholder", '"'+$(this).next().val()+'"')
+				$(this).next().val("")
+			})
+		
+		}
+		
+		var _init = function(){
+			_initStyleStorage();
+			_bindEach();
+		}
+		
+		_init()
+		
+	})();
+	
+	////toggle sorter menu
+	(function(){
+	
+		var _toggleSorter = function(){
+		
+			var sorter_wrap = $(".center").width();
+				sorter_wrap = sorter_wrap+"px";
+			
+			var sorter_div_right =  $(".center").width() * 0.4;
+				sorter_div_right = sorter_div_right+"px";
+	
+			if($(".sorter>div").css("right") == "0px"){
+				$(".sorter").css({opacity:"0"});
+				setTimeout(function(){
+					$(".sorter").css({right:"-"+sorter_wrap, width:sorter_wrap});
+				}, 700);
+				$(".sorter>div").css({right:"-"+sorter_div_right});
+			
+			}else{
+				$(".sorter").css({right:"0px", width:sorter_wrap, opacity:"1"});
+				$(".sorter>div").css({right:"0px", width:sorter_div_right});
+			}
+		}
+		
+		
+		var _bindMenu = function(){
+			$("#fixed-top-right>ul>li:nth-child(2)").on("click", function(){
+				_toggleSorter();	
+			});
+		}
+		
+		_bindMenu()
+		
+	})();
+
+/*
+	/////////search threads
+	(function(){
+		$('#search-text').on('focus', function(){
+			$(this).parent().css({background:"rgba(251, 249, 234, 0.5)"})
+			$(this).attr("placeholder", "Search")
+		})
+		$('#search-text').on('blur', function(){
+			$(this).parent().css({background:"transparent"})
+		})
+		$('#search-text').on('keydown', function(e){
+			if(e.keyCode == '13' ){	
+				e.preventDefault();
+				$(this).parent().attr("data-contains", $(this).val())
+				$(this).attr("placeholder", '"'+$(this).val()+'"')
+				AllThreads.load("contains", $(this).val());
+				$(this).val("")
+				$(this).blur()
 			}
 		});
-	
-	}//////////end of vote	
-	
-	
-	///////limit characters that user can post
-	function charCount(this_text){
-		var count = 142 - this_text.val().length;
-		
-		if(count > 0){
-		
-			this_text.parent().next().html(count);
-			this_text.parent().next().data("max_char", this_text.val());
-			//console.log(this_text.parent().next().data("max_char"))
-		}else{
-		
-			this_text.parent().next().html("<span style='color:red;'>0</span>");
-			this_text.val(this_text.parent().next().data("max_char"));	
+		$('#search-threads').click(function(){
+			AllThreads.load('contains', $(this).next().val());
+			$(this).next().val("")
+		})
+	})();
+*/
+	// CSRF code
+	(function(){
+		// CSRF code
+		function getCookie(name) {
+			var cookieValue = null;
+			var i = 0;
+			if (document.cookie && document.cookie !== '') {
+				var cookies = document.cookie.split(';');
+				for (i; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
 		}
+		var csrftoken = getCookie('csrftoken');
+
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		$.ajaxSetup({
+			crossDomain: false, // obviates need for sameOrigin test
+			beforeSend: function(xhr, settings) {
+				if (!csrfSafeMethod(settings.type)) {
+					xhr.setRequestHeader("X-CSRFToken", csrftoken);
+				}
+			}
+		}); 
+	})();
 	
-	}
+	////status and notification
+	(function() {
+		
+		////add and bind close btn to this
+		
+		var _createPopUp =  function(data, type){
+		
+			var popUpWrapper = document.createElement("div");
+			var popUpDiv = document.createElement("div");
+		
+			popUpDiv.innerHTML = data
 	
-	////////limit characters that you can post to 142
-	$("#id_text").on("keyup", function(){
-		charCount($(this));	
-	});
+			popUpWrapper.setAttribute("id", "pop-up-wrapper" );
+			popUpWrapper.setAttribute("data-type", type );
+			popUpDiv.setAttribute("id", "pop-up" );
 	
+			///////append all else
+			
+			popUpWrapper.appendChild(popUpDiv);
+			document.body.appendChild(popUpWrapper);
+
+			popUpWrapper.style.opacity = 0;
+			popUpDiv.style.opacity = 0;
+			popUpWrapper.style.left = "-40px";
+			popUpDiv.style.left = "-40px";
 	
+			setTimeout(function () {
+				popUpWrapper.style.opacity = 1;
+				popUpDiv.style.opacity = 1;
+				popUpWrapper.style.left = "25px";
+				popUpDiv.style.left = "25px";
+			}, 30);
+		
+		}
+		
+		var _close = function(e, removePop){
+			
+			var pop_top = parseInt($("#pop-up-wrapper").css("top")),
+				pop_left = parseInt($("#pop-up-wrapper").css("left")),
+				pop_height = $("#pop-up-wrapper").height() + pop_top,
+				pop_width = $("#pop-up-wrapper").width() + pop_left;
+			
+			
+			if ( e.clientX > pop_left && e.clientX < pop_width && e.clientY > pop_top && e.clientY < pop_height){
+				return false;	
+				
+			}else{
+				///make this smoother eventually
+				$('#pop-up-wrapper').remove();
+				$('body').off('click',removePop);
+				
+			}
+		}
+		
+		var _bindClose = function(){
+			$('body').on('click', function removePop(e){
+				_close(e, removePop)
+				
+			});
+		}
+		
+		var _loadData = function(el, type){
+		
+			$.ajax({
+				type: "GET",
+				url: "/"+type+"/",
+				success: function(data) {
+		
+					el.data('hold', 'off');
+					
+					_createPopUp(data, type);
+			
+					_bindClose()
+				}
+			});
+		
+		}
+		
+		
+		var _checkState = function(el){
+			var type = el.data('type'),
+				wrapper = $('#pop-up-wrapper');
+		
+			if(wrapper.length && wrapper.data('type') == type){
+				wrapper.remove()
+
+			}else{
+				if(el.data('hold') == "off"){
+					el.data('hold', 'on');
+				
+					wrapper.remove()
+					
+					_loadData(el, type)
+					
+				}
+			}
+		}
+		
+		var _bindStatusNotify = function(){
+			$('#fixed-top-left>ul>li').on('click', function(){
+				_checkState($(this))
+			});
+		}
+		
+		
+		_bindStatusNotify()
 	
+	})();
+	
+	////toggle user-view and main-feed
+	(function(){
+	
+		var _toggle = function(){
+			if($(".left-wrap").css("left") == "0px"){
+				$(".left-wrap").css({left:"-100%"})
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+				$("header>div>div").attr('id','compose-ico')
+				$('.scroll-to-top').css({display:"block"})
+				// $('.main-feed').removeAttr('style');
+	//         	$('.user-view').removeAttr('style');
+			
+			}else{
+				$(".left-wrap").css({left:"0"})
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+				$("header>div>div").attr('id','posts-ico')
+				$('.scroll-to-top').css({display:"none"})
+				// $('.main-feed').removeAttr('style');
+	//         	$('.user-view').removeAttr('style');
+				//$(window).scrollTop( 90);
+				//myScroller($(window), -90)
+			}
+		}
+		
+		var bind = function(){
+			$("header>div>div").on("click", function(){
+				_toggle()
+			});	
+		}
+		
+		bind()
+		
+	})();
+	
+	///scroll to top
+    (function(){
+    
+		$('.scroll-to-top').click(function(){
+			Scroller.myScroller($(".main-feed"), $(".main-feed").offset().top);
+		});	
+	})();
+	
+	//resize functions ---- much work to do here
+	(function(){
+	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
+		$(window).resize(function(){
+			//$("#inner-height").html($(window).innerHeight())
+		
+		
+		
+			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+			///phone
+			if(center_check == 1){
+				// if($(".content-wrap").css("left") == "0px"){
+	// 				$(".content-wrap").css({left:"0",height:""})
+	// 			}else{
+	// 				$(".content-wrap").css({left:"-100%",height:""})
+	// 			}
+				$(".content-wrap").removeAttr("style")
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+				$(".sorter").removeAttr("style")
+				$(".sorter>div").removeAttr("style")
+				$(".user-view").removeAttr("style")
+
+
+			///tablet	
+			}else if(center_check < 1 && center_check > 0.5){
+				$(".left-wrap").removeAttr("style")//.css({left:"0"})
+			
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+				$(".sorter").removeAttr("style")
+				$(".sorter>div").removeAttr("style")
+				$(".user-view").removeAttr("style")
+				$(".user-view").off('scroll')
+				$(".main-feed").off('scroll')
+				$("header").removeAttr("style")
+		
+			///desktop	
+			}else{
+				$(".left-wrap").removeAttr("style")//.css({left:"0"})
+				if($("#fixed-top-right ul li:nth-child(2)").css('width') == "34px"){
+					$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
+				}else{
+					$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+				}
+				$(".sorter").removeAttr("style")
+				$(".sorter>div").removeAttr("style")
+				$(".user-view").removeAttr("style")
+				$(".user-view").off('scroll')
+				$(".main-feed").off('scroll')
+				$("header").removeAttr("style")
+			
+		
+			}
+		
+		});
+	})();
 	/////////Pretty Lights!!!
 	(function prettyTitle() {
 		$( "header span, .post-user p span").each(function(i, el){
 			var theSpan = $(this);
 			setTimeout(function(){
 		   	if(theSpan.parent().prop("tagName") == "P"){
-// 		   		response titles
-				var red = "#fff";//"#fbf9ea"; ///actually yellow
-				var salmon = "#bdbfc2"; //another grey blue, lighter
-				var white = "#9fa3a7"; ///actually dark blue/grey
+ 		   		//response titles
+				var color1 = "#fff"; //white
+				var color2 = "#bdbfc2"; //another grey blue, lighter
+				var color3 = "#9fa3a7"; ///actually dark blue/grey
 			}else{
-// 				main title
-				var red ="#fef8cd";//#ef7578
-				var salmon = "#ffbaa2";
-				var white = "#fff";
+ 				//main title
+				var color1 ="#fef8cd"; //yellow
+				var color2 = "#ffbaa2"; //salmon
+				var color3 = "#fff"; //white
 				
-			}	theSpan.css({color: salmon, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+			}	theSpan.css({color: color2, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 				theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-					theSpan.css({color: red, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+					theSpan.css({color: color1, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-						theSpan.css({color: white, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+						theSpan.css({color: color3, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					});
 				});
 		
@@ -1850,177 +2108,77 @@ function refreshOpenThread(){
 		});
     	setTimeout(prettyTitle, 25000);
 	})();////////////end of PrettyLights
-	
-	
-	////toggle user-view and main-feed
-	$("header>div>div").on("click", function(){
-		
-		if($(".left-wrap").css("left") == "0px"){
-			$(".left-wrap").css({left:"-100%"})
-			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
-			$("header>div>div").attr('id','compose-ico')
-			$('.scroll-to-top').css({display:"block"})
-			// $('.main-feed').removeAttr('style');
-//         	$('.user-view').removeAttr('style');
-			
-			
-		}else{
-			$(".left-wrap").css({left:"0"})
-			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
-			$("header>div>div").attr('id','posts-ico')
-			$('.scroll-to-top').css({display:"none"})
-			// $('.main-feed').removeAttr('style');
-//         	$('.user-view').removeAttr('style');
-			//$(window).scrollTop( 90);
-			//myScroller($(window), -90)
-		}
-	
-	})
-	
-	////toggle sorter menu
-	function toggleSorter(){
-		var sorter_wrap =  $(".center").width()
-			sorter_wrap = sorter_wrap+"px"
-			//console.log(sorter_wrap)
-			
-		var sorter_div_right =  $(".center").width() * 0.4
-			sorter_div_right = sorter_div_right+"px"
-	
-		if($(".sorter>div").css("right") == "0px"){
-			$(".sorter").css({opacity:"0"});
-			setTimeout(function(){
-				$(".sorter").css({right:"-"+sorter_wrap, width:sorter_wrap});
-			}, 700);
-			$(".sorter>div").css({right:"-"+sorter_div_right});
-			
-		}else{
-			$(".sorter").css({right:"0px", width:sorter_wrap, opacity:"1"});
-			$(".sorter>div").css({right:"0px", width:sorter_div_right});
-		}
-	}
-	
-	////
-	$("#fixed-top-right>ul>li:nth-child(2)").on("click", function(){
-		toggleSorter();	
-	});
-	
-	
-	function closeThread(){
-		var thread_id = localStorage.getItem('open_thread');
-		var this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px";
-		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
-		
-		$("#thread-wrapper-pop").css({opacity:0});
-		
-		if(center_check == 1){
-		
-			$("#thread-div-pop").css({width:"100%", left:"0", height:"168px",top:this_thread_position});
-			
-		}else if(center_check < 1 && center_check > 0.5){	
-		
-			$("#thread-div-pop").css({width:"68%", left:"42%", height:"168px",top:this_thread_position});
-			
-		}else{
-			$("#thread-div-pop").css({width:"45%", left:"33%", height:"168px",top:this_thread_position});
-		}
-		$("#thread-div-pop").find(".details").css({height:"0px"});
-		$("#thread-div-pop").find(".white-space").css({height:"0px"});
-		$("#close-btn").css({opacity:0})
-		setTimeout(function(){
-			$("#thread-wrapper-pop").css({display:"none"});
-			$("#thread-div-pop").css({display:"none"});
-			$("#thread-wrapper-pop").css({opacity:1});							
-			
-		}, 500);
-	
-	}
-	
-	///////close with
-	$("#thread-wrapper-pop").on("click",function(){
-		closeThread();
-	});
-	
-	////close thread on scroll
-	// function closeThreadScroll(){
-// 		var thread_id = localStorage.getItem('open_thread');
-// 		var position_stamp = $(window).scrollTop(); 
-// 		
-// 		$(document).on("scroll", function(e){
-// 			var position = $(window).scrollTop();
-// 			console.log(position, position_stamp);
-// 			if (position >= position_stamp + 300 || position <= position_stamp - 300) {
-// 				closeThread();
-// 				$(document).off("scroll");
-// 			}
-// 		});
-// 	};
-	
-	//if(typeof window.orientation !== 'undefined'){
-    /* cache dom references */ 
-    //var $body = jQuery('body'); 
 
-
-	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
-	$(window).resize(function(){
-		//$("#inner-height").html($(window).innerHeight())
-		
-		
-		
-		var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
-		///phone
-		if(center_check == 1){
-			// if($(".content-wrap").css("left") == "0px"){
-// 				$(".content-wrap").css({left:"0",height:""})
-// 			}else{
-// 				$(".content-wrap").css({left:"-100%",height:""})
-// 			}
-			$(".content-wrap").removeAttr("style")
-			$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
-			$(".sorter").removeAttr("style")
-			$(".sorter>div").removeAttr("style")
-			$(".user-view").removeAttr("style")
-
-
-		///tablet	
-		}else if(center_check < 1 && center_check > 0.5){
-			$(".left-wrap").removeAttr("style")//.css({left:"0"})
-			
-			$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
-			$(".sorter").removeAttr("style")
-			$(".sorter>div").removeAttr("style")
-			$(".user-view").removeAttr("style")
-			$(".user-view").off('scroll')
-			$(".main-feed").off('scroll')
-			$("header").removeAttr("style")
-		
-		///desktop	
-		}else{
-			$(".left-wrap").removeAttr("style")//.css({left:"0"})
-			if($("#fixed-top-right ul li:nth-child(2)").css('width') == "34px"){
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
-			}else{
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
-			}
-			$(".sorter").removeAttr("style")
-			$(".sorter>div").removeAttr("style")
-			$(".user-view").removeAttr("style")
-			$(".user-view").off('scroll')
-			$(".main-feed").off('scroll')
-			$("header").removeAttr("style")
-			
-		
-		}
-		
-	});
-	
-	
 	////////when all is loaded, updatePage
-	//updatePage();
-	
-	////dealing with iphone bars
-	//$(window).scrollTop("44px")
-	//$(".content-wrap").css({height:($(".content-wrap").height() + 44) + "px"});
-	
+	(function updatePage(){
+ 		
+ 		//check for local storage 'curr_page_state' deal with user first time visiting the site with no local storage item 'curr_page_state'
+		
+		var _checkStorage = function(){
+			if(localStorage.getItem('curr_page_state') === null){
+			
+				var state = {};
+				localStorage.setItem('curr_page_state', JSON.stringify(state))
+				var last_state = state;
+			
+			}else{
+				var state = localStorage.getItem('curr_page_state');
+				var last_state = []
+				last_state = JSON.parse(state);
+			}
+			
+			return last_state
+			
+		}
+
+		var runUpdate = function(){
+		
+			var last_state = _checkStorage()
+		
+			$.ajax({
+				type: "POST",
+				url: "/update_page/",
+				dataType: "json",
+				data: last_state,
+				success: function(data) {
+ 
+					//console.log(data, last_state)	
+								
+					//update thread
+					if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
+						AllThreads.load('_', '_');	 
+					} 
+					//update user_view with scroll --- responses
+					if(data.my_last_thread_responses != last_state.my_last_thread_responses){
+						UserView.load($(".user-view").scrollTop(), true);
+					}
+					//update user_view without scroll --- votes --- deletes
+					if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
+						UserView.load($(".user-view").scrollTop(), false);
+					
+						var handle = $("#thread-div-pop").find('.details'),
+							curr_id = $("#thread-div-pop").children().first().data("thread");
+					
+						if($("#thread-div-pop").css("display") == "block"){
+							OneThread.loadCurrThread(curr_id, handle, false)
+						
+						}
+					}
+				
+					////update user clock
+					 Timer.addTime(data.timediff)
+				
+				
+					//store in localStorage
+					localStorage.setItem('curr_page_state', JSON.stringify(data));
+				}
+			});
+		}
+		
+ 		runUpdate();
+ 		
+ 		setTimeout(updatePage, 10000)
+ 	})();
 	
 	
 });//////endtag

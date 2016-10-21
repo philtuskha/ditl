@@ -4,14 +4,37 @@
 	
 	<div class="thread" id="{{ thread.pk }}">
 		<div class="post-user" data-thread="{{ thread.pk }}"> <p><span>U</span><span>s</span><span>e</span><span>r</span> <span>{{ thread.author_id }}</span></p> <p>posted at {{ thread.published_date.time }} today</p></div>
-		<h1><a class="expand-thread" id="{% url 'thread_detail' pk=thread.pk %}">
-			<svg width="32" height="32" class="small-chart">
-				<circle r="8" cx="16" cy="16" style="stroke-dasharray:{% time_since_post thread.published_date %}, 49.9" class="small-pie" />
-			</svg><span class="expand-thread-title">{{ thread.title }}</span></a></h1>
+		<!-- 
 
-		<p></p>
-		<p>{{thread.response_set.count}} responses | {% get_all_votes thread.pk thread.tvote_set thread.response_set %}</p>
-		<p style="display:none"></p>
+		
+		<h1><a class="expand-thread" id="{% url 'thread_detail' pk=thread.pk %}">
+			<span class="expand-thread-title"></span></a></h1>
+ -->
+			<div class="expand">
+				<ul class="expand-left">
+					<li>
+						<svg width="32" height="32" class="small-chart">
+							<circle r="8" cx="16" cy="16" style="stroke-dasharray:{% time_since_post thread.published_date %}, 49.9" class="small-pie" />
+						</svg>
+					</li>
+					<li>
+						<p>
+							{% clock thread.published_date %}<br>
+							<span>left</span>
+						</p>
+					</li>
+				</ul>
+				<ul class="expand-right">
+					<li>
+						<div class="thread-bubble">
+							{{ thread.text }}
+						</div>
+					</li>
+					<li>
+						<p>{{thread.response_set.count}} responses | {% get_all_votes thread.pk thread.tvote_set thread.response_set %}</p>
+					</li>
+				</ul>
+			</div>
 		<div>
 			<div class="expand-thread-bar" id="{% url 'thread_detail' pk=thread.pk %}">
 				<span class="responses">Responses</span><span class="rotate-arrow"></span>

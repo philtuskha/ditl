@@ -77,29 +77,28 @@
 			</div>
 		</div><div class="sorter">
 			<div>
-				<h2>EXPLORE</h2>
+				<div id="search-box" data-contains>
+					<input type="submit" id="search-threads"></input>
+					<input type="text" id="search-text" placeholder="Search"></input>
+					
+				</div>
 				<div data-my="response__author_id" class="sort">
-				<span class="sort-arrow">«</span> <span>My Conversations</span>
+				<span class="sort-icon" id="convos"></span> <span>My Conversations</span>
 				</div>
 				<div data-faves="author_id__in" class="sort">
-				<span class="sort-arrow">«</span> <span>My favorite users</span>
+				<span class="sort-icon" id="faves"></span> <span>My Favorite Users</span>
 				</div>
 				<div>
 					<div data-pop="-resp_count" rel="pub" class="sort">
-					<span class="sort-arrow">«</span> <span>Most Popular Posts</span>
+					<span class="sort-icon" id="popular"></span> <span>Most Popular</span>
 					</div>
 
 					<div data-pub="published_date" rel="pop" class="sort">
-					<span class="sort-arrow">«</span> <span>Ending Soon</span>
+					<span class="sort-icon" id="ending"></span> <span>Ending Soon</span>
 					</div>
 				</div>
 			
-				<h2>SEARCH</h2>
-				<div id="search-box">
-					<input type="text"></input>
-					<input type="submit" name="search" id="search-threads"></input>
-				</div>
-				<h2>TRENDING</h2>
+				<div class="sort-trend"><span class="sort-icon" id="trending"></span><span>Trending</span></div>
 				<div id="keywords">
 					{% block sidebar %}
 					{% endblock %}
@@ -138,10 +137,7 @@
     </div>
     <div class="scroll-to-top"><h1>^</h1></div>
 	<div id="thread-div-pop" class="thread-pop">
-	<div class="white-space">
-		<div class="details">
-		</div>
-	</div>
+	
 	</div>
 	<div id="thread-wrapper-pop"></div>
 	<div id="viewport"></div>

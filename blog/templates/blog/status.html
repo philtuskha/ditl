@@ -1,23 +1,31 @@
-<h3>your status is {{status}}</h3>
-<p>you can improve your status by posting nice responses to other people's posts and Voting people elf.  
-Please use Troll voting sparingly as this does nothing to improve your status.</p>
-<br><br><br>
-{{favorited}}
-<br><br><br>
-<hr>
 
-<h2>TODAY</h2>
-<h3>your votes for other peoples threads and resonses</h3>
- {{user_votes}}<br><br>
- <p>out of  {{total_votes}} total votes that you have made</p>
-<br><br>
+<div id="status">
+	<h1>User {{user}} <span>#{{ my_overall_ranking }}</span></h1>
+	<p class="large">Your overall ranking is #{{ my_overall_ranking }} out of {{total_users}} total users</p>
+	
+	<p>Overall ranking is based on your popularity and activity ranking. you can improve your ranking by posting nice things to other peoples threads and liking their comments.</p>
+	<h3>Popularity<span>#{{ my_fave_ranking }}</span></h3>
+	<p class="large">Your popularity ranking is #{{ my_fave_ranking }} out of {{ total_users }} total users, with {{ my_fave_points }} popularity points out of {{ total_fave_points }} total</p>
+	
+	<p>Popularity ranking is based on other people responding to, and voting for your posts.</p>
+	<h3>Activity<span>#{{ my_activity_ranking }}</span></h3>
+	<p class="large">Your activity ranking is #{{ my_activity_ranking }} out of {{ total_users }} users, with {{ my_activity_points }} activity points out of {{ total_activity_points }} total</p>
+	
+	<p>Activity ranking is based on how much you have been posting in the last 28 days.  <br><br><span class="quote">"Get busy living or get busy dying."<br> <i>- Andy Dufresne</i></span></p>
+	<br>
+	<h2>TODAY</h2>
+	<h3>your votes for other peoples threads and resonses</h3>
+	 <br><br>
+	 <p>out of   total votes that you have made</p>
+	<br><br>
 
-<br><br><br>
-<hr>
-<h3>your responses got these votes</h1>
-{{rvotes}}<br>
+	<br><br><br>
+	<hr>
+	<h3>your responses got these votes</h1>
+	<br>
 
-<br><br><br>
-<hr>
-<h3>your threads got these votes</h1>
-{{tvotes}}<br>
+	<br><br><br>
+	<hr>
+	<h3>your threads got these votes</h1>
+	<br>
+</div>

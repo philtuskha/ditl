@@ -9,28 +9,107 @@ from .models import Thread, TVote, Response, RVote, UserProfile, User
 from .forms import ThreadForm, TVoteForm, ResponseForm, RVoteForm
 from django.contrib.auth.models import Permission
 from nltk import sent_tokenize, word_tokenize, pos_tag
-import ast
+from django.utils.html import strip_tags
 
 
-def activity(type, increment, date, me):
+def activity(type, increment, me):
     profile_object = UserProfile.objects.get(user_id=me)
+    # activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "votes": profile_object.activity_votes}
+    activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "vote": profile_object.activity_votes}
+    month = 2419200  #actually, 28 days
+    day = 86400  
+
+    def add_list(list, type):
+        if type == "thread":
+            profile_object.activity_threads = json.dumps(list)
+        elif type == "response":
+            profile_object.activity_responses = json.dumps(list)
+        else:
+            profile_object.activity_votes = json.dumps(list)
+                    
+    def activity_init(type):
+          
+        for ad_type, val in activity_dict.items():
+            
+            origin_list = [0] * 28
+                
+            if ad_type == type:
+                origin_list[0] = increment
+                add_list(origin_list, ad_type)
+                
+            else:
+                origin_list[0] = 0
+                add_list(origin_list, ad_type)
+                
+    if not profile_object.activity_responses or not profile_object.activity_threads or not profile_object.activity_votes:
+        #initialize 
+        
+        profile_object.origin_date = datetime.now()
+        
+        activity_init(type)
+        
+    else:
+        #now = profile_object.origin_date + timezone.timedelta(days=30)
+        now = timezone.now()
+        diff = now - profile_object.origin_date
+        timediff = diff.total_seconds()
+        
+        print timediff
+        if timediff < month:    
+
+            this_day = int(timediff/day)
+            list = json.loads(activity_dict[type])
+            
+            list[this_day] += increment
+            add_list(list, type)
+
+            
+        else:
+            
+            days_diff = int(timediff)/day
+            how_diff = days_diff - 28
+            
+            for each_type in activity_dict:
+                list = json.loads(activity_dict[each_type])
+                tmp_list = list[how_diff : len(list)]
+                append_list = [0] * how_diff
+                tmp_list.extend(append_list)
+                
+                if each_type == type:
+                    print "**** each type matched", type
+                    index = len(tmp_list) - 1
+                    tmp_list[index] += increment
+            
+                add_list(tmp_list, each_type)
+            
+            profile_object.origin_date += timezone.timedelta(days=how_diff)
     
-    if type is "thread":
-        profile_object.activity_threads += increment
-        profile_object.last_thread = date
-        
-    elif type is "response":
-        profile_object.activity_responses += increment
-        profile_object.last_response = date
-        
-    elif type is "vote":
-        profile_object.activity_votes += increment
-        profile_object.last_vote = date
-    
-        
+            
+       
     profile_object.save()
     
 
+def profile_test(request):
+    profile_object = UserProfile.objects.get(user_id=request.user.id)
+    
+    #reset
+    profile_object.activity_threads = ""
+    profile_object.activity_responses = ""
+    profile_object.activity_votes = ""
+    profile_object.save()
+    
+    a = profile_object
+    b = profile_object.activity_threads
+    c = profile_object.activity_responses
+    d = profile_object.activity_votes
+    e = profile_object.origin_date
+    
+    
+    
+    
+    
+    return render(request, 'blog/profile_test.html', {'a': a, 'b': b, 'c': c, 'd': d, 'e': e })
+    
 
 def faves(type, vote_post_id, thread, add_subtract_faves, me):
     #storing favorite users to my profile, a.k.a. people's threads you respond to 
@@ -126,17 +205,17 @@ def vote(request):
     
                 if vote_count is 6:
                     #send WARNING notification message to notification center
-                    return ("warning", """Whoa, pump the brakes there, Troll Hunter.  
-                                            You can only have six troll votes at any given time.  
-                                            One more troll vote, and you will have your troll voting privileges revoked. """)
+                    return ("warning", """<h2>Whoa, pump the brakes there, Troll Hunter.</h2>  
+                                            <p>You can only have six troll votes at any given time.  
+                                            One more troll vote, and you will have your troll voting privileges revoked.</p> """)
         
                 elif vote_count > 6:
                     #send RESTRICTED notification message to notification center
-                    return ("restricted", """Troll Hunter.  
-                                            Your troll voting is now restricted. 
+                    return ("restricted", """<h2>Troll Hunter!!</h2>  
+                                            <p>Your troll voting is now restricted. 
                                             You can still vote positively, but we don't allow vigilante troll hunting.
                                             Delete some of your troll votes.
-                                            Or, just wait until tomorrow.""")
+                                            Or, just wait until tomorrow.</p>""")
                                         
                 else:
                     return ("ok", "")   
@@ -162,7 +241,7 @@ def vote(request):
                 
                 
                 faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
-                activity("vote", num, timezone.now(), request.user.id)
+                activity("vote", num, request.user.id)
                 
                 data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 't_check': t_check, 'message': message}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -240,7 +319,7 @@ def delete_post(request):
             if respos_to_thread.count() == 0:
                 delete_this.delete()
             
-                activity("thread", -1, timezone.now(), request.user.id)
+                activity("thread", -1, request.user.id)
                 
                 delete_or_hide = "delete"
                 
@@ -260,7 +339,7 @@ def delete_post(request):
                 delete_this = respos_to_thread.filter(pk=request.POST.get('pk'), author=request.user)
                 delete_this.delete()
             
-                activity("response", -1, timezone.now(), request.user.id)
+                activity("response", -1, request.user.id)
                 
                 delete_or_hide = "delete"
                 
@@ -310,7 +389,7 @@ def add_thread(request):
                 thread.published_date = timezone.now()
                 thread.save()
                 
-                activity("thread", 1, timezone.now(), request.user.id)
+                activity("thread", 1, request.user.id)
                 
                 data = {'message': "%s and %s added" % (request.POST.get('title'), request.POST.get('text'))}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -329,7 +408,7 @@ def add_thread(request):
                 curr_count.resp_count = curr_count.resp_count + 1
                 curr_count.save() 
                 
-                activity("response", 1, timezone.now(), request.user.id)
+                activity("response", 1, request.user.id)
                 
                 data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -353,7 +432,7 @@ def add_thread(request):
                 curr_count.save() 
                 
                 faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
-                activity("response", 1, timezone.now(), request.user.id)
+                activity("response", 1, request.user.id)
                 
                 data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -423,44 +502,25 @@ def update_page(request):
         my_last_thread_rvote = 0
     
     else:
-        my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
+        all_responses = Response.objects.all()
+        my_thread_respo = all_responses.filter(author_id=request.user.id)   
+        curr_thread_respo = my_thread_respo.filter(thread_id=my_last_thread.id)                            
         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).count()
         
         #check for new inactive reponses
         my_thread_active = my_last_thread.is_active
-        my_deleted = my_thread_respo.filter(is_active=1).count()
-        my_trolled = my_thread_respo.filter(is_active=2).count()
+        my_deleted = all_responses.filter(is_active=1).count()
+        my_trolled = all_responses.filter(is_active=2).count()
         
         #you can do this better
+        
         x = 0
-        for r in my_thread_respo:
+        for r in curr_thread_respo:
             x += RVote.objects.filter(post_id=r.id).count()
        
         my_last_thread_rvote = x
-        
-    # count responses to my last thread
-#     user_thread = Thread.objects.filter(author_id=request.user.id)
-#     user_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
-#     
-#     if user_thread.count() > 0:
-#         my_last_thread = user_thread.order_by("pk").reverse()[0]
-#         my_thread_respo = Response.objects.filter(thread_id=my_last_thread.id)
-#         my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
-#         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).exclude(user_id=request.user.id).count()
-#         
-#         you can do this better
-#         x = 0
-#         for r in my_thread_respo:
-#             x += RVote.objects.filter(post_id=r.id).exclude(user_id=request.user.id).count()
-#        
-#         my_last_thread_rvote = x
-# 
-#     else:
-#         my_last_thread_responses = 0
-#         my_last_thread_tvote = 0
-#         my_last_thread_rvote = 0
-        
+
         
     diff = timezone.now() - my_last_thread.published_date
     timediff = diff.total_seconds()
@@ -480,29 +540,6 @@ def update_page(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
         
 
-def profile_test(request):
-    # diff = timezone.now() - request.user.profile.last_thread
-#   timediff = diff.total_seconds()
-#   timediff = (timediff/86400) * 49.9
-    
-    timediff = 49.9
-    
-    curr_thread_id = request.user.profile.curr_thread
-    curr_thread = get_object_or_404(Thread, pk=curr_thread_id)
-    respo = Response.objects.filter(published_date__lte=timezone.now(), thread=curr_thread_id).order_by('published_date')
-    
-    user=request.user
-    
-    profile=request.user.profile.user_id
-    
-    last_thread=request.user.profile.last_thread
-    
-    other=request.user.profile.curr_thread
-    
-    request.user.profile.last_thread=timezone.now()
-    
-    
-    return render(request, 'blog/profile_test.html', {'user': user, 'profile': profile, 'last_thread': last_thread, 'other': other, 'timediff': timediff })
 
 
 def keyword_extends():
@@ -510,40 +547,56 @@ def keyword_extends():
 #   response = Response.objects.all()
 #   all_text = [response, thread]
     thread = Thread.objects.all()
+    response = Response.objects.all()
+    all_text = [response, thread]
+    
     most_used_nouns = {}
     nouns = ['NN', 'NNP', 'NNS', 'NNPS']
-    pre = ['JJ', 'JJR', 'JJS', '#', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'PRP$', 'RB']
+    pre = ['JJ', 'JJR', 'JJS', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'PRP$', 'RB']
     
-#   for all in all_text:
-    for r in thread:
-        tokens = word_tokenize(r.text)
-        tagged = pos_tag(tokens)
+    for all in all_text:
+        for r in all:
+            stripped_text = strip_tags(r.text)
+            tokens = word_tokenize(stripped_text)
+            tagged = pos_tag(tokens)
     
-        last_word = ""
+            last_word = ""
     
-        for t in range(0, len(tagged)):
-            word, type = tagged[t]
-            p_word, p_type = tagged[t-1]
+            for t in range(0, len(tagged)):
+                word, type = tagged[t]
+                p_word, p_type = tagged[t-1]
         
-            if t+1 < len(tagged):
-                x_word, x_type = tagged[t+1]
-            else:
-                x_word, x_type = ("", "")
+                if t+1 < len(tagged):
+                    x_word, x_type = tagged[t+1]
+                else:
+                    x_word, x_type = ("", "")
                 
-            if type in nouns and (p_type in pre or x_type in nouns):
-                if x_type not in nouns:
-                    x_word = ""
+                if type in nouns and (p_type in pre or x_type in nouns):
+                    if x_type not in nouns:
+                        x_word = ""
                 
-                if p_type not in pre:
-                    p_word = ""
+                    if p_type not in pre:
+                        p_word = ""
                 
-                try:
-                    conj = "%s %s %s" % (p_word.lower(), word.lower(), x_word.lower())
-                    conj = conj.strip().title()
-                    most_used_nouns[conj] = most_used_nouns[conj]+1
-                except KeyError:
-                    most_used_nouns[conj] = 1
-    
+                    try:
+                        conj = "%s %s %s" % (p_word.lower(), word.lower(), x_word.lower())
+                        conj = conj.strip().title()
+                        most_used_nouns[conj] = most_used_nouns[conj]+1
+                    except KeyError:
+                        most_used_nouns[conj] = 1
+                
+                elif type is "#":
+                    
+                    try:
+                        conj = "%s%s" % (word.lower(), x_word.lower())
+                        conj = conj.strip().title()
+                        most_used_nouns[conj] = most_used_nouns[conj]+1
+                    except KeyError:
+                        most_used_nouns[conj] = 1
+                    
+                    
+                    
+                    
     sorted_nouns = sorted(most_used_nouns.items(), key=lambda x: x[1], reverse=True)
     return sorted_nouns
 
@@ -560,100 +613,110 @@ def notifications(request):
     
 def status(request):
     
-    t_status = 0
-    t_total_votes = 0.0
-    t_options=(('TR',-2),('SE',6))
-    
-    tvotes = {}
-    for ts in t_options:
-         tvotes[ts[0]] = TVote.objects.filter(post__author=request.user, option=ts[0]).exclude(user=request.user).count() 
-         
-         if ts[0] is not 'TR':
-            t_status += (tvotes[ts[0]] * ts[1])
-            t_total_votes += tvotes[ts[0]] * 6
-         else:
-#           pass #do troll vote stuff here
-            t_status += (tvotes[ts[0]] * ts[1])
-            t_total_votes += tvotes[ts[0]] * 6
-            
-    
-    r_status = 0
-    r_total_votes = 0.0
-    r_options=(('TR',-2),('SE',3))
-    
-    rvotes = {}
-    for rs in r_options:
-         rvotes[rs[0]] = RVote.objects.filter(post__author=request.user, option=rs[0]).count()
-         
-         if rs[0] is not 'TR':
-            r_status += (rvotes[rs[0]] * rs[1])
-            r_total_votes += rvotes[rs[0]] * 3
-         else:
-#           pass #do troll vote stuff here
-            r_status += (rvotes[rs[0]] * rs[1])
-            r_total_votes += rvotes[rs[0]] * 3
-            
-    if t_total_votes and r_total_votes:
-        status =  ((t_status/t_total_votes) + (r_status/r_total_votes)) / 2
-    elif t_total_votes and  not r_total_votes:
-        status =  (t_status/t_total_votes)
-    elif not t_total_votes and r_total_votes:
-        status =  (r_status/r_total_votes)
-    else:
-        #user has not recieved any votes
-        status = 0
-    
-    #users votes. factoring in participation into algorithm 
-    time_from = datetime.now() - timedelta(hours=24.0)
-    
-    total_votes = 0
-    user_votes = {}
-    for i in TVote.MY_CHOICES:
-         t_count = TVote.objects.filter(user=request.user, option=i[0], published_date__gte=time_from).count()
-         r_count = RVote.objects.filter(user=request.user, option=i[0], published_date__gte=time_from).count()
-         user_votes[i[0]] = t_count + r_count
-         total_votes = total_votes + t_count + r_count
-    
-    
+    #activity and favorites
     profile = UserProfile.objects.all()
+    user=request.user.id
     
-    fave_votes = 0
-    fave_respo = 0
-    for p in profile:
-        
+    total_users = profile.count()
+    
+    activity_ranking = []
+    
+    fave_ranking = {}
+    def get_favorites():
         if p.favorites:
             fave_dict = json.loads(p.favorites)
-             
-            for user, val in fave_dict.items(): 
-                if int(user) == request.user.id:
-                     fave_votes += val[0]
-                     fave_respo += val[1]
-    
-    favorited = "you recieved %s votes and %s responses" % (fave_votes, fave_respo)
+            for u, val in fave_dict.items():
+                if u in fave_ranking:
+                    fave_ranking[int(u)] += (val[0] * 2) + (val[1] * 6) 
+                else: 
+                    fave_ranking[int(u)] = (val[0] * 2) + (val[1] * 6)
         
     
-    
-    #adding total_votes * .001 to status to encourage voting
-    status = status + (0.001 * total_votes)
-    
-    days_responses = Response.objects.filter(author=request.user, published_date__gte=time_from).count() #, published_date__gte=time_from
-    
-    #adding days_responses * .008 to status to encourage responding to threads
-    status = status + (0.008 * days_responses)
-    
-    days_thread = Thread.objects.filter(author=request.user, published_date__gte=time_from).count() #, published_date__gte=time_from
-    
-    #adding days_thread * .01 to status to encourage initiating thread
-    status = status + (0.1 * days_thread)
-    
-    status = round(status, 2)
-    
-    user=request.user
+    for p in profile:
+        av = p.activity_votes
+        ar = p.activity_responses
+        at = p.activity_threads
         
+        if av and ar and at:
+            votes = sum(json.loads(av))
+            responses = sum(json.loads(ar)) * 3
+            threads = sum(json.loads(at)) * 5
+        
+            points = votes + responses + threads
+        
+            activity_ranking.append((p.id, points))
+         
+            get_favorites()
+
+        else:
+            points = 0
+            
+            activity_ranking.append((p.id, points))
+         
+            get_favorites()
+        
+    
+    fave_ranking = sorted(fave_ranking.items(), key=lambda tup: tup[1], reverse=True)
+    my_fave_ranking = next((i for i, v in enumerate(fave_ranking) if v[0] == user), None) + 1
+    fave_ranking_dict = dict(fave_ranking)
+    my_fave_points = fave_ranking_dict[user]
+    
+    total_fave_points = sum(x[1] for x in fave_ranking)
+    
+    # my_popularity = "my fave rating: %s. my fave points: %s. total fave points: %s" % (my_fave_ranking, my_fave_points, my_fave_points)
+    
+    
+    
+    activity_ranking = sorted(activity_ranking, key=lambda tup: tup[1], reverse=True)
+    my_activity_ranking = next((i for i, v in enumerate(activity_ranking) if v[0] == user), None) + 1
+    activity_ranking_dict = dict(activity_ranking)
+    my_activity_points = activity_ranking_dict[user]
+    
+    total_activity_points = sum(x[1] for x in activity_ranking)    
+  
+    #my_activity = "Your activity ranking: %s out of $s users, with %s activity points out of %s total." % (my_fave_ranking, total_users, my_activity_points, total_activity_points)
+    
+    
+    dicts =[fave_ranking_dict, activity_ranking_dict]
+    
+    all_points_dict = {}
+    for myDict in dicts:
+        for key, value in myDict.items():
+            all_points_dict.setdefault(key, 0)
+            all_points_dict[key] += value
+    
+    
+    overall_ranking = all_points_dict.items()
+    overall_ranking = sorted(overall_ranking, key=lambda tup: tup[1], reverse=True)
+    my_overall_ranking = next((i for i, v in enumerate(overall_ranking) if v[0] == user), None) + 1
+    
+    overall = "my total rating: %s." % (all_points_dict)
+
+
         
 #   user_votes = TVote.objects.filter(user=request.user, option="DL").count()
 #   user_votes = TVote.objects.all()
-    return render(request,'blog/status.html',{'user':user, 'status':status, 'favorited':favorited, 'tvotes':tvotes, 'rvotes':rvotes, 'user_votes':user_votes, 'total_votes':total_votes})
+   #  catch_all = 0
+#     total_rating= 0
+#     user = 0
+#     activity_ranking = 0
+#     my_activity_ranking = 0
+#     total_users = 0
+#     favorited = 0 
+    return render(request,'blog/status.html',{'user':user, 
+                                            'overall': overall,
+                                            'my_overall_ranking': my_overall_ranking,  
+                                            'my_activity_ranking':my_activity_ranking,
+                                            'my_activity_points':my_activity_points,
+                                            'total_activity_points':total_activity_points,
+                                            'my_fave_ranking':my_fave_ranking,
+                                            'my_fave_points':my_fave_points,
+                                            'total_fave_points':total_fave_points,
+                                            # 'my_activity_ranking':my_activity_ranking,
+#                                             'my_activity_ranking':my_activity_ranking,
+#                                             'my_activity_ranking':my_activity_ranking,
+#                                             'my_activity_ranking':my_activity_ranking, 
+                                            'total_users': total_users})
 
 def home(request):
     #default load before ajax reload JIC
@@ -694,7 +757,18 @@ def thread_list(request):
         
         #search or keyword
         if request.GET.get('contains'):
-            kwargs['text__icontains'] = request.GET.get('contains')
+            response_search = Response.objects.filter(text__icontains=request.GET.get('contains'))
+            thread_search = Thread.objects.filter(text__icontains=request.GET.get('contains'))
+            keyword_threads = []
+            for t in thread_search:
+                keyword_threads.append(t.pk)
+            
+            for r in response_search:
+                keyword_threads.append(r.thread_id)
+            
+            print keyword_threads
+            kwargs['pk__in'] = keyword_threads
+            #kwargs['text__icontains'] = request.GET.get('contains')
     
         #my likes
              

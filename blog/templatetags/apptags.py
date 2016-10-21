@@ -12,7 +12,48 @@ def time_since_post(thread_time):
 	total_seconds = diff.total_seconds()
 	total_seconds = (total_seconds/86400) * 49.9 
 	return total_seconds
+
+@register.simple_tag
+def clock(thread_time):
+	diff = timezone.now() - thread_time
+	hours = 23 - (diff.seconds / 60 / 60)
+	minutes = 59 - (diff.seconds / 60 % 60)
+	minutes = str(minutes)
+	if len(minutes) != 2:
+		minutes = "0" + minutes
+	return "%s:%s" % (hours, minutes)
 	
+# var _getCurrTime = function(startTime){
+# 			var time = parseFloat(startTime, 10),
+# 				hrs = 24 - (time/86400 * 24),
+# 				minutes = (hrs % 1) * 60;
+# 		 
+# 				 hrs = Math.floor(hrs)
+# 				 minutes = Math.floor(minutes)
+# 				 minutes = minutes.toString().length === 1 ? "0"+ minutes.toString() : minutes
+# 			 
+# 				 return [time, hrs, minutes]
+# 			 
+# 		}
+# 	
+# 		var addTime = function(startTime){
+# 			var clock = $( "circle.pie" ),
+# 			time_div = $("#time-text"),
+# 			time_div_small = $("#time-text-small")
+# 			radius = clock.parent().height()/2;
+# 			circumference = 2 * Math.PI * radius
+# 		
+# 			time_parts = _getCurrTime(startTime)
+# 			console.log(circumference, time_parts)
+# 			if(time_parts[0] < 86400){
+# 				var off_set = (time_parts[0] / 86400) * circumference/2;//off_set.toString()
+# 				off_set = (off_set).toString() + ' ' + circumference.toString();
+# 				var stroke_w = radius + "px"
+# 	
+# 				clock.css({strokeWidth: stroke_w, strokeDasharray: off_set, transition: "stroke-dasharray", transitionTimingFunction:'ease', transitionDuration: '1s' });
+# 
+# 				time_div.html(time_parts[1]+" hrs & "+time_parts[2]+" min left")
+# 				time_div_small.html(time_parts[1]+":"+time_parts[2]+" left")	
 	
 @register.simple_tag
 def get_user_votes(post_id, set, user):

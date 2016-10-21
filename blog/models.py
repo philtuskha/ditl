@@ -12,12 +12,10 @@ class UserProfile(models.Model):
 	
 	user = models.OneToOneField('auth.User', related_name='profile')
 	favorites = models.CharField(max_length=200, null=True)
-	activity_threads = models.IntegerField(default=0)
-	activity_responses = models.IntegerField(default=0)
-	activity_votes = models.IntegerField(default=0)
-	last_thread = models.CharField(max_length=200, null=True)
-	last_response = models.CharField(max_length=200, null=True)
-	last_vote = models.CharField(max_length=200, null=True)
+	activity_threads = models.CharField(max_length=200, null=True)
+	activity_responses = models.CharField(max_length=200, null=True)
+	activity_votes = models.CharField(max_length=200, null=True)
+	origin_date = models.DateTimeField(null=True)
 	
 	def __unicode__(self):
 		return self.user.username
