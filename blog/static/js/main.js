@@ -1902,13 +1902,17 @@ function hiddenToggleFunction(){
 			
 		}
 		var _srcollWindow = function(x){
-			$(window).scrollTop(x);
+			$('.main-feed').scrollTop(x);
 		
 		}
 		
 		var _bindElScroll = function(){
 			$('.main-feed').on('scroll', function(){
-				x = $(this).scrollTop()
+				e.preventDefault()
+				
+			});
+			$(window).on('scroll', function(){
+				x = $(this).scrollTop() * 100
 				_srcollWindow(x)
 			});
 			
