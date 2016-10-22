@@ -331,6 +331,7 @@ width:100%;
 padding-bottom:40px;
 height:inherit;
 overflow-y: scroll; 
+-webkit-overflow-scrolling: touch;
 }
 #login{
 text-decoration:none;
@@ -548,7 +549,8 @@ height:0;
 .response-container {
 	height:100%;
     padding-bottom: 126px;
-	overflow:auto;
+	overflow:scroll;
+	-webkit-overflow-scrolling: touch;
 }
 
 .response-container div, .response-container p, .response-container h1{
