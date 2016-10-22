@@ -1801,7 +1801,7 @@ function hiddenToggleFunction(){
 			
 			$(window).on('touchmove', function(e){
 				var this_ws = $(this).scrollTop();
-				console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
+				//console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
 			
 				if(last_ws < 0){
 					$("body").css({background:"#595959"})
@@ -1833,13 +1833,13 @@ function hiddenToggleFunction(){
 						endTime = e.originalEvent.timeStamp
 						
 						var diffY = startY - endY;
-						var diffTime = startTime - endTime
+						var diffTime = endTime - startTime; 
 						
 						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
 					
 						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 		
-						el.animate({ scrollTop: scroll_dist}, 500, 'easeOutCirc', function initElScroll(e){
+						el.animate({ scrollTop: scroll_dist}, diffTime, 'easeOutCirc', function initElScroll(e){
 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
