@@ -1840,7 +1840,7 @@ function hiddenToggleFunction(){
 						// var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 						var pix_per_mil = diffY / diffTime
 						//var scroll_dist = el.height() - $(window).height()
-						el.animate({ scrollTop: 1000}, pix_per_mil, 'easeOutCirc', function initElScroll(e){
+						el.animate({ scrollTop: 1000}, diffTime, 'easeOutCirc', function initElScroll(e){
 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
