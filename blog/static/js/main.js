@@ -2233,12 +2233,13 @@ function hiddenToggleFunction(){
 	////toggle user-view and main-feed
 	(function(){
 	
-		var _toggle = function(){
+		var _toggle = function(el){
 			///
 			if($(".left-wrap").css("left") == "0px"){
 				$(".left-wrap").css({left:"-100%"})
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
-				$("header>div>div").attr('id','compose-ico')
+// 				$("#fixed-top-right #explore-ico").css({width:"40px"});
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"40px"});
+				el.children().first().attr('id','compose-ico')
 				$('.scroll-to-top').css({display:"block"})
 				$('.post-form-container').css({position:"absolue", width:"100%"})
 				// $('.main-feed').removeAttr('style');
@@ -2246,8 +2247,9 @@ function hiddenToggleFunction(){
 			
 			}else{
 				$(".left-wrap").css({left:"0"})
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
-				$("header>div>div").attr('id','posts-ico')
+// 				$("#fixed-top-right #explore-ico").css({width:"0px"});
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"}); // ul li:nth-child(2)
+				el.children().first().attr('id','posts-ico')
 				$('.scroll-to-top').css({display:"none"})
 				$('.post-form-container').css({position:"fixed", width:"100%"})
 				// $('.main-feed').removeAttr('style');
@@ -2258,8 +2260,8 @@ function hiddenToggleFunction(){
 		}
 		
 		var bind = function(){
-			$("header>div>div").on("click", function(){
-				_toggle()
+			$("#fixed-top-right>ul>li:nth-child(3)").on("click", function(){
+				_toggle($(this))
 			});	
 		}
 		
@@ -2292,7 +2294,7 @@ function hiddenToggleFunction(){
 	// 				$(".content-wrap").css({left:"-100%",height:""})
 	// 			}
 				$(".content-wrap").removeAttr("style")
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
+				//$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
 				$(".sorter").removeAttr("style")
 				$(".sorter>div").removeAttr("style")
 				$(".user-view").removeAttr("style")
