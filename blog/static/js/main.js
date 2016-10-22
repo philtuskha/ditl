@@ -1785,7 +1785,7 @@ function hiddenToggleFunction(){
 	
 		var _setNavBar = function(){
 			var element_start = 0
-			$(window).on("touchstart", function(){
+			$(window).on("touchstart", function(e){
 				e.stopPropagation();
 				
 				element_start = $(this).scrollTop();
