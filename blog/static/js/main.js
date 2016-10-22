@@ -1782,11 +1782,32 @@ function hiddenToggleFunction(){
 	
 	
 	var Mobile = (function(){
-	
-		var _setNavBar = function(){
-		
+		var t_start = 0,
+			t_end = 0,
+			t_diff = t_start - t_end;
 			
-		}	
+		var _header = function(){
+			var header = $("header")
+			if(t_diff > 0){
+				header.css({transition:"height 0.5s"})
+				window.getComputedStyle($("header")[0]);
+				header.css({height:"0px"})
+				header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+					header.css({transition: "none !important"});
+		
+				});
+		
+			}else if(t_diff < 0){
+				header.css({transition:"height 0.5s"})
+				window.getComputedStyle($("header")[0]);
+				header.css({height:$("header>div").height()+"px"})
+				header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+					header.css({transition: "none !important"});
+		
+				});
+			}
+		
+		}
 		
 		var _getElement = function(e){
 			var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
@@ -1802,6 +1823,8 @@ function hiddenToggleFunction(){
 		var _start = function(e){
 			var el = _getElement(e);
 			
+			t_start = e.originalEvent.changedTouches[0].pageY
+			
 			if(el){
 			
 				if($(this).scrollTop() != 1){
@@ -1813,6 +1836,8 @@ function hiddenToggleFunction(){
 		
 		var _end = function(e){
 			var el = _getElement(e)
+			
+			t_end = e.originalEvent.changedTouches[0].pageY
 						
 			if(el){
 			
@@ -1824,6 +1849,8 @@ function hiddenToggleFunction(){
 						el.css({overflow:'scroll'})
 					});
 				}
+				
+				_header();
 			}
 		}
 			
@@ -1850,6 +1877,7 @@ function hiddenToggleFunction(){
 				post_form.css({position:"fixed", width:"100%"})
 				
 			});
+			
 			/////set body 44px more so window can scroll
 			$('body, html').css({height:'calc(100vh + 44px)'})
 			
