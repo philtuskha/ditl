@@ -1784,7 +1784,7 @@ function hiddenToggleFunction(){
 	var Mobile = (function(){
 		var t_start = 0,
 			t_end = 0,
-			t_diff = t_start - t_end;
+			t_diff = 0;
 			
 		var _header = function(){
 			console.log(t_start, t_end ,t_diff)
@@ -1839,6 +1839,7 @@ function hiddenToggleFunction(){
 			var el = _getElement(e)
 			
 			t_end = el.scrollTop();
+			t_diff = t_start - t_end;
 						
 			if(el){
 			
