@@ -2204,6 +2204,7 @@ function hiddenToggleFunction(){
 				$("#fixed-top-right ul li:nth-child(2)").css({width:"34px"});
 				$("header>div>div").attr('id','compose-ico')
 				$('.scroll-to-top').css({display:"block"})
+				$('post-form-container').css({position:"fixed", width:"100%"})
 				// $('.main-feed').removeAttr('style');
 	//         	$('.user-view').removeAttr('style');
 			
@@ -2212,6 +2213,7 @@ function hiddenToggleFunction(){
 				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"});
 				$("header>div>div").attr('id','posts-ico')
 				$('.scroll-to-top').css({display:"none"})
+				$('post-form-container').css({position:"absolute", width:"100%"})
 				// $('.main-feed').removeAttr('style');
 	//         	$('.user-view').removeAttr('style');
 				//$(window).scrollTop( 90);
