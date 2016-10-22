@@ -1867,17 +1867,18 @@ function hiddenToggleFunction(){
 		var init = function (){
 			var post_form = $(".post-form-container")
 			///main post form css fixes
-			post_form.css({position:"fixed", width:"50%"})
+			post_form.css({position:"fixed", width:"100%"})
 			
 			///fixed sporadic iphone behavior when textarea is focused
 			$("#id_text").on("focus", function(){
 				post_form.css({position:"absolute", width:"100%"})
 				
 			}).on("blur", function(){
-				post_form.css({position:"fixed", width:"50%"})
+				post_form.css({position:"fixed", width:"100%"})
 				
 			});
-			
+			/////set body 44px more so window can scroll
+			$('body, html').css({height:'calc(100vh + 44px)'})
 			////////initially set overflow to hidden
 			$(".user-view").css({overflow:"hidden"})
 			$(".main-feed").css({overflow:"hidden"})
