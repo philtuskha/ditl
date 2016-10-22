@@ -1834,13 +1834,12 @@ function hiddenToggleFunction(){
 						
 						var diffY = startY - endY;
 						var diffTime = endTime - startTime; 
-						
-						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
+						var scroll_dist = (diffY / diffTime) * ($(window).height() - el.scrollTop())
+						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime, scroll_dist, el.scrollTop())
 					
 						// var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-						var scroll_dist = (diffY / diffTime) * (1000 - el.scrollTop())
 						//var scroll_dist = el.height() - $(window).height()
-						el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutCirc', function initElScroll(e){
+						el.animate({ scrollTop: scroll_dist}, $(window).height(), 'easeOutCirc', function initElScroll(e){
 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
