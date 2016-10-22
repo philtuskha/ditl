@@ -976,7 +976,7 @@ function hiddenToggleFunction(){
 		var _showScrollToTop = function(el){
 			//console.log(el.scrollTop(), $(window).height())
 			if(el.scrollTop()  > $(window).height()){
-				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
+				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'50px'});
 			}else{
 				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
 
@@ -1047,7 +1047,7 @@ function hiddenToggleFunction(){
 					var main_feed = $(".main-feed");
 				
 					if(pKey == "start_end" ){
-						main_feed.append('<div style="border-bottom:4px solid cyan" id="'+pValue+'">' + data + '</div>')
+						main_feed.append('<div id="'+pValue+'">' + data + '</div>')
 					
 					}else{
 						if(data.length > 31 ){
@@ -2241,7 +2241,7 @@ function hiddenToggleFunction(){
 				$("#fixed-top-right ul li:nth-child(2)").css({width:"40px"});
 				el.children().first().attr('id','compose-ico')
 				$('.scroll-to-top').css({display:"block"})
-				$('.post-form-container').css({position:"absolue", width:"100%"})
+				$('.post-form-container').css({position:"absolute", width:"100%"})
 				// $('.main-feed').removeAttr('style');
 	//         	$('.user-view').removeAttr('style');
 			
@@ -2332,6 +2332,7 @@ function hiddenToggleFunction(){
 		
 		});
 	})();
+	
 	/////////Pretty Lights!!!
 	(function prettyTitle() {
 		$( "header span, .post-user p span").each(function(i, el){

@@ -1294,15 +1294,14 @@ svg.chart {
 }
 .scroll-to-top{
 position:fixed;
-bottom:10px;
+bottom:20px;
 right:23.4%;
-width:38px;
+width:44px;
 height:0px;
 opacity:0;
 margin:0;
 padding:4px;
-font-size:20px;
-color: #fff;
+
 cursor:pointer;
 background:rgba(89, 89, 89, 0.9);
 border-radius: 20px;
@@ -1601,7 +1600,7 @@ header>div>#posts-ico{
 	.scroll-to-top{
 		position:fixed;
 		width:38px;
-		bottom:10px;
+		bottom:24px;
 		right:18px;
 		
 	}
@@ -1662,8 +1661,8 @@ and (max-width: 64.000em){
 	.scroll-to-top{
 		position:fixed;
 		width:38px;
-		bottom:10px;
-		right:10px;
+		bottom:24px;
+		right:18px;
 		
 	}
 	#pop-up-wrapper {
