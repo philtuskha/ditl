@@ -1791,7 +1791,7 @@ function hiddenToggleFunction(){
 			$(window).on("touchstart", function(e){
 				e.stopPropagation();
 				
-				startY = e.originalEvent.touches[0].pageY
+				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
 				
 				console.log("TOUchsTart!!", e, startY, startTime)
@@ -1829,13 +1829,13 @@ function hiddenToggleFunction(){
 					console.log("this hazzzpend", last_ws)
 					if(last_ws > 1 ){
 						
-						// endY = e.changedTouches[0].pageY
-// 						endTime = e.originalEvent.timeStamp
-// 						
-// 						var diffY = startY - endY;
-// 						var diffTime = startTime - endTime, diffY, diffTime
+						endY = e.originalEvent.changedTouches[0].pageY
+						endTime = e.originalEvent.timeStamp
 						
-						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+						var diffY = startY - endY;
+						var diffTime = startTime - endTime
+						
+						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
 					
 						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 		
