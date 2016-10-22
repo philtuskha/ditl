@@ -1816,7 +1816,7 @@ function hiddenToggleFunction(){
 		
 		var _getElement = function(e){
 			var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
-			
+			console.log(e)
 			if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
 				var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
 				return el;
