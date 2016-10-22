@@ -1788,11 +1788,13 @@ function hiddenToggleFunction(){
 			
 		var _header = function(){
 			console.log(t_start, t_end ,t_diff)
-			var header = $("header")
+			var header = $("header"),
+				content = $('.content-wrap')
 			if(t_diff > 0){
 				// header.css({transition:"height 0.5s"})
 // 				window.getComputedStyle($("header")[0]);
 				header.css({height:"0px"})
+				content.css({height:"calc(100vh - 36px)"})
 				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 // 					header.css({transition: "none !important"});
 // 		
@@ -1802,6 +1804,8 @@ function hiddenToggleFunction(){
 				// header.css({transition:"height 0.5s"})
 // 				window.getComputedStyle($("header")[0]);
 				header.css({height:$("header>div").height()+"px"})
+				////height:calc(100vh - 96px);
+				content.css({height:"calc(100vh - 96px)"})
 				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 // 					header.css({transition: "none !important"});
 // 		
