@@ -1853,9 +1853,11 @@ function hiddenToggleFunction(){
 									});
 								}, 1000)
 							}else if($(window).scrollTop() < 1){
-								el.css({overflow:"hidden"});
-								el.off("touchmove")
-								el.off("touchend")
+								setTimeout(function(){
+									el.css({overflow:"hidden"});
+									el.off("touchmove")
+									el.off("touchend")
+								},2000)
 							}
 						})
 					}
