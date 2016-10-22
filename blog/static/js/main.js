@@ -1884,7 +1884,7 @@ function hiddenToggleFunction(){
 			
 
 			////start
-			setNavBar()
+			_setNavBar()
 			
 		}///end initMobile
 			
