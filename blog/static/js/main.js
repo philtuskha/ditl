@@ -1047,7 +1047,7 @@ function hiddenToggleFunction(){
 					var main_feed = $(".main-feed");
 				
 					if(pKey == "start_end" ){
-						main_feed.append('<div id="'+pValue+'">' + data + '</div>')
+						main_feed.append('<div style="border-bottom:4px solid cyan" id="'+pValue+'">' + data + '</div>')
 					
 					}else{
 						if(data.length > 31 ){
@@ -1539,7 +1539,7 @@ function hiddenToggleFunction(){
 			circumference = 2 * Math.PI * radius
 		
 			time_parts = _getCurrTime(startTime)
-			console.log(circumference, time_parts)
+			//console.log(circumference, time_parts)
 			if(time_parts[0] < 86400){
 				var off_set = (time_parts[0] / 86400) * circumference/2;//off_set.toString()
 				off_set = (off_set).toString() + ' ' + circumference.toString();
@@ -1839,7 +1839,12 @@ function hiddenToggleFunction(){
 						el.off("touchend")
 						
 					}else{
-				
+						var element_start = 0
+						el.on("touchstart", function(){
+							e.stopPropagation();
+							element_start = $(this).scrollTop();
+							
+						});
 						el.on("touchmove", function(e){
 							e.stopPropagation();
 						
@@ -1854,7 +1859,7 @@ function hiddenToggleFunction(){
 								}, 1000)
 							}else if($(window).scrollTop() < 1){
 								var stopped = -20;
-								
+								///detects end of scroll
 								(function runAgain(){
 									console.log(stopped, el.scrollTop())
 									if(stopped == el.scrollTop() && stopped != -20){
