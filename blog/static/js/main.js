@@ -1854,18 +1854,19 @@ function hiddenToggleFunction(){
 								}, 1000)
 							}else if($(window).scrollTop() < 1){
 								var stopped = -20
-								setTimeout(function runAgain(){
-									
+								(function runAgain(){
+
 									if(stopped == el.scrollTop && stopped != -20){
 										el.css({overflow:"hidden"});
 										el.off("touchmove")
 										el.off("touchend")
 									}else{
-										runAgain()
+										stopped = el.scrollTop()
+										setTimeout(runAgain, 500)
 									}
 									
-									stopped = el.scrollTop()
-								},500)
+									
+								})();
 							}
 						})
 					}
