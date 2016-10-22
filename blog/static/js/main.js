@@ -1829,13 +1829,13 @@ function hiddenToggleFunction(){
 					console.log("this hazzzpend", last_ws)
 					if(last_ws > 1 ){
 						
-						endY = e.changedTouches[0].pageY
-						endTime = e.originalEvent.timeStamp
+						// endY = e.changedTouches[0].pageY
+// 						endTime = e.originalEvent.timeStamp
+// 						
+// 						var diffY = startY - endY;
+// 						var diffTime = startTime - endTime, diffY, diffTime
 						
-						var diffY = startY - endY;
-						var diffTime = startTime - endTime
-						
-						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
+						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
 					
 						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 		
