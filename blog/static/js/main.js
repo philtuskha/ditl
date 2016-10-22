@@ -1902,7 +1902,7 @@ function hiddenToggleFunction(){
 			
 		}
 		var _srcollWindow = function(x){
-			$(window).scrollTop(x - 44);
+			$(window).scrollTop(x);
 		
 		}
 		
