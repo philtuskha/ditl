@@ -1838,9 +1838,9 @@ function hiddenToggleFunction(){
 						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
 					
 						// var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-						var pix_per_mil = diffY / diffTime
+						var scroll_dist = (diffY / diffTime) * 1000
 						//var scroll_dist = el.height() - $(window).height()
-						el.animate({ scrollTop: 1000}, diffTime, 'easeOutCirc', function initElScroll(e){
+						el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutCirc', function initElScroll(e){
 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
