@@ -1856,8 +1856,8 @@ function hiddenToggleFunction(){
 								var stopped = -20;
 								
 								(function runAgain(){
-									console.log(stopped, el.scrollTop)
-									if(stopped == el.scrollTop && stopped != -20){
+									console.log(stopped, el.scrollTop())
+									if(stopped == el.scrollTop() && stopped != -20){
 										el.css({overflow:"hidden"});
 										el.off("touchmove")
 										el.off("touchend")
