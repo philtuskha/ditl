@@ -1784,7 +1784,13 @@ function hiddenToggleFunction(){
 	var Mobile = (function(){
 	
 		var _setNavBar = function(){
-						
+			var element_start = 0
+			el.on("touchstart", function(){
+				e.stopPropagation();
+				
+				element_start = $(this).scrollTop();
+				console.log("TOUchsTart!!", e, element_start)
+			});			
 			///////attach window events
 			var last_ws = 0;
 			
@@ -1840,12 +1846,7 @@ function hiddenToggleFunction(){
 						el.off("touchend")
 						
 					}else{
-						var element_start = 0
-						el.on("touchstart", function(){
-							e.stopPropagation();
-							element_start = $(this).scrollTop();
-							
-						});
+			
 						el.on("touchmove", function(e){
 							e.stopPropagation();
 						
