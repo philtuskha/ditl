@@ -1790,22 +1790,22 @@ function hiddenToggleFunction(){
 			console.log(t_start, t_end ,t_diff)
 			var header = $("header")
 			if(t_diff > 0){
-				header.css({transition:"height 0.5s"})
-				window.getComputedStyle($("header")[0]);
+				// header.css({transition:"height 0.5s"})
+// 				window.getComputedStyle($("header")[0]);
 				header.css({height:"0px"})
-				header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-					header.css({transition: "none !important"});
-		
-				});
+				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 					header.css({transition: "none !important"});
+// 		
+// 				});
 		
 			}else if(t_diff < 0){
-				header.css({transition:"height 0.5s"})
-				window.getComputedStyle($("header")[0]);
+				// header.css({transition:"height 0.5s"})
+// 				window.getComputedStyle($("header")[0]);
 				header.css({height:$("header>div").height()+"px"})
-				header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-					header.css({transition: "none !important"});
-		
-				});
+				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+// 					header.css({transition: "none !important"});
+// 		
+// 				});
 			}
 		
 		}
