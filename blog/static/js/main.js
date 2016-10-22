@@ -1839,7 +1839,7 @@ function hiddenToggleFunction(){
 			var el = _getElement(e)
 			
 			t_end = el.scrollTop();
-			t_diff = t_start - t_end;
+			t_diff = t_end - t_start;
 						
 			if(el){
 			
