@@ -1501,7 +1501,7 @@ function hiddenToggleFunction(){
 		var myScroller = function(element, position){
 			_bindElOff(element);
 
-		element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
+		element.animate({ scrollTop: position }, 2000, 'easeOutCirc', function(){
 			//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
 		});
 
@@ -1780,6 +1780,7 @@ function hiddenToggleFunction(){
 		
 	})();
 	
+	
 	var Mobile = (function(){
 	
 		var _setNavBar = function(){
@@ -1820,7 +1821,7 @@ function hiddenToggleFunction(){
 					
 						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 		
-						el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
+						el.animate({ scrollTop: scroll_dist}, 500, 'easeOutCirc', function initElScroll(e){
 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
@@ -1891,7 +1892,8 @@ function hiddenToggleFunction(){
 			
 			
 		if('ontouchstart' in document.documentElement){
-			
+			$(".user-view").css({overflow:"hidden"})
+			$(".main-feed").css({overflow:"hidden"})
 			init()
 			
 		}
