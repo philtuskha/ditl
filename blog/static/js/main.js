@@ -1793,18 +1793,18 @@ function hiddenToggleFunction(){
 				
 				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
-				if($(this).scrollTop != 1){
+				if($(this).scrollTop() != 1){
 					$('.main-feed').css({overflow:'hidden'})
 				
 				}
 				
 				
-				console.log("TOUchsTart!!", e, startY, startTime)
+				console.log("TOUchsTart!!", e, $(this).scrollTop())
 			});	
 			
 			$(window).on("touchend", function(e){	
-				console.log("TOUCH END!!!!!!!!!", e)
-				if($(this).scrollTop != 1){
+				console.log("TOUCH END!!!!!!!!!", e, $(this).scrollTop())
+				if($(this).scrollTop() != 1){
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
 						$('.main-feed').css({overflow:'scroll'})
