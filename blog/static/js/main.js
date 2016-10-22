@@ -1901,6 +1901,18 @@ function hiddenToggleFunction(){
 			});//////end window touchend
 			
 		}
+		var _srcollWindow = (function(x){
+			$(window).scrollTop(x - 44);
+		
+		})()
+		
+		var _bindElScroll = (function(){
+			$('.main-feed').on('scroll', function(){
+				x = $(this).scrollTop()
+				_srcollWindow(x)
+			});
+			
+		})()
 		
 		var init = function (){
 			var post_form = $(".post-form-container")
@@ -1921,7 +1933,7 @@ function hiddenToggleFunction(){
 			// $(".user-view").css({overflow:"hidden"})
 // 			$(".main-feed").css({overflow:"hidden"})
 			
-
+			_bindElScroll()
 			////start
 			//_setNavBar()
 			
