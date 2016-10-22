@@ -1788,19 +1788,13 @@ function hiddenToggleFunction(){
 			var startY = 0
 			var startTime = 0
 			
-			// $(window).on("touchstart", function(e){
-// 				e.stopPropagation();
-// 				
-// 				startY = e.originalEvent.changedTouches[0].pageY
-// 				startTime = e.originalEvent.timeStamp
-// 				if($(this).scrollTop() != 1){
-// 					$('.user-view').css({overflow:'hidden'})
-// 				
-// 				}
-// 				
-// 				
-// 				console.log("TOUchsTart!!", e, $(this).scrollTop())
-// 			});	
+			$(window).on("touchstart", function(e){
+				if($(this).scrollTop() != 1){
+					$('.user-view').css({overflow:'hidden'})
+				}
+				console.log("TOUchsTart!!", e, $(this).scrollTop())
+			});	
+			
 			
 			$(window).on("touchend", function(e){	
 				console.log("TOUCH END!!!!!!!!!", e, $(this).scrollTop())
@@ -1813,8 +1807,9 @@ function hiddenToggleFunction(){
 					});
 				}
 			});	
+			
 			///////attach window events
-			var last_ws = 0;
+			//var last_ws = 0;
 			/*
 			$(window).on('touchmove', function(e){
 				var this_ws = $(this).scrollTop();
