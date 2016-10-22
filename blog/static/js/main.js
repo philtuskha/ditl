@@ -734,8 +734,10 @@ function hiddenToggleFunction(){
 			
 				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:"100vh"});
 			
-				handle.parent().css({height:"calc(100vh - 163px)"});
-				handle.css({height:"calc(100vh - 163px)"});
+				var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() + 40)
+
+				handle.parent().css({height:window_height+"px"});
+				handle.css({height:window_height+"px"});
 			}, 30);
 		
 		}
@@ -970,6 +972,60 @@ function hiddenToggleFunction(){
 				OneThread.openPopUp($(this))
 			});
 		}
+		
+		var _showScrollToTop = function(el){
+			//console.log(el.scrollTop(), $(window).height())
+			if(el.scrollTop()  > $(window).height()){
+				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'36px'});
+			}else{
+				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
+
+			}
+		}
+		
+		var _loadThreadsOnScroll = function(el){
+			x = $('.main-feed').children().length * 10
+			y = x + 10
+
+			x = x.toString();
+			y = y.toString();
+
+			load('start_end',x+','+y);
+			
+		}
+		
+		
+		var _checkThreadsOnScroll = function(el, scroll_diff){
+			//console.log($(this).scrollTop(), e, e.scrollHeight, $(this).children().last().height() - $(this).height())
+			var total_height = 0;
+			$('.main-feed').children().each(function(){
+				total_height = total_height + $(this).outerHeight(true);
+			});
+			
+			 if(el.scrollTop() > total_height - el.height() - 200 && scroll_diff < 0){
+				if(el.children().last().height() > 0){
+					
+					$(el).off('scroll.loadMore', _loadThreadsOnScroll())
+
+				}
+				
+			}
+		}
+		
+		var _bindScroll = function(){
+			last_scroll = 0
+			$('.main-feed').on('scroll.loadMore', function(){
+				this_scroll = $(this).scrollTop()
+				scroll_diff = last_scroll - this_scroll
+		
+				_checkThreadsOnScroll($(this), scroll_diff)
+				_showScrollToTop($(this))
+				
+				last_scroll = this_scroll
+			});
+		
+		}
+
 		var _styleAfterSucess = function(){
 			////remove
 			$("#id_title").val("")
@@ -978,6 +1034,7 @@ function hiddenToggleFunction(){
 		
 			window.getComputedStyle($(".center")[0]);
 			$(".center")[0].style.opacity = 1;
+			
 		}
 	
 		var _loadResponse = function(pData , pKey, pValue){
@@ -994,7 +1051,7 @@ function hiddenToggleFunction(){
 					
 					}else{
 						if(data.length > 31 ){
-							main_feed.html('<div id="0,10">' + data + '</div')
+							main_feed.html('<div id="0,10">' + data + '</div>')
 						}else if(data.length == 31){
 							main_feed.html('<div id="no-results"><h1>SORRY, NO POSTS MATCH YOUR QUERY :(</h1></div>')
 						}else{
@@ -1009,6 +1066,9 @@ function hiddenToggleFunction(){
 		
 					//bind each thread to click that opens up that thread
 					_bindEachThread()
+					
+					//after thread is loaded only
+					_bindScroll()
 				}
 			});
 		}
@@ -1025,7 +1085,7 @@ function hiddenToggleFunction(){
 			pData = _addCurrKeyValue(pData, pKey, pValue)
 		
 			_loadResponse(pData, pKey, pValue)
-		
+			
 		
 		}
 		
@@ -1256,11 +1316,19 @@ function hiddenToggleFunction(){
 	
 	var DeletePost = (function(){
 	
-		var _remove = function(container){
-			container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
-			container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-				container.remove();
-			});
+		var _remove = function(container, type){
+			if(type == "response"){
+				container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
+				container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+					container.remove();
+				});
+			}else{
+				container.css({opacity:0, transition: "all", transitionTimingFunction:'ease', transitionDuration: '0.6s' });
+				container.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+					UserView.load($(".user-view").scrollTop(), false);
+				});
+				
+			}
 		}
 	
 		var _hide = function(el, container){
@@ -1298,7 +1366,7 @@ function hiddenToggleFunction(){
 				data: obj,
 				success: function(response) {
 					if (response.delete_or_hide == "delete"){
-						_remove(container);
+						_remove(container, response.type);
 					
 					}else{
 						_hide(el, container);
@@ -1434,7 +1502,7 @@ function hiddenToggleFunction(){
 			_bindElOff(element);
 
 		element.animate({ scrollTop: position }, 2000, 'easeOutQuint', function(){
-			element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+			//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
 		});
 
 		   return false; 
@@ -1668,6 +1736,168 @@ function hiddenToggleFunction(){
     })();
 
 
+	var CloseSorter = (function(){
+	
+		var toggleSorter = function(){
+		
+			var sorter_wrap = $(".center").width();
+				sorter_wrap = sorter_wrap+"px";
+			
+			var sorter_div_right =  $(".center").width();
+				sorter_div_right = sorter_div_right+"px";
+	
+			if($(".sorter>div").css("right") == "0px"){
+				$(".sorter").css({opacity:"0"});
+				setTimeout(function(){
+					$(".sorter").css({right:"-"+sorter_wrap, width:sorter_wrap});
+				}, 700);
+				$(".sorter>div").css({right:"-"+sorter_div_right});
+			
+			}else{
+				$(".sorter").css({right:"0px", width:sorter_wrap, opacity:"1"});
+				$(".sorter>div").css({right:"0px", width:sorter_div_right});
+			}
+		}
+		
+		var _bindCloseBtn = function(){
+			$('.sorter>div .close').on('click', function(){
+				toggleSorter();
+			});
+		}
+		
+		var _bindMenu = function(){
+			$("#fixed-top-right>ul>li:nth-child(2)").on("click", function(){
+				toggleSorter();	
+			});
+		}
+		
+		_bindMenu()
+		_bindCloseBtn()
+		
+		return{
+			toggleSorter: toggleSorter
+		}
+		
+	})();
+	
+	var Mobile = (function(){
+	
+		var _setNavBar = function(){
+						
+			///////attach window events
+			var last_ws = 0;
+			$(window).on('touchmove', function(e){
+				var this_ws = $(this).scrollTop();
+				console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
+			
+				if(last_ws < 0){
+					$("body").css({background:"#595959"})
+				}else if(last_ws > 0){
+					$("body").css({background:"#fff"})
+				}
+				last_ws = this_ws
+				
+				
+			});//////end window touchmove
+			
+			$(window).on('touchend', function(e){
+				
+				console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
+				
+				var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
+				
+				console.log(eventArray[$.inArray("user-view", eventArray)]);
+				
+				if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
+				console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
+					
+					///define el
+					var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
+					
+					if(last_ws > 1 ){
+					
+						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+					
+						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
+		
+						el.animate({ scrollTop: scroll_dist}, 500, 'easeOutQuint', function initElScroll(e){
+							el.off("scroll", initElScroll);
+							
+							el.css({overflow:"scroll"})
+			
+							$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+								$("html, body").off("scroll", initWindowScroll);
+
+							});
+						});
+					
+					
+					}else if(last_ws < 1 ){
+						el.css({overflow:"hidden"});
+						el.off("touchmove")
+						el.off("touchend")
+						
+					}else{
+				
+						el.on("touchmove", function(e){
+							e.stopPropagation();
+						
+						})
+						el.on("touchend", function(e){
+							e.stopPropagation();
+							if($(window).scrollTop() > 1){
+								setTimeout(function(){
+									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+										$("html, body").off("scroll", initWindowScroll);
+									});
+								}, 1000)
+							}else if($(window).scrollTop() < 1){
+								el.css({overflow:"hidden"});
+								el.off("touchmove")
+								el.off("touchend")
+							}
+						})
+					}
+	
+				}/////end if event in array			
+			});//////end window touchend
+			
+		}
+		
+		var init = function (){
+			var post_form = $(".post-form-container")
+			///main post form css fixes
+			post_form.css({position:"fixed", width:"50%"})
+			
+			///fixed sporadic iphone behavior when textarea is focused
+			$("#id_text").on("focus", function(){
+				post_form.css({position:"absolute", width:"100%"})
+				
+			}).on("blur", function(){
+				post_form.css({position:"fixed", width:"50%"})
+				
+			});
+			
+			////////initially set overflow to hidden
+			$(".user-view").css({overflow:"hidden"})
+			$(".main-feed").css({overflow:"hidden"})
+			
+
+			////start
+			setNavBar()
+			
+		}///end initMobile
+			
+			
+		if('ontouchstart' in document.documentElement){
+			
+			init()
+			
+		}
+	
+	})();
+	
+
 	//init Sorter
 	(function(){        ///// var Sorter = 
 		
@@ -1691,9 +1921,19 @@ function hiddenToggleFunction(){
 			
 			
 		}
+		var _closeMenuOnQuery = function(this_div){
+			this_div.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+				CloseSorter.toggleSorter()
+			});
+		}
+		
 		var _query = function(this_div){
-			$(".center")[0].style.opacity = 0;
-				if(!$.isEmptyObject(this_div.data())){
+			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+			//if(center_check < 0.5){
+				$(".center")[0].style.opacity = 0;
+			//}
+			
+			if(!$.isEmptyObject(this_div.data())){
 					$.each(this_div.data(), function(key, value) {
 			
 						if(this_div.attr('rel')){
@@ -1703,11 +1943,17 @@ function hiddenToggleFunction(){
 						if(localStorage.getItem(key) == value){
 							localStorage.setItem(key,"");
 							AllThreads.load(key, "");
+							
 							this_div.css({background:'transparent'});
-					
+							
+							if(center_check > 0.5){
+								_closeMenuOnQuery(this_div)
+							}
+							
 						}else{
 							localStorage.setItem(key,value);
 							AllThreads.load(key, value);
+							
 							console.log(key)
 							if(key == "pub" || key == "pop"){
 								this_div.parent().children().css({background:'transparent'});
@@ -1724,15 +1970,15 @@ function hiddenToggleFunction(){
 							}
 							
 							this_div.css({background: 'rgba(251, 249, 234, 0.5)'});
+							
+							if(center_check > 0.5){
+								_closeMenuOnQuery(this_div)
+							}
 					
-							// this_div.attr('class','sort sort-selected')
-		// 						this_div.children().first().attr('class','sort-arrow sort-arrow-on')
-				
-				
-			
 						}
 					});
 				}
+			
 		}
 		
 		var _bindEach = function(){
@@ -1775,41 +2021,6 @@ function hiddenToggleFunction(){
 		}
 		
 		_init()
-		
-	})();
-	
-	////toggle sorter menu
-	(function(){
-	
-		var _toggleSorter = function(){
-		
-			var sorter_wrap = $(".center").width();
-				sorter_wrap = sorter_wrap+"px";
-			
-			var sorter_div_right =  $(".center").width() * 0.4;
-				sorter_div_right = sorter_div_right+"px";
-	
-			if($(".sorter>div").css("right") == "0px"){
-				$(".sorter").css({opacity:"0"});
-				setTimeout(function(){
-					$(".sorter").css({right:"-"+sorter_wrap, width:sorter_wrap});
-				}, 700);
-				$(".sorter>div").css({right:"-"+sorter_div_right});
-			
-			}else{
-				$(".sorter").css({right:"0px", width:sorter_wrap, opacity:"1"});
-				$(".sorter>div").css({right:"0px", width:sorter_div_right});
-			}
-		}
-		
-		
-		var _bindMenu = function(){
-			$("#fixed-top-right>ul>li:nth-child(2)").on("click", function(){
-				_toggleSorter();	
-			});
-		}
-		
-		_bindMenu()
 		
 	})();
 
@@ -2021,7 +2232,7 @@ function hiddenToggleFunction(){
     (function(){
     
 		$('.scroll-to-top').click(function(){
-			Scroller.myScroller($(".main-feed"), $(".main-feed").offset().top);
+			Scroller.myScroller($(".main-feed"), 0);
 		});	
 	})();
 	

@@ -93,10 +93,10 @@ def profile_test(request):
     profile_object = UserProfile.objects.get(user_id=request.user.id)
     
     #reset
-    profile_object.activity_threads = ""
-    profile_object.activity_responses = ""
-    profile_object.activity_votes = ""
-    profile_object.save()
+    # profile_object.activity_threads = ""
+#     profile_object.activity_responses = ""
+#     profile_object.activity_votes = ""
+#     profile_object.save()
     
     a = profile_object
     b = profile_object.activity_threads
@@ -322,12 +322,14 @@ def delete_post(request):
                 activity("thread", -1, request.user.id)
                 
                 delete_or_hide = "delete"
+                type = "thread"
                 
             else:
                 delete_this.is_active = 1
                 delete_this.save()
                 
                 delete_or_hide = "hide"
+                type = "thread"
             
                 
     
@@ -342,6 +344,7 @@ def delete_post(request):
                 activity("response", -1, request.user.id)
                 
                 delete_or_hide = "delete"
+                type = "response"
                 
             else:
                 hide_this = respos_to_thread.get(pk=request.POST.get('pk'), author=request.user)
@@ -349,9 +352,10 @@ def delete_post(request):
                 hide_this.save()
                 
                 delete_or_hide = "hide"
+                type = "response"
 
             
-        data = {'delete_or_hide': delete_or_hide}
+        data = {'delete_or_hide': delete_or_hide,"type": type}
         return HttpResponse(json.dumps(data), content_type='application/json')
         
         
@@ -391,7 +395,7 @@ def add_thread(request):
                 
                 activity("thread", 1, request.user.id)
                 
-                data = {'message': "%s and %s added" % (request.POST.get('title'), request.POST.get('text'))}
+                data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
             
             

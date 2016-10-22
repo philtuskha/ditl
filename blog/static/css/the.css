@@ -100,7 +100,6 @@ header>div>#compose-ico{
 height:72px;
 width:44px;
 background:url(../img/ico/compose.svg) -6px center/100% 100% no-repeat;
-
 vertical-align:top;
 cursor:pointer;
 }
@@ -296,7 +295,7 @@ box-sizing:border-box;
 }
 .left-wrap{
 width: 78%;
-height:100%;
+height:inherit;
 position:relative;
 left:0;
 top:0;
@@ -315,7 +314,7 @@ box-sizing:border-box;
 position:relative;
 left:0;
 width: 42%;
-height:100%;
+height:inherit;
 }
 .center{
 position:relative;
@@ -323,13 +322,14 @@ left:0;
 z-index:0;
 background: rgba(247,247,247,0.5);
 width: 58%;
-height:100%;
+height:inherit;
 opacity:0;
-transition:opacity 1s;
+transition:opacity 0.2s;
 }
 .main-feed{
 width:100%;
-height:100%;
+padding-bottom:40px;
+height:inherit;
 overflow-y: scroll; 
 }
 #login{
@@ -697,7 +697,7 @@ display:inline-block;
 .expand-thread-title::first-letter{
 text-transform:uppercase;
 }
-*/
+
 .expand-thread-bar{
 font-family: 'Monoton', cursive;
 font-size:12px;
@@ -705,11 +705,11 @@ color:#b3b3b3;
 width:100%;
 margin:0;
 padding:6px 0 0 12px;
-height:32px;
-border-top:1px solid #fff;
-border-bottom:1px solid #e4e4e4;
+height:1px;
+/* border-top:1px solid #fff; */
+/*border-bottom:1px solid #e4e4e4;
 
-}
+}*/
 .expand-thread-bar>li:nth-child(1)>div{
 text-align:right;
 padding-right:4px;
@@ -721,6 +721,7 @@ padding-left:4px;
  
 .expand{
 padding:22px 12px 12px 12px;
+border-bottom:1px solid #e4e4e4;
 }
 .expand>ul{
 display:inline-block;
@@ -1094,8 +1095,19 @@ float:right;
 top:0;
 border-left:1px solid #d9d9d9;
 }
-.sorter div{
-/* background:url(../img/diamond_bkg3.jpg); */
+.sorter>div{
+position:relative;
+}
+.sorter>div .close{
+height:44px;
+width:44px;
+background:url(../img/ico/close2.svg) center center/24px 24px no-repeat;
+position:absolute;
+right:0;
+top:0;
+z-index:1000;
+cursor:pointer;
+display:none;
 }
 .sorter h2{
 font-family: 'Raleway', sans-serif; 
@@ -1482,7 +1494,7 @@ and (max-width:48.125em){
  	.content-wrap{
  		left:0;
  		width:100%;
- 		overflow-x:hidden;
+ 		height:calc(100vh - 96px);
  	}
  	.left-wrap{
  		width:200%
@@ -1541,7 +1553,7 @@ and (max-width:48.125em){
 		right:-30%;
 		width:30%;
 		height:100vh;
-		background:rgba(0,0,0,0.2);
+		background:rgba(0,0,0,0.0);
 		transition:opacity 0.5s;
 		
 	}
@@ -1554,6 +1566,9 @@ and (max-width:48.125em){
 		background:#fff;
 		transition:right 0.5s;
 		
+	}
+	.sorter>div .close{
+		display:block;
 	}
 	#drop-top{
 		width:100%;
@@ -1615,7 +1630,9 @@ and (max-width: 64.000em){
 		transition:right 0.5s;
 		
 	}
-	
+	.sorter>div .close{
+		display:block;
+	}
 	#thread-div-pop{
 		width:68%;
 		left:42%;
