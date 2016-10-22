@@ -1793,6 +1793,12 @@ function hiddenToggleFunction(){
 				
 				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
+				if($(this).scrollTop != 1){
+					$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+						$("html, body").off("scroll", initWindowScroll);
+
+					});
+				}
 				
 				console.log("TOUchsTart!!", e, startY, startTime)
 			});			
@@ -1843,12 +1849,12 @@ function hiddenToggleFunction(){
 // 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
-			// 
-// 							$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+			
+							// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 // 								$("html, body").off("scroll", initWindowScroll);
 // 
 // 							});
-// 						});
+						//});
 					
 					
 					}else if(last_ws < 1 ){
