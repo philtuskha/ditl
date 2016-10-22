@@ -1794,7 +1794,7 @@ function hiddenToggleFunction(){
 				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
 				if($(this).scrollTop() != 1){
-					$('.main-feed').css({overflow:'hidden'})
+					$('.user-view').css({overflow:'hidden'})
 				
 				}
 				
@@ -1807,7 +1807,7 @@ function hiddenToggleFunction(){
 				if($(this).scrollTop() != 1){
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
-						$('.main-feed').css({overflow:'scroll'})
+						$('.user-view').css({overflow:'scroll'})
 					});
 				}
 			});	
