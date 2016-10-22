@@ -1852,13 +1852,13 @@ function hiddenToggleFunction(){
 			});
 			/////set body 44px more so window can scroll
 			$('body, html').css({height:'calc(100vh + 44px)'})
+			
 			////////initially set overflow to hidden
 			$(".user-view").css({overflow:"hidden"})
 			$(".main-feed").css({overflow:"hidden"})
 			
-			//_bindElScroll()
 			////start
-			_setNavBar()
+			_bindTouchEvents()
 			
 		}///end initMobile
 			
