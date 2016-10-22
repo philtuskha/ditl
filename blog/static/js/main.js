@@ -1784,12 +1784,17 @@ function hiddenToggleFunction(){
 	var Mobile = (function(){
 	
 		var _setNavBar = function(){
-			var element_start = 0
+		
+			var startY = 0
+			var startTime = 0
+			
 			$(window).on("touchstart", function(e){
 				e.stopPropagation();
 				
-				element_start = $(this).scrollTop();
-				console.log("TOUchsTart!!", e, element_start)
+				startY = e.originalEvent.touches[0].pageY
+				startTime = e.originalEvent.timeStamp
+				
+				console.log("TOUchsTart!!", e, startY, startTime)
 			});			
 			///////attach window events
 			var last_ws = 0;
@@ -1810,21 +1815,27 @@ function hiddenToggleFunction(){
 			
 			$(window).on('touchend touchcancel', function(e){
 				
-				console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
+				//console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
 				
 				var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
 				
-				console.log(eventArray[$.inArray("user-view", eventArray)]);
+				//console.log(eventArray[$.inArray("user-view", eventArray)]);
 				
 				if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
-				console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
+				//console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
 					
 					///define el
 					var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
-					
+					console.log("this hazzzpend", last_ws)
 					if(last_ws > 1 ){
-					
-						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws)
+						
+						endY = e.originalEvent.touches[0].pageY
+						endTime = e.originalEvent.timeStamp
+						
+						var diffY = startY - endY;
+						var diffTime = startTime - endTime
+						
+						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime)
 					
 						var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 		
