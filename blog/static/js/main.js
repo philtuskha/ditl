@@ -1832,12 +1832,13 @@ function hiddenToggleFunction(){
 // 		/
 // 		/
 		
-			var el_type = (e.tagret.className == "") ? $("#"+ e.tagret.id) : $("#"+ e.tagret.className)
-			var eventArray = [el_type]
-// 			var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
+			// var target = (e.target.className == "") ? $("#"+ e.target.id) : $("#"+ e.target.className)
+// 			var parent = 
+// 			var eventArray = [el_type]
+			var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
 			
 			
-			console.log(e, el_type)
+			console.log(e, eventArray)
 			if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
 				var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
 				return el;
@@ -1877,7 +1878,7 @@ function hiddenToggleFunction(){
 					});
 				}
 				
-				_header();
+				//_header();
 			}
 		}
 			
