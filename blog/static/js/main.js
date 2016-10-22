@@ -1804,7 +1804,7 @@ function hiddenToggleFunction(){
 				if($(this).scrollTop != 1){
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
-						$('.main-feed').css({overflow:'scroll'})
+						//$('.main-feed').css({overflow:'scroll'})
 					});
 				}
 			});	
