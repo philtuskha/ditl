@@ -2239,7 +2239,7 @@ function hiddenToggleFunction(){
 				$(".left-wrap").css({left:"-100%"})
 // 				$("#fixed-top-right #explore-ico").css({width:"40px"});
 				$("#fixed-top-right ul li:nth-child(2)").css({width:"40px"});
-				el.children().first().attr('id','compose-ico')
+				el.html('<div id="compose-ico"></div>');
 				$('.scroll-to-top').css({display:"block"})
 				$('.post-form-container').css({position:"absolute", width:"100%"})
 				// $('.main-feed').removeAttr('style');
@@ -2249,7 +2249,7 @@ function hiddenToggleFunction(){
 				$(".left-wrap").css({left:"0"})
 // 				$("#fixed-top-right #explore-ico").css({width:"0px"});
 				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"}); // ul li:nth-child(2)
-				el.children().first().attr('id','posts-ico')
+				el.html('<div id="posts-ico"></div>')
 				$('.scroll-to-top').css({display:"none"})
 				$('.post-form-container').css({position:"fixed", width:"100%"})
 				// $('.main-feed').removeAttr('style');
