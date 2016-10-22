@@ -1793,6 +1793,7 @@ function hiddenToggleFunction(){
 				
 				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
+				
 				if($(this).scrollTop != 1){
 					$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
@@ -1804,7 +1805,7 @@ function hiddenToggleFunction(){
 			});			
 			///////attach window events
 			var last_ws = 0;
-			
+			/*
 			$(window).on('touchmove', function(e){
 				var this_ws = $(this).scrollTop();
 				//console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
@@ -1899,24 +1900,24 @@ function hiddenToggleFunction(){
 	
 				}/////end if event in array			
 			});//////end window touchend
-			
+			*/
 		}
-		var _srcollWindow = function(x){
-			$('.main-feed').scrollTop(x);
-		
-		}
-		
-		var _bindElScroll = function(){
-			$('.main-feed').on('scroll', function(){
-				e.preventDefault()
-				
-			});
-			$(window).on('scroll', function(){
-				x = $(this).scrollTop() * 100
-				_srcollWindow(x)
-			});
-			
-		}
+		// var _srcollWindow = function(x){
+// 			$('.main-feed').scrollTop(x);
+// 		
+// 		}
+// 		
+// 		var _bindElScroll = function(){
+// 			$('.main-feed').on('scroll', function(){
+// 				e.preventDefault()
+// 				
+// 			});
+// 			$(window).on('scroll', function(){
+// 				x = $(this).scrollTop() * 100
+// 				_srcollWindow(x)
+// 			});
+// 			
+// 		}
 		
 		var init = function (){
 			var post_form = $(".post-form-container")
@@ -1934,12 +1935,12 @@ function hiddenToggleFunction(){
 			/////set body 44px more so window can scroll
 			$('body, html').css({height:'calc(100vh + 44px)'})
 			////////initially set overflow to hidden
-			// $(".user-view").css({overflow:"hidden"})
-// 			$(".main-feed").css({overflow:"hidden"})
+			$(".user-view").css({overflow:"hidden"})
+			$(".main-feed").css({overflow:"hidden"})
 			
-			_bindElScroll()
+			//_bindElScroll()
 			////start
-			//_setNavBar()
+			_setNavBar()
 			
 		}///end initMobile
 			
