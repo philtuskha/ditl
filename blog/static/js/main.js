@@ -1787,7 +1787,9 @@ function hiddenToggleFunction(){
 			t_diff = t_start - t_end;
 			
 		var _header = function(){
+			console.log(t_diff)
 			var header = $("header")
+			
 			if(t_diff > 0){
 				header.css({transition:"height 0.5s"})
 				window.getComputedStyle($("header")[0]);
