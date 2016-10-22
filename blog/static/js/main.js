@@ -1824,9 +1824,9 @@ function hiddenToggleFunction(){
 		var _start = function(e){
 			var el = _getElement(e);
 			
-			t_start = el.scrollTop();
-			
 			if(el){
+			
+				t_start = el.scrollTop();
 			
 				if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
@@ -1837,11 +1837,11 @@ function hiddenToggleFunction(){
 		
 		var _end = function(e){
 			var el = _getElement(e)
+						
+			if(el){
 			
 			t_end = el.scrollTop();
 			t_diff = t_end - t_start;
-						
-			if(el){
 			
 				if($(this).scrollTop() <= 0){
 					el.css({overflow:'hidden'})	
