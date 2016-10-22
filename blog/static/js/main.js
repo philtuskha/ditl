@@ -1901,18 +1901,18 @@ function hiddenToggleFunction(){
 			});//////end window touchend
 			
 		}
-		var _srcollWindow = (function(x){
+		var _srcollWindow = function(x){
 			$(window).scrollTop(x - 44);
 		
-		})()
+		}
 		
-		var _bindElScroll = (function(){
+		var _bindElScroll = function(){
 			$('.main-feed').on('scroll', function(){
 				x = $(this).scrollTop()
 				_srcollWindow(x)
 			});
 			
-		})()
+		}
 		
 		var init = function (){
 			var post_form = $(".post-form-container")
