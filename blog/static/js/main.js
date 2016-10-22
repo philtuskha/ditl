@@ -1794,15 +1794,20 @@ function hiddenToggleFunction(){
 				startY = e.originalEvent.changedTouches[0].pageY
 				startTime = e.originalEvent.timeStamp
 				
+				
+				
+				console.log("TOUchsTart!!", e, startY, startTime)
+			});	
+			
+			$(window).on("touchend", function(e){	
+				console.log("TOUCH END!!!!!!!!!", e)
 				if($(this).scrollTop != 1){
 					$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
 
 					});
 				}
-				
-				console.log("TOUchsTart!!", e, startY, startTime)
-			});			
+			});	
 			///////attach window events
 			var last_ws = 0;
 			/*
