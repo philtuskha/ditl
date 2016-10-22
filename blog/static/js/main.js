@@ -1838,8 +1838,8 @@ function hiddenToggleFunction(){
 			var eventArray = [e.target.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.parentNode.className, 
-								e.target.parentNode.parentNode.parentNode.parentNode.className
-								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className
+								e.target.parentNode.parentNode.parentNode.parentNode.className,
+								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className,
 								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className]
 			
 			
