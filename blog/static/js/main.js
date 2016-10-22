@@ -1839,16 +1839,16 @@ function hiddenToggleFunction(){
 					
 						// var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
 						//var scroll_dist = el.height() - $(window).height()
-						el.animate({ scrollTop: scroll_dist}, (el.prop('scrollHeight') - el.scrollTop()), 'easeOutCirc', function initElScroll(e){
-							el.off("scroll", initElScroll);
+						// el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutCirc', function initElScroll(e){
+// 							el.off("scroll", initElScroll);
 							
 							el.css({overflow:"scroll"})
-			
-							$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-								$("html, body").off("scroll", initWindowScroll);
-
-							});
-						});
+			// 
+// 							$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+// 								$("html, body").off("scroll", initWindowScroll);
+// 
+// 							});
+// 						});
 					
 					
 					}else if(last_ws < 1 ){
