@@ -1802,9 +1802,9 @@ function hiddenToggleFunction(){
 			$(window).on("touchend", function(e){	
 				console.log("TOUCH END!!!!!!!!!", e)
 				if($(this).scrollTop != 1){
-					$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
+					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
-
+						$('.main-feed').css({overflow:'scroll'})
 					});
 				}
 			});	
