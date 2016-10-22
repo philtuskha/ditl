@@ -1782,11 +1782,13 @@ function hiddenToggleFunction(){
 	
 	
 	var Mobile = (function(){
+		var t_start = 0,
+			t_end = 0,
+			t_diff = t_start - t_end;
 			
-		var _header = function(t_diff){
-			console.log(t_diff)
+		var _header = function(){
+			console.log(t_start, t_end ,t_diff)
 			var header = $("header")
-			
 			if(t_diff > 0){
 				header.css({transition:"height 0.5s"})
 				window.getComputedStyle($("header")[0]);
@@ -1820,50 +1822,46 @@ function hiddenToggleFunction(){
 		}
 		
 		var _start = function(e){
+			var el = _getElement(e);
 			
+			t_start = el.scrollTop();
+			
+			if(el){
+			
+				if($(this).scrollTop() != 1){
+					el.css({overflow:'hidden'})
+				}
+			}
 		}
 		
 		
 		var _end = function(e){
+			var el = _getElement(e)
 			
+			t_end = el.scrollTop();
+						
+			if(el){
+			
+				if($(this).scrollTop() <= 0){
+					el.css({overflow:'hidden'})	
+				}else{
+					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
+						$("html, body").off("scroll", initWindowScroll);
+						el.css({overflow:'scroll'})
+					});
+				}
+				
+				_header();
+			}
 		}
 			
 		var _bindTouchEvents = function(){
-			var t_start = 0,
-			t_end = 0,
-			t_diff = t_start - t_end;
-			
 			$(window).on("touchstart", function(e){
-				var el = _getElement(e);
-			
-				t_start = e.originalEvent.changedTouches[0].pageY
-			
-				if(el){
-			
-					if($(this).scrollTop() != 1){
-						el.css({overflow:'hidden'})
-					}
-				}	
-				});
+				_start(e);	
+			});
 			
 			$(window).on("touchend", function(e){
-				var el = _getElement(e)
-			
-				t_end = e.originalEvent.changedTouches[0].pageY
-						
-				if(el){
-			
-					if($(this).scrollTop() <= 0){
-						el.css({overflow:'hidden'})	
-					}else{
-						$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
-							$("html, body").off("scroll", initWindowScroll);
-							el.css({overflow:'scroll'})
-						});
-					}
-				
-					_header(t_diff);
-				}
+				_end(e);
 			});
 		}
 		
