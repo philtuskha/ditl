@@ -1787,6 +1787,7 @@ function hiddenToggleFunction(){
 						
 			///////attach window events
 			var last_ws = 0;
+			
 			$(window).on('touchmove', function(e){
 				var this_ws = $(this).scrollTop();
 				console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
@@ -1801,7 +1802,7 @@ function hiddenToggleFunction(){
 				
 			});//////end window touchmove
 			
-			$(window).on('touchend', function(e){
+			$(window).on('touchend touchcancel', function(e){
 				
 				console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
 				
