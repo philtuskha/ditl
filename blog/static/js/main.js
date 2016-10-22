@@ -1785,144 +1785,57 @@ function hiddenToggleFunction(){
 	
 		var _setNavBar = function(){
 		
-			var startY = 0
-			var startTime = 0
 			
-			$(window).on("touchstart", function(e){
+		}	
+		
+		var _getElement = function(e){
+			var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
+			
+			if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
+				var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
+				return el;
+			}else{
+				return false;
+			}
+		}
+		
+		var _start = function(e){
+			var el = _getElement(e);
+			
+			if(el){
+			
 				if($(this).scrollTop() != 1){
-					$('.user-view').css({overflow:'hidden'})
+					el.css({overflow:'hidden'})
 				}
-				console.log("TOUchsTart!!", e, $(this).scrollTop())
-			});	
+			}
+		}
+		
+		
+		var _end = function(e){
+			var el = _getElement(e)
+						
+			if(el){
 			
-			
-			$(window).on("touchend", function(e){	
-				console.log("TOUCH END!!!!!!!!!", e, $(this).scrollTop())
 				if($(this).scrollTop() <= 0){
-					$('.user-view').css({overflow:'hidden'})	
+					el.css({overflow:'hidden'})	
 				}else{
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
-						$('.user-view').css({overflow:'scroll'})
+						el.css({overflow:'scroll'})
 					});
 				}
-			});	
-			
-			///////attach window events
-			//var last_ws = 0;
-			/*
-			$(window).on('touchmove', function(e){
-				var this_ws = $(this).scrollTop();
-				//console.log("window TOUCHmove!!!!", e, last_ws, this_ws )
-			
-				if(last_ws < 0){
-					$("body").css({background:"#595959"})
-				}else if(last_ws > 0){
-					$("body").css({background:"#fff"})
-				}
-				last_ws = this_ws
-				
-				
-			});//////end window touchmove
-			
-			$(window).on('touchend touchcancel', function(e){
-				
-				//console.log(e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className,  e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className)
-				
-				var eventArray = [e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.className, e.target.parentNode.parentNode.parentNode.parentNode.className]
-				
-				//console.log(eventArray[$.inArray("user-view", eventArray)]);
-				
-				if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
-				//console.log($("."+eventArray[$.inArray("user-view", eventArray)]), $("."+eventArray[$.inArray("main-feed", eventArray)]));	
-					
-					///define el
-					var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
-					console.log("this hazzzpend", last_ws)
-					if(last_ws > 1 ){
-						
-						endY = e.originalEvent.changedTouches[0].pageY
-						endTime = e.originalEvent.timeStamp
-						
-						var diffY = startY - endY;
-						var diffTime = endTime - startTime; 
-						var scroll_dist = (diffY / diffTime) * (el.prop('scrollHeight') - el.scrollTop())
-						console.log("Window TOUCHend!!!!!!", e, el,"last_ws: ",last_ws, diffY, diffTime, scroll_dist, el.scrollTop())
-					
-						// var scroll_dist = ($(this).scrollTop() + el.scrollTop()) - 44
-						//var scroll_dist = el.height() - $(window).height()
-						// el.animate({ scrollTop: scroll_dist}, 1000, 'easeOutCirc', function initElScroll(e){
-// 							el.off("scroll", initElScroll);
-							
-							el.css({overflow:"scroll"})
-			
-							// $("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-// 								$("html, body").off("scroll", initWindowScroll);
-// 
-// 							});
-						//});
-					
-					
-					}else if(last_ws < 1 ){
-						el.css({overflow:"hidden"});
-						el.off("touchmove")
-						el.off("touchend")
-						
-					}else{
-			
-						el.on("touchmove", function(e){
-							e.stopPropagation();
-						
-						})
-						el.on("touchend", function(e){
-							e.stopPropagation();
-							if($(window).scrollTop() > 1){
-								setTimeout(function(){
-									$("html, body").animate({ scrollTop: 1}, 500, 'easeOutQuint', function initWindowScroll(){
-										$("html, body").off("scroll", initWindowScroll);
-									});
-								}, 1000)
-							}else if($(window).scrollTop() < 1){
-								var stopped = -20;
-								///detects end of scroll
-								(function runAgain(){
-									console.log(stopped, el.scrollTop())
-									if(stopped == el.scrollTop() && stopped != -20){
-										el.css({overflow:"hidden"});
-										el.off("touchmove")
-										el.off("touchend")
-									}else{
-										stopped = el.scrollTop();
-										
-										setTimeout(runAgain, 500)
-									}
-									
-									
-								})();
-							}
-						})
-					}
-	
-				}/////end if event in array			
-			});//////end window touchend
-			*/
+			}
 		}
-		// var _srcollWindow = function(x){
-// 			$('.main-feed').scrollTop(x);
-// 		
-// 		}
-// 		
-// 		var _bindElScroll = function(){
-// 			$('.main-feed').on('scroll', function(){
-// 				e.preventDefault()
-// 				
-// 			});
-// 			$(window).on('scroll', function(){
-// 				x = $(this).scrollTop() * 100
-// 				_srcollWindow(x)
-// 			});
-// 			
-// 		}
+			
+		var _bindTouchEvents = function(){
+			$(window).on("touchstart", function(e){
+				_start(e);	
+			});
+			
+			$(window).on("touchend", function(e){
+				_end(e);
+			});
+		}
 		
 		var init = function (){
 			var post_form = $(".post-form-container")
