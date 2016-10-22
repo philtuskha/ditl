@@ -1829,7 +1829,7 @@ function hiddenToggleFunction(){
 					console.log("this hazzzpend", last_ws)
 					if(last_ws > 1 ){
 						
-						endY = e.originalEvent.touches[0].pageY
+						endY = e.changedTouches[0].pageY
 						endTime = e.originalEvent.timeStamp
 						
 						var diffY = startY - endY;
