@@ -1929,9 +1929,9 @@ function hiddenToggleFunction(){
 			
 			
 		if('ontouchstart' in document.documentElement){
-			$(".user-view").css({overflow:"hidden"})
-			$(".main-feed").css({overflow:"hidden"})
-			init()
+			// $(".user-view").css({overflow:"hidden"})
+// 			$(".main-feed").css({overflow:"hidden"})
+// 			init()
 			
 		}
 	
