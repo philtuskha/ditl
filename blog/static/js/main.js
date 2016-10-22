@@ -1918,12 +1918,12 @@ function hiddenToggleFunction(){
 			/////set body 44px more so window can scroll
 			$('body, html').css({height:'calc(100vh + 44px)'})
 			////////initially set overflow to hidden
-			$(".user-view").css({overflow:"hidden"})
-			$(".main-feed").css({overflow:"hidden"})
+			// $(".user-view").css({overflow:"hidden"})
+// 			$(".main-feed").css({overflow:"hidden"})
 			
 
 			////start
-			_setNavBar()
+			//_setNavBar()
 			
 		}///end initMobile
 			
@@ -1931,7 +1931,7 @@ function hiddenToggleFunction(){
 		if('ontouchstart' in document.documentElement){
 			// $(".user-view").css({overflow:"hidden"})
 // 			$(".main-feed").css({overflow:"hidden"})
-// 			init()
+			init()
 			
 		}
 	
