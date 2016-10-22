@@ -120,10 +120,10 @@ overflow:hidden;
 #fixed-top>div{
 display:inline-block;
 vertical-align:top;
-width:62%;
+width:55%;
 }
 #fixed-top>div:nth-child(2){
-width:38%;
+width:45%;
 }
 #fixed-top>div>ul{
 list-style:none;
@@ -194,6 +194,7 @@ margin:0;
 overflow:hidden;
 }
 #fixed-top-right ul li:nth-child(3){
+display:none;
 width:48px;
 vertical-align:top;
 cursor:pointer;
@@ -1481,6 +1482,11 @@ and (max-width:48.125em){
 		width:0px;
 		transition:width 0.5s
 	}
+	#fixed-top-right ul li:nth-child(3){
+		display:inline-block;
+		transition:width 0.5s
+	}
+	
 	
 	header{
 		height:60px
