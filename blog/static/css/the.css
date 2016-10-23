@@ -202,7 +202,7 @@ cursor:pointer;
 #posts-ico{
 height:36px;
 width:48px;
-background:url(../img/ico/globe2.svg) 6px center/60% 60% no-repeat;
+background:url(../img/ico/globe2.svg) 8px 8px /54% 54% no-repeat;
 }
 #compose-ico{
 height:36px;
@@ -1405,20 +1405,18 @@ background-color: #d0d8e1; /*#f28282;#ffc7b3; #d0d8e1; */
 
 #pop-up-wrapper {
 position:fixed;
-top: 42px;
-width: calc(33% - 50px);
+top: 36px;
+width: 33%;
 min-height:300px;
 z-index:100;
-background:rgba(89,89,89,0.94);
-border-radius:2px;
-box-shadow: 2px 2px 4px rgba(6,0,8,0.5);
+background:#fff;
 opacity:0;
 left:-400px;
 transition:all 500ms;
 padding:0;
 }
 #pop-up{
-color:white;
+color:black;
 margin:10px;
 margin:0px;
 }
@@ -1443,11 +1441,21 @@ padding:6px 12px;
 #status h1, #status h2, #status h3{
 margin:0;
 padding:10px;
-background:#404040;
+color:#fff;
 }
 #status h1{
+background:#404040;
+height:75px;
 }
-#status h3{
+.status-user{
+height:50px;
+padding-top: 6px;
+background:url(../img/ico/user3.svg) 20px top/54px 44px no-repeat;
+vertical-align:bottom;
+}
+#status h2, #status h3{
+color:#000;
+border-top:1px solid #000;
 }
 #status h1 span, #status h2 span, #status h3 span{
 display:inline-block;
@@ -1466,6 +1474,17 @@ font-weight:bold;
 	float:right;
 	width:70%;
 	text-align:right;
+}
+.overall-graph{
+width:100%;
+}
+.overall-graph>li{
+display:inline-block;
+vertical-align:bottom;
+background-color:#ffbaa2;
+}
+.my-graph{
+background-color:#ef7578;
 }
 /* phone */
 @media screen
@@ -1611,7 +1630,7 @@ header>div>#posts-ico{
 		
 	}
 	#pop-up-wrapper {
-		width: calc(100% - 50px);
+		width: 100%;
 	}
 
 }
@@ -1672,7 +1691,7 @@ and (max-width: 64.000em){
 		
 	}
 	#pop-up-wrapper {
-		width: calc(42% - 50px);
+		width: 42%;
 	}
 	
 

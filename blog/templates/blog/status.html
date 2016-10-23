@@ -1,13 +1,23 @@
 
 <div id="status">
-	<h1>User {{user}} <span>#{{ my_overall_ranking }}</span></h1>
+	<h1><div class="status-user">User {{user}} <span>#{{ my_overall_ranking }}</span></div></h1>
 	<p class="large">Your overall ranking is #{{ my_overall_ranking }} out of {{total_users}} total users</p>
-	
+	<p><ul data-users="" class="overall-graph">
+	{% for u, r in overall_ranking %}
+		{% if user != u %}
+		<li style='height:calc(50px * ({{r}} / {{max_points}}));width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
+		{% else %}
+		<li style='height:calc(50px * ({{r}} / {{max_points}}));width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
+		{% endif %}
+	{% endfor %}
+	</ul></p>
+<!-- 
 	<p>Overall ranking is based on your popularity and activity ranking. you can improve your ranking by posting nice things to other peoples threads and liking their comments.</p>
+ -->
 	<h3>Popularity<span>#{{ my_fave_ranking }}</span></h3>
 	<p class="large">Your popularity ranking is #{{ my_fave_ranking }} out of {{ total_users }} total users, with {{ my_fave_points }} popularity points out of {{ total_fave_points }} total</p>
 	
-	<p>Popularity ranking is based on other people responding to, and voting for your posts.</p>
+	<p class="my-graph">Popularity ranking is based on other people responding to, and voting for your posts.</p>
 	<h3>Activity<span>#{{ my_activity_ranking }}</span></h3>
 	<p class="large">Your activity ranking is #{{ my_activity_ranking }} out of {{ total_users }} users, with {{ my_activity_points }} activity points out of {{ total_activity_points }} total</p>
 	

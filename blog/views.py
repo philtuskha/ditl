@@ -693,22 +693,20 @@ def status(request):
     overall_ranking = all_points_dict.items()
     overall_ranking = sorted(overall_ranking, key=lambda tup: tup[1], reverse=True)
     my_overall_ranking = next((i for i, v in enumerate(overall_ranking) if v[0] == user), None) + 1
+    max_points = overall_ranking[0][1]
     
-    overall = "my total rating: %s." % (all_points_dict)
+   #  overall_list = "<ul data-users='"+str(total_users)+"' class='overall-graph'>"
+    
+#     for u, pts in overall_ranking:
+#         list_height = 150 * (pts / max_points)
+#         overall_list += "<li style='height:"+str(list_height)+"px' data-user='"+str(u)+"'></li>"
+#     
+#     overall_list += "</ul>"
 
 
-        
-#   user_votes = TVote.objects.filter(user=request.user, option="DL").count()
-#   user_votes = TVote.objects.all()
-   #  catch_all = 0
-#     total_rating= 0
-#     user = 0
-#     activity_ranking = 0
-#     my_activity_ranking = 0
-#     total_users = 0
-#     favorited = 0 
-    return render(request,'blog/status.html',{'user':user, 
-                                            'overall': overall,
+    return render(request,'blog/status.html',{'overall_ranking':overall_ranking,
+                                            'user':int(user), 
+                                            'max_points': max_points,
                                             'my_overall_ranking': my_overall_ranking,  
                                             'my_activity_ranking':my_activity_ranking,
                                             'my_activity_points':my_activity_points,

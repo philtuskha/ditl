@@ -2150,8 +2150,8 @@ function hiddenToggleFunction(){
 			setTimeout(function () {
 				popUpWrapper.style.opacity = 1;
 				popUpDiv.style.opacity = 1;
-				popUpWrapper.style.left = "25px";
-				popUpDiv.style.left = "25px";
+				popUpWrapper.style.left = "0px";
+				popUpDiv.style.left = "0px";
 			}, 30);
 		
 		}
