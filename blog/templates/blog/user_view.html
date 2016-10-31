@@ -1,5 +1,5 @@
 {% load apptags %}
-{% if timediff < 86400 %}
+{% if timediff < 86400 and curr_thread != 0 %}
 
 	<div id="user-top">
 		<ul data-timediff="{{ timediff }}">
@@ -18,9 +18,7 @@
 	</div>
 	<div class="user-view" data-scroll="down">
 		 <div id="user-view-spacer"></div>
-		 <div class="user-box-container" data-thread ="{{ curr_thread.id }}">
-			 {% if curr_thread %}
-		 
+		 <div class="user-box-container" data-thread ="{{ curr_thread.id }}">		 
 			 {% if curr_thread.is_active == 0 %}
 				 <div class="user-box" >
 					<div class="ti">
@@ -89,7 +87,7 @@
 								</p>
 							{% elif response.is_active == 1 %}
 								<p class="date-user">
-								  You deleted this comment
+								  Deleted. Click to restore
 								</p>
 							{% else %}
 								<p class="date-user">
@@ -140,7 +138,7 @@
 		
 					 </div>
 				{% endif %} 
-			 {% endif %}
+	
 		</div>
 	</div>
 {% else %}

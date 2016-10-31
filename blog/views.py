@@ -11,7 +11,57 @@ from django.contrib.auth.models import Permission
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from django.utils.html import strip_tags
 
+#attach this to log in/page load/user_view. Attach another check to add posts and vote that initially checks the user profile for the date they get reinstated 
+def troll_check(user_id):
+    print "user: ", user_id
+    my_threads = Thread.objects.filter(author_id=user_id)
+    my_respos = Response.objects.filter(author_id=user_id)
+    profile = UserProfile.objects.get(id=user_id)
+    
+    
+    past_day = timezone.now() - timezone.timedelta(days=1)
 
+    print"date: ", past_day
+    
+    one_t_count = my_threads.filter(published_date__gte=past_day, is_active=2).count()
+    one_r_count = my_respos.filter(published_date__gte=past_day, is_active=2).count() 
+    
+    one_day_count = one_t_count + one_r_count
+    
+    
+    past_5_days = timezone.now() - timezone.timedelta(days=5)
+    
+    five_t_count = my_threads.filter(published_date__gte=past_day, is_active=2).count()
+    five_r_count = my_respos.filter(published_date__gte=past_day, is_active=2).count() 
+    
+    five_day_count = five_t_count + five_r_count
+    
+    
+    print"one day count: ", one_day_count
+    print"five day count: ", five_day_count
+    print"date: ", past_day
+    print"date: ", past_day
+    print"date: ", past_day
+    
+    if not profile.troll_check: 
+        if one_day_count > 2:
+            if five_day_count > 4:
+                profile.troll_check = timezone.now() + timedelta(days=7)
+                profile.save()
+            else:
+                profile.troll_check = timezone.now() + timedelta(days=1)
+                profile.save()
+        
+    elif profile.troll_check:
+        if profile.troll_check < timezone.now():
+            if five_day_count > 4:
+                profile.troll_check = timezone.now() + timedelta(days=7)
+                profile.save()
+            else:
+                profile.troll_check = None
+                profile.save()
+      
+                
 def activity(type, increment, me):
     profile_object = UserProfile.objects.get(user_id=me)
     # activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "votes": profile_object.activity_votes}
@@ -177,7 +227,11 @@ def post_status(post_object, type, post_id):
         
 
 def vote(request):
-    if request.method=="POST":
+    t_check = UserProfile.objects.get(id=request.user.id).troll_check
+    print "vote troll check", t_check
+    
+
+    if request.method=="POST" and t_check is None:
         user_thread_votes = TVote.objects.filter(user=request.user)
         user_respo_votes = RVote.objects.filter(user=request.user)
             
@@ -196,7 +250,8 @@ def vote(request):
         if form.is_valid():
             #add or subtract from your favorites in UserProfile
             add_subtract_faves = 0 
-
+            
+            #define this outside of parent function so status can use but needs to return two different things
             def troll_vote_status(user_thread_votes, user_respo_votes):
                 thread_vote_count = user_thread_votes.filter(option="TR").count()
                 respo_vote_count = user_respo_votes.filter(option="TR").count()
@@ -236,14 +291,14 @@ def vote(request):
                     #only if troll vote, check/set status 
                     post_status(post_object, request.POST.get('post_type'), request.POST.get('post'))
                     
-                t_check, message = troll_vote_status(user_thread_votes, user_respo_votes)
+                th_check, message = troll_vote_status(user_thread_votes, user_respo_votes)
                 
                 
                 
                 faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
                 activity("vote", num, request.user.id)
                 
-                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 't_check': t_check, 'message': message}
+                data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 'th_check': th_check, 'message': message}
                 return HttpResponse(json.dumps(data), content_type='application/json')
                 
                 
@@ -271,10 +326,10 @@ def vote(request):
             return HttpResponse(json.dumps(terror), content_type='application/json')
 
     else:
-        tv=TVote.objects.all()
-        form=TVoteForm()
-        return render(request,'blog/vote.html',{'tv':tv,'form':form})
-        
+        message = "<h2>You are a troll</h2> <p>You have to wait until " + t_check.strftime('%b %d, %-I:%M%p') + " to start voting on posts again</p>"
+        data = {"troll": "True", "message": message}
+        return HttpResponse(json.dumps(data), content_type='application/json')
+
    
 def thread_new(request):
     if request.method == "POST":
@@ -305,7 +360,6 @@ def restore_post(request):
         data = {'restored': "true"}
         return HttpResponse(json.dumps(data), content_type='application/json')
         
-
 
 def delete_post(request):
     if request.method=="POST" and request.is_ajax():
@@ -358,11 +412,12 @@ def delete_post(request):
         data = {'delete_or_hide': delete_or_hide,"type": type}
         return HttpResponse(json.dumps(data), content_type='application/json')
         
-        
     
 def add_thread(request):
     #add thread or response
-    if request.method == "POST" and request.is_ajax():
+    t_check = UserProfile.objects.get(id=request.user.id).troll_check 
+
+    if request.method == "POST" and request.is_ajax() and t_check is None:
         user_thread = Thread.objects.filter(author_id=request.user.id)
     
         if user_thread.count() > 0:
@@ -446,10 +501,11 @@ def add_thread(request):
                 return HttpResponse(json.dumps(data), content_type='application/json')
                 
     else:
-        form = ThreadForm()
-    return render(request, 'blog/thread_edit.html', {'form': form})
+        message = "<h2>You are a troll</h2> <p>You have to wait until " + t_check.strftime('%b %d, %-I:%M%p') + " to start posting again</p>"
+        data = {"troll": "True", "message": message}
+        return HttpResponse(json.dumps(data), content_type='application/json')
+  
     
- 
 def user_view(request):
     if request.user.id:
         my_threads = Thread.objects.filter(author_id=request.user.id)
@@ -467,14 +523,11 @@ def user_view(request):
             respo = []
             
         user=request.user
-        return render(request, 'blog/user_view.html', {'curr_thread_id': curr_thread.id, 'curr_thread': curr_thread, 'user': user, 'respo': respo, 'timediff': timediff })
+        return render(request, 'blog/user_view.html', {'curr_thread': curr_thread, 'user': user, 'respo': respo, 'timediff': timediff })
     else:
         return render(request, 'blog/user_view.html', {})
 
 
-           
-    
-    
 def update_page(request):
     # query on Posts, User View, Notifications, Status, Keywords(Trending) to see if database hase changed
     
@@ -501,9 +554,13 @@ def update_page(request):
     try:
         my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
     except (IndexError, ValueError):
+        my_last_thread = 0
         my_last_thread_responses = 0
         my_last_thread_tvote = 0
         my_last_thread_rvote = 0
+        my_thread_active = 0
+        my_deleted = 0
+        my_trolled = 0
     
     else:
         all_responses = Response.objects.all()
@@ -525,9 +582,13 @@ def update_page(request):
        
         my_last_thread_rvote = x
 
-        
-    diff = timezone.now() - my_last_thread.published_date
-    timediff = diff.total_seconds()
+    if my_last_thread != 0:    
+        diff = timezone.now() - my_last_thread.published_date
+        timediff = diff.total_seconds()
+    else:
+        timediff = 0
+    
+    troll_check(request.user.id)
         
       
     data = {'last_thread': last_thread, 
@@ -543,8 +604,6 @@ def update_page(request):
             "my_thread_active": my_thread_active}
     return HttpResponse(json.dumps(data), content_type='application/json')
         
-
-
 
 def keyword_extends():
 #   if I want to add keyword searches from responses as well    
@@ -610,115 +669,103 @@ def keywords(request):
     sorted_nouns = keyword_extends()        
     return render(request,'blog/keywords.html',{'sorted_nouns':sorted_nouns,'timediff':timediff})
 
+
 def notifications(request):
-    user = request.user
-    return render(request,'blog/notifications.html',{'user':user})
+    pass
+    # user = request.user
+#     return render(request,'blog/notifications.html',{'user':user})
 
-    
 def status(request):
-    
-    #activity and favorites
-    profile = UserProfile.objects.all()
-    user=request.user.id
-    
-    total_users = profile.count()
-    
-    activity_ranking = []
-    
-    fave_ranking = {}
-    def get_favorites():
-        if p.favorites:
-            fave_dict = json.loads(p.favorites)
-            for u, val in fave_dict.items():
-                if u in fave_ranking:
-                    fave_ranking[int(u)] += (val[0] * 2) + (val[1] * 6) 
-                else: 
-                    fave_ranking[int(u)] = (val[0] * 2) + (val[1] * 6)
+    if request.user.id:
+        profile = UserProfile.objects.all()
+        user=request.user.id
+        total_users = profile.count()
         
-    
-    for p in profile:
-        av = p.activity_votes
-        ar = p.activity_responses
-        at = p.activity_threads
+        all_threads = Thread.objects.all()
+        all_respos = Response.objects.all()
+        last_14_days = timezone.now() - timezone.timedelta(days=14)
+        last_day = timezone.now() - timezone.timedelta(days=1)
+              
+        last_threads = all_threads.filter(published_date__gte=last_14_days)
+        last_respos = all_respos.filter(published_date__gte=last_14_days)
+        last_tvotes = TVote.objects.filter(published_date__gte=last_14_days)
+        last_rvotes = RVote.objects.filter(published_date__gte=last_14_days)
         
-        if av and ar and at:
-            votes = sum(json.loads(av))
-            responses = sum(json.loads(ar)) * 3
-            threads = sum(json.loads(at)) * 5
-        
-            points = votes + responses + threads
-        
-            activity_ranking.append((p.id, points))
-         
-            get_favorites()
-
-        else:
-            points = 0
+        #user activity
+        user_rank = []
+        for p in profile:
+            p_id = p.id
             
-            activity_ranking.append((p.id, points))
-         
-            get_favorites()
+            user_threads = last_threads.filter(author_id=p_id).exclude(is_active=1).exclude(is_active=2).count() * 5
+            user_respo = last_respos.filter(author_id=p_id).exclude(is_active=1).exclude(is_active=2).count() * 3
+            user_tvotes = last_tvotes.filter(user_id=p_id).count()
+            user_rvotes = last_rvotes.filter(user_id=p_id).count()
+            
+            user_total = user_threads + user_respo + user_tvotes + user_rvotes
         
+            user_rank.append((p_id, user_total)) 
     
-    fave_ranking = sorted(fave_ranking.items(), key=lambda tup: tup[1], reverse=True)
-    my_fave_ranking = next((i for i, v in enumerate(fave_ranking) if v[0] == user), None) + 1
-    fave_ranking_dict = dict(fave_ranking)
-    my_fave_points = fave_ranking_dict[user]
-    
-    total_fave_points = sum(x[1] for x in fave_ranking)
-    
-    # my_popularity = "my fave rating: %s. my fave points: %s. total fave points: %s" % (my_fave_ranking, my_fave_points, my_fave_points)
-    
-    
-    
-    activity_ranking = sorted(activity_ranking, key=lambda tup: tup[1], reverse=True)
-    my_activity_ranking = next((i for i, v in enumerate(activity_ranking) if v[0] == user), None) + 1
-    activity_ranking_dict = dict(activity_ranking)
-    my_activity_points = activity_ranking_dict[user]
-    
-    total_activity_points = sum(x[1] for x in activity_ranking)    
-  
-    #my_activity = "Your activity ranking: %s out of $s users, with %s activity points out of %s total." % (my_fave_ranking, total_users, my_activity_points, total_activity_points)
-    
-    
-    dicts =[fave_ranking_dict, activity_ranking_dict]
-    
-    all_points_dict = {}
-    for myDict in dicts:
-        for key, value in myDict.items():
-            all_points_dict.setdefault(key, 0)
-            all_points_dict[key] += value
-    
-    
-    overall_ranking = all_points_dict.items()
-    overall_ranking = sorted(overall_ranking, key=lambda tup: tup[1], reverse=True)
-    my_overall_ranking = next((i for i, v in enumerate(overall_ranking) if v[0] == user), None) + 1
-    max_points = overall_ranking[0][1]
-    
-   #  overall_list = "<ul data-users='"+str(total_users)+"' class='overall-graph'>"
-    
-#     for u, pts in overall_ranking:
-#         list_height = 150 * (pts / max_points)
-#         overall_list += "<li style='height:"+str(list_height)+"px' data-user='"+str(u)+"'></li>"
-#     
-#     overall_list += "</ul>"
+        user_rank = sorted(user_rank, key=lambda tup: tup[1], reverse=True)
+        max_activity_points = user_rank[0][1]
+        my_user_rank = next((i for i, v in enumerate(user_rank) if v[0] == user), None) + 1
+        user_rank_dict = dict(user_rank)
+        my_activity_points = user_rank_dict[user]
+        total_activity_points = sum(x[1] for x in user_rank)
+       
+        activity_list = [user_rank, my_user_rank, max_activity_points, my_activity_points, total_activity_points]
+        
+        
+        #thread popularity
+        thread_rank = {}
+        for th in last_threads:
+            t_votes = th.tvote_set.filter(option="SE").count()
+            respo = Response.objects.filter(thread_id=th.id).exclude(author_id=th.author_id).exclude(is_active=1).exclude(is_active=2)
+            r_count = respo.count() * 3
+            
+            for r in respo:
+                r_votes = r.rvote_set.filter(option="SE").count()  
+            
+            total = t_votes + r_votes + r_count
+            
+            
+            if th.author_id in thread_rank:
+                thread_rank[th.author_id] += total
+            else:
+                thread_rank[th.author_id] = total
+                    
+        thread_rank = sorted(thread_rank.items(), key=lambda tup: tup[1], reverse=True) 
+        my_thread_rank = next((i for i, v in enumerate(thread_rank) if v[0] == user), None)
+        if my_thread_rank is not None:
+            my_thread_rank = my_thread_rank + 1
+            thread_rank_dict = dict(thread_rank)
+            my_thread_points = thread_rank_dict[user]
+            max_thread_points = thread_rank[0][1]
+            total_thread_points = sum(x[1] for x in thread_rank)
+            thread_list = [thread_rank, my_thread_rank, max_thread_points, my_thread_points, total_thread_points]
+            
+        else:
+            thread_list = None
+            
+        
+        #troll
+        t_check = UserProfile.objects.get(id=request.user.id).troll_check
+        
+        troll_posts = t_check.strftime('%b %d, %-I:%M%p') if t_check else ""
+        
+        return render(request,'blog/status.html',{'user':int(user),
+                                                'total_users': total_users,
+                                    
+                                                'user_rank': user_rank,
+                                                
+                                                'all_threads':all_threads,
+                                                'thread_rank':thread_rank,
+                                                'activity_list':activity_list,
+                                                'thread_list':thread_list,
+                                                'troll_posts': troll_posts,
+                                                    })
+    else:
+        return render(request, 'blog/status.html', {})
 
-
-    return render(request,'blog/status.html',{'overall_ranking':overall_ranking,
-                                            'user':int(user), 
-                                            'max_points': max_points,
-                                            'my_overall_ranking': my_overall_ranking,  
-                                            'my_activity_ranking':my_activity_ranking,
-                                            'my_activity_points':my_activity_points,
-                                            'total_activity_points':total_activity_points,
-                                            'my_fave_ranking':my_fave_ranking,
-                                            'my_fave_points':my_fave_points,
-                                            'total_fave_points':total_fave_points,
-                                            # 'my_activity_ranking':my_activity_ranking,
-#                                             'my_activity_ranking':my_activity_ranking,
-#                                             'my_activity_ranking':my_activity_ranking,
-#                                             'my_activity_ranking':my_activity_ranking, 
-                                            'total_users': total_users})
 
 def home(request):
     #default load before ajax reload JIC
@@ -733,7 +780,6 @@ def home(request):
     return render(request, 'blog/home.html', {'sorted_nouns': sorted_nouns, 'threads': threads, 'form': form})
 
 
-    
 def thread_list(request):
     #if someone is logged in
     if request.user.id:
@@ -833,9 +879,7 @@ def thread_list(request):
         user=False
         return render(request,'blog/thread_list.html',{'user':user})
  
-    
-
-    
+      
 def thread_detail(request, pk):
     t = get_object_or_404(Thread, pk=pk)
     response = Response.objects.filter(published_date__lte=timezone.now(), thread=t.pk).order_by('published_date')

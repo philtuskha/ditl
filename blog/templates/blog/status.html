@@ -1,41 +1,93 @@
 
 <div id="status">
-	<h1><div class="status-user">User {{user}} <span>#{{ my_overall_ranking }}</span></div></h1>
-	<p class="large">Your overall ranking is #{{ my_overall_ranking }} out of {{total_users}} total users</p>
-	<p><ul data-users="" class="overall-graph">
-	{% for u, r in overall_ranking %}
-		{% if user != u %}
-		<li style='height:calc(50px * ({{r}} / {{max_points}}));width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
-		{% else %}
-		<li style='height:calc(50px * ({{r}} / {{max_points}}));width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
-		{% endif %}
-	{% endfor %}
-	</ul></p>
+	<!-- <span class="close-btn"></span> -->
+	<h1><div class="status-user">User {{user}}<span class="close-btn"></span></div></h1>
+	<div id="status-wrap">
+ 		
 <!-- 
-	<p>Overall ranking is based on your popularity and activity ranking. you can improve your ranking by posting nice things to other peoples threads and liking their comments.</p>
+		activity_list = [activity_ranking, my_activity_ranking, max_activity_points, my_activity_points, total_activity_points]
  -->
-	<h3>Popularity<span>#{{ my_fave_ranking }}</span></h3>
-	<p class="large">Your popularity ranking is #{{ my_fave_ranking }} out of {{ total_users }} total users, with {{ my_fave_points }} popularity points out of {{ total_fave_points }} total</p>
+ 		{% if activity_list %}
+		<h4>Your Activity<span>#{{ activity_list.1 }}</span></h4>
+		<p class="large">Your activity ranking is #{{ activity_list.1 }}, out of {{ total_users }} users. You have {{ activity_list.3 }} points. The highest ranking user has {{activity_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
 	
-	<p class="my-graph">Popularity ranking is based on other people responding to, and voting for your posts.</p>
-	<h3>Activity<span>#{{ my_activity_ranking }}</span></h3>
-	<p class="large">Your activity ranking is #{{ my_activity_ranking }} out of {{ total_users }} users, with {{ my_activity_points }} activity points out of {{ total_activity_points }} total</p>
+		<p>Your Activity ranking is based on how much you have been posting in the last 14 days.</p>  
+		<div class="graph">
+			<ul data-users="{{total_users}}" class="other-graph">
+			{% for u, r in activity_list.0 %}
+				{% if user == u %}
+				<li style='height:calc((50px * ({{r}} / {{activity_list.2}})) + 20px);width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
+				{% else %}
+				<li style='height:calc((50px * ({{r}} / {{activity_list.2}})) + 20px);width:calc(100% / {{total_users}})' data-user='{{u}}' data-points='{{r}}'></li>
+				{% endif %}
+			{% endfor %}
+			</ul>
+		</div>
+		{% else %}
+		<h4>Activity</span></h4>
+		<p class="large">You are not very active.  Please post a bunch of stuff and like other users' post to gain activity points</p>
+		{% endif %}
+<!-- 
+		my_thread_list = [thread_responses_count, thread_se_votes, thread_tr_votes]
+ -->
+ 		{% if thread_list %}
+		<h4>Your Posts<span>#{{ thread_list.1 }}</span></h4>
+		<p class="large">Your Post ranking is #{{ thread_list.1 }}, out of {{ total_users }} users. You have {{ thread_list.3 }} points. The highest ranking user has {{activity_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
 	
-	<p>Activity ranking is based on how much you have been posting in the last 28 days.  <br><br><span class="quote">"Get busy living or get busy dying."<br> <i>- Andy Dufresne</i></span></p>
-	<br>
-	<h2>TODAY</h2>
-	<h3>your votes for other peoples threads and resonses</h3>
-	 <br><br>
-	 <p>out of   total votes that you have made</p>
-	<br><br>
-
-	<br><br><br>
-	<hr>
-	<h3>your responses got these votes</h1>
-	<br>
-
-	<br><br><br>
-	<hr>
-	<h3>your threads got these votes</h1>
-	<br>
+		<p>Your Post ranking is based on how many votes and comments your posts have recieved in the last 14 days.</p>  
+		<div class="graph">
+			<ul data-users="{{total_users}}" class="other-graph">
+			{% for u, r in thread_list.0 %}
+				{% if user == u %}
+				<li style='height:calc((50px * ({{r}} / {{thread_list.2}})) + 20px);width:calc(100% / {{total_users}})' class="my-graph" data-user='{{u}}' data-points='{{r}}'></li>
+				{% else %}
+				<li style='height:calc((50px * ({{r}} / {{thread_list.2}})) + 20px);width:calc(100% / {{total_users}})' data-user='{{u}}' data-points='{{r}}'></li>
+				{% endif %}
+			{% endfor %}
+			</ul>
+		</div>
+		{% else %}
+		<h4>Your Posts</span></h4>
+		<p class="large">Your posts have not received any responses or votes in the past 14 days.  Please post a bunch of intriguing stuff to have people vote and respond to your posts</p>
+		{% endif %}
+		<h4>Are you a troll?</h4>
+		{% if troll_posts %}
+		<p class="large">Yes!?! You have been posting stuff that people don't like.  You can start posting again on {{ troll_posts }}.  </p>
+		{% else %}
+		<p class="large">Nope. You are all good.</p>
+		{% endif %}
+		<div id="today"> 
+		<div>
+			{{all_threads}}
+		</div>
+		<div>
+			{{thread_rank}}
+		</div>
+		<div>
+			{{user_rank}}
+		</div>
+		<div>
+			{{wtf}}
+		</div>
+		<div>
+			<ul>
+				<li class="large-list">You started {{my_threads}} active post</li>
+				<li class="large-list">Posted {{my_responses}} comments</li>
+				<li class="large-list">and voted on {{my_votes}} posts</li>
+			</ul>
+		</div>
+		<br>
+		{% if my_thread_list %}
+		<div>
+			<ul>
+				<li class="large-list">Today's post received {{my_thread_list.0}} comments</li>
+				<li class="large-list">Today's post & comments recieved {{my_thread_list.1}} Likes</li>
+				<li class="large-list">and {{my_thread_list.2}} Troll Votes</li>
+			</ul>
+		</div>
+		{% endif %}
+		</div>
+		<!-- <br><br><span class="quote">"Get busy living or get busy dying."<br> <i>- Andy Dufresne</i></span></p> -->
+		<br>
+	</div>
 </div>

@@ -734,10 +734,20 @@ function hiddenToggleFunction(){
 			
 				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:"100vh"});
 			
-				var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() + 40)
+				var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() - 36)
 
-				handle.parent().css({height:window_height+"px"});
-				handle.css({height:window_height+"px"});
+				// handle.parent().css({height:window_height+"px"});
+// 				handle.css({height:window_height+"px"});
+				handle.parent().css({top:"91px", bottom:"0px"});
+				handle.css({top:"0px", bottom:"0px"});
+				console.log(handle)
+				
+				$("#thread-div-pop .expand-right>li:nth-child(1)").css({height:"0px", "margin-bottom":"8px"})
+				$("#thread-div-pop .expand-left").css({width:"124px"})
+				$("#thread-div-pop .expand-left>li:nth-child(2)").css({width:"78px","padding-top":"6px"})
+				$("#thread-div-pop .expand-right").css({width:"calc(100% - 148px)"})
+				$("#thread-div-pop .expand").css({padding:"8px 0 0 8px"})
+				
 			}, 30);
 		
 		}
@@ -752,7 +762,6 @@ function hiddenToggleFunction(){
 		}
 	
 		var _bindThreadEvents = function(handle){
-			console.log("handle: ", handle)
 			
 			///////scroll to the bottom response on click
 			$("#id_text_r").on("click", function(){
@@ -811,7 +820,7 @@ function hiddenToggleFunction(){
 		}
 		
 		var _closeThread = function(){
-			var thread_id = localStorage.getItem('open_thread'),
+			var thread_id = $('#thread-div-pop').find(".post-user").data("thread"),
 				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px",
 				center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width(),
 				wrapper = $("#thread-wrapper-pop"),
@@ -834,12 +843,17 @@ function hiddenToggleFunction(){
 			div.find(".details").css({height:"0px"});
 			div.find(".white-space").css({height:"0px"});
 			$("#close-btn").css({opacity:0})
+			
+			$("#thread-div-pop .expand-right>li:nth-child(1)").removeAttr('style')
+			$("#thread-div-pop .expand-left").removeAttr('style')
+			$("#thread-div-pop .expand-left>li:nth-child(2)").removeAttr('style')
+			$("#thread-div-pop .expand-right").removeAttr('style')
+			$("#thread-div-pop .expand").removeAttr('style')
 		
 			setTimeout(function(){
 				wrapper.css({display:"none"});
 				div.css({display:"none"});
-				wrapper.css({opacity:1});
-								
+				wrapper.css({opacity:1});								
 			
 			}, 500);
 		}
@@ -1226,20 +1240,25 @@ function hiddenToggleFunction(){
 					dataType: "json",
 					data: { "id": state[0], "title": state[1], "text": state[2], "is_thread": state[3] },
 					success: function(data) {
-						/////split these two options off into there own private funtions
-						if(data.active == "True" && key_target.attr("id") == $("#id_text").attr("id")){
+						if(!data.troll){
+							/////split these two options off into there own private funtions
+							if(data.active == "True" && key_target.attr("id") == $("#id_text").attr("id")){
 							
-							_succesUserView(key_target);
+								_succesUserView(key_target);
 							
 						
-						}else if(data.active == "True" && key_target.attr("id") != $("#id_text").attr("id")){
+							}else if(data.active == "True" && key_target.attr("id") != $("#id_text").attr("id")){
 							
 							
-							_successThread(curr_id, handle);
+								_successThread(curr_id, handle);
 							
 							
+							}else{
+								///////throw error into custom error console (as of yet made), like inbox.google "offline"
+								alert('this post is not active')
+							}
 						}else{
-							///////throw error into custom error console (as of yet made), like inbox.google "offline"
+							Alert.loadAlert(['alert', data.message])
 						}
 					}
 				});
@@ -1285,17 +1304,20 @@ function hiddenToggleFunction(){
 					url: "/vote/",
 					data: obj[0],
 					success: function(post) {
-		
-						if(post.t_check == "warning" && post.option == "TR" && post.num > 0){
-							Alert.loadAlert(['alert', post.message])
-							_confirmedVote(obj, post)
+						if(!post.troll){
+							if(post.th_check == "warning" && post.option == "TR" && post.num > 0){
+								Alert.loadAlert(['alert', post.message])
+								_confirmedVote(obj, post)
 				
 			
-						}else if(post.t_check == "restricted" && post.option == "TR"  && post.num > 0){
-							Alert.loadAlert(['alert', post.message])
+							}else if(post.th_check == "restricted" && post.option == "TR"  && post.num > 0){
+								Alert.loadAlert(['alert', post.message])
 			
+							}else{
+								_confirmedVote(obj, post)
+							}
 						}else{
-							_confirmedVote(obj, post)
+							Alert.loadAlert(['alert', post.message])
 						}
 			
 					},
@@ -1634,6 +1656,7 @@ function hiddenToggleFunction(){
 				$('body').on('keydown', function(e){
 					if(e.keyCode == '13' ){	
 						//e.preventDefault();
+						
 						alert_array[3](alert_array[2]);
 						$(".my-alert-wrapper").remove();
 						$('body').off('keydown')
@@ -1660,7 +1683,7 @@ function hiddenToggleFunction(){
 		}
 		
 		var loadAlert = function(alert_array){
-		
+			$('textarea').blur();
 			//alert_array[type, message, element, function]
 			_createAlertBox(alert_array)	
 			_bindBtns(alert_array)
@@ -1933,6 +1956,26 @@ function hiddenToggleFunction(){
 	
 	})();
 	
+	var Logout = (function(){
+	
+		var _logout = function(href){
+			window.location = href
+		
+		
+		}
+		var _bindLogout = function(){
+			$('#logout').on('click', function(e){
+				e.preventDefault();
+				href = $(this).attr("href");
+				message = "<h2>Are you sure you want to logout?<span></span></h2>";
+				Alert.loadAlert(['confirm', message, href, _logout]);
+			});
+		}
+		
+		_bindLogout()
+	
+	})();
+	
 
 	//init Sorter
 	(function(){        ///// var Sorter = 
@@ -1947,7 +1990,7 @@ function hiddenToggleFunction(){
 						if(key != "contains"){
 							//console.log(this_div.data())
 							if(localStorage.getItem(key) == value){
-								this_div.css({background: 'rgba(251, 249, 234, 0.5)'});
+								this_div.css({background: 'rgba(251, 249, 234, 1)'});
 						
 							}//dope green blue rgb(239, 243, 242)224, 229, 235
 						}
@@ -1959,7 +2002,7 @@ function hiddenToggleFunction(){
 		}
 		var _closeMenuOnQuery = function(this_div){
 			this_div.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-				CloseSorter.toggleSorter()
+					CloseSorter.toggleSorter()
 			});
 		}
 		
@@ -1982,7 +2025,7 @@ function hiddenToggleFunction(){
 							
 							this_div.css({background:'transparent'});
 							
-							if(center_check > 0.5){
+							if(center_check > 0.5 && $('.sorter').css("right") == "0px"){
 								_closeMenuOnQuery(this_div)
 							}
 							
@@ -2005,9 +2048,9 @@ function hiddenToggleFunction(){
 								
 							}
 							
-							this_div.css({background: 'rgba(251, 249, 234, 0.5)'});
+							this_div.css({background: 'rgba(251, 249, 234, 1)'});
 							
-							if(center_check > 0.5){
+							if(center_check > 0.5  && $('.sorter').css("right") == "0px"){
 								_closeMenuOnQuery(this_div)
 							}
 					
@@ -2025,7 +2068,7 @@ function hiddenToggleFunction(){
 			});
 			
 			$('#search-text').on('focus', function(){
-				$(this).parent().css({background:"rgba(251, 249, 234, 0.5)"})
+				$(this).parent().css({background:"rgba(251, 249, 234, 1)"})
 				$(this).attr("placeholder", "Search")
 			})
 			$('#search-text').on('blur', function(){
@@ -2158,25 +2201,29 @@ function hiddenToggleFunction(){
 		
 		var _close = function(e, removePop){
 			
-			var pop_top = parseInt($("#pop-up-wrapper").css("top")),
-				pop_left = parseInt($("#pop-up-wrapper").css("left")),
-				pop_height = $("#pop-up-wrapper").height() + pop_top,
-				pop_width = $("#pop-up-wrapper").width() + pop_left;
-			
-			
-			if ( e.clientX > pop_left && e.clientX < pop_width && e.clientY > pop_top && e.clientY < pop_height){
-				return false;	
-				
-			}else{
+			// var pop_top = parseInt($("#pop-up-wrapper").css("top")),
+// 				pop_left = parseInt($("#pop-up-wrapper").css("left")),
+// 				pop_height = $("#pop-up-wrapper").height() + pop_top,
+// 				pop_width = $("#pop-up-wrapper").width() + pop_left;
+// 			
+// 			
+// 			if ( e.clientX > pop_left && e.clientX < pop_width && e.clientY > pop_top && e.clientY < pop_height){
+// 				return false;	
+// 				
+// 			}else{
 				///make this smoother eventually
 				$('#pop-up-wrapper').remove();
-				$('body').off('click',removePop);
+				//$('body').off('click',removePop);
 				
-			}
+			//}
 		}
 		
 		var _bindClose = function(){
-			$('body').on('click', function removePop(e){
+			// $('body').on('click', function removePop(e){
+// 				_close(e, removePop)
+// 				
+// 			});
+			$('.close-btn').on('click', function removePop(e){
 				_close(e, removePop)
 				
 			});
@@ -2340,7 +2387,7 @@ function hiddenToggleFunction(){
 			setTimeout(function(){
 		   	if(theSpan.parent().prop("tagName") == "P"){
  		   		//response titles
-				var color1 = "#fff"; //white
+				var color1 = "#6e7277"; //white
 				var color2 = "#bdbfc2"; //another grey blue, lighter
 				var color3 = "#9fa3a7"; ///actually dark blue/grey
 			}else{
@@ -2349,11 +2396,11 @@ function hiddenToggleFunction(){
 				var color2 = "#ffbaa2"; //salmon
 				var color3 = "#fff"; //white
 				
-			}	theSpan.css({color: color2, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+			}	theSpan.css({color: color2, transition: "color", transitionTimingFunction:'ease', transitionDuration: '6s' });
 				theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-					theSpan.css({color: color1, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+					theSpan.css({color: color1, transition: "color", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					theSpan.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-						theSpan.css({color: color3, transition: "all", transitionTimingFunction:'ease', transitionDuration: '6s' });
+						theSpan.css({color: color3, transition: "color", transitionTimingFunction:'ease', transitionDuration: '6s' });
 					});
 				});
 		
@@ -2417,9 +2464,11 @@ function hiddenToggleFunction(){
 						
 						}
 					}
-				
-					////update user clock
-					 Timer.addTime(data.timediff)
+					if(data.timediff != last_state.timediff){
+						//update user clock
+						 Timer.addTime(data.timediff)
+					 
+					 }
 				
 				
 					//store in localStorage

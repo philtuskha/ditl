@@ -21,7 +21,7 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):  
         self.browser.quit()
 
-    def test_can_start_a_list_and_retrieve_it_later(self):  
+    def test_can_enter_a_new_thread(self):  
         self.browser.get('localxhome.com:8000')
 
         self.assertIn('Day in the Life', self.browser.title)  
