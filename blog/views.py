@@ -159,8 +159,41 @@ def profile_test(request):
     
     
     return render(request, 'blog/profile_test.html', {'a': a, 'b': b, 'c': c, 'd': d, 'e': e })
+ 
+def find_faves(user_id):
+    all_respo = Response.objects.filter(author_id=user_id)
+    fave_users = []
     
-
+    for r in all_respo:
+        respo_thread = Thread.objects.get(pk=r.thread_id)
+        thread_author = respo_thread.author_id
+        
+        if thread_author not in fave_users:    
+            fave_users.append(thread_author)
+    
+    all_t_votes = TVote.objects.filter(user_id=user_id)
+    
+    for tv in all_t_votes:
+        tvote_thread = Thread.objects.get(pk=tv.post_id)
+        tvote_author = tvote_thread.author_id
+        
+        if tvote_author not in fave_users:    
+            fave_users.append(tvote_author)
+    
+    
+    all_r_votes = RVote.objects.filter(user_id=user_id)
+    
+    for rv in all_r_votes:
+        rvote_response = Response.objects.get(pk=rv.post_id)
+        rvote_author = rvote_response.author_id
+        
+        if rvote_author not in fave_users:    
+            fave_users.append(rvote_author)
+    
+        
+    return fave_users
+            
+'''
 def faves(type, vote_post_id, thread, add_subtract_faves, me):
     #storing favorite users to my profile, a.k.a. people's threads you respond to 
     fave_object = UserProfile.objects.get(user_id=me)
@@ -207,7 +240,7 @@ def faves(type, vote_post_id, thread, add_subtract_faves, me):
             
         fave_object.favorites = json.dumps(fave_dict)
         fave_object.save()
-        
+'''        
 
 def post_status(post_object, type, post_id):
 
@@ -295,7 +328,7 @@ def vote(request):
                 
                 
                 
-                faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
+                #faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
                 # activity("vote", num, request.user.id)
                 
                 data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 'th_check': th_check, 'message': message}
@@ -490,7 +523,7 @@ def add_thread(request):
                 curr_count.resp_count = Response.objects.filter(thread=request.POST.get('is_thread')).count()
                 curr_count.save() 
                 
-                faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
+                #faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
                 # activity("response", 1, request.user.id)
                 
                 data = {"active": "True"}
@@ -826,7 +859,11 @@ def thread_list(request):
             #threads=threads.filter(Q(tvote__user_id=request.user.id) | Q(response__rvote__user_id=request.user.id))
             #
             #this method takes a new field in user profile that you can 
+            fave_list = find_faves(request.user.id)
             
+            kwargs[request.GET.get('faves')] = fave_list
+            
+            '''
             my_faves = UserProfile.objects.get(user_id=request.user.id).favorites
             
             if my_faves: 
@@ -842,7 +879,7 @@ def thread_list(request):
             else:
                 kwargs[request.GET.get('faves')] = [0] #filter by a non user
                 
-                
+            '''   
         #my conversations        
         if request.GET.get('my'):
             kwargs[request.GET.get('my')] = request.user.id

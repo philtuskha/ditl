@@ -1523,7 +1523,7 @@ function hiddenToggleFunction(){
 		var myScroller = function(element, position){
 			_bindElOff(element);
 
-		element.animate({ scrollTop: position }, 2000, 'easeOutCirc', function(){
+		element.animate({ scrollTop: position }, 1000, 'easeOutCirc', function(){
 			//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
 		});
 
