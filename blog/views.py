@@ -61,7 +61,7 @@ def troll_check(user_id):
                 profile.troll_check = None
                 profile.save()
       
-                
+'''                
 def activity(type, increment, me):
     profile_object = UserProfile.objects.get(user_id=me)
     # activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "votes": profile_object.activity_votes}
@@ -137,7 +137,7 @@ def activity(type, increment, me):
             
        
     profile_object.save()
-    
+'''   
 
 def profile_test(request):
     profile_object = UserProfile.objects.get(user_id=request.user.id)
@@ -296,7 +296,7 @@ def vote(request):
                 
                 
                 faves("vote", request.POST.get('post'), post_object, add_subtract_faves, request.user.id)
-                activity("vote", num, request.user.id)
+                # activity("vote", num, request.user.id)
                 
                 data = {'option': request.POST.get('option'), 'post': request.POST.get('post'), 'num': num, 'th_check': th_check, 'message': message}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -373,7 +373,7 @@ def delete_post(request):
             if respos_to_thread.count() == 0:
                 delete_this.delete()
             
-                activity("thread", -1, request.user.id)
+                # activity("thread", -1, request.user.id)
                 
                 delete_or_hide = "delete"
                 type = "thread"
@@ -395,7 +395,7 @@ def delete_post(request):
                 delete_this = respos_to_thread.filter(pk=request.POST.get('pk'), author=request.user)
                 delete_this.delete()
             
-                activity("response", -1, request.user.id)
+                # activity("response", -1, request.user.id)
                 
                 delete_or_hide = "delete"
                 type = "response"
@@ -448,7 +448,7 @@ def add_thread(request):
                 thread.published_date = timezone.now()
                 thread.save()
                 
-                activity("thread", 1, request.user.id)
+                # activity("thread", 1, request.user.id)
                 
                 data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -467,7 +467,7 @@ def add_thread(request):
                 curr_count.resp_count = curr_count.resp_count + 1
                 curr_count.save() 
                 
-                activity("response", 1, request.user.id)
+                # activity("response", 1, request.user.id)
                 
                 data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')
@@ -491,7 +491,7 @@ def add_thread(request):
                 curr_count.save() 
                 
                 faves("response", request.POST.get('is_thread'), response.thread, 1, request.user.id)
-                activity("response", 1, request.user.id)
+                # activity("response", 1, request.user.id)
                 
                 data = {"active": "True"}
                 return HttpResponse(json.dumps(data), content_type='application/json')

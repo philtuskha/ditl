@@ -13,9 +13,9 @@ class UserProfile(models.Model):
 	user = models.OneToOneField('auth.User', related_name='profile')
 	favorites = models.CharField(max_length=200, null=True)
 	troll_check = models.DateTimeField(null=True)
-	activity_threads = models.CharField(max_length=200, null=True)
-	activity_responses = models.CharField(max_length=200, null=True)
-	activity_votes = models.CharField(max_length=200, null=True)
+	# activity_threads = models.CharField(max_length=200, null=True)
+# 	activity_responses = models.CharField(max_length=200, null=True)
+# 	activity_votes = models.CharField(max_length=200, null=True)
 	origin_date = models.DateTimeField(null=True)
 	
 	def __unicode__(self):
