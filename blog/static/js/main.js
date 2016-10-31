@@ -1956,6 +1956,7 @@ function hiddenToggleFunction(){
 	
 	})();
 	
+	
 	var Logout = (function(){
 	
 		var _logout = function(href){
@@ -2026,7 +2027,8 @@ function hiddenToggleFunction(){
 							this_div.css({background:'transparent'});
 							
 							if(center_check > 0.5 && $('.sorter').css("right") == "0px"){
-								_closeMenuOnQuery(this_div)
+								// _closeMenuOnQuery(this_div)
+								CloseSorter.toggleSorter()
 							}
 							
 						}else{
@@ -2051,7 +2053,8 @@ function hiddenToggleFunction(){
 							this_div.css({background: 'rgba(251, 249, 234, 1)'});
 							
 							if(center_check > 0.5  && $('.sorter').css("right") == "0px"){
-								_closeMenuOnQuery(this_div)
+								// _closeMenuOnQuery(this_div)
+								CloseSorter.toggleSorter()
 							}
 					
 						}

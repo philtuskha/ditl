@@ -243,12 +243,13 @@ def faves(type, vote_post_id, thread, add_subtract_faves, me):
 '''        
 
 def post_status(post_object, type, post_id):
-
+    last_day = timezone.now() - timezone.timedelta(days=1)
+    
     if type == "thread":
-        troll_votes = TVote.objects.filter(post=post_id, option="TR")
+        troll_votes = TVote.objects.filter(published_date__gte=last_day, post=post_id, option="TR")
         
     elif type == "response":
-        troll_votes = RVote.objects.filter(post=post_id, option="TR")
+        troll_votes = RVote.objects.filter(published_date__gte=last_day, post=post_id, option="TR")
     
     
     if troll_votes.count() >= 2:
