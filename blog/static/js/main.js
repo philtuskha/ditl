@@ -1858,7 +1858,9 @@ function hiddenToggleFunction(){
 			// var target = (e.target.className == "") ? $("#"+ e.target.id) : $("#"+ e.target.className)
 // 			var parent = 
 // 			var eventArray = [el_type]
-			var eventArray = [e.target.parentNode.parentNode.className, 
+			var eventArray = [e.target.className,
+								e.target.parentNode.className,
+								e.target.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.parentNode.parentNode.className,
