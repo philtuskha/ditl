@@ -1889,7 +1889,6 @@ function hiddenToggleFunction(){
 			
 			$(window).on("touchend", function(e){
 				_end(e);
-				_setBkg($(window).scrollTop());
 			});
 			
 			// $(window).on("touchmove", function(){
