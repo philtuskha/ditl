@@ -1908,7 +1908,7 @@ function hiddenToggleFunction(){
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
-				$("body").removeAttr("style")
+				$("body").css({background:"#404040"});
 				
 			});
 			
@@ -1916,7 +1916,7 @@ function hiddenToggleFunction(){
 				$("body").css({background:" rgba(248,248,248,1)"});
 				
 			}).on("blur", function(){
-				$("body").removeAttr("style")
+				$("body").css({background:"#404040"});
 				
 			});
 			
