@@ -1905,11 +1905,14 @@ function hiddenToggleFunction(){
 			$("#id_text").on("focus", function(){
 				post_form.css({position:"absolute", width:"100%"})
 				// $("body").css({background:" rgba(248,248,248,1)"});
-				$(window).scrollTop($(window).height() - 280)
+				//$(window).scrollTop($(window).height() - 280)
+				$('body, html').css({height:'calc(100vh)'})
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
 				// $("body").css({background:"#404040"});
+				$('body, html').css({height:'calc(100vh + 44px)'})
+				
 				
 			});
 			
