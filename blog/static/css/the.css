@@ -1618,7 +1618,10 @@ header>div>#posts-ico{
 		height:28px;
 	}
 	.user-view{
-	padding: 40px 0 182px 0;
+		padding: 40px 0 182px 0;
+	}
+	.post-form-container {
+		background: rgba(248,248,248,1);
 	}
 	.center{
 		width:50%;
