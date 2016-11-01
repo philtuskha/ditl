@@ -1898,7 +1898,8 @@ function hiddenToggleFunction(){
 		}
 		
 		var init = function (){
-			var post_form = $(".post-form-container")
+			var post_form = $(".post-form-container"),
+				viewport_height = $("#viewport").height();
 			///main post form css fixes
 			post_form.css({position:"fixed", width:"100%"})
 			
@@ -1907,7 +1908,7 @@ function hiddenToggleFunction(){
 				post_form.css({position:"absolute", width:"100%"})
 				// $("body").css({background:" rgba(248,248,248,1)"});
 				//$(window).scrollTop($(window).height() - 280)
-				$('body, html').css({height:'calc(100vh)'})
+				$('body, html').css({height:viewport_height+'px'})
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
