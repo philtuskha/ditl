@@ -1848,28 +1848,26 @@ function hiddenToggleFunction(){
 		var _start = function(e){
 			var el = _getElement(e);
 			
-			if(el){
+			t_start = $(window).scrollTop();
+			t_diff = t_end - t_start;
+			_setBkg();
 			
-				t_start = $(window).scrollTop();
-				t_diff = t_end - t_start;
-				
+			if(el){
 			
 				if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
 				}
 				
-				_setBkg();
 			}
 		}
 		
 		
 		var _end = function(e){
-			var el = _getElement(e)
-						
-			if(el){
+			var el = _getElement(e);
 			
 			t_end = $(window).scrollTop();
-			// t_diff = t_end - t_start;
+					
+			if(el){
 			
 				if($(this).scrollTop() <= 0){
 					el.css({overflow:'hidden'})	
@@ -1880,7 +1878,6 @@ function hiddenToggleFunction(){
 					});
 				}
 				
-				//_header();
 			}
 		}
 			
