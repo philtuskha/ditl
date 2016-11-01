@@ -1904,9 +1904,19 @@ function hiddenToggleFunction(){
 			///fixed sporadic iphone behavior when textarea is focused
 			$("#id_text").on("focus", function(){
 				post_form.css({position:"absolute", width:"100%"})
+				$("body").css({background:" rgba(248,248,248,1)"});
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
+				$("body").removeAttr("style")
+				
+			});
+			
+			$("#id_text_r").on("focus", function(){
+				$("body").css({background:" rgba(248,248,248,1)"});
+				
+			}).on("blur", function(){
+				$("body").removeAttr("style")
 				
 			});
 			
