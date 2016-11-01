@@ -1809,55 +1809,23 @@ function hiddenToggleFunction(){
 			t_end = 0,
 			t_diff = 0;
 			
-		var _header = function(){
+		var _setBkg = function(){
 			console.log(t_start, t_end ,t_diff)
-			var header = $("header"),
-				content = $('.content-wrap')
+			var body = $("body");
+			
 			if(t_diff > 0){
-				// header.css({transition:"height 0.5s"})
-// 				window.getComputedStyle($("header")[0]);
-				header.css({height:"0px"})
-				content.css({height:"calc(100vh - 36px)"})
-				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 					header.css({transition: "none !important"});
-// 		
-// 				});
+				body.css({background:"#404040"});
 		
 			}else if(t_diff < 0){
-				// header.css({transition:"height 0.5s"})
-// 				window.getComputedStyle($("header")[0]);
-				header.css({height:$("header>div").height()+"px"})
-				////height:calc(100vh - 96px);
-				content.css({height:"calc(100vh - 96px)"})
-				// header.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-// 					header.css({transition: "none !important"});
-// 		
-// 				});
+				body.css({background:"#fff"});
+				
 			}
 		
 		}
 		
 		var _getElement = function(e){
 		
-		
-		
-		
-		////////////
-		// 
-// 		/
-// 		/
-		//////////////
-		// /
-// 		/
-// 		/
-// 		/			try this sort of stuff
 
-// 		/
-// 		/
-		
-			// var target = (e.target.className == "") ? $("#"+ e.target.id) : $("#"+ e.target.className)
-// 			var parent = 
-// 			var eventArray = [el_type]
 			var eventArray = [e.target.className,
 								e.target.parentNode.className,
 								e.target.parentNode.parentNode.className, 
@@ -1883,6 +1851,8 @@ function hiddenToggleFunction(){
 			if(el){
 			
 				t_start = el.scrollTop();
+				t_diff = t_end - t_start;
+				_setBkg();
 			
 				if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
@@ -1897,7 +1867,7 @@ function hiddenToggleFunction(){
 			if(el){
 			
 			t_end = el.scrollTop();
-			t_diff = t_end - t_start;
+			// t_diff = t_end - t_start;
 			
 				if($(this).scrollTop() <= 0){
 					el.css({overflow:'hidden'})	
