@@ -1883,7 +1883,8 @@ function hiddenToggleFunction(){
 			
 		var _bindTouchEvents = function(){
 			$(window).on("touchstart", function(e){
-				_start(e);	
+				_start(e);
+				_setBkg($(window).scrollTop());	
 			});
 			
 			$(window).on("touchend", function(e){
