@@ -1867,6 +1867,7 @@ function hiddenToggleFunction(){
 			var el = _getElement(e);
 			
 			// t_end = $(window).scrollTop();
+			console.log("viewport: ",$("viewport").height())
 					
 			if(el){
 			
@@ -1915,6 +1916,7 @@ function hiddenToggleFunction(){
 				
 				
 			});
+			
 			
 			$("#id_text_r").on("focus", function(){
 				$("body").css({background:" rgba(248,248,248,1)"});
