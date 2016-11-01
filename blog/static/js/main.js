@@ -1805,18 +1805,18 @@ function hiddenToggleFunction(){
 	
 	
 	var Mobile = (function(){
-		var t_start = 0,
-			t_end = 0,
-			t_diff = 0;
+		// var t_start = 0,
+// 			t_end = 0,
+// 			t_diff = 0;
 			
-		var _setBkg = function(){
-			console.log(t_start, t_end ,t_diff)
+		var _setBkg = function(scroll_top){
+			console.log(scroll_top)
 			var body = $("body");
 			
-			if(t_diff > 0){
+			if(scroll_top > 0){
 				body.css({background:"#404040"});
 		
-			}else if(t_diff < 0){
+			}else if(scroll_top < 0){
 				body.css({background:"#fff"});
 				
 			}
@@ -1848,8 +1848,8 @@ function hiddenToggleFunction(){
 		var _start = function(e){
 			var el = _getElement(e);
 			
-			t_start = $(window).scrollTop();
-			t_diff = t_end - t_start;
+			// t_start = $(window).scrollTop();
+// 			t_diff = t_end - t_start;
 			_setBkg($(window).scrollTop());
 			
 			if(el){
@@ -1865,7 +1865,7 @@ function hiddenToggleFunction(){
 		var _end = function(e){
 			var el = _getElement(e);
 			
-			t_end = $(window).scrollTop();
+			// t_end = $(window).scrollTop();
 					
 			if(el){
 			
