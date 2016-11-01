@@ -1814,10 +1814,10 @@ function hiddenToggleFunction(){
 			var body = $("body");
 			
 			if(scroll_top > 0){
-				body.css({background:"#404040"});
-		
-			}else if(scroll_top < 0){
 				body.css({background:"#fff"});
+		
+			}else if(scroll_top <= 0){
+				body.css({background:"#404040"});
 				
 			}
 		
