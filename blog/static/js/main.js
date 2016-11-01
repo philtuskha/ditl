@@ -1867,7 +1867,7 @@ function hiddenToggleFunction(){
 			var el = _getElement(e);
 			
 			// t_end = $(window).scrollTop();
-			console.log("viewport: ",$("viewport").height())
+			console.log("viewport: ",$("#viewport").height())
 					
 			if(el){
 			
