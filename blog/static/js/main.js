@@ -1852,11 +1852,13 @@ function hiddenToggleFunction(){
 			
 				t_start = el.scrollTop();
 				t_diff = t_end - t_start;
-				_setBkg();
+				
 			
 				if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
 				}
+				
+				_setBkg();
 			}
 		}
 		
