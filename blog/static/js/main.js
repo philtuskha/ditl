@@ -1850,7 +1850,7 @@ function hiddenToggleFunction(){
 			
 			if(el){
 			
-				t_start = el.scrollTop();
+				t_start = $(window).scrollTop();
 				t_diff = t_end - t_start;
 				
 			
@@ -1868,7 +1868,7 @@ function hiddenToggleFunction(){
 						
 			if(el){
 			
-			t_end = el.scrollTop();
+			t_end = $(window).scrollTop();
 			// t_diff = t_end - t_start;
 			
 				if($(this).scrollTop() <= 0){
