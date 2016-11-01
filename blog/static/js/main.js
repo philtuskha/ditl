@@ -1856,6 +1856,7 @@ function hiddenToggleFunction(){
 			
 				if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
+					
 				}
 				
 			}
@@ -1883,8 +1884,7 @@ function hiddenToggleFunction(){
 			
 		var _bindTouchEvents = function(){
 			$(window).on("touchstart", function(e){
-				_start(e);
-				_setBkg($(window).scrollTop());	
+				_start(e);	
 			});
 			
 			$(window).on("touchend", function(e){
