@@ -1813,11 +1813,11 @@ function hiddenToggleFunction(){
 			console.log(scroll_top)
 			var body = $("body");
 			
-			if(scroll_top >= 0){
-				body.css({background:"#fff"});
+			if(scroll_top > 0){
+				body.css({background:"#404040"});
 		
 			}else if(scroll_top < 0){
-				body.css({background:"#404040"});
+				body.css({background:"#fff"});
 				
 			}
 		
@@ -1850,7 +1850,7 @@ function hiddenToggleFunction(){
 			
 			// t_start = $(window).scrollTop();
 // 			t_diff = t_end - t_start;
-			_setBkg($(window).scrollTop());
+			
 			
 			if(el){
 			
@@ -1888,6 +1888,10 @@ function hiddenToggleFunction(){
 			
 			$(window).on("touchend", function(e){
 				_end(e);
+			});
+			
+			$(window).on("touchmove", function(){
+				_setBkg($(window).scrollTop());
 			});
 		}
 		
