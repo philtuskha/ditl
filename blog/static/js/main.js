@@ -1888,11 +1888,12 @@ function hiddenToggleFunction(){
 			
 			$(window).on("touchend", function(e){
 				_end(e);
-			});
-			
-			$(window).on("touchmove", function(){
 				_setBkg($(window).scrollTop());
 			});
+			
+			// $(window).on("touchmove", function(){
+// 				_setBkg($(window).scrollTop());
+// 			});
 		}
 		
 		var init = function (){
