@@ -1850,7 +1850,7 @@ function hiddenToggleFunction(){
 			
 			t_start = $(window).scrollTop();
 			t_diff = t_end - t_start;
-			_setBkg();
+			_setBkg($(window).scrollTop());
 			
 			if(el){
 			

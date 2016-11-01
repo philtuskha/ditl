@@ -1505,7 +1505,17 @@ font-size:14px;
 padding:0 0 0 12px;
 letter-spacing: 0.029em;
 }
-
+/* 
+#bottom-bkg{
+position:fixed;
+background:#fff;
+top:60vh;
+left:0;
+width:100%;
+height:100vh;
+z-index:-1;
+}
+ */
 /* phone */
 @media screen
 and (max-width:48.125em){
