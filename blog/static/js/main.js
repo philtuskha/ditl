@@ -1905,7 +1905,7 @@ function hiddenToggleFunction(){
 			$("#id_text").on("focus", function(){
 				post_form.css({position:"absolute", width:"100%"})
 				// $("body").css({background:" rgba(248,248,248,1)"});
-				$(window).scrollTop($(window).height() - 344)
+				$(window).scrollTop($(window).height() - 244)
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
