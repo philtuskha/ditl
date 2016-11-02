@@ -1845,7 +1845,7 @@ function hiddenToggleFunction(){
 		
 		var _start = function(e){
 			var el = _getElement(e);
-			
+			console.log(" start viewport: ",$("#viewport").height(), "init_viewport: ", init_viewport)
 			// t_start = $(window).scrollTop();
 // 			t_diff = t_end - t_start;
 			
@@ -1866,7 +1866,7 @@ function hiddenToggleFunction(){
 			var el = _getElement(e);
 			
 			// t_end = $(window).scrollTop();
-			console.log("viewport: ",$("#viewport").height())
+			console.log(" end viewport: ",$("#viewport").height())
 					
 			if(el){
 				if($("#viewport").height() == init_viewport){
