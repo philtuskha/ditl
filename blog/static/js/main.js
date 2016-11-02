@@ -1844,7 +1844,8 @@ function hiddenToggleFunction(){
 		}
 		
 		var _start = function(e){
-			var el = _getElement(e);
+			var el = _getElement(e),
+				viewport_now = $("#viewport").height();
 			console.log(" start viewport: ",$("#viewport").height(), "init_viewport: ", init_viewport)
 			// t_start = $(window).scrollTop();
 // 			t_diff = t_end - t_start;
@@ -1852,7 +1853,7 @@ function hiddenToggleFunction(){
 			
 			if(el){
 			
-				if($("#viewport").height() == init_viewport){
+				if(viewport_now >= init_viewport && viewport_now < init_viewport + 10 ){
 				//if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
 					
