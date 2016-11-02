@@ -734,13 +734,12 @@ function hiddenToggleFunction(){
 			
 				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:"100vh"});
 			
-				var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() - 36)
+				var window_height = $("#viewport").height() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() - 36)
 
-				// handle.parent().css({height:window_height+"px"});
-// 				handle.css({height:window_height+"px"});
-				handle.parent().css({top:"91px", bottom:"0px"});
-				handle.css({top:"0px", bottom:"0px"});
-				console.log(handle)
+				handle.parent().css({height:window_height+"px"});
+				handle.css({height:window_height+"px"});
+				// handle.parent().css({top:"91px", bottom:"0px"});
+// 				handle.css({top:"0px", bottom:"0px"});
 				
 				$("#thread-div-pop .expand-right>li:nth-child(1)").css({height:"0px", "margin-bottom":"8px"})
 				$("#thread-div-pop .expand-left").css({width:"124px"})
