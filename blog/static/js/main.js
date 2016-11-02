@@ -1805,9 +1805,7 @@ function hiddenToggleFunction(){
 	
 	
 	var Mobile = (function(){
-		// var t_start = 0,
-// 			t_end = 0,
-// 			t_diff = 0;
+		var init_viewport = 0;
 			
 		var _setBkg = function(scroll_top){
 			console.log(scroll_top)
@@ -1854,7 +1852,8 @@ function hiddenToggleFunction(){
 			
 			if(el){
 			
-				if($(this).scrollTop() != 1){
+				if($("#viewport").height() == init_viewport){
+				//if($(this).scrollTop() != 1){
 					el.css({overflow:'hidden'})
 					
 				}
@@ -1870,8 +1869,8 @@ function hiddenToggleFunction(){
 			console.log("viewport: ",$("#viewport").height())
 					
 			if(el){
-			
-				if($(this).scrollTop() <= 0){
+				if($("#viewport").height() == init_viewport){
+				//if($(this).scrollTop() <= 0){
 					el.css({overflow:'hidden'})	
 				}else{
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
@@ -1900,6 +1899,8 @@ function hiddenToggleFunction(){
 		var init = function (){
 			var post_form = $(".post-form-container"),
 				viewport_height = $("#viewport").height();
+				
+			init_viewport = viewport_height;
 			///main post form css fixes
 			post_form.css({position:"fixed", width:"100%"})
 			
@@ -1907,8 +1908,8 @@ function hiddenToggleFunction(){
 			$("#id_text").on("focus", function(){
 				post_form.css({position:"absolute", width:"100%"})
 				// $("body").css({background:" rgba(248,248,248,1)"});
-				//$(window).scrollTop($(window).height() - 280)
-				$('body, html').css({height:viewport_height+'px'})
+				$(window).scrollTop($(window).scrollTop() - 44)
+				// $('body, html').css({height:viewport_height+'px'})
 				
 			}).on("blur", function(){
 				post_form.css({position:"fixed", width:"100%"})
