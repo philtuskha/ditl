@@ -1843,7 +1843,7 @@ function hiddenToggleFunction(){
 		_bindWindow();
 	
 	})();	
-	
+	/*
 	var Mobile = (function(){
 		var init_viewport = 0;
 			
@@ -1989,7 +1989,7 @@ function hiddenToggleFunction(){
 		}
 	
 	})();
-	
+	*/
 	
 	var Logout = (function(){
 	
