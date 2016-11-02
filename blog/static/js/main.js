@@ -1869,15 +1869,15 @@ function hiddenToggleFunction(){
 			console.log(" end viewport: ",$("#viewport").height())
 					
 			if(el){
-				if($("#viewport").height() != init_viewport){
-				//if($(this).scrollTop() <= 0){
-					el.css({overflow:'hidden'})	
-				}else{
+				// if($("#viewport").height() != init_viewport){
+// 				//if($(this).scrollTop() <= 0){
+// 					el.css({overflow:'hidden'})	
+// 				}else{
 					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
 						$("html, body").off("scroll", initWindowScroll);
 						el.css({overflow:'scroll'})
 					});
-				}
+				//}
 				
 			}
 		}
