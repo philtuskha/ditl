@@ -1801,7 +1801,48 @@ function hiddenToggleFunction(){
 		}
 		
 	})();
+
+
+	var Sticky = (function(){
+		var _stickToTop = function(){
+			var win = $(window);
+			
+			if (win.scrollTop() >= 60){
+				if($(".left-wrap").css("left") == "0px"){
+					console.log()
+					// sticky_top.html($('#user-top').clone())
+					$('#user-top').addClass("sticky-top")
+					$('#user-top').parent().css({"margin-top":$('#user-top').css('height')})
+				}else{
+					//sticky_top.html($('#drop-top').clone())
+					$('#drop-top').addClass("sticky-top")
+					$('#drop-top').parent().css({"margin-top":$('#drop-top').css('height')})
+
+				}
+				
+			}else{
+				if($(".left-wrap").css("left") == "0px"){
+					// sticky_top.html($('#user-top').clone())
+					$('#user-top').removeClass("sticky-top")
+					$('#user-top').parent().css({"margin-top":"0"});
+				}else{
+					//sticky_top.html($('#drop-top').clone())
+					$('#drop-top').removeClass("sticky-top")
+					$('#drop-top').parent().css({"margin-top":"0"});
+				}
+			}
+		}
+		
+		var _bindWindow = function(){
+			$(window).on('scroll', function(){
+				_stickToTop()
+			});
+		
+		}
+		
+		_bindWindow();
 	
+	})();	
 	
 	var Mobile = (function(){
 		var init_viewport = 0;
@@ -1825,8 +1866,7 @@ function hiddenToggleFunction(){
 
 			var eventArray = [e.target.className,
 								e.target.parentNode.className,
-								e.target.parentNode.parentNode.className, 
-								e.target.parentNode.parentNode.className, 
+								e.target.parentNode.parentNode.className,  
 								e.target.parentNode.parentNode.parentNode.className, 
 								e.target.parentNode.parentNode.parentNode.parentNode.className,
 								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className,

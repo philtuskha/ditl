@@ -307,7 +307,6 @@ height:inherit;
 position:relative;
 left:0;
 z-index:0;
-background: rgba(247,247,247,0.5);
 width: 58%;
 height:inherit;
 opacity:0;
@@ -315,7 +314,6 @@ transition:opacity 0.2s;
 }
 .main-feed{
 width:100%;
-padding-bottom:40px;
 height:inherit;
 overflow-y: scroll; 
 -webkit-overflow-scrolling: touch;
@@ -610,6 +608,7 @@ height:82px;
 position:relative;
 top:0px;
 z-index:4;
+
 background:rgba(248,248,248,0.92);
 border-bottom: 1px solid #d3d3d3;
 }
@@ -1517,11 +1516,23 @@ z-index:-1;
 }
  */
 /* phone */
+.sticky-top{
+ 		position:fixed;
+ 		top:36px;
+ 		left:0;
+ 		width:100%;
+ 		z-index:12;
+ 	}
 @media screen
 and (max-width:48.125em){
 	body, html {
 		margin-top:0;
+		height:auto;
 		
+	}
+	#fixed-top{
+		position:fixed;
+		top:0;
 	}
 	#fixed-top-left ul li:nth-child(1){
 		display:inline-block;
@@ -1536,9 +1547,9 @@ and (max-width:48.125em){
 		transition:width 0.5s
 	}
 	
-	
 	header{
-		height:60px
+		height:60px;
+		margin-top:36px;
 	}
 	header>div{
  		height:60px;
@@ -1554,6 +1565,7 @@ and (max-width:48.125em){
 		text-align:left;
  		font-size:22pt;
  	}
+ 	
  	/* 
 header>div>#posts-ico{
 		height:60px;
@@ -1570,7 +1582,9 @@ header>div>#posts-ico{
  	.content-wrap{
  		left:0;
  		width:100%;
- 		height:calc(100vh - 96px);
+ 		height:auto;
+ 		min-height:calc(100vh - 36px);
+ 		/* height:calc(300vh - 96px); */
  	}
  	.left-wrap{
  		width:200%
@@ -1578,6 +1592,7 @@ header>div>#posts-ico{
 	.left-holder {
 		float: left; 
 		width: 50%;
+		height:auto;
 	}
 	#thread-div-pop{
 		width:100%;
