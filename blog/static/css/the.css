@@ -502,7 +502,7 @@ transition:opacity 0.3s;
 
 #thread-div-pop{
 display:none;
-position:absolute;
+position:fixed;
 transition:all 0.3s;
 z-index:102;
 left:33%;
