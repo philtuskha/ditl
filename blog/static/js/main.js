@@ -768,8 +768,14 @@ function hiddenToggleFunction(){
 			});
 			
 			$("#id_text_r").on('focus', function(){
-				$('#thread-div-pop').css({position:"absolute", bottom:"0px"})
-				console.log('window scrollTop', $(window).scrollTop())
+				//$('#thread-div-pop').css({position:"absolute", bottom:"0px"})
+				console.log('window scrollTop', 
+				$(window).scrollTop(), 
+				"pop position bottom",
+				$('#thread-div-pop').css('bottom'),
+				"pop position top",
+				$('#thread-div-pop').css('top'),
+				)
 			});
 			
 			
