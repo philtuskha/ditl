@@ -1958,10 +1958,18 @@ function hiddenToggleFunction(){
 				_toggle($(this))
 			});
 			
-			$(window).on('scroll', function(){
-				_stickToTop()
-				_adjustMainFeed()
-			});	
+			if('ontouchstart' in document.documentElement){
+				$(window).on('touchmove', function(){
+					_stickToTop()
+					_adjustMainFeed()
+				});	
+				
+			}else{
+				$(window).on('scroll', function(){
+					_stickToTop()
+					_adjustMainFeed()
+				});	
+			}
 			
 			//initialize user view
 			$('.center').css({height:"calc(100vh - 36px)"})
