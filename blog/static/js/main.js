@@ -1959,7 +1959,7 @@ function hiddenToggleFunction(){
 			});
 			
 			if('ontouchstart' in document.documentElement){
-				$(window).on('touchmove', function(){
+				$(window).on('touchmove touchstart touchend', function(){
 					_stickToTop()
 					_adjustMainFeed()
 				});	
