@@ -766,6 +766,11 @@ function hiddenToggleFunction(){
 			$("#id_text_r").on("click", function(){
 				Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
 			});
+			// 
+// 			$("#id_text_r").on('focus', function(){
+// 				
+// 			}
+			
 			
 			////attach character counter
 			Character.bindCharCount($("#id_text_r"))
