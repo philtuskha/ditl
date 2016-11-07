@@ -726,7 +726,7 @@ function hiddenToggleFunction(){
 
 			//transition magic
 			setTimeout(function () {
-				var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+				var center_check = $(".center").width() / $(window).width();
 
 				$("#thread-wrapper-pop").css({opacity:1});
 			
@@ -772,11 +772,11 @@ function hiddenToggleFunction(){
 			if(center_check == 1){
 				$("#id_text_r").on('focus', function(){
 					$('#thread-div-pop').css({top:"116px"})
-					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)"});
+					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').css({top:"0px"})
-					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)"});
+					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:""});
 				});
 			}
 			
@@ -1220,6 +1220,7 @@ function hiddenToggleFunction(){
 				key_target.parent().parent().find('button').on("click", function(){
 					_loadAddPost(key_target)
 				});
+				
 		
 				key_target.on("keydown", function(e){
 					if(e.keyCode == '13' ){	
@@ -1227,6 +1228,13 @@ function hiddenToggleFunction(){
 						_loadAddPost(key_target)
 					}
 				});
+				
+				/////add post on blur for mobile
+				if('ontouchstart' in document.documentElement){
+					key_target.on('blur', function(){
+						_loadAddPost(key_target)
+					})
+				}
 			};
 			
 			var _succesUserView = function(key_target){
