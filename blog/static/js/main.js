@@ -723,7 +723,8 @@ function hiddenToggleFunction(){
 	
 			// use instead of settimeout to make magic transition happen
 			// window.getComputedStyle($(this)[0]);
-
+			$('body,html').css({overflow:'hidden'});
+			
 			//transition magic
 			setTimeout(function () {
 				var center_check = $(".center").width() / $(window).width();
@@ -794,7 +795,7 @@ function hiddenToggleFunction(){
 		var loadCurrThread = function(curr_id, handle, reload){
 			var curr_url = "/thread/"+curr_id+"/",
 				curr_position = handle.children().first().scrollTop(),
-				center_check = $(".center").width() / $(window).width();;
+				center_check = $(".center").width() / $(window).width();
 	
 			$.ajax({
 			type: "GET",
@@ -830,11 +831,7 @@ function hiddenToggleFunction(){
 					if(reload){
 						
 						setTimeout(function(){
-							if(center_check == 1){
-								//Scroller.myScroller($window.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
-							}else{
-								Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
-							}
+							Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
 								
 						}, 30)
 						
@@ -852,6 +849,8 @@ function hiddenToggleFunction(){
 				wrapper = $("#thread-wrapper-pop"),
 				div = $("#thread-div-pop");
 		
+			$('body, html').removeAttr("style");
+			
 			$("#thread-wrapper-pop").css({opacity:0});
 		
 			if(center_check == 1){
@@ -1014,12 +1013,13 @@ function hiddenToggleFunction(){
 		}
 		
 		var showScrollToTop = function(el){
-			
-			if(el.scrollTop()  > $(window).height()){
-				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'50px'});
-			}else{
-				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
+			if($('.left-wrap').css('left') != "0px"){
+				if(el.scrollTop()  > $(window).height()){
+					$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'50px'});
+				}else{
+					$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
 
+				}
 			}
 		}
 		
@@ -1176,9 +1176,14 @@ function hiddenToggleFunction(){
 					/////scroll user-view to look like texting
 					$(".user-view").scrollTop(curr_position);
 					setTimeout(function(){
-						var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
-					
-						Scroller.myScroller($(".user-view"), scroll_diff);        	
+						var center_check = $(".center").width() / $(window).width();
+						if(center_check == 1){
+							var scroll_diff = $(".user-view").height() - ($(window).height() - 240);
+							Scroller.myScroller($("body, html"), scroll_diff);
+						}else{
+							var scroll_diff = $(".user-box-container").height() - $(".user-view").height();
+							Scroller.myScroller($(".user-view"), scroll_diff);
+						}        	
 					},30);
 					
 				}else{
@@ -1894,7 +1899,7 @@ function hiddenToggleFunction(){
 				$('.post-form-container').css({display:'none'});
 				
 				//minimize height of user-box container to allow scroll on center
-				$('.user-box-container').css({height:"calc(100vh - 36px)"});
+				$('.user-view').css({height:"calc(100vh - 36px)"});
 				$('.center').removeAttr('style');
 				
 				if($(window).scrollTop() >= 60){
@@ -1924,7 +1929,7 @@ function hiddenToggleFunction(){
 				
 				///minimize height of .center div to allow scroll on user view 
 				$('.center').css({height:"calc(100vh - 36px)"})
-				$('.user-box-container').removeAttr('style');
+				$('.user-view').removeAttr('style');
 				
 				
 				if($(window).scrollTop() >= 60){
