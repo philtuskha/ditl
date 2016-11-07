@@ -1,7 +1,7 @@
 {% load apptags %}
 {% if timediff < 86400 and curr_thread != 0 %}
 
-	<div id="user-top">
+	<div class="user-top">
 		<ul data-timediff="{{ timediff }}">
 			<li>
 				<svg width="100%" height="100%" class="chart">
@@ -142,7 +142,7 @@
 		</div>
 	</div>
 {% else %}
-	<div id="user-top">
+	<div class="user-top">
 		<ul data-timediff="86399">
 			<li>
 				<svg width="100%" height="100%" class="chart">

@@ -986,8 +986,8 @@ function hiddenToggleFunction(){
 			});
 		}
 		
-		var _showScrollToTop = function(el){
-			//console.log(el.scrollTop(), $(window).height())
+		var showScrollToTop = function(el){
+			
 			if(el.scrollTop()  > $(window).height()){
 				$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'50px'});
 			}else{
@@ -996,7 +996,7 @@ function hiddenToggleFunction(){
 			}
 		}
 		
-		var _loadThreadsOnScroll = function(el){
+		var loadThreadsOnScroll = function(el){
 			x = $('.main-feed').children().length * 10
 			y = x + 10
 
@@ -1018,7 +1018,7 @@ function hiddenToggleFunction(){
 			 if(el.scrollTop() > total_height - el.height() - 200 && scroll_diff < 0){
 				if(el.children().last().height() > 0){
 					
-					$(el).off('scroll.loadMore', _loadThreadsOnScroll())
+					$(el).off('scroll.loadMore', loadThreadsOnScroll(el))
 
 				}
 				
@@ -1032,7 +1032,7 @@ function hiddenToggleFunction(){
 				scroll_diff = last_scroll - this_scroll
 		
 				_checkThreadsOnScroll($(this), scroll_diff)
-				_showScrollToTop($(this))
+				showScrollToTop($(this))
 				
 				last_scroll = this_scroll
 			});
@@ -1045,8 +1045,8 @@ function hiddenToggleFunction(){
 			$("#id_text").val("")
 		
 		
-			window.getComputedStyle($(".center")[0]);
-			$(".center")[0].style.opacity = 1;
+			window.getComputedStyle($(".main-feed")[0]);
+			$(".main-feed")[0].style.opacity = 1;
 			
 		}
 	
@@ -1110,7 +1110,9 @@ function hiddenToggleFunction(){
 		init()
 		
 		return{
-			load: load
+			load: load,
+			loadThreadsOnScroll: loadThreadsOnScroll,
+			showScrollToTop: showScrollToTop
 		}
 	})();	
 
@@ -1159,7 +1161,7 @@ function hiddenToggleFunction(){
 				_bindUVEvents($(".user-view"))
 				
 				///get time since last post
-				Timer.addTime($("#user-top>ul").data("timediff"));
+				Timer.addTime($(".user-top>ul").data("timediff"));
 				
 				///attach voting options to comments
 				AttachVoteDelete.run($('.user-box-container'));
@@ -1520,7 +1522,7 @@ function hiddenToggleFunction(){
 
 
 		var myScroller = function(element, position){
-			_bindElOff(element);
+			//_bindElOff(element);
 
 		element.animate({ scrollTop: position }, 1000, 'easeOutCirc', function(){
 			//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
@@ -1801,20 +1803,19 @@ function hiddenToggleFunction(){
 		}
 		
 	})();
-
-
-	var Sticky = (function(){
+	
+	var toggleView = (function(){
+	
 		var _stickToTop = function(){
 			var win = $(window);
 			
 			if (win.scrollTop() >= 60){
 				if($(".left-wrap").css("left") == "0px"){
-					console.log()
-					// sticky_top.html($('#user-top').clone())
-					$('#user-top').addClass("sticky-top")
-					$('#user-top').parent().css({"margin-top":$('#user-top').css('height')})
+				
+					$('.user-top').addClass("sticky-top")
+					
 				}else{
-					//sticky_top.html($('#drop-top').clone())
+				
 					$('#drop-top').addClass("sticky-top")
 					$('#drop-top').parent().css({"margin-top":$('#drop-top').css('height')})
 
@@ -1822,27 +1823,113 @@ function hiddenToggleFunction(){
 				
 			}else{
 				if($(".left-wrap").css("left") == "0px"){
-					// sticky_top.html($('#user-top').clone())
-					$('#user-top').removeClass("sticky-top")
-					$('#user-top').parent().css({"margin-top":"0"});
+				
+					$('.user-top').removeClass("sticky-top");
+					
 				}else{
-					//sticky_top.html($('#drop-top').clone())
+				
 					$('#drop-top').removeClass("sticky-top")
 					$('#drop-top').parent().css({"margin-top":"0"});
+					
 				}
 			}
 		}
 		
-		var _bindWindow = function(){
-			$(window).on('scroll', function(){
-				_stickToTop()
-			});
-		
+		var _adjustMainFeed = function(){
+			// console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
+			if($(window).scrollTop() == $('.center').height() - ($(window).height() - 137)){
+				AllThreads.loadThreadsOnScroll();
+				AllThreads.showScrollToTop($(window));
+			}else{
+				AllThreads.showScrollToTop($(window));
+			}
 		}
 		
-		_bindWindow();
+		var _toggle = function(el){
+			
+			if($(".left-wrap").css("left") == "0px"){
+			//center
+				
+				$(".left-wrap").css({left:"-100%"});
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"40px"});
+				el.html('<div id="compose-ico"></div>');
+				$('.scroll-to-top').css({display:"block"});
+				$('.post-form-container').css({display:'none'});
+				
+				//minimize height of user-box container to allow scroll on center
+				$('.user-box-container').css({height:"calc(100vh - 36px)"});
+				$('.center').removeAttr('style');
+				
+				if($(window).scrollTop() >= 60){
+					
+					$(window).scrollTop(60);
+					setTimeout(function(){
+						$('.user-top').removeClass("sticky-top");
+						$('#drop-top').addClass("sticky-top");
+						$('#drop-top').parent().css({"margin-top":$('#drop-top').css('height')});
+					},30)
+					
+				}else{
+					if($('#drop-top').hasClass("sticky-top")){
+						$('#drop-top').removeClass("sticky-top");
+						$('#drop-top').parent().css({"margin-top":"0"});
+					}
+				}
+			
+			}else{
+			//user-view
+			
+				$(".left-wrap").css({left:"0"});
+				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"}); 
+				el.html('<div id="posts-ico"></div>');
+				$('.scroll-to-top').css({display:"none"});
+				$('.post-form-container').removeAttr('style');
+				
+				///minimize height of .center div to allow scroll on user view 
+				$('.center').css({height:"calc(100vh - 36px)"})
+				$('.user-box-container').removeAttr('style');
+				
+				
+				if($(window).scrollTop() >= 60){
+					
+					$(window).scrollTop(60);
+					$('.user-top').addClass("sticky-top");
+					$('#drop-top').removeClass("sticky-top");
+					$('#drop-top').parent().css({"margin-top":"0"});
+				}else{
+		
+					if($('.user-top').hasClass("sticky-top")){
+						$('.user-top').removeClass("sticky-top");
+					}
+					
+				}
+				
+			}
+		}
+		
+		var bind = function(){
+			$("#fixed-top-right>ul>li:nth-child(3)").on("click", function(){
+				_toggle($(this))
+			});
+			
+			$(window).on('scroll', function(){
+				_stickToTop()
+				_adjustMainFeed()
+			});	
+			$('.center').on('resize', function(){
+				alert('pops!');
+			});
+			
+			$('.center').css({height:"calc(100vh - 36px)"})
+			
+		}
+		
+		bind()
+		
+	})();
 	
-	})();	
+
+	
 	/*
 	var Mobile = (function(){
 		var init_viewport = 0;
@@ -2010,7 +2097,8 @@ function hiddenToggleFunction(){
 		_bindLogout()
 	
 	})();
-	
+
+		
 
 	//init Sorter
 	(function(){        ///// var Sorter = 
@@ -2044,7 +2132,7 @@ function hiddenToggleFunction(){
 		var _query = function(this_div){
 			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
 			//if(center_check < 0.5){
-				$(".center")[0].style.opacity = 0;
+				$(".main-feed")[0].style.opacity = 0;
 			//}
 			
 			if(!$.isEmptyObject(this_div.data())){
@@ -2315,50 +2403,24 @@ function hiddenToggleFunction(){
 	})();
 	
 	////toggle user-view and main-feed
-	(function(){
 	
-		var _toggle = function(el){
-			///
-			if($(".left-wrap").css("left") == "0px"){
-				$(".left-wrap").css({left:"-100%"})
-// 				$("#fixed-top-right #explore-ico").css({width:"40px"});
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"40px"});
-				el.html('<div id="compose-ico"></div>');
-				$('.scroll-to-top').css({display:"block"})
-				$('.post-form-container').css({position:"absolute", width:"100%"})
-				// $('.main-feed').removeAttr('style');
-	//         	$('.user-view').removeAttr('style');
-			
-			}else{
-				$(".left-wrap").css({left:"0"})
-// 				$("#fixed-top-right #explore-ico").css({width:"0px"});
-				$("#fixed-top-right ul li:nth-child(2)").css({width:"0px"}); // ul li:nth-child(2)
-				el.html('<div id="posts-ico"></div>')
-				$('.scroll-to-top').css({display:"none"})
-				$('.post-form-container').css({position:"fixed", width:"100%"})
-				// $('.main-feed').removeAttr('style');
-	//         	$('.user-view').removeAttr('style');
-				//$(window).scrollTop( 90);
-				//myScroller($(window), -90)
-			}
-		}
-		
-		var bind = function(){
-			$("#fixed-top-right>ul>li:nth-child(3)").on("click", function(){
-				_toggle($(this))
-			});	
-		}
-		
-		bind()
-		
-	})();
 	
 	///scroll to top
     (function(){
-    
-		$('.scroll-to-top').click(function(){
-			Scroller.myScroller($(".main-feed"), 0);
-		});	
+    	var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+    	
+    	if (center_check == 1){
+			$('.scroll-to-top').click(function(){
+				Scroller.myScroller($('body, html'), 0);
+				//$('body, html').animate({ scrollTop: 0 }, 1000, 'easeOutCirc', function(){
+					//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+				//});
+			});	
+		}else{
+			$('.scroll-to-top').click(function(){
+				Scroller.myScroller($('.main-feed'), 0);
+			});
+		}
 	})();
 	
 	//resize functions ---- much work to do here
