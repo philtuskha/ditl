@@ -769,7 +769,7 @@ function hiddenToggleFunction(){
 			
 			$("#id_text_r").on('focus', function(){
 				$('#thread-div-pop').css({bottom:"0px"})
-			}
+			});
 			
 			
 			////attach character counter
