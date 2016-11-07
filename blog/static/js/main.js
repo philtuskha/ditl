@@ -1232,7 +1232,9 @@ function hiddenToggleFunction(){
 				/////add post on blur for mobile
 				if('ontouchstart' in document.documentElement){
 					key_target.on('blur', function(){
-						_loadAddPost(key_target)
+						if(key_target.val() != ""){
+							_loadAddPost(key_target)
+						}
 					})
 				}
 			};
