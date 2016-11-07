@@ -774,8 +774,7 @@ function hiddenToggleFunction(){
 				"pop position bottom",
 				$('#thread-div-pop').css('bottom'),
 				"pop position top",
-				$('#thread-div-pop').css('top'),
-				)
+				$('#thread-div-pop').css('top'))
 			});
 			
 			
