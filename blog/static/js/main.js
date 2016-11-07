@@ -769,6 +769,7 @@ function hiddenToggleFunction(){
 			
 			$("#id_text_r").on('focus', function(){
 				$('#thread-div-pop').css({position:"absolute", bottom:"0px"})
+				console.log('window scrollTop', $(window).scrollTop())
 			});
 			
 			
