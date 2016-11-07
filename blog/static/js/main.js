@@ -1862,11 +1862,11 @@ function hiddenToggleFunction(){
 // 					left:0;
 // 					width:100%;
 // 					z-index:12;
-					//$('.user-top').addClass("sticky-top")
-					$('.user-top').css({position:"fixed",top:"36px",left:"0",width:"100%","z-index":"12"});
+					//$('.user-top').css({position:"fixed",top:"36px",left:"0",width:"100%",z-index:"12"});
+					$('.user-top').addClass("sticky-top")
 				}else{
 				
-					$('#drop-top').css({position:"fixed",top:"36px",left:"0",width:"100%","z-index":"12"});
+					$('#drop-top').addClass("sticky-top")
 					$('#drop-top').parent().css({"margin-top":$('#drop-top').css('height')})
 
 				}
@@ -1874,11 +1874,11 @@ function hiddenToggleFunction(){
 			}else{
 				if($(".left-wrap").css("left") == "0px"){
 				
-					$('.user-top').removeAttr("style");
+					$('.user-top').removeClass("sticky-top");
 					
 				}else{
 				
-					$('#drop-top').removeAttr("style")
+					$('#drop-top').removeClass("sticky-top")
 					$('#drop-top').parent().css({"margin-top":"0"});
 					
 				}
