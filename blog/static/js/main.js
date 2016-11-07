@@ -1962,18 +1962,18 @@ function hiddenToggleFunction(){
 				_toggle($(this))
 			});
 			
-			if('ontouchstart' in document.documentElement){
-				$(window).on('touchmove touchstart touchend', function(){
-					_stickToTop()
-					_adjustMainFeed()
-				});	
-				
-			}else{
+			// if('ontouchstart' in document.documentElement){
+// 				$(window).on('touchmove touchstart touchend', function(){
+// 					_stickToTop()
+// 					_adjustMainFeed()
+// 				});	
+// 				
+// 			}else{
 				$(window).on('scroll', function(){
 					_stickToTop()
 					_adjustMainFeed()
 				});	
-			}
+			//}
 			
 			//initialize user view
 			$('.center').css({height:"calc(100vh - 36px)"})
