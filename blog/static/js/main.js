@@ -761,20 +761,24 @@ function hiddenToggleFunction(){
 		}
 	
 		var _bindThreadEvents = function(handle){
+			//var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+			var center_check = $(".center").width() / $(window).width();
 			
 			///////scroll to the bottom response on click
 			$("#id_text_r").on("click", function(){
 				Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
 			});
 			
-			$("#id_text_r").on('focus', function(){
-				$('#thread-div-pop').css({top:"120px"})
-				$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)"});
+			if(center_check == 1){
+				$("#id_text_r").on('focus', function(){
+					$('#thread-div-pop').css({top:"116px"})
+					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)"});
 				
-			}).on('blur', function(){
-				$('#thread-div-pop').css({top:"0px"})
-				$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)"});
-			});
+				}).on('blur', function(){
+					$('#thread-div-pop').css({top:"0px"})
+					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)"});
+				});
+			}
 			
 			
 			////attach character counter
