@@ -770,7 +770,13 @@ function hiddenToggleFunction(){
 			////attach character counter
 			Character.bindCharCount($("#id_text_r"))
 		}
-	
+		
+		var _stopMainScroll = function() {
+			$('#thread-div-pop').find('.details').on('scroll', function(e){
+				e.stopPropagation();
+			});
+		}
+		
 		var loadCurrThread = function(curr_id, handle, reload){
 			var curr_url = "/thread/"+curr_id+"/",
 				curr_position = handle.children().first().scrollTop();
@@ -801,6 +807,8 @@ function hiddenToggleFunction(){
 					///attach AddPost functionality
 					AddPost.bindAddPost($("#id_text_r"))
 					
+					///prevent body from scrolling 
+					_stopMainScroll()
 					
 					handle.children().first().scrollTop(curr_position)
 					

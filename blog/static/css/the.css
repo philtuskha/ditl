@@ -1262,12 +1262,11 @@ height:0px;
 opacity:0;
 margin:0;
 padding:4px;
-
 cursor:pointer;
 background:rgba(89, 89, 89, 0.9);
 border-radius: 20px;
 text-align:center;
-z-index:7;
+z-index:5;
 background:url(../img/ico/arrow_up.svg) center center/100% 100% no-repeat;
 	
 }
@@ -1532,7 +1531,7 @@ and (max-width:48.125em){
 	body, html {
 		margin-top:0;
 		height:auto;
-		
+		-webkit-overflow-scrolling: touch;
 	}
 	#fixed-top{
 		position:fixed;
@@ -1550,7 +1549,6 @@ and (max-width:48.125em){
 		display:inline-block;
 		transition:width 0.5s
 	}
-	
 	header{
 		height:60px;
 		margin-top:36px;
@@ -1642,9 +1640,10 @@ and (max-width:48.125em){
 		min-height:calc(100vh - 36px);
 	}
 	.sorter{
-		position:absolute;
+		position:fixed;
 		z-index:6;
 		right:-30%;
+		top:36px;
 		width:30%;
 		height:100vh;
 		background:rgba(0,0,0,0.0);
@@ -1652,7 +1651,7 @@ and (max-width:48.125em){
 		
 	}
 	.sorter>div{
-		position:absolute;
+		position:fixed;
 		z-index:7;
 		right:-30%;
 		width:30%;
