@@ -723,6 +723,9 @@ function hiddenToggleFunction(){
 	
 			// use instead of settimeout to make magic transition happen
 			// window.getComputedStyle($(this)[0]);
+			
+			///prevent body scrolling when popup shows
+			
 			$('body,html').css({overflow:'hidden'});
 			
 			//transition magic
@@ -848,7 +851,8 @@ function hiddenToggleFunction(){
 				center_check = $(".center").width() / $(window).width(),
 				wrapper = $("#thread-wrapper-pop"),
 				div = $("#thread-div-pop");
-		
+			
+			//allow body scrolling
 			$('body, html').removeAttr("style");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
@@ -1899,7 +1903,7 @@ function hiddenToggleFunction(){
 				$('.post-form-container').css({display:'none'});
 				
 				//minimize height of user-box container to allow scroll on center
-				$('.user-view').css({height:"calc(100vh - 36px)"});
+				$('.left-holder').css({height:"calc(100vh - 36px)"});
 				$('.center').removeAttr('style');
 				
 				if($(window).scrollTop() >= 60){
@@ -1929,7 +1933,7 @@ function hiddenToggleFunction(){
 				
 				///minimize height of .center div to allow scroll on user view 
 				$('.center').css({height:"calc(100vh - 36px)"})
-				$('.user-view').removeAttr('style');
+				$('.left-holder').removeAttr('style');
 				
 				
 				if($(window).scrollTop() >= 60){
