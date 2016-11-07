@@ -1916,10 +1916,8 @@ function hiddenToggleFunction(){
 				_stickToTop()
 				_adjustMainFeed()
 			});	
-			$('.center').on('resize', function(){
-				alert('pops!');
-			});
 			
+			//initialize user view
 			$('.center').css({height:"calc(100vh - 36px)"})
 			
 		}
