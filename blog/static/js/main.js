@@ -769,12 +769,11 @@ function hiddenToggleFunction(){
 			
 			$("#id_text_r").on('focus', function(){
 				$('#thread-div-pop').css({top:"120px"})
-				console.log('window scrollTop', 
-				$(window).scrollTop(), 
-				"pop position bottom",
-				$('#thread-div-pop').css('bottom'),
-				"pop position top",
-				$('#thread-div-pop').css('top'))
+				$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)"});
+				
+			}).on('blur', function(){
+				$('#thread-div-pop').css({top:"0px"})
+				$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)"});
 			});
 			
 			
