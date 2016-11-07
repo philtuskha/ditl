@@ -776,7 +776,7 @@ function hiddenToggleFunction(){
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').css({top:"0px"})
-					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:$("#viewport").height()+'px'});
+					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:'200px'});
 				});
 			}
 			
