@@ -776,7 +776,7 @@ function hiddenToggleFunction(){
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').css({top:"0px"})
-					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:""});
+					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 			}
 			
@@ -843,7 +843,7 @@ function hiddenToggleFunction(){
 		var _closeThread = function(){
 			var thread_id = $('#thread-div-pop').find(".post-user").data("thread"),
 				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px",
-				center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width(),
+				center_check = $(".center").width() / $(window).width(),
 				wrapper = $("#thread-wrapper-pop"),
 				div = $("#thread-div-pop");
 		
@@ -2160,7 +2160,7 @@ function hiddenToggleFunction(){
 		}
 		
 		var _query = function(this_div){
-			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+			var center_check = $(".center").width() / $(window).width();
 			//if(center_check < 0.5){
 				$(".main-feed")[0].style.opacity = 0;
 			//}
@@ -2437,7 +2437,7 @@ function hiddenToggleFunction(){
 	
 	///scroll to top
     (function(){
-    	var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+    	var center_check = $(".center").width() / $(window).width();
     	
     	if (center_check == 1){
 			$('.scroll-to-top').click(function(){
