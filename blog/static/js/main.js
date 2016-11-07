@@ -769,14 +769,14 @@ function hiddenToggleFunction(){
 				Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
 			});
 			
-			if(center_check == 1){
+			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
 					$('#thread-div-pop').css({top:"116px"})
 					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').css({top:"0px"})
-					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:'200px'});
+					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 			}
 			
@@ -793,7 +793,8 @@ function hiddenToggleFunction(){
 		
 		var loadCurrThread = function(curr_id, handle, reload){
 			var curr_url = "/thread/"+curr_id+"/",
-				curr_position = handle.children().first().scrollTop();
+				curr_position = handle.children().first().scrollTop(),
+				center_check = $(".center").width() / $(window).width();;
 	
 			$.ajax({
 			type: "GET",
@@ -829,8 +830,12 @@ function hiddenToggleFunction(){
 					if(reload){
 						
 						setTimeout(function(){
-							  
-							Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
+							if(center_check == 1){
+								//Scroller.myScroller($window.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
+							}else{
+								Scroller.myScroller(handle.children().first(), handle.children().first().prop('scrollHeight') - handle.height())
+							}
+								
 						}, 30)
 						
 					
