@@ -1266,6 +1266,7 @@ function hiddenToggleFunction(){
 					if(e.keyCode == '13' ){	
 						e.preventDefault();
 						_loadAddPost(key_target)
+						key_target.blur();
 					}
 				});
 				
