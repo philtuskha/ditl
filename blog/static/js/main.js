@@ -1865,7 +1865,12 @@ function hiddenToggleFunction(){
 			
 			if (win.scrollTop() >= 60){
 				if(left_wrap.css("left") == "0px"){
-					$('.user-top').addClass("sticky-top")
+					//$('.user-top').addClass("sticky-top");
+					console.log($("#sticky-top").html(), $("#sticky-top").length)
+					//if($("#sticky-top").html() == ""){
+						var user_top_clone = $('.user-top').clone(true)
+						$("#sticky-top").html(user_top_clone)
+					//}
 				}else{
 				
 					drop_top.addClass("sticky-top")

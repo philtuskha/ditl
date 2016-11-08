@@ -1526,8 +1526,19 @@ top:36px;
 left:0;
 width:100%;
 z-index:12;
-/* phone */
 }
+
+#sticky-top{
+position:fixed;
+top:66px;
+left:0;
+width:100%;
+z-index:12;
+border:4px solid magenta;
+height:40px;
+}
+
+/* phone */
 @media screen
 and (max-width:48.125em){
 	body, html {
