@@ -1270,13 +1270,13 @@ function hiddenToggleFunction(){
 				});
 				
 				/////add post on blur for mobile
-				if('ontouchstart' in document.documentElement){
-					key_target.on('blur', function(){
-						if(key_target.val() != ""){
-							_loadAddPost(key_target)
-						}
-					})
-				}
+				// if('ontouchstart' in document.documentElement){
+// 					key_target.on('blur', function(){
+// 						if(key_target.val() != ""){
+// 							_loadAddPost(key_target)
+// 						}
+// 					})
+// 				}
 			};
 			
 			var _succesUserView = function(key_target){
