@@ -1885,11 +1885,11 @@ function hiddenToggleFunction(){
 			
 			if (win.scrollTop() >= 60){
 				$("#sticky-top").css({display:"block"});
-				$('#user .user-top').css({visibility:"hidden"});
+				// $('#user .user-top').css({visibility:"hidden"});
 				
 			}else{
 				$("#sticky-top").css({display:"none"});
-				$('#user .user-top').css({visibility:"visible"});
+				// $('#user .user-top').css({visibility:"visible"});
 	
 			}
 		}
