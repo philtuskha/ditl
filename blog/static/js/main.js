@@ -1155,10 +1155,10 @@ function hiddenToggleFunction(){
 				var scroll_diff = handle.children().last().height() - handle.height();
 				Scroller.myScroller(handle, scroll_diff)
 			}).on("focus", function(){
-				$('body, html').css({background:"#404040"});
+				$('body, html').css({background:"rgb(248,248,248"});
 			
 			}).on("blur", function(){
-				$('body, html').css({background:"rgb(248,248,248"});
+				$('body, html').css({background:"#404040"});
 			
 			});
 		}
