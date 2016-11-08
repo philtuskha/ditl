@@ -973,6 +973,7 @@ function hiddenToggleFunction(){
 		
 			return pData
 		}
+		
 	
 		var _closeFilter = function(element){
 			var blank = "",
@@ -1080,7 +1081,11 @@ function hiddenToggleFunction(){
 			$(".main-feed")[0].style.opacity = 1;
 			
 		}
-	
+		var _cloneDropTop = function(){
+			var drop_clone = $('#drop-top').clone(true)
+			$("#sticky-top").html(drop_clone)
+		}
+		
 		var _loadResponse = function(pData , pKey, pValue){
 			$.ajax({
 				type: "GET",
@@ -1113,6 +1118,9 @@ function hiddenToggleFunction(){
 					
 					//after thread is loaded only
 					_bindScroll()
+					
+					//cloning droptop and appending to sticky-top
+					_cloneDropTop()
 				}
 			});
 		}
@@ -1873,8 +1881,11 @@ function hiddenToggleFunction(){
 					//}
 				}else{
 				
-					drop_top.addClass("sticky-top")
+					//drop_top.addClass("sticky-top")
 					drop_top.parent().css({"margin-top":$('#drop-top').css('height')})
+					
+					var user_top_clone = $('#drop-top').clone(true)
+					$("#sticky-top").html(user_top_clone)
 
 				}
 				
@@ -1993,8 +2004,6 @@ function hiddenToggleFunction(){
 		
 	})();
 	
-
-	
 	var Logout = (function(){
 	
 		var _logout = function(href){
@@ -2015,7 +2024,6 @@ function hiddenToggleFunction(){
 	
 	})();
 
-		
 
 	//init Sorter
 	(function(){ 
