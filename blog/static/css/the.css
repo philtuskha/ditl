@@ -5,8 +5,8 @@ font-family: 'Raleway', sans-serif;
 color:#1a1a1a;
 font-size:14px;
 background: #404040;
--webkit-overflow-scrolling: touch;
--webkit-transform: translate3d(0,0,0);
+-webkit-overflow-scrolling: touch; 
+-webkit-backface-visibility:hidden; /* helps with performance choppy scrolling? */
 }
 
 *{
@@ -658,7 +658,7 @@ top:0;
 left:0;
 z-index:2;
 width:100%;
-min-height:calc(100vh - 36px);
+height:calc(100vh - 36px);
 overflow:scroll;
 background:#fff;
 border-top:1px solid #d3d3d3;

@@ -1971,7 +1971,7 @@ function hiddenToggleFunction(){
 // 			}else{
 				$(window).on('scroll', function(){
 					_stickToTop()
-					_adjustMainFeed()
+					//_adjustMainFeed()
 				});	
 			//}
 			
