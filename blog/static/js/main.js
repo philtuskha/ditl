@@ -1169,7 +1169,7 @@ function hiddenToggleFunction(){
 				var scroll_diff = handle.children().last().height() - handle.height();
 				Scroller.myScroller(handle, scroll_diff)
 			}).on("focus", function(){
-				$('body, html').css({background:"rgb(248,248,248"});
+				$('body, html').css({background:"#f8f8f8"});
 			
 			}).on("blur", function(){
 				$('body, html').css({background:"#404040"});
@@ -1885,11 +1885,11 @@ function hiddenToggleFunction(){
 			
 			if (win.scrollTop() >= 60){
 				$("#sticky-top").css({display:"block"});
-				// $('#user .user-top').css({visibility:"hidden"});
+				//$('#user .user-top').css({visibility:"hidden"});
 				
 			}else{
 				$("#sticky-top").css({display:"none"});
-				// $('#user .user-top').css({visibility:"visible"});
+				//$('#user .user-top').css({visibility:"visible"});
 	
 			}
 		}
