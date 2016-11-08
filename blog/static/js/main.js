@@ -1852,7 +1852,6 @@ function hiddenToggleFunction(){
 	
 	var toggleView = (function(){
 		var left_wrap = $(".left-wrap"),
-			user_top = $('.user-top'),
 			drop_top = $('#drop-top');
 			
 		var _stickToTop = function(){
@@ -1860,7 +1859,7 @@ function hiddenToggleFunction(){
 			
 			if (win.scrollTop() >= 60){
 				if(left_wrap.css("left") == "0px"){
-					user_top.addClass("sticky-top")
+					$('.user-top').addClass("sticky-top")
 				}else{
 				
 					drop_top.addClass("sticky-top")
@@ -1871,7 +1870,7 @@ function hiddenToggleFunction(){
 			}else{
 				if(left_wrap.css("left") == "0px"){
 				
-					user_top.removeClass("sticky-top");
+					$('.user-top').removeClass("sticky-top");
 					
 				}else{
 				
@@ -1897,7 +1896,8 @@ function hiddenToggleFunction(){
 				s2t = $('.scroll-to-top'),
 				post_form_container = $('.post-form-container'),
 				left_holder = $('.left-holder'),
-				center = $('.center');
+				center = $('.center'),
+				user_top = $('.user-top');
 				
 				
 			if(left_wrap.css("left") == "0px"){
