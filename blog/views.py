@@ -756,9 +756,12 @@ def status(request):
             respo = Response.objects.filter(thread_id=th.id).exclude(author_id=th.author_id).exclude(is_active=1).exclude(is_active=2)
             r_count = respo.count() * 3
             
-            for r in respo:
-                r_votes = r.rvote_set.filter(option="SE").count()  
-            
+            if(respo.count() is not 0):
+                for r in respo:
+                    r_votes = r.rvote_set.filter(option="SE").count()  
+            else:
+                 r_votes = 0
+                            
             total = t_votes + r_votes + r_count
             
             
