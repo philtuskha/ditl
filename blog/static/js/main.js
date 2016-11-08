@@ -1154,6 +1154,12 @@ function hiddenToggleFunction(){
 			$("#id_text").on("click", function(){
 				var scroll_diff = handle.children().last().height() - handle.height();
 				Scroller.myScroller(handle, scroll_diff)
+			}).on("focus", function(){
+				$('body, html').css({background:"#404040"});
+			
+			}).on("blur", function(){
+				$('body, html').css({background:"rgb(248,248,248"});
+			
 			});
 		}
 		
@@ -1885,9 +1891,9 @@ function hiddenToggleFunction(){
 			console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
 			if($(window).scrollTop() == $('.center').height() - ($(window).height() - 137)){
 				AllThreads.loadThreadsOnScroll();
-				//AllThreads.showScrollToTop($(window));
+				AllThreads.showScrollToTop($(window));
 			}else{
-				//AllThreads.showScrollToTop($(window));
+				AllThreads.showScrollToTop($(window));
 			}
 		}
 		
