@@ -1926,6 +1926,7 @@ function hiddenToggleFunction(){
 					if(drop_top.hasClass("sticky-top")){
 						drop_top.removeClass("sticky-top");
 						drop_top.parent().css({"margin-top":"0"});
+						drop_top.css({"left":""});
 					}
 				}
 			
@@ -1954,6 +1955,7 @@ function hiddenToggleFunction(){
 		
 					if(user_top.hasClass("sticky-top")){
 						drop_top.removeClass("sticky-top");
+						drop_top.css({"left":""});
 					}
 					
 				}
