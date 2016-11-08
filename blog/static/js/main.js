@@ -1882,12 +1882,12 @@ function hiddenToggleFunction(){
 		}
 		
 		var _adjustMainFeed = function(){
-			// console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
+			console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
 			if($(window).scrollTop() == $('.center').height() - ($(window).height() - 137)){
 				AllThreads.loadThreadsOnScroll();
-				AllThreads.showScrollToTop($(window));
+				//AllThreads.showScrollToTop($(window));
 			}else{
-				AllThreads.showScrollToTop($(window));
+				//AllThreads.showScrollToTop($(window));
 			}
 		}
 		
@@ -1970,6 +1970,7 @@ function hiddenToggleFunction(){
 			});
 				$(window).on('scroll', function(){
 					_stickToTop()
+					_adjustMainFeed()
 				});	
 			
 			//initialize user view
