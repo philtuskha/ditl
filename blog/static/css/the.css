@@ -6,6 +6,7 @@ color:#1a1a1a;
 font-size:14px;
 background: #404040;
 -webkit-overflow-scrolling: touch;
+-webkit-transform: translate3d(0,0,0);
 }
 
 *{
