@@ -1919,6 +1919,7 @@ function hiddenToggleFunction(){
 						user_top.removeClass("sticky-top");
 						drop_top.addClass("sticky-top");
 						drop_top.parent().css({"margin-top":$('#drop-top').css('height')});
+						drop_top.css({"left":"0"});
 					},30)
 					
 				}else{
@@ -1947,6 +1948,7 @@ function hiddenToggleFunction(){
 					$(window).scrollTop(60);
 					user_top.addClass("sticky-top");
 					drop_top.removeClass("sticky-top");
+					drop_top.css({"left":"100%"});
 					drop_top.parent().css({"margin-top":"0"});
 				}else{
 		

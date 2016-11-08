@@ -289,7 +289,7 @@ position:relative;
 left:0;
 top:0;
 bottom:0;
-transition:left ease 0.3s;
+transition:left ease 0.1s;
 overflow:hidden;
 -webkit-backface-visibility:hidden;
 }
