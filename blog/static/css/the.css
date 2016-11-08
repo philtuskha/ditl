@@ -291,6 +291,8 @@ top:0;
 bottom:0;
 transition:left ease 0.3s;
 overflow:hidden;
+-webkit-backface-visibility:hidden; 
+-webkit-transform: translateZ(0);
 }
 .left-wrap>div{
 display:inline-block;
