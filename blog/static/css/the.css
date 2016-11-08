@@ -646,10 +646,10 @@ height:44px;
 padding:0;
 margin: 0 0 10px 8px;
 }
-#time-text{
+.time-text{
 color:#ff9166;
 }
-#time-text-small{
+.time-text-small{
 color:#ff9166;
 display:none;
 }
@@ -1529,11 +1529,20 @@ z-index:12;
 }
 
 #sticky-top{
+display:none;
 position:fixed;
 top:36px;
 left:0;
-width:100%;
+width:200%;
 z-index:12;
+}
+#sticky-top>div{
+display:inline-block;
+vertical-align:top;
+width:50%;
+}
+#sticky-top .user-top{
+width:50%;
 }
 
 /* phone */
@@ -1606,10 +1615,10 @@ and (max-width:48.125em){
 		padding: 10px 0 0 12px;
 		margin-left: 0px;
 	}
-	#time-text{
+	.time-text{
 		display:none;
 	}
-	#time-text-small{
+	.time-text-small{
 		display:inline-block;
 		padding-bottom:4px;
 	
@@ -1662,7 +1671,7 @@ and (max-width:48.125em){
 	}
 	.sorter{
 		position:fixed;
-		z-index:6;
+		z-index:14;
 		right:-30%;
 		top:36px;
 		width:30%;
@@ -1673,7 +1682,7 @@ and (max-width:48.125em){
 	}
 	.sorter>div{
 		position:fixed;
-		z-index:7;
+		z-index:15;
 		right:-30%;
 		width:30%;
 		height:100vh;

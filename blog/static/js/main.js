@@ -944,6 +944,8 @@ function hiddenToggleFunction(){
 				order_text = "",
 				filter = $("#filter"),
 				order = $("#order");
+				// sticky_filter = $("#sticky-filter"),
+// 				sticky_order = $("#sticky-order");
 
 			for (var i = 0; i < localStorage.length; i++){
 				var key = localStorage.key(i);
@@ -962,6 +964,7 @@ function hiddenToggleFunction(){
 		
 						order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
 						order.html(order_text)
+						//sticky_order.html(order_text)
 					
 						filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
 				
@@ -970,6 +973,7 @@ function hiddenToggleFunction(){
 			}
 			
 			filter.html(filter_text)
+			//sticky_filter.html(filter_text)
 		
 			return pData
 		}
@@ -1082,8 +1086,10 @@ function hiddenToggleFunction(){
 			
 		}
 		var _cloneDropTop = function(){
-			var drop_clone = $('#drop-top').clone(true)
-			$("#sticky-top").html(drop_clone)
+			//if($('.left-wrap').css("left") != "0px"){
+				var drop_clone = $('#drop-top').clone(true)
+				$(".sticky-drop-top").html(drop_clone)
+			//}
 		}
 		
 		var _loadResponse = function(pData , pKey, pValue){
@@ -1170,6 +1176,10 @@ function hiddenToggleFunction(){
 			
 			});
 		}
+		var _cloneUserTop = function(){
+			var user_top_clone = $(".user-top").clone(true);
+			$('.sticky-user-top').html(user_top_clone);	
+		}
 		
 		var _init = function(){
 			var start_position = 0,
@@ -1218,6 +1228,8 @@ function hiddenToggleFunction(){
 				
 				////attach restore option to deleted posts
 				RestorePost.bind($(".user-view"));
+				
+				_cloneUserTop();
 
 				}
 			});
@@ -1616,8 +1628,8 @@ function hiddenToggleFunction(){
 	
 		var addTime = function(startTime){
 			var clock = $( "circle.pie" ),
-			time_div = $("#time-text"),
-			time_div_small = $("#time-text-small")
+			time_div = $(".time-text"),
+			time_div_small = $(".time-text-small")
 			radius = clock.parent().height()/2;
 			circumference = 2 * Math.PI * radius
 		
@@ -1872,39 +1884,18 @@ function hiddenToggleFunction(){
 			var win = $(window);
 			
 			if (win.scrollTop() >= 60){
-				if(left_wrap.css("left") == "0px"){
-					//$('.user-top').addClass("sticky-top");
-					console.log($("#sticky-top").html(), $("#sticky-top").length)
-					//if($("#sticky-top").html() == ""){
-						var user_top_clone = $('.user-top').clone(true)
-						$("#sticky-top").html(user_top_clone)
-					//}
-				}else{
-				
-					//drop_top.addClass("sticky-top")
-					drop_top.parent().css({"margin-top":$('#drop-top').css('height')})
-					
-					var user_top_clone = $('#drop-top').clone(true)
-					$("#sticky-top").html(user_top_clone)
-
-				}
+				$("#sticky-top").css({display:"block"});
+				$('#user .user-top').css({visibility:"hidden"});
 				
 			}else{
-				if(left_wrap.css("left") == "0px"){
-				
-					$('.user-top').removeClass("sticky-top");
-					
-				}else{
-				
-					drop_top.removeClass("sticky-top")
-					drop_top.parent().css({"margin-top":"0"});
-					
-				}
+				$("#sticky-top").css({display:"none"});
+				$('#user .user-top').css({visibility:"visible"});
+	
 			}
 		}
 		
 		var _adjustMainFeed = function(){
-			console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
+			//console.log($(window).scrollTop(), $('.center').height() - ($(window).height() - 137))
 			if($(window).scrollTop() == $('.center').height() - ($(window).height() - 137)){
 				AllThreads.loadThreadsOnScroll();
 				AllThreads.showScrollToTop($(window));
@@ -1922,9 +1913,13 @@ function hiddenToggleFunction(){
 				user_top = $('.user-top');
 				
 				
+			if($(window).scrollTop() >= 60){
+				$(window).scrollTop(60);	
+			}
+				
 			if(left_wrap.css("left") == "0px"){
 			//center
-				
+				$('#sticky-top').css({left:"-100%"});
 				left_wrap.css({left:"-100%"});
 				menu.css({width:"40px"});
 				el.html('<div id="compose-ico"></div>');
@@ -1934,28 +1929,10 @@ function hiddenToggleFunction(){
 				//minimize height of user-box container to allow scroll on center
 				left_holder.css({height:"calc(100vh - 36px)"});
 				center.removeAttr('style');
-				
-				if($(window).scrollTop() >= 60){
-					
-					$(window).scrollTop(60);
-					setTimeout(function(){
-						user_top.removeClass("sticky-top");
-						drop_top.addClass("sticky-top");
-						drop_top.parent().css({"margin-top":$('#drop-top').css('height')});
-						drop_top.css({"left":"0"});
-					},30)
-					
-				}else{
-					if(drop_top.hasClass("sticky-top")){
-						drop_top.removeClass("sticky-top");
-						drop_top.parent().css({"margin-top":"0"});
-						drop_top.css({"left":""});
-					}
-				}
 			
 			}else{
 			//user-view
-			
+				$('#sticky-top').css({left:"0"});
 				left_wrap.css({left:"0"});
 				menu.css({width:"0px"}); 
 				el.html('<div id="posts-ico"></div>');
@@ -1967,21 +1944,7 @@ function hiddenToggleFunction(){
 				left_holder.removeAttr('style');
 				
 				
-				if($(window).scrollTop() >= 60){
-					
-					$(window).scrollTop(60);
-					user_top.addClass("sticky-top");
-					drop_top.removeClass("sticky-top");
-					drop_top.css({"left":"100%"});
-					drop_top.parent().css({"margin-top":"0"});
-				}else{
-		
-					if(user_top.hasClass("sticky-top")){
-						drop_top.removeClass("sticky-top");
-						drop_top.css({"left":""});
-					}
-					
-				}
+				
 				
 			}
 		}
