@@ -1851,29 +1851,32 @@ function hiddenToggleFunction(){
 	})();
 	
 	var toggleView = (function(){
-	
+		var left_wrap = $(".left-wrap"),
+			user_top = $('.user-top'),
+			drop_top = $('#drop-top');
+			
 		var _stickToTop = function(){
 			var win = $(window);
 			
 			if (win.scrollTop() >= 60){
-				if($(".left-wrap").css("left") == "0px"){
-					$('.user-top').addClass("sticky-top")
+				if(left_wrap.css("left") == "0px"){
+					user_top.addClass("sticky-top")
 				}else{
 				
-					$('#drop-top').addClass("sticky-top")
-					$('#drop-top').parent().css({"margin-top":$('#drop-top').css('height')})
+					drop_top.addClass("sticky-top")
+					drop_top.parent().css({"margin-top":$('#drop-top').css('height')})
 
 				}
 				
 			}else{
-				if($(".left-wrap").css("left") == "0px"){
+				if(left_wrap.css("left") == "0px"){
 				
-					$('.user-top').removeClass("sticky-top");
+					user_top.removeClass("sticky-top");
 					
 				}else{
 				
-					$('#drop-top').removeClass("sticky-top")
-					$('#drop-top').parent().css({"margin-top":"0"});
+					drop_top.removeClass("sticky-top")
+					drop_top.parent().css({"margin-top":"0"});
 					
 				}
 			}
@@ -1890,14 +1893,12 @@ function hiddenToggleFunction(){
 		}
 		
 		var _toggle = function(el){
-			var left_wrap = $(".left-wrap"),
-				menu = $("#fixed-top-right ul li:nth-child(2)"),
+			var menu = $("#fixed-top-right ul li:nth-child(2)"),
 				s2t = $('.scroll-to-top'),
 				post_form_container = $('.post-form-container'),
 				left_holder = $('.left-holder'),
-				center = $('.center'),
-				user_top = $('.user-top'),
-				drop_top = $('#drop-top');
+				center = $('.center');
+				
 				
 			if(left_wrap.css("left") == "0px"){
 			//center
@@ -1967,19 +1968,9 @@ function hiddenToggleFunction(){
 			$("#fixed-top-right>ul>li:nth-child(3)").on("click", function(){
 				_toggle($(this))
 			});
-			
-			// if('ontouchstart' in document.documentElement){
-// 				$(window).on('touchmove touchstart touchend', function(){
-// 					_stickToTop()
-// 					_adjustMainFeed()
-// 				});	
-// 				
-// 			}else{
 				$(window).on('scroll', function(){
 					_stickToTop()
-					//_adjustMainFeed()
 				});	
-			//}
 			
 			//initialize user view
 			$('.center').css({height:"calc(100vh - 36px)"})
@@ -1991,154 +1982,6 @@ function hiddenToggleFunction(){
 	})();
 	
 
-	
-	/*
-	var Mobile = (function(){
-		var init_viewport = 0;
-			
-		var _setBkg = function(scroll_top){
-			console.log(scroll_top)
-			var body = $("body");
-			
-			if(scroll_top > 0){ // == 1
-				body.css({background:"#fff"});
-		
-			}else if(scroll_top <= 0){
-				body.css({background:"#404040"});
-				
-			}
-		
-		}
-		
-		var _getElement = function(e){
-		
-
-			var eventArray = [e.target.className,
-								e.target.parentNode.className,
-								e.target.parentNode.parentNode.className,  
-								e.target.parentNode.parentNode.parentNode.className, 
-								e.target.parentNode.parentNode.parentNode.parentNode.className,
-								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.className,
-								e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.className]
-			
-			
-			console.log(e, eventArray)
-			if($.inArray("user-view", eventArray) != -1 || $.inArray("main-feed", eventArray) != -1){
-				var el = $.inArray("user-view", eventArray) != -1 ? $("."+eventArray[$.inArray("user-view", eventArray)]) : $("."+eventArray[$.inArray("main-feed", eventArray)]) 
-				return el;
-			}else{
-				return false;
-			}
-		}
-		
-		var _start = function(e){
-			var el = _getElement(e),
-				viewport_now = $("#viewport").height();
-			console.log(" start viewport: ",$("#viewport").height(), "init_viewport: ", init_viewport)
-			// t_start = $(window).scrollTop();
-// 			t_diff = t_end - t_start;
-			
-			
-			if(el){
-			
-				if(viewport_now >= init_viewport && viewport_now < init_viewport + 10 ){
-				//if($(this).scrollTop() != 1){
-					el.css({overflow:'hidden'})
-					
-				}
-				
-			}
-		}
-		
-		
-		var _end = function(e){
-			var el = _getElement(e);
-			
-			// t_end = $(window).scrollTop();
-			console.log(" end viewport: ",$("#viewport").height())
-					
-			if(el){
-				// if($("#viewport").height() != init_viewport){
-// 				//if($(this).scrollTop() <= 0){
-// 					el.css({overflow:'hidden'})	
-// 				}else{
-					$("html, body").animate({ scrollTop: 1}, 200, 'easeOutQuint', function initWindowScroll(){
-						$("html, body").off("scroll", initWindowScroll);
-						el.css({overflow:'scroll'})
-					});
-				//}
-				
-			}
-		}
-			
-		var _bindTouchEvents = function(){
-			$(window).on("touchstart", function(e){
-				_start(e);	
-			});
-			
-			$(window).on("touchend", function(e){
-				_end(e);
-			});
-			
-			// $(window).on("touchmove", function(){
-// 				_setBkg($(window).scrollTop());
-// 			});
-		}
-		
-		var init = function (){
-			var post_form = $(".post-form-container"),
-				viewport_height = $("#viewport").height();
-				
-			init_viewport = viewport_height;
-			///main post form css fixes
-			post_form.css({position:"fixed", width:"100%"})
-			
-			///fixed sporadic iphone behavior when textarea is focused
-			$("#id_text").on("focus", function(){
-				post_form.css({position:"absolute", width:"100%"})
-				// $("body").css({background:" rgba(248,248,248,1)"});
-				$(window).scrollTop($(window).scrollTop() - 44)
-				// $('body, html').css({height:viewport_height+'px'})
-				
-			}).on("blur", function(){
-				post_form.css({position:"fixed", width:"100%"})
-				// $("body").css({background:"#404040"});
-				$('body, html').css({height:'calc(100vh + 44px)'})
-				
-				
-			});
-			
-			
-			$("#id_text_r").on("focus", function(){
-				$("body").css({background:" rgba(248,248,248,1)"});
-				
-			}).on("blur", function(){
-				$("body").css({background:"#404040"});
-				
-			});
-			
-			/////set body 44px more so window can scroll
-			$('body, html').css({height:'calc(100vh + 44px)'})
-			
-			////////initially set overflow to hidden
-			$(".user-view").css({overflow:"hidden"})
-			$(".main-feed").css({overflow:"hidden"})
-			
-			////start
-			_bindTouchEvents()
-			
-		}///end initMobile
-			
-			
-		if('ontouchstart' in document.documentElement){
-			// $(".user-view").css({overflow:"hidden"})
-// 			$(".main-feed").css({overflow:"hidden"})
-			init()
-			
-		}
-	
-	})();
-	*/
 	
 	var Logout = (function(){
 	
@@ -2163,7 +2006,7 @@ function hiddenToggleFunction(){
 		
 
 	//init Sorter
-	(function(){        ///// var Sorter = 
+	(function(){ 
 		
 		var _initStyleStorage = function(){
 			$('.sorter div').each(function(){
