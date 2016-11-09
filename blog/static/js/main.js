@@ -1159,6 +1159,7 @@ $(document).ready(function() {
 		
 	})();
 	
+	
 	var toggleView = (function(){
 		var left_wrap = $(".left-wrap"),
 			drop_top = $('#drop-top');
@@ -1242,13 +1243,17 @@ $(document).ready(function() {
 				});	
 			
 			//initialize user view
-			$('.center').css({height:"calc(100vh - 36px)"})
+			var center_check = $(".center").width() / $(window).width();
+			if(center_check == 1){
+				$('.center').css({height:"calc(100vh - 36px)"})
+			}
 			
 		}
 		
 		bind()
 		
 	})();
+	
 	
 	var Logout = (function(){
 	
@@ -1271,6 +1276,34 @@ $(document).ready(function() {
 	})();
 
 
+    var ScrollToTop =(function(){
+    	var center_check = $(".center").width() / $(window).width();
+    	
+    	var init = function(){
+			if (center_check == 1){
+				$('.scroll-to-top').click(function(){
+					Scroller.myScroller($('body, html'), 0);
+					//$('body, html').animate({ scrollTop: 0 }, 1000, 'easeOutCirc', function(){
+						//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+					//});
+				});	
+			}else{
+				$('.scroll-to-top').click(function(){
+					Scroller.myScroller($('.main-feed'), 0);
+				});
+			}
+		}
+		
+		init();
+		
+		return{
+			init:init
+		}
+		
+		
+	})();
+	
+	
 	//init Sorter
 	(function(){ 
 		
@@ -1576,30 +1609,16 @@ $(document).ready(function() {
 	////toggle user-view and main-feed
 	
 	
-	///scroll to top
-    (function(){
-    	var center_check = $(".center").width() / $(window).width();
-    	
-    	if (center_check == 1){
-			$('.scroll-to-top').click(function(){
-				Scroller.myScroller($('body, html'), 0);
-				//$('body, html').animate({ scrollTop: 0 }, 1000, 'easeOutCirc', function(){
-					//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-				//});
-			});	
-		}else{
-			$('.scroll-to-top').click(function(){
-				Scroller.myScroller($('.main-feed'), 0);
-			});
-		}
-	})();
+	
 	
 	//resize functions ---- much work to do here
 	(function(){
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 		$(window).resize(function(){
 			//$("#inner-height").html($(window).innerHeight())
-		
+			
+			////try to target elements that need to change on resize
+			ScrollToTop.init() 
 		
 		
 			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();

@@ -316,7 +316,7 @@ transition:opacity 0.2s;
 }
 .main-feed{
 width:100%;
-height:inherit;
+height:calc(100% - 41px);
 overflow-y: scroll;
 opacity:0; 
 -webkit-overflow-scrolling: touch;
@@ -659,7 +659,7 @@ top:0;
 left:0;
 z-index:2;
 width:100%;
-height:calc(100vh - 36px);
+height:calc(100vh - 111px);
 overflow:scroll;
 background:#fff;
 border-top:1px solid #d3d3d3;
@@ -672,7 +672,7 @@ transition:left 0.3s;
 
 .user-box-container{
 overflow:auto;
-min-height:calc(100vh - 192px);
+/* min-height:calc(100vh - 192px); */
 }
 .user-box{
   width:100%;
@@ -1657,6 +1657,7 @@ and (max-width:48.125em){
 
 	}
 	.user-box-container{
+		min-height:calc(100vh - 192px);
 		height:auto;
 	}
 	.post-form-container {

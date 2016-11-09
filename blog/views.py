@@ -115,55 +115,7 @@ def find_faves(user_id):
     
         
     return fave_users
-            
-'''
-def faves(type, vote_post_id, thread, add_subtract_faves, me):
-    #storing favorite users to my profile, a.k.a. people's threads you respond to 
-    fave_object = UserProfile.objects.get(user_id=me)
-    
-    if thread.id is not vote_post_id:
-       
-        if fave_object.favorites is None:
-            fave_dict = {}
-            fave_array = []
-            
-            if type is "vote":
-                fave_array.append(add_subtract_faves)
-                fave_array.append(0)
-                
-                fave_dict[thread.author_id] = fave_array
-            else:
-                fave_array.append(0)
-                fave_array.append(add_subtract_faves)
-                
-                fave_dict[thread.author_id] = fave_array
-        
-        else:
-            fave_dict = json.loads(fave_object.favorites)
-            
-            if str(thread.author_id) in fave_dict:
-                if type is "vote":
-                    fave_dict[str(thread.author_id)][0] += add_subtract_faves
-                else:
-                    fave_dict[str(thread.author_id)][1] += add_subtract_faves
-                    
-            else:
-                fave_array = []
-                
-                if type is "vote":
-                    fave_array.append(add_subtract_faves)
-                    fave_array.append(0)
-                
-                    fave_dict[thread.author_id] = fave_array
-                else:
-                    fave_array.append(0)
-                    fave_array.append(add_subtract_faves)
-                
-                    fave_dict[thread.author_id] = fave_array
-            
-        fave_object.favorites = json.dumps(fave_dict)
-        fave_object.save()
-'''        
+
 
 def post_status(post_object, type, post_id):
     last_day = timezone.now() - timezone.timedelta(days=1)
@@ -510,6 +462,7 @@ def update_page(request):
     
     try:
         my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
+        print "HOLY HELL", my_last_thread 
     except (IndexError, ValueError):
         my_last_thread = 0
         my_last_thread_responses = 0
@@ -539,7 +492,7 @@ def update_page(request):
        
         my_last_thread_rvote = x
 
-    if my_last_thread != 0:    
+    if my_last_thread is not 0:    
         diff = timezone.now() - my_last_thread.published_date
         timediff = diff.total_seconds()
     else:
@@ -651,7 +604,7 @@ def status(request):
         #user activity
         user_rank = []
         for p in profile:
-            p_id = p.id
+            p_id = p.user_id
             
             user_threads = last_threads.filter(author_id=p_id).exclude(is_active=1).exclude(is_active=2).count() * 5
             user_respo = last_respos.filter(author_id=p_id).exclude(is_active=1).exclude(is_active=2).count() * 3
@@ -714,9 +667,7 @@ def status(request):
         
         return render(request,'blog/status.html',{'user':int(user),
                                                 'total_users': total_users,
-                                    
                                                 'user_rank': user_rank,
-                                                
                                                 'all_threads':all_threads,
                                                 'thread_rank':thread_rank,
                                                 'activity_list':activity_list,
