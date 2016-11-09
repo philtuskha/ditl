@@ -32,7 +32,7 @@
  -->
  		{% if thread_list %}
 		<h4>Your Posts<span>#{{ thread_list.1 }}</span></h4>
-		<p class="large">Your Post ranking is #{{ thread_list.1 }}, out of {{ total_users }} users. You have {{ thread_list.3 }} points. The highest ranking user has {{activity_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
+		<p class="large">Your Post ranking is #{{ thread_list.1 }}, out of {{ total_users }} users. You have {{ thread_list.3 }} points. The highest ranking user has {{thread_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
 	
 		<p>Your Post ranking is based on how many votes and comments your posts have recieved in the last 14 days.</p>  
 		<div class="graph">
@@ -56,7 +56,8 @@
 		{% else %}
 		<p class="large">Nope. You are all good.</p>
 		{% endif %}
-		<div id="today"> 
+		<!-- 
+<div id="today"> 
 		<div>
 			{{all_threads}}
 		</div>
@@ -87,7 +88,8 @@
 		</div>
 		{% endif %}
 		</div>
-		<!-- <br><br><span class="quote">"Get busy living or get busy dying."<br> <i>- Andy Dufresne</i></span></p> -->
+		<!~~ <br><br><span class="quote">"Get busy living or get busy dying."<br> <i>- Andy Dufresne</i></span></p> ~~>
 		<br>
+ -->
 	</div>
 </div>
