@@ -16,7 +16,7 @@ def troll_check(user_id):
     print "user: ", user_id
     my_threads = Thread.objects.filter(author_id=user_id)
     my_respos = Response.objects.filter(author_id=user_id)
-    profile = UserProfile.objects.get(id=user_id)
+    profile = UserProfile.objects.get(user_id=user_id)
     
     
     past_day = timezone.now() - timezone.timedelta(days=1)
@@ -61,83 +61,6 @@ def troll_check(user_id):
                 profile.troll_check = None
                 profile.save()
       
-'''                
-def activity(type, increment, me):
-    profile_object = UserProfile.objects.get(user_id=me)
-    # activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "votes": profile_object.activity_votes}
-    activity_dict = {"thread": profile_object.activity_threads, "response":profile_object.activity_responses, "vote": profile_object.activity_votes}
-    month = 2419200  #actually, 28 days
-    day = 86400  
-
-    def add_list(list, type):
-        if type == "thread":
-            profile_object.activity_threads = json.dumps(list)
-        elif type == "response":
-            profile_object.activity_responses = json.dumps(list)
-        else:
-            profile_object.activity_votes = json.dumps(list)
-                    
-    def activity_init(type):
-          
-        for ad_type, val in activity_dict.items():
-            
-            origin_list = [0] * 28
-                
-            if ad_type == type:
-                origin_list[0] = increment
-                add_list(origin_list, ad_type)
-                
-            else:
-                origin_list[0] = 0
-                add_list(origin_list, ad_type)
-                
-    if not profile_object.activity_responses or not profile_object.activity_threads or not profile_object.activity_votes:
-        #initialize 
-        
-        profile_object.origin_date = datetime.now()
-        
-        activity_init(type)
-        
-    else:
-        #now = profile_object.origin_date + timezone.timedelta(days=30)
-        now = timezone.now()
-        diff = now - profile_object.origin_date
-        timediff = diff.total_seconds()
-        
-        print timediff
-        if timediff < month:    
-
-            this_day = int(timediff/day)
-            list = json.loads(activity_dict[type])
-            
-            list[this_day] += increment
-            add_list(list, type)
-
-            
-        else:
-            
-            days_diff = int(timediff)/day
-            how_diff = days_diff - 28
-            
-            for each_type in activity_dict:
-                list = json.loads(activity_dict[each_type])
-                tmp_list = list[how_diff : len(list)]
-                append_list = [0] * how_diff
-                tmp_list.extend(append_list)
-                
-                if each_type == type:
-                    print "**** each type matched", type
-                    index = len(tmp_list) - 1
-                    tmp_list[index] += increment
-            
-                add_list(tmp_list, each_type)
-            
-            profile_object.origin_date += timezone.timedelta(days=how_diff)
-    
-            
-       
-    profile_object.save()
-'''   
 
 def profile_test(request):
     profile_object = UserProfile.objects.get(user_id=request.user.id)
@@ -261,7 +184,7 @@ def post_status(post_object, type, post_id):
         
 
 def vote(request):
-    t_check = UserProfile.objects.get(id=request.user.id).troll_check
+    t_check = UserProfile.objects.get(user_id=request.user.id).troll_check
     print "vote troll check", t_check
     
 
@@ -449,7 +372,7 @@ def delete_post(request):
     
 def add_thread(request):
     #add thread or response
-    t_check = UserProfile.objects.get(id=request.user.id).troll_check 
+    t_check = UserProfile.objects.get(user_id=request.user.id).troll_check 
 
     if request.method == "POST" and request.is_ajax() and t_check is None:
         user_thread = Thread.objects.filter(author_id=request.user.id)
@@ -785,7 +708,7 @@ def status(request):
             
         
         #troll
-        t_check = UserProfile.objects.get(id=request.user.id).troll_check
+        t_check = UserProfile.objects.get(user_id=request.user.id).troll_check
         
         troll_posts = t_check.strftime('%b %d, %-I:%M%p') if t_check else ""
         
