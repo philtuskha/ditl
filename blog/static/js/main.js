@@ -1318,16 +1318,13 @@ $(document).ready(function() {
 			});
 		}
 		
-		var init = function(){
-			
-		}
 		
 		if('ontouchstart' in document.documentElement){
-			init()
+			_bind()
 			
 		}
 	
-	}();
+	})();
 	//init Sorter
 	(function(){ 
 		
