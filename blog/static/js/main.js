@@ -1276,7 +1276,7 @@ $(document).ready(function() {
 	})();
 
 
-    var ScrollToTop =(function(){
+    var ScrollToTop = (function(){
     	var center_check = $(".center").width() / $(window).width();
     	
     	var init = function(){
@@ -1304,6 +1304,30 @@ $(document).ready(function() {
 	})();
 	
 	
+	var SwipeBubble = (function(){
+	
+		var _moveBubble = function(el, pos){
+			el.css({position:pos + "px"})
+		}
+		
+		var _bind = function(){
+			$(".bubble-middle").on("touchstart", function(e){
+				var pos = e.originalEvent.touches[0].pageX;
+				_moveBubble($(this), pos)
+				console.log(e)
+			});
+		}
+		
+		var init = function(){
+			
+		}
+		
+		if('ontouchstart' in document.documentElement){
+			init()
+			
+		}
+	
+	}();
 	//init Sorter
 	(function(){ 
 		
