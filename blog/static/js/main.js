@@ -1616,9 +1616,9 @@ $(document).ready(function() {
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 		$(window).resize(function(){
 			//$("#inner-height").html($(window).innerHeight())
-			
+			console.log('resize')
 			////try to target elements that need to change on resize
-			ScrollToTop.init() 
+			//ScrollToTop.init() 
 		
 		
 			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
