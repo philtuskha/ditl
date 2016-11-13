@@ -1320,11 +1320,11 @@ $(document).ready(function() {
 				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
 				
 			}else{
-				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
+				el.parent().css({background:"rgba(85,85,85,"+bkg_opacity+")"})
 				
 			}
 				el.next().css({opacity:"-"+bkg_opacity})
-				bkg_opacity += 0.03
+				bkg_opacity += 0.04
 			console.log(diff_pos)
 		}
 		var _restoreBubble = function(el){
@@ -1333,6 +1333,7 @@ $(document).ready(function() {
 				el.css({transition: "none !important"});
 			});
 			el.parent().removeAttr('style');
+			el.next().removeAttr('style');
 			bkg_opacity = 0;
 		}
 		
