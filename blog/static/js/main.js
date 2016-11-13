@@ -1311,9 +1311,9 @@ $(document).ready(function() {
 		}
 		
 		var _bind = function(){
-			$(".bubble-middle").on("touchstart", function(e){
+			$(".respo-vote-right").on("touchstart", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
-				_moveBubble($(this), pos)
+				_moveBubble($(this).parent(), pos)
 				console.log(e)
 			});
 		}
