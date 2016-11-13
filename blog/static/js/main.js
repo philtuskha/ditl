@@ -1316,9 +1316,15 @@ $(document).ready(function() {
 		var _moveBubble = function(el, pos){
 			diff_pos = pos - origin_pos
 			el.css({left:diff_pos + "px"})
-			el.parent().css({background:"rgba(123,43,52,"+bkg_opacity+")"})
-			bkg_opacity += 0.03
-			
+			if (diff_pos > 0){
+				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
+				
+			}else{
+				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
+				
+			}
+				el.next().css({opacity:"-"+bkg_opacity+"})
+				bkg_opacity += 0.03
 			console.log(diff_pos)
 		}
 		var _restoreBubble = function(el){
