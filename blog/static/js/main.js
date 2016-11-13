@@ -1352,6 +1352,9 @@ $(document).ready(function() {
 				_restoreBubble($(this))
 				console.log(e)
 			});
+			
+			///hide normal voting functionality
+			$('.respo-vote-right').css({display:"none"})
 		}
 		
 		
