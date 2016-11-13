@@ -1330,7 +1330,7 @@ $(document).ready(function() {
 				console.log(e)
 			});
 			$(".bubble-middle").on("touchend", function(e){
-				var pos = e.originalEvent.touches[0].pageX;
+				//var pos = e.originalEvent.touches[0].pageX;
 				_restoreBubble($(this))
 				console.log(e)
 			});
