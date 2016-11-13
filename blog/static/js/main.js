@@ -1318,6 +1318,7 @@ $(document).ready(function() {
 			el.css({left:diff_pos + "px"})
 			if (diff_pos > 0){
 				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
+				el.parent().find('.swipe-love').css({width:bkg_opacity+"px"});
 				
 			}else{
 				el.parent().css({background:"rgba(85,85,85,"+bkg_opacity+")"})
