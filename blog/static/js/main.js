@@ -1323,7 +1323,7 @@ $(document).ready(function() {
 				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
 				
 			}
-				el.next().css({opacity:"-"+bkg_opacity+"})
+				el.next().css({opacity:"-"+bkg_opacity})
 				bkg_opacity += 0.03
 			console.log(diff_pos)
 		}
