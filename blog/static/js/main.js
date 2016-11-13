@@ -1310,12 +1310,17 @@ $(document).ready(function() {
 	
 	
 	var SwipeBubble = (function(){
-	
+		var bkg_opacity = 0;
+		
 		var _moveBubble = function(el, pos){
 			el.css({left:pos + "px"})
+			el.parent().css({background:"rgba(123,43,52,"+bkg_opacity+")"})
+			bkg_opacity += 0.01
 		}
 		var _restoreBubble = function(el){
 			el.css({left:"0px"})
+			el.parent().removeAttr('style');
+			bkg_opacity = 0;
 		}
 		
 		var bind = function(){
