@@ -511,6 +511,11 @@ $(document).ready(function() {
 				////attach restore option to deleted posts
 				RestorePost.bind($(".user-view"));
 				
+				/////bind swipe to responses
+				if('ontouchstart' in document.documentElement){
+					SwipeBubble.bind()
+				}
+				
 				_cloneUserTop();
 
 				}
@@ -1310,7 +1315,7 @@ $(document).ready(function() {
 			el.css({position:pos + "px"})
 		}
 		
-		var _bind = function(){
+		var bind = function(){
 			console.log("bound")
 			$(".middle-box").on("touchstart", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
@@ -1320,10 +1325,11 @@ $(document).ready(function() {
 		}
 		
 		
-		if('ontouchstart' in document.documentElement){
-			_bind()
-			
+		return{
+			bind:bind
 		}
+			
+		
 	
 	})();
 	//init Sorter
