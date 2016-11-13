@@ -978,6 +978,7 @@ vertical-align:middle;
   margin-left:20px;
   border-radius: 8px;
   background: #eee; /*#f3fee7;#e6fdcd; #e6f0ff; linear-gradient(top, #f9d835, #f3961c); */
+  transition:left 0.2s;
 }
 .bubble-middle p{
 padding:0px 0px 2px 0px;

@@ -1314,12 +1314,23 @@ $(document).ready(function() {
 		var _moveBubble = function(el, pos){
 			el.css({left:pos + "px"})
 		}
+		var _restoreBubble = function(el, pos){
+			el.css({left:"0px"})
+		}
 		
 		var bind = function(){
 			console.log("bound")
 			$(".bubble-middle").on("touchstart", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
+				console.log(e)
+			});
+			$(".bubble-middle").on("touchmove", function(e){
+				var pos = e.originalEvent.touches[0].pageX;
 				_moveBubble($(this), pos)
+				console.log(e)
+			});
+			$(".bubble-middle").on("touchend", function(e){
+				var pos = e.originalEvent.touches[0].pageX;
 				console.log(e)
 			});
 		}
