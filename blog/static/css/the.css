@@ -998,6 +998,18 @@ width:100%;
   border-style: solid;
   border-color: #eee transparent;
 }
+.swipe-love{
+position:absolute;
+left:33%;
+top:10px;
+width:0px;
+max-width:20px;
+height:20px;
+background:url(../img/ico/heart.svg) center center/100% 100% no-repeat;
+}
+.swipe-troll{
+
+}
 
 .bubble-user {
   position: relative;

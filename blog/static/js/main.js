@@ -1355,6 +1355,7 @@ $(document).ready(function() {
 			
 			///hide normal voting functionality
 			$('.respo-vote-right').css({display:"none"})
+			$(".bubble-middle").append('<div class="swipe-love"></div>')
 		}
 		
 		
