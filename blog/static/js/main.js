@@ -1314,7 +1314,7 @@ $(document).ready(function() {
 		var _moveBubble = function(el, pos){
 			el.css({left:pos + "px"})
 		}
-		var _restoreBubble = function(el, pos){
+		var _restoreBubble = function(el){
 			el.css({left:"0px"})
 		}
 		
@@ -1331,6 +1331,7 @@ $(document).ready(function() {
 			});
 			$(".bubble-middle").on("touchend", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
+				_restoreBubble($(this))
 				console.log(e)
 			});
 		}
