@@ -1312,7 +1312,7 @@ $(document).ready(function() {
 	var SwipeBubble = (function(){
 	
 		var _moveBubble = function(el, pos){
-			el.css({position:pos + "px"})
+			el.css({left:pos + "px"})
 		}
 		
 		var bind = function(){
