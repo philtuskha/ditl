@@ -1315,10 +1315,11 @@ $(document).ready(function() {
 		
 		var _moveBubble = function(el, pos){
 			diff_pos = pos - origin_pos
+			icon_width = diff_pos/2 
 			el.css({left:diff_pos + "px"})
 			if (diff_pos > 0){
 				el.parent().css({background:"rgba(242,140,140,"+bkg_opacity+")"})
-				el.parent().find('.swipe-love').css({width:bkg_opacity+"px"});
+				el.parent().find('.swipe-love').css({width:icon_width+"px"});
 				
 			}else{
 				el.parent().css({background:"rgba(85,85,85,"+bkg_opacity+")"})
@@ -1356,7 +1357,7 @@ $(document).ready(function() {
 			
 			///hide normal voting functionality
 			$('.respo-vote-right').css({display:"none"})
-			$(".bubble-middle").append('<div class="swipe-love"></div>')
+			$(".middle-box").append('<div class="swipe-love"></div>')
 		}
 		
 		
