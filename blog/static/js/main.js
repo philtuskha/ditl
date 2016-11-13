@@ -1310,7 +1310,8 @@ $(document).ready(function() {
 	
 	
 	var SwipeBubble = (function(){
-		var bkg_opacity = 0;
+		var bkg_opacity = 0,
+			direction = 0;
 		
 		var _moveBubble = function(el, pos){
 			el.css({left:pos + "px"})
@@ -1318,7 +1319,10 @@ $(document).ready(function() {
 			bkg_opacity += 0.01
 		}
 		var _restoreBubble = function(el){
-			el.css({left:"0px"})
+			el.css({transition: "left", transitionTimingFunction:'ease', transitionDuration: '0.2s', left:"0px" });
+			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+				el.css({transition: "none !important"});
+			});
 			el.parent().removeAttr('style');
 			bkg_opacity = 0;
 		}
@@ -1332,7 +1336,8 @@ $(document).ready(function() {
 			$(".bubble-middle").on("touchmove", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
 				_moveBubble($(this), pos)
-				console.log(e)
+				direction = pos - direction;
+				console.log(direction)
 			});
 			$(".bubble-middle").on("touchend", function(e){
 				//var pos = e.originalEvent.touches[0].pageX;
