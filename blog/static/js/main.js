@@ -1311,12 +1311,15 @@ $(document).ready(function() {
 	
 	var SwipeBubble = (function(){
 		var bkg_opacity = 0,
-			direction = 0;
+			origin_pos = 0;
 		
 		var _moveBubble = function(el, pos){
-			el.css({left:pos + "px"})
+			diff_pos = pos - origin_pos
+			el.css({left:diff_pos + "px"})
 			el.parent().css({background:"rgba(123,43,52,"+bkg_opacity+")"})
-			bkg_opacity += 0.01
+			bkg_opacity += 0.03
+			
+			console.log(diff_pos)
 		}
 		var _restoreBubble = function(el){
 			el.css({transition: "left", transitionTimingFunction:'ease', transitionDuration: '0.2s', left:"0px" });
@@ -1330,14 +1333,12 @@ $(document).ready(function() {
 		var bind = function(){
 			console.log("bound")
 			$(".bubble-middle").on("touchstart", function(e){
-				var pos = e.originalEvent.touches[0].pageX;
+				origin_pos = e.originalEvent.touches[0].pageX;
 				console.log(e)
 			});
 			$(".bubble-middle").on("touchmove", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
 				_moveBubble($(this), pos)
-				direction = pos - direction;
-				console.log(direction)
 			});
 			$(".bubble-middle").on("touchend", function(e){
 				//var pos = e.originalEvent.touches[0].pageX;
