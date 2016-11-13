@@ -1317,7 +1317,7 @@ $(document).ready(function() {
 		
 		var bind = function(){
 			console.log("bound")
-			$(".middle-box").on("touchstart", function(e){
+			$(".bubble-middle").on("touchstart", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
 				_moveBubble($(this), pos)
 				console.log(e)
