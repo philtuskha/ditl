@@ -968,6 +968,7 @@ color: #cccccc;
 
 .bubble-middle {
 position: relative;
+z-index:6;
 max-width:78%;
 min-width:30%;
 padding: 0 15px;
@@ -1000,12 +1001,13 @@ width:100%;
 }
 .swipe-love{
 position:absolute;
-left:15%;
+left:10%;
 top:10px;
 width:0px;
 max-width:60px;
 height:60px;
 background:url(../img/ico/heart.svg) center center/100% 100% no-repeat;
+z-index:5;
 }
 .swipe-troll{
 
