@@ -1012,11 +1012,11 @@ z-index:5;
 .swipe-troll{
 position:absolute;
 right:5%;
-top:10px;
+top:16px;
 width:0px;
 max-width:60px;
 height:60px;
-background:url(../img/ico/troll.svg) center center/90% 90% no-repeat;
+background:url(../img/ico/troll.svg) center center/85% 85% no-repeat;
 z-index:5;
 }
 
