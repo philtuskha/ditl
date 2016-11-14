@@ -1337,7 +1337,7 @@ $(document).ready(function() {
 			});
 			el.parent().find('.swipe-love').removeAttr('style');
 			el.parent().removeAttr('style');
-			sel.next().removeAttr('style');
+			el.next().removeAttr('style');
 			bkg_opacity = 0;
 		}
 		
