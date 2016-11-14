@@ -1337,6 +1337,7 @@ $(document).ready(function() {
 				el.css({transition: "none !important"});
 			});
 			el.parent().find('.swipe-love').removeAttr('style');
+			el.parent().find('.swipe-troll').removeAttr('style');
 			el.parent().removeAttr('style');
 			el.next().removeAttr('style');
 			bkg_opacity = 0;
