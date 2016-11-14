@@ -1010,7 +1010,14 @@ background:url(../img/ico/heart3.svg) center center/100% 100% no-repeat;
 z-index:5;
 }
 .swipe-troll{
-
+position:absolute;
+right:5%;
+top:10px;
+width:0px;
+max-width:60px;
+height:60px;
+background:url(../img/ico/troll.svg) center center/100% 100% no-repeat;
+z-index:5;
 }
 
 .bubble-user {

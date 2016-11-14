@@ -1324,6 +1324,7 @@ $(document).ready(function() {
 				
 			}else{
 				el.parent().css({background:"rgba(85,85,85,"+back_opacity+")"})
+				el.parent().find('.swipe-troll').css({width:icon_width+"px"});
 				
 			}
 				el.next().css({color:"#fff"})
@@ -1360,6 +1361,7 @@ $(document).ready(function() {
 			///hide normal voting functionality
 			$('.respo-vote-right').css({display:"none"})
 			$(".middle-box").append('<div class="swipe-love"></div>')
+			$(".middle-box").append('<div class="swipe-troll"></div>')
 		}
 		
 		
