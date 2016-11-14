@@ -1315,7 +1315,7 @@ $(document).ready(function() {
 		
 		var _moveBubble = function(el, pos){
 			diff_pos = pos - origin_pos
-			icon_width = diff_pos/2 
+			icon_width = Math.abs(diff_pos/2) 
 			back_opacity = Math.abs(diff_pos/100)
 			el.css({left:diff_pos + "px"})
 			if (diff_pos > 0){
