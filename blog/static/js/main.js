@@ -1325,7 +1325,7 @@ $(document).ready(function() {
 				el.parent().css({background:"rgba(85,85,85,"+bkg_opacity+")"})
 				
 			}
-				el.next().css({opacity:"-"+bkg_opacity})
+				//el.next().css({opacity:"-"+bkg_opacity})
 				bkg_opacity += 0.04
 			console.log(diff_pos)
 		}
@@ -1336,7 +1336,7 @@ $(document).ready(function() {
 			});
 			el.parent().find('.swipe-love').removeAttr('style');
 			el.parent().removeAttr('style');
-			el.next().removeAttr('style');
+			//el.next().removeAttr('style');
 			bkg_opacity = 0;
 		}
 		
