@@ -735,7 +735,12 @@ $(document).ready(function() {
 					this_inside = el.find("#SE"),
 					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
 				
-				Vote.makeVote(obj)
+				if(curr_vote == "SE"){
+					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
+					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+				}else{
+					Vote.makeVote(obj)
+				}
 				
 				//el.append('<div class="touch-loved"></div>')
 				
@@ -744,7 +749,13 @@ $(document).ready(function() {
 					this_inside = el.find("#TR"),
 					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
 				
-				Vote.makeVote(obj)
+				if(curr_vote == "TR"){
+					message = "<h2>Three troll votes and this comment is deleted.<span></span></h2> <p>Are you sure you want to mark <br>this comment as Troll?</p>"
+					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+		
+				}else{
+					Vote.makeVote(obj)
+				}
 				
 				//el.append('<div class="touch-trolled"></div>')
 			}
