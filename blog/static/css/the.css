@@ -1019,13 +1019,22 @@ height:60px;
 background:url(../img/ico/troll.svg) center center/85% 85% no-repeat;
 z-index:5;
 }
-.loved{
+.touch-loved{
 position:absolute;
 right:4px;
 bottom:4px;
 width:10px;
 height:10px;
 background:url(../img/ico/heart.svg) center center/85% 85% no-repeat;
+}
+
+.touch-trolled{
+position:absolute;
+right:4px;
+bottom:4px;
+width:10px;
+height:10px;
+background:url(../img/ico/troll.svg) center center/85% 85% no-repeat;
 }
 
 .bubble-user {

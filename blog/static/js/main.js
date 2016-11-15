@@ -722,15 +722,40 @@ $(document).ready(function() {
 		}
 		
 		var _restoreBubble = function(el){
+			var post_data = el.find('.vote-list-response').data("post"),
+				curr_vote = el.find('.vote-list-response').data("bind"),
+				vote_type = el.find('.vote-list-response').data("type");
+				
+			
+			////slide back after swipe
 			el.css({transition: "left", transitionTimingFunction:'ease', transitionDuration: '0.2s', left:"0px" });
 			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 				el.css({transition: "none !important"});
 			});
+			
+			////
+			
+			
+			
+			/////vote after release
 			console.log(el.parent().find('.swipe-love').width(), el.parent().find('.swipe-troll').width())
 			if(el.parent().find('.swipe-love').width() == 60){
-				alert('love');
+				var option_data = "SE",
+					this_inside = el.find("#SE"),
+					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
+				
+				Vote.makeVote(obj)
+				
+				el.append('<div class="touch-loved"></div>')
+				
 			}else if(el.parent().find('.swipe-troll').width() == 60){
-				alert('troll');
+				var option_data = "TR",
+					this_inside = el.find("#TR"),
+					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
+				
+				Vote.makeVote(obj)
+				
+				el.append('<div class="touch-trolled"></div>')
 			}
 			
 			el.parent().find('.swipe-love').removeAttr('style');
