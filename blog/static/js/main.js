@@ -749,7 +749,7 @@ $(document).ready(function() {
 					this_inside = el.find("#TR"),
 					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
 				
-				if(curr_vote == "TR"){
+				if(curr_vote != "TR"){
 					message = "<h2>Three troll votes and this comment is deleted.<span></span></h2> <p>Are you sure you want to mark <br>this comment as Troll?</p>"
 					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
 		
