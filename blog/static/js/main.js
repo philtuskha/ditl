@@ -726,7 +726,7 @@ $(document).ready(function() {
 			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
 				el.css({transition: "none !important"});
 			});
-			
+			console.log(el.parent().find('.swipe-love').width(), el.parent().find('.swipe-troll').width())
 			if(el.parent().find('.swipe-love').width() == 60){
 				alert('love');
 			}else if(el.parent().find('.swipe-troll').width() == 60){
