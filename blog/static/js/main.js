@@ -641,60 +641,138 @@ $(document).ready(function() {
 
 
 	var Vote = (function(){
-			var _confirmedVote = function(obj, post){
-				////reset vote on ul data tag, reset all backgrounds to grey
-				obj[1].parent().data("bind", post.option);
-				obj[1].parent().children('li').each(function(){
-					 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
-				});
+		var _confirmedVote = function(obj, post){
+			////reset vote on ul data tag, reset all backgrounds to grey
+			obj[1].parent().data("bind", post.option);
+			obj[1].parent().children('li').each(function(){
+				 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
+			});
 
-				///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
-				if(post.num < 0){
-					obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
-					obj[1].parent().data("bind", '');
+			///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
+			if(post.num < 0){
+				obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
+				obj[1].parent().data("bind", '');
 
-				}else{
-					obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
-				}
+			}else{
+				obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
 			}
-	
-			var makeVote = function(obj){
-	
-				$.ajax({
-					type: "POST",
-					url: "/vote/",
-					data: obj[0],
-					success: function(post) {
-						if(!post.troll){
-							if(post.th_check == "warning" && post.option == "TR" && post.num > 0){
-								Alert.loadAlert(['alert', post.message])
-								_confirmedVote(obj, post)
-				
-			
-							}else if(post.th_check == "restricted" && post.option == "TR"  && post.num > 0){
-								Alert.loadAlert(['alert', post.message])
-			
-							}else{
-								_confirmedVote(obj, post)
-							}
-						}else{
+		}
+
+		var makeVote = function(obj){
+
+			$.ajax({
+				type: "POST",
+				url: "/vote/",
+				data: obj[0],
+				success: function(post) {
+					if(!post.troll){
+						if(post.th_check == "warning" && post.option == "TR" && post.num > 0){
 							Alert.loadAlert(['alert', post.message])
-						}
+							_confirmedVote(obj, post)
 			
-					},
-					error: function(XMLHttpRequest, textStatus, errorThrown) { 
-						console.log(XMLHttpRequest.responseText.slice(0,34));
-						///////////this will return string 'IntegrityError' when the voter has voted for post already
-
+		
+						}else if(post.th_check == "restricted" && post.option == "TR"  && post.num > 0){
+							Alert.loadAlert(['alert', post.message])
+		
+						}else{
+							_confirmedVote(obj, post)
+						}
+					}else{
+						Alert.loadAlert(['alert', post.message])
 					}
-				});
-			}
-	
-			return{
-				makeVote: makeVote
-			}
+		
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
+					console.log(XMLHttpRequest.responseText.slice(0,34));
+					///////////this will return string 'IntegrityError' when the voter has voted for post already
 
-		})();
+				}
+			});
+		}
+
+		return{
+			makeVote: makeVote
+		}
+
+	})();
+	
+	
+	var SwipeBubble = (function(){
+		var bkg_opacity = 0,
+			origin_pos = 0;
+			
+			
+		var _moveBubble = function(el, pos){
+			diff_pos = pos - origin_pos
+			icon_width = Math.abs(diff_pos/2) 
+			back_opacity = Math.abs(diff_pos/100)
+			el.css({left:diff_pos + "px"})
+			if (diff_pos > 0){
+				el.parent().css({background:"rgba(242,140,140,"+back_opacity+")"})
+				el.parent().find('.swipe-love').css({width:icon_width+"px"});
+				
+			}else{
+				el.parent().css({background:"rgba(85,85,85,"+back_opacity+")"})
+				el.parent().find('.swipe-troll').css({width:icon_width+"px"});
+				
+			}
+				el.next().css({color:"#fff"})
+				bkg_opacity += 0.04
+			console.log(diff_pos)
+		}
+		
+		var _restoreBubble = function(el){
+			el.css({transition: "left", transitionTimingFunction:'ease', transitionDuration: '0.2s', left:"0px" });
+			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+				el.css({transition: "none !important"});
+			});
+			
+			if(el.parent().find('.swipe-love').width() == 60){
+				alert('love');
+			}else if(el.parent().find('.swipe-troll').width() == 60){
+				alert('troll');
+			}
+			
+			el.parent().find('.swipe-love').removeAttr('style');
+			el.parent().find('.swipe-troll').removeAttr('style');
+			el.parent().removeAttr('style');
+			el.next().removeAttr('style');
+			bkg_opacity = 0;
+			
+			
+			
+		}
+		
+		var bind = function(){
+			console.log("bound")
+			$(".bubble-middle").on("touchstart", function(e){
+				origin_pos = e.originalEvent.touches[0].pageX;
+				console.log(e)
+			});
+			$(".bubble-middle").on("touchmove", function(e){
+				var pos = e.originalEvent.touches[0].pageX;
+				_moveBubble($(this), pos)
+			});
+			$(".bubble-middle").on("touchend", function(e){
+				//var pos = e.originalEvent.touches[0].pageX;
+				_restoreBubble($(this))
+				console.log(e)
+			});
+			
+			///hide normal voting functionality
+			$('.respo-vote-right').css({display:"none"})
+			$(".middle-box").append('<div class="swipe-love"></div>')
+			$(".middle-box").append('<div class="swipe-troll"></div>')
+		}
+		
+		
+		return{
+			bind:bind
+		}
+			
+		
+	
+	})();
 		
 	
 	var DeletePost = (function(){
@@ -1309,70 +1387,9 @@ $(document).ready(function() {
 	})();
 	
 	
-	var SwipeBubble = (function(){
-		var bkg_opacity = 0,
-			origin_pos = 0;
-		
-		var _moveBubble = function(el, pos){
-			diff_pos = pos - origin_pos
-			icon_width = Math.abs(diff_pos/2) 
-			back_opacity = Math.abs(diff_pos/100)
-			el.css({left:diff_pos + "px"})
-			if (diff_pos > 0){
-				el.parent().css({background:"rgba(242,140,140,"+back_opacity+")"})
-				el.parent().find('.swipe-love').css({width:icon_width+"px"});
-				
-			}else{
-				el.parent().css({background:"rgba(85,85,85,"+back_opacity+")"})
-				el.parent().find('.swipe-troll').css({width:icon_width+"px"});
-				
-			}
-				el.next().css({color:"#fff"})
-				bkg_opacity += 0.04
-			console.log(diff_pos)
-		}
-		var _restoreBubble = function(el){
-			el.css({transition: "left", transitionTimingFunction:'ease', transitionDuration: '0.2s', left:"0px" });
-			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-				el.css({transition: "none !important"});
-			});
-			el.parent().find('.swipe-love').removeAttr('style');
-			el.parent().find('.swipe-troll').removeAttr('style');
-			el.parent().removeAttr('style');
-			el.next().removeAttr('style');
-			bkg_opacity = 0;
-		}
-		
-		var bind = function(){
-			console.log("bound")
-			$(".bubble-middle").on("touchstart", function(e){
-				origin_pos = e.originalEvent.touches[0].pageX;
-				console.log(e)
-			});
-			$(".bubble-middle").on("touchmove", function(e){
-				var pos = e.originalEvent.touches[0].pageX;
-				_moveBubble($(this), pos)
-			});
-			$(".bubble-middle").on("touchend", function(e){
-				//var pos = e.originalEvent.touches[0].pageX;
-				_restoreBubble($(this))
-				console.log(e)
-			});
-			
-			///hide normal voting functionality
-			$('.respo-vote-right').css({display:"none"})
-			$(".middle-box").append('<div class="swipe-love"></div>')
-			$(".middle-box").append('<div class="swipe-troll"></div>')
-		}
-		
-		
-		return{
-			bind:bind
-		}
-			
-		
+
 	
-	})();
+	
 	//init Sorter
 	(function(){ 
 		
