@@ -642,6 +642,8 @@ $(document).ready(function() {
 
 	var Vote = (function(){
 		var _confirmedVote = function(obj, post){
+			var bubble_middle = obj[1].parent().parent().parent();
+		
 			////reset vote on ul data tag, reset all backgrounds to grey
 			obj[1].parent().data("bind", post.option);
 			obj[1].parent().children('li').each(function(){
@@ -652,9 +654,29 @@ $(document).ready(function() {
 			if(post.num < 0){
 				obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
 				obj[1].parent().data("bind", '');
+				
+				///if touch
+				if('ontouchstart' in document.documentElement){
+					if(post.option == "SE"){
+						bubble_middle.find('touch-loved').remove()
+					}else{
+						bubble_middle.find('touch-trolled').remove()
+					}
+				}
 
 			}else{
 				obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
+				
+				///if touch
+				if('ontouchstart' in document.documentElement){
+					if(post.option == "SE"){
+						bubble_middle.find('touch-trolled').remove()
+						bubble_middle.append('<div class="touch-loved"></div>')
+					}else{
+						bubble_middle.find('touch-loved').remove()
+						bubble_middle.append('<div class="touch-trolled"></div>')
+					}
+				}
 			}
 		}
 
