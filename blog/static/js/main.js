@@ -737,7 +737,7 @@ $(document).ready(function() {
 				
 				Vote.makeVote(obj)
 				
-				el.append('<div class="touch-loved"></div>')
+				//el.append('<div class="touch-loved"></div>')
 				
 			}else if(el.parent().find('.swipe-troll').width() == 60){
 				var option_data = "TR",
@@ -746,7 +746,7 @@ $(document).ready(function() {
 				
 				Vote.makeVote(obj)
 				
-				el.append('<div class="touch-trolled"></div>')
+				//el.append('<div class="touch-trolled"></div>')
 			}
 			
 		
