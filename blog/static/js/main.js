@@ -658,9 +658,9 @@ $(document).ready(function() {
 				///if touch
 				if('ontouchstart' in document.documentElement){
 					if(post.option == "SE"){
-						bubble_middle.find('touch-loved').remove()
+						bubble_middle.find('.touch-loved').remove()
 					}else{
-						bubble_middle.find('touch-trolled').remove()
+						bubble_middle.find('.touch-trolled').remove()
 					}
 				}
 
@@ -670,10 +670,10 @@ $(document).ready(function() {
 				///if touch
 				if('ontouchstart' in document.documentElement){
 					if(post.option == "SE"){
-						bubble_middle.find('touch-trolled').remove()
+						bubble_middle.find('.touch-trolled').remove()
 						bubble_middle.append('<div class="touch-loved"></div>')
 					}else{
-						bubble_middle.find('touch-loved').remove()
+						bubble_middle.find('.touch-loved').remove()
 						bubble_middle.append('<div class="touch-trolled"></div>')
 					}
 				}
