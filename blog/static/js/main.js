@@ -140,6 +140,7 @@ $(document).ready(function() {
 		var _closeThread = function(){
 			var thread_id = $('#thread-div-pop').find(".post-user").data("thread"),
 				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px",
+				this_thread_height = $("#" + thread_id).height() + 'px',
 				center_check = $(".center").width() / $(window).width(),
 				wrapper = $("#thread-wrapper-pop"),
 				div = $("#thread-div-pop");
@@ -148,14 +149,14 @@ $(document).ready(function() {
 		
 			if(center_check == 1){
 		
-				div.css({width:"100%", left:"0", height:"168px",top:this_thread_position});
+				div.css({width:"100%", left:"0", height:this_thread_height, top:this_thread_position});
 			
 			}else if(center_check < 1 && center_check > 0.5){	
 		
-				div.css({width:"68%", left:"42%", height:"168px",top:this_thread_position});
+				div.css({width:"68%", left:"42%", height:this_thread_height, top:this_thread_position});
 			
 			}else{
-				div.css({width:"45%", left:"33%", height:"168px",top:this_thread_position});
+				div.css({width:"45%", left:"33%", height:this_thread_height, top:this_thread_position});
 			}
 			
 			div.find(".details").css({height:"0px"});
