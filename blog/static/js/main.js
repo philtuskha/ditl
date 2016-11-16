@@ -67,7 +67,7 @@ $(document).ready(function() {
 				
 				$('body, html').resize(function(){
 					console.log($(window).innerHeight(), $(window).height())
-					$("#thread-div-pop").css({height:$(window).height()});
+					$("#thread-div-pop").css({height:$(window).innerHeight()});
 				})
 			}
 			
