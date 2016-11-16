@@ -909,7 +909,7 @@ $(document).ready(function() {
 			///make sure vote is represented visually for each response 
 			handle.find(".vote-list-response").each(function( index ) {
 				if('ontouchstart' in document.documentElement){
-					var vote_option = $(this).data("bind") == 'SE' ? '.touch-loved' : '.touch-trolled' 
+					var vote_option = $(this).data("bind") == 'SE' ? 'touch-loved' : 'touch-trolled' 
 					$(this).parent().parent().append('<div class="'+vote_option+'"></div>')
 				}else{
 					$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
