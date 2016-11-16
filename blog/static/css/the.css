@@ -985,6 +985,7 @@ background: #eee; /*#f3fee7;#e6fdcd; #e6f0ff; linear-gradient(top, #f9d835, #f39
 -ms-user-select: none;
 outline: 1px solid transparent;
 -webkit-backface-visibility: hidden;
+-webkit-transform: translateZ(0);
 }
 .bubble-middle p{
 padding:0px 0px 2px 0px;
