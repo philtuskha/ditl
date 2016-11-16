@@ -66,7 +66,7 @@ $(document).ready(function() {
 				});
 				
 				$('body, html').resize(function(){
-					$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
+					$("#thread-div-pop").css({height:'100vh'});
 				})
 			}
 			
