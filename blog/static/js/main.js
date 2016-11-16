@@ -1774,9 +1774,6 @@ $(document).ready(function() {
 			////try to target elements that need to change on resize
 			//ScrollToTop.init() 
 		
-			if(){
-				
-			}
 			
 			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
 			///phone
