@@ -8,7 +8,7 @@ $(document).ready(function() {
 			
 			///prevent body scrolling when popup shows
 			
-			$('body, html').css({overflow:'hidden', position:'relative', height:'100%'});
+			$('body, html').css({overflow:'hidden', position:'relative'});
 			
 			//transition magic
 			setTimeout(function () {
