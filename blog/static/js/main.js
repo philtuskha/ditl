@@ -8,7 +8,7 @@ $(document).ready(function() {
 			
 			///prevent body scrolling when popup shows
 			
-			$('body,html').css({overflow:'hidden'});
+			$('body').css({overflow:'hidden'});
 			
 			//transition magic
 			setTimeout(function () {
@@ -47,7 +47,7 @@ $(document).ready(function() {
 		}
 	
 		var _bindThreadEvents = function(handle){
-			//var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+		
 			var center_check = $(".center").width() / $(window).width();
 			
 			///////scroll to the bottom response on click
@@ -64,6 +64,10 @@ $(document).ready(function() {
 					$('#thread-div-pop').css({top:"0px"})
 					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
+				
+				$('body, html').resize(function(){
+					$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
+				})
 			}
 			
 			
@@ -1770,7 +1774,10 @@ $(document).ready(function() {
 			////try to target elements that need to change on resize
 			//ScrollToTop.init() 
 		
-		
+			if(){
+				
+			}
+			
 			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
 			///phone
 			if(center_check == 1){
