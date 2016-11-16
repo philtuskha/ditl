@@ -65,7 +65,7 @@ $(document).ready(function() {
 					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 				
-				$('body, html').resize(function(){
+				$(window).resize(function(){
 					console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
 						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
