@@ -111,6 +111,11 @@ $(document).ready(function() {
 					///prevent body from scrolling 
 					_stopMainScroll()
 					
+					/////bind swipe to responses
+					if('ontouchstart' in document.documentElement){
+						SwipeBubble.bind()
+					}
+					
 					handle.children().first().scrollTop(curr_position)
 					
 					if(reload){
