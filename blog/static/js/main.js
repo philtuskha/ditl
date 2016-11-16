@@ -8,7 +8,7 @@ $(document).ready(function() {
 			
 			///prevent body scrolling when popup shows
 			
-			$('body').css({overflow:'hidden'});
+			$('body, html').css({overflow:'hidden', position:'relative', height:'100%'});
 			
 			//transition magic
 			setTimeout(function () {
@@ -65,7 +65,7 @@ $(document).ready(function() {
 					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 				
-				
+				///fix iphone safari popup when scrollbars change
 				$(window).resize(function(){
 					console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
@@ -74,7 +74,6 @@ $(document).ready(function() {
 					
 				})
 			}
-			
 			
 			////attach character counter
 			Character.bindCharCount($("#id_text_r"))
