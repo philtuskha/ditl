@@ -535,7 +535,8 @@ transition:all .3s;
 .response-container {
 	height:100%;
     padding-bottom: 126px;
-	overflow:scroll;
+	overflow-y:scroll;
+	overflow-x:hidden;
 	-webkit-overflow-scrolling: touch;
 }
 
