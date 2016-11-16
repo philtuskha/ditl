@@ -68,9 +68,9 @@ $(document).ready(function() {
 				var last_height = $("#viewport").height()
 				$(window).resize(function(){
 					console.log($(window).height(), $("#viewport").height())
-					//setTimeout(function(){
+					setTimeout(function(){
 						$("#thread-div-pop").css({height:last_height+'px'});
-					//}, 30);
+					}, 500);
 					
 					last_height = $("#viewport").height()
 					
