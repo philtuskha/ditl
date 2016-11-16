@@ -66,7 +66,8 @@ $(document).ready(function() {
 				});
 				
 				$('body, html').resize(function(){
-					$("#thread-div-pop").css({height:'100vh'});
+					console.log($(window).innerHeight(), $(window).height())
+					$("#thread-div-pop").css({height:$(window).height()});
 				})
 			}
 			
