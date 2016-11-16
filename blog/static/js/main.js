@@ -6,9 +6,6 @@ $(document).ready(function() {
 			// use instead of settimeout to make magic transition happen
 			// window.getComputedStyle($(this)[0]);
 			
-			///prevent body scrolling when popup shows
-			
-			$('body, html').css({overflow:'hidden', position:'relative'});
 			
 			//transition magic
 			setTimeout(function () {
@@ -146,9 +143,6 @@ $(document).ready(function() {
 				center_check = $(".center").width() / $(window).width(),
 				wrapper = $("#thread-wrapper-pop"),
 				div = $("#thread-div-pop");
-			
-			//allow body scrolling
-			$('body, html').removeAttr("style");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
 		
@@ -917,7 +911,7 @@ $(document).ready(function() {
 			///make sure vote is represented visually for each response 
 			handle.find(".vote-list-response").each(function( index ) {
 				if('ontouchstart' in document.documentElement){
-					var vote_option = $(this).data("bind") == 'SE' ? 'touch-loved' : 'touch-trolled' 
+					var vote_option = $(this).data("bind") == 'SE' ? 'touch-loved' : $(this).data("bind") == 'SE' ? 'touch-trolled' 
 					$(this).parent().parent().append('<div class="'+vote_option+'"></div>')
 				}else{
 					$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
