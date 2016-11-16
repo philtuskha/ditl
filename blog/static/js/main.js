@@ -66,6 +66,7 @@ $(document).ready(function() {
 				});
 				
 				$('body, html').resize(function(){
+					console.log($(window).height(), $(window).innerHeight())
 					setTimeout(function(){
 						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
 					}, 30);
