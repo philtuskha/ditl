@@ -2,8 +2,8 @@
  <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
  <g>
   <title>Layer 1</title>
-  <ellipse ry="77.82628" rx="77.98117" id="svg_5" cy="79.4563" cx="79.49068" stroke-width="0" fill="#3f3f3f"/>
-  <text font-weight="bold" font-style="normal" fill="#fff" stroke-width="0" x="168.13943" y="248.04494" id="svg_2" font-size="24" font-family="Serif" text-anchor="middle" xml:space="preserve" transform="rotate(90 87.1348648071289,83.54151916503908) matrix(5.0872737787337465,0,0,5.0872737787337465,-768.1858194452448,-1137.963391115542) " stroke="#fff">:(</text>
-  <text font-weight="bold" font-style="normal" stroke="#fff" transform="rotate(90 70.99268341064455,34.60855865478516) matrix(2.2081704488020333,0,0,2.873028104974613,-18.66622351204061,-20.669626048018614) " xml:space="preserve" text-anchor="middle" font-family="Serif" font-size="24" id="svg_1" y="27.35901" x="41.01604" stroke-width="0" fill="#fff">&gt;</text>
+  <ellipse fill="#3f3f3f" stroke-width="0" cx="79.49068" cy="79.4563" id="svg_5" rx="77.98117" ry="77.82628"/>
+  <text stroke="#fff" transform="rotate(90 88.1120834350586,86.13490295410158) matrix(5.0872737787337465,0,0,5.0872737787337465,-768.1858194452448,-1137.963391115542) " xml:space="preserve" text-anchor="middle" font-family="Serif" font-size="24" id="svg_2" y="248.43808" x="168.336" stroke-width="0" fill="#fff" font-style="normal" font-weight="bold">:(</text>
+  <text fill="#fff" stroke-width="0" x="46.72544" y="23.11618" id="svg_1" font-size="24" font-family="Serif" text-anchor="middle" xml:space="preserve" transform="rotate(90 76.69641876220705,29.446071624755866) matrix(2.9410302775885104,0,0,3.212071616916763,-60.69284283453212,-19.73122611430989) " stroke="#fff" font-style="normal" font-weight="bold">&gt;</text>
  </g>
 </svg>
