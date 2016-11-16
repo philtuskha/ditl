@@ -251,7 +251,7 @@ $(document).ready(function() {
 				
 					if (value != ""){
 						pData[key] = value; //add to object
-		
+						console.log(key)
 						order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
 						order.html(order_text)
 						//sticky_order.html(order_text)
