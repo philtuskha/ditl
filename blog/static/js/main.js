@@ -740,12 +740,12 @@ $(document).ready(function() {
 					this_inside = el.find("#SE"),
 					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
 				
-				if(curr_vote == "SE"){
-					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
-					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
-				}else{
+				// if(curr_vote == "SE"){
+// 					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
+// 					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+// 				}else{
 					Vote.makeVote(obj)
-				}
+// 				}
 				
 				//el.append('<div class="touch-loved"></div>')
 				
