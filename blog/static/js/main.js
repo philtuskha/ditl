@@ -740,14 +740,7 @@ $(document).ready(function() {
 					this_inside = el.find("#SE"),
 					obj = [{"post": post_data, "option": option_data, "post_type": vote_type }, this_inside, curr_vote];
 				
-				// if(curr_vote == "SE"){
-// 					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
-// 					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
-// 				}else{
 					Vote.makeVote(obj)
-// 				}
-				
-				//el.append('<div class="touch-loved"></div>')
 				
 			}else if(el.parent().find('.swipe-troll').width() == 60){
 				var option_data = "TR",
@@ -762,7 +755,6 @@ $(document).ready(function() {
 					Vote.makeVote(obj)
 				}
 				
-				//el.append('<div class="touch-trolled"></div>')
 			}
 			
 		
@@ -916,7 +908,12 @@ $(document).ready(function() {
  		var _styleEach = function(handle){
 			///make sure vote is represented visually for each response 
 			handle.find(".vote-list-response").each(function( index ) {
+				if('ontouchstart' in document.documentElement){
+					var vote_option = $(this).data("bind") == 'SE' ? '.touch-loved' : '.touch-trolled' 
+					$(this).parent().parent().append('<div class="'+vote_option+'"></div>')
+				}else{
 					$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
+				}
 			});
 		}
 	
@@ -935,10 +932,11 @@ $(document).ready(function() {
 					message = "<h2>Three troll votes and this comment is deleted.<span></span></h2> <p>Are you sure you want to mark <br>this comment as Troll?</p>"
 					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
 		
-				}else if(option_data == "SE" && curr_vote == "SE"){
-					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
-					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
-				}else{
+				}// else if(option_data == "SE" && curr_vote == "SE"){
+// 					message = "<h2>You sure?<span></span></h2> <p>Deleting this vote takes a point away <br>from your ranking</p>"
+// 					Alert.loadAlert(['confirm', message, obj, Vote.makeVote])
+// 				}
+				else{
 					Vote.makeVote(obj)
 				}
 
