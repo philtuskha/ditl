@@ -462,7 +462,7 @@ def update_page(request):
     
     try:
         my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
-        print "HOLY HELL", my_last_thread 
+        
     except (IndexError, ValueError):
         my_last_thread = 0
         my_last_thread_responses = 0
@@ -476,7 +476,7 @@ def update_page(request):
         all_responses = Response.objects.all()
         my_thread_respo = all_responses.filter(author_id=request.user.id)   
         curr_thread_respo = my_thread_respo.filter(thread_id=my_last_thread.id)                            
-        my_last_thread_responses = my_thread_respo.exclude(author_id=request.user.id).count()
+        my_last_thread_responses = all_responses.filter(thread_id=my_last_thread.id).exclude(author_id=request.user.id).count()
         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).count()
         
         #check for new inactive reponses
@@ -485,7 +485,6 @@ def update_page(request):
         my_trolled = all_responses.filter(is_active=2).count()
         
         #you can do this better
-        
         x = 0
         for r in curr_thread_respo:
             x += RVote.objects.filter(post_id=r.id).count()
