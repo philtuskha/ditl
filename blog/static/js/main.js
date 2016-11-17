@@ -25,6 +25,7 @@ $(document).ready(function() {
 				handle.css({top:"0px", bottom:"0px"});
 				
 				$("#thread-div-pop .expand-right>li:nth-child(1)").css({height:"0px", "margin-bottom":"8px"})
+				$("#thread-div-pop .expand-right>li:nth-child(2)").css({"text-align":"right"})
 				$("#thread-div-pop .expand-left").css({width:"124px"})
 				$("#thread-div-pop .expand-left>li:nth-child(2)").css({width:"78px","padding-top":"6px"})
 				$("#thread-div-pop .expand-right").css({width:"calc(100% - 148px)"})
@@ -313,13 +314,24 @@ $(document).ready(function() {
 		}
 		
 		var showScrollToTop = function(el){
-			if($('.left-wrap').css('left') != "0px"){
+			///center_check
+			var center_check = $(".center").width() / $(window).width();
+			
+			var _show = function(){
 				if(el.scrollTop()  > $(window).height()){
 					$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:1, height:'50px'});
 				}else{
 					$('.scroll-to-top').css({transition : 'all 0.5s ease-in-out', opacity:0, height:'0px'});
-
 				}
+			}
+			
+			///determine phone or tablet/laptop
+			if(center_check == 1){
+				if($('.left-wrap').css('left') != "0px"){
+					_show();
+				}
+			}else{
+				_show();
 			}
 		}
 		
@@ -1888,7 +1900,17 @@ $(document).ready(function() {
 								
 					//update thread
 					if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
-						AllThreads.load('_', '_');	 
+						AllThreads.load('_', '_');
+						
+						///update open thread if any responses or votes have been made
+						var handle = $("#thread-div-pop").find('.details'),
+							curr_id = $("#thread-div-pop").children().first().data("thread");
+							
+						if($("#thread-div-pop").css("display") == "block"){
+							OneThread.loadCurrThread(curr_id, handle, false)
+					
+						}	 
+						
 					} 
 					//update user_view with scroll --- responses
 					if(data.my_last_thread_responses != last_state.my_last_thread_responses){
@@ -1898,21 +1920,14 @@ $(document).ready(function() {
 					if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
 						UserView.load($(".user-view").scrollTop(), false);
 					
-						var handle = $("#thread-div-pop").find('.details'),
-							curr_id = $("#thread-div-pop").children().first().data("thread");
-					
-						if($("#thread-div-pop").css("display") == "block"){
-							OneThread.loadCurrThread(curr_id, handle, false)
 						
-						}
 					}
 					if(data.timediff != last_state.timediff){
 						//update user clock
 						 Timer.addTime(data.timediff)
 					 
 					 }
-				
-				
+					 
 					//store in localStorage
 					localStorage.setItem('curr_page_state', JSON.stringify(data));
 				}

@@ -473,9 +473,8 @@ def update_page(request):
         my_trolled = 0
     
     else:
-        all_responses = Response.objects.all()
-        my_thread_respo = all_responses.filter(author_id=request.user.id)   
-        curr_thread_respo = my_thread_respo.filter(thread_id=my_last_thread.id)                            
+        all_responses = Response.objects.all()  
+        curr_thread_respo = all_responses.filter(thread_id=my_last_thread.id)                            
         my_last_thread_responses = all_responses.filter(thread_id=my_last_thread.id).exclude(author_id=request.user.id).count()
         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).count()
         
