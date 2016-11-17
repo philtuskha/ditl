@@ -358,8 +358,8 @@ $(document).ready(function() {
 				this_scroll = $(this).scrollTop()
 				scroll_diff = last_scroll - this_scroll
 		
-				_checkThreadsOnScroll($(this), scroll_diff)
-				showScrollToTop($(this))
+				//_checkThreadsOnScroll($(this), scroll_diff)
+				//showScrollToTop($(this))
 				
 				last_scroll = this_scroll
 			});
