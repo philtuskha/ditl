@@ -247,23 +247,24 @@ $(document).ready(function() {
 							my: "<div id='my'>my convos<div class='close-filter'></div></div>",
 							faves: "<div id='faves'>favorite users<div class='close-filter'></div></div>",
 							contains: '<div id="contains">"'+value+'"<div class="close-filter"></div></div>'
+						},
+						order_options = {
+							pop: "<div id='pop'>most popular <div class='close-filter'></div>",
+							pub: "<div id='pub'>ending soon <div class='close-filter'></div>"
 						};
 				
 					if (value != ""){
 						pData[key] = value; //add to object
-						console.log(key)
-						order_text = (key == "pop") ? "most popular" : (key == "pub") ? "ending soon" : "most recent" 
-						order.html(order_text)
-						//sticky_order.html(order_text)
-					
+						
+						order_text += (key == "pop") ? order_options.pop : (key == "pub") ? order_options.pub : "";
 						filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
 				
 					}	
 				}	
 			}
 			
+			order.html(order_text)
 			filter.html(filter_text)
-			//sticky_filter.html(filter_text)
 		
 			return pData
 		}
@@ -1514,7 +1515,6 @@ $(document).ready(function() {
 							localStorage.setItem(key,value);
 							AllThreads.load(key, value);
 							
-							console.log(key)
 							if(key == "pub" || key == "pop"){
 								this_div.parent().children().css({background:'transparent'});
 								
