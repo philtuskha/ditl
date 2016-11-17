@@ -253,7 +253,7 @@ $(document).ready(function() {
 							pub: "<div id='pub'>ending soon <div class='close-filter'></div>"
 						};
 				
-					if (value != ""){
+					if (value !== "" && value !== null){
 						pData[key] = value; //add to object
 						console.log("key: ",key,"value: ",value)
 						order_text += (key == "pop") ? order_options.pop : (key == "pub") ? order_options.pub : "";
