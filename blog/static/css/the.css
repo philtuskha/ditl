@@ -1034,7 +1034,7 @@ background:url(../img/ico/heart4.svg) center center/85% 85% no-repeat;
 .touch-trolled{
 position:absolute;
 right:1px;
-bottom:0px;
+bottom:1px;
 width:22px;
 height:22px;
 background:url(../img/ico/troll4.svg) center center/85% 85% no-repeat;
