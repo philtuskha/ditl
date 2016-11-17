@@ -64,7 +64,7 @@ $(document).ready(function() {
 				
 				///fix iphone safari popup when scrollbars change
 				$(window).resize(function(){
-					console.log($(window).height(), $("#viewport").height())
+					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
 						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
 					}, 300);
@@ -255,7 +255,7 @@ $(document).ready(function() {
 				
 					if (value !== "" && value !== null){
 						pData[key] = value; //add to object
-						console.log("key: ",key,"value: ",value)
+						//console.log("key: ",key,"value: ",value)
 						order_text += (key == "pop") ? order_options.pop : (key == "pub") ? order_options.pub : "";
 						filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
 				
@@ -287,7 +287,7 @@ $(document).ready(function() {
 				$("#search-text").attr("placeholder","Search")
 			}
 		
-			console.log($(".sorter").find("[data-"+el_parent_id+"]"))
+			//console.log($(".sorter").find("[data-"+el_parent_id+"]"))
 		}
 	
 		var _bindFilterClose = function(){
@@ -358,8 +358,8 @@ $(document).ready(function() {
 				this_scroll = $(this).scrollTop()
 				scroll_diff = last_scroll - this_scroll
 		
-				//_checkThreadsOnScroll($(this), scroll_diff)
-				//showScrollToTop($(this))
+				_checkThreadsOnScroll($(this), scroll_diff)
+				showScrollToTop($(this))
 				
 				last_scroll = this_scroll
 			});
@@ -389,7 +389,7 @@ $(document).ready(function() {
 				url: "/thread_list",
 				data: pData,
 				success: function(data) {
-					console.log("data length: ", data.length)
+					//console.log("data length: ", data.length)
 					var main_feed = $(".main-feed");
 				
 					if(pKey == "start_end" ){
@@ -603,7 +603,7 @@ $(document).ready(function() {
 					curr_container = key_target.parent().parent().prev(),
 					curr_scroll_top = curr_container.scrollTop();
 					
-				console.log(state)
+				//console.log(state)
 				$.ajax({
 					type: "POST",
 					url: "/ajax/add/",
@@ -738,7 +738,7 @@ $(document).ready(function() {
 				vote_type = el.find('.vote-list-response').data("type");
 				
 			/////vote after release
-			console.log(el.parent().find('.swipe-love').width(), el.parent().find('.swipe-troll').width())
+			//console.log(el.parent().find('.swipe-love').width(), el.parent().find('.swipe-troll').width())
 			if(el.parent().find('.swipe-love').width() == 60){
 				var option_data = "SE",
 					this_inside = el.find("#SE"),
@@ -780,7 +780,7 @@ $(document).ready(function() {
 			}
 				el.next().css({color:"#fff"})
 				bkg_opacity += 0.04
-			console.log(diff_pos)
+			//console.log(diff_pos)
 		}
 		
 		var _restoreBubble = function(el){
@@ -806,10 +806,10 @@ $(document).ready(function() {
 		}
 		
 		var bind = function(){
-			console.log("bound")
+			//console.log("bound")
 			$(".bubble-middle").on("touchstart", function(e){
 				origin_pos = e.originalEvent.touches[0].pageX;
-				console.log(e)
+				//console.log(e)
 			});
 			$(".bubble-middle").on("touchmove", function(e){
 				var pos = e.originalEvent.touches[0].pageX;
@@ -818,7 +818,7 @@ $(document).ready(function() {
 			$(".bubble-middle").on("touchend", function(e){
 				//var pos = e.originalEvent.touches[0].pageX;
 				_restoreBubble($(this))
-				console.log(e)
+				//console.log(e)
 			});
 			
 			///hide normal voting functionality
@@ -975,12 +975,12 @@ $(document).ready(function() {
 	var RestorePost = (function(){
 		
 		var _reloadHandle = function(handle){
-			console.log(handle)
+			//console.log(handle)
 			if (handle[0].className == "user-view"){
 				UserView.load($(".user-view").scrollTop(), false);
 			}else{
 				var curr_id = handle.parent().parent().find(".post-user").data("thread");
-				console.log(handle.parent().parent().parent().parent().parent(), curr_id)
+				//console.log(handle.parent().parent().parent().parent().parent(), curr_id)
 				OneThread.loadCurrThread(curr_id, handle, false)
 			}
 		}
@@ -995,7 +995,7 @@ $(document).ready(function() {
 				dataType: "json",
 				data: { "type": type, "post_id": post_id},
 				success: function(data) {
-					console.log(data.restored)
+					//console.log(data.restored)
 					if(data.restored == "true"){
 						_reloadHandle(handle)
 					}
@@ -1769,7 +1769,7 @@ $(document).ready(function() {
 	//////fix for #fixed-side & .post-form-container on resize of screen so either div is not ever hidden from view
 		$(window).resize(function(){
 			//$("#inner-height").html($(window).innerHeight())
-			console.log('resize')
+			//console.log('resize')
 			////try to target elements that need to change on resize
 			//ScrollToTop.init() 
 		
@@ -1884,7 +1884,7 @@ $(document).ready(function() {
 				data: last_state,
 				success: function(data) {
  
-					//console.log(data, last_state)	
+					console.log(data, last_state)	
 								
 					//update thread
 					if(data.last_thread != last_state.last_thread || data.last_response != last_state.last_response || data.last_tvote != last_state.last_tvote || data.last_rvote != last_state.last_rvote){
