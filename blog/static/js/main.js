@@ -255,7 +255,7 @@ $(document).ready(function() {
 				
 					if (value != ""){
 						pData[key] = value; //add to object
-						
+						console.log("key: ",key,"value: ",value)
 						order_text += (key == "pop") ? order_options.pop : (key == "pub") ? order_options.pub : "";
 						filter_text += (key == "my") ? filter_options.my : (key == "faves") ? filter_options.faves : (key == "contains") ? filter_options.contains : ""
 				
