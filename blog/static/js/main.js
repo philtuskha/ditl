@@ -1994,7 +1994,7 @@ $(document).ready(function() {
 						UserView.load($(".user-view").scrollTop(), true);
 					}
 					//update user_view without scroll --- votes --- deletes
-					if(data.my_last_thread_responses != last_state.my_last_thread_responses || data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
+					if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
 						UserView.load($(".user-view").scrollTop(), false);
 					
 						
