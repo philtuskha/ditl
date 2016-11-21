@@ -460,13 +460,15 @@ def update_page(request):
     last_tvote = return_last_id_from_table(TVote, 'last_tvote')
     last_rvote = return_last_id_from_table(RVote, 'last_rvote')
     
-    one_day = timezone.now() - timedelta(days=1)
+    #one_day = timezone.now() - timedelta(days=1)
+    my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
     
-    try:
-        #my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
-        my_last_thread = Thread.objects.filter(author_id=request.user.id, published_date__gte=one_day)[0]
-
-    except (IndexError, ValueError):
+    if not my_last_thread:
+    # try:
+#         #my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
+#         #my_last_thread = Thread.objects.filter(author_id=request.user.id, published_date__gte=one_day)[0]
+# 
+#     except (IndexError, ValueError):
         my_last_thread = 0
         my_last_thread_responses = 0
         my_last_thread_tvote = 0
