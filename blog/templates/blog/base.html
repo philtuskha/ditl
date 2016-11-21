@@ -15,7 +15,11 @@
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.min.js" integrity="sha256-mFypf4R+nyQVTrc8dBd0DKddGB5AedThU73sLmLWdc0=" crossorigin="anonymous"></script>
-        <script src="{% static 'js/main.js' %}"></script>
+        {% if user and not user.is_anonymous %}
+        	<script src="{% static 'js/main.js' %}"></script>
+        {% else %}
+        	<script src="{% static 'js/login.js' %}"></script>
+        {% endif %}
     </head>
     <body>
     <div id="fixed-top">
@@ -57,8 +61,9 @@
    		</div>
     </header>
 
-    <div class="content-wrap">
+    
 	{% if user and not user.is_anonymous %}
+	<div class="content-wrap">
 		<div class="left-wrap">
 			<div class="left-holder">
 				<div id="user-wrap">
@@ -109,36 +114,176 @@
 				<div class="close"></div>
 			</div>
 		</div>
+	</div>
 		
 		
 	{% else %}
-		<div  class="left-holder">
-			<div  class="main-feed" style="opacity:1">
-				<ul id="login">
-					<li class="fbook">
-						<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
-							Login with Facebook<br><br>
-							<img src="{% static 'img/ico/fbook.svg' %}"></img>
-						</a>
+		<div class="logged-out">
+			<ul id="login">
+				<li class="fbook">
+					<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+						<h3>Login With Facebook</h3>
+						<img src="{% static 'img/ico/fbook.svg' %}"></img>
+					</a>
+				</li>
+				<li class="googleplus">
+					<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+						<h3>Login With Google</h3>
+						<img src="{% static 'img/ico/googleplus.svg' %}"></img>
+					</a>
+				</li>
+			</ul>
+			<div id="login-about">
+				<h1>ABOUT</h1>
+				<p id="elevator">Day in the Life (ditl) is an anonymous self-policing group-texting web-app.</p>
+				<p>
+					The idea is that you post something out into the ether and you sit there until someone responds to your amazing thought.
+					Your post can literally be anything.  You can discuss dogs or cats or meaningless stuff, like politics.  
+					You can also like other users' posts or vote posts as troll if they are posting mean stuff.
+				<br><br><br>
+				</p>
+				<h1>Posting</h1>
+				<p id="elevator">Initiating</p>
+				<p>
+					Initiating a post happens on the 'User View' where you see the pretty countdown timer and your user name.
+					<ul>
+						<li>
+							You can only initiate one post per day starting whenever as long as you haven't posted something in 24hrs.  Your text will disappear after another 24hrs. 
+						</li>
+						<li>   
+							If no one responds to your post, you can delete it and post something better. 
+						</li>
+						<li> 
+							If someone does respond to your post you can still delete it for whatever reason, but you have to wait 24hrs from the time you initiated that post to post something else. 
+						</li>
+					</ul>
+					<br><br><br>
+				</p>
+				<p id="elevator">Responding</p>
+				<p>
+					You can respond to other users' posts on the Global View.  The Global View is list of all of the day's posts.
+					<ul>
+						<li>  
+							Click on the post that seems the most intriguing.  Write a response to it.
+						</li>
+						<li>  
+							Click on the second most intriguing text. Write a response to it. Keep doing this. We'll discuss ranking below.
+						</li>
+					</ul>      
+					<br><br><br>
+				</p>
+				<h1>Voting</h1>
+				<p id="elevator">Troll</p>
+				<p>Just don't be a troll. If you are all like, "beagles are dumb" people are going to jump all over you and mark your post as troll.  
+				<ul>
+					<li>
+						If your post gets marked as Troll by three different users, that text is going to be hidden for the rest of your life.
 					</li>
-					<li class="googleplus">
-						<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
-							Login with Google<br><br>
-							<img src="{% static 'img/ico/googleplus.svg' %}"></img>
-						</a>
+					<li>
+						If three of your posts are marked as troll in a day's time, you will be kicked off for 24hrs.
+					</li>
+					<li>
+						If you are just the mean spirited type and you comeback after being kicked off for a day to post a couple more troll comments, you will be kicked off for a week.
+						Whoops, you are just mean at that point. 
+					</li>
+					<li>
+						Also, Vigilante troll hunting is not permitted.  You are limited to making six troll votes a day.  
+						You probably don't need to be the only one out there finding the trolls.
 					</li>
 				</ul>
+				<br><br><br>
+				</p>
+				<p id="elevator">Like</p>
+				<p>When you like someone's post you are not only spreading the love you also increase your ranking as well as that user's ranking.
+					Swipe or click on the comment that sparks joy. That's it. 
+				<br><br><br>		
+				</p>
+				<h1>Ranking</h1>
+				<p id="elevator">Activity Ranking</p>
+				<p>
+					Your activity ranking is based on how much you post and vote for other users' posts in the past 14 days.
+					<ul>
+						<li>
+							Every post that you initiate is worth five points.					
+						</li>
+						<li>
+							Every response that you make is worth three points.
+						</li>
+						<li>
+							Every Like vote that you make is worth a point. 
+						</li>
+						<li>
+							Troll votes don't add to or detract from your ranking.  They just help keep the peace.
+						</li>
+					</ul>
+				<br><br><br>
+				</p>
+				<p id="elevator">Popularity Ranking</p>
+				<p>
+					Your Popularity Ranking is based on how many Responses and Likes your texts from the past 14 days get.  
+					Check your ranking by clicking the status menu on the top left.
+					
+					<ul>
+						<li>
+							Every response is worth three points.
+						</li>
+						<li>
+							Every like vote is worth a point. 
+						</li>
+						<li>
+							Troll votes don't detract from your ranking but they can get you kicked off.
+						</li>
+					</ul>
+				<br><br><br>
+				</p>
+				<h1>Sorting / Filtering</h1>
+				<p id="elevator">Sorting</p>
+				<p>
+				You can sort all the posts in Global View by these categories.....
+				
+					<ul>
+						<li>
+							Most recent (this is the default).
+						</li>
+						<li>
+							Most popular (posts with the most votes and responses). 
+						</li>
+						<li>
+							Ending Soon (posts that have the least time left on them).
+						</li>
+					</ul> 
+					<br><br><br>
+				<p>
+				<p id="elevator">Filtering</p>
+				<p>
+					You can narrow down the posts by these options.....
+					<ul>
+						<li>
+							Searching for keywords.
+						</li>
+						<li>
+							My conversations (posts that you have responded to). 
+						</li>
+						<li>
+							My favorite users (posts by users that you have responded to or voted for already).
+						</li>
+						<li>
+							Trending by keywords (the most popular subjects being talked about right now).
+						</li>
+					</ul> 
+				<br><br><br><br><br><br><br><br><br>
+				</p>
+				
 			</div>
 		</div>
-		<div class="center">
-			
+		<div id="home-screen-save">
+			<div>
+				<h4>Save to home screen </h4>
+				<div id="save-instructions"> Safari <span class="share"></span> /  Chrome <span class="three-dots"></span></div>
+			</div>
 		</div>
-		<!-- 
-<div class="sorter">
-		</div>
- -->
+		
 	{% endif %}	
-    </div>
     <div class="scroll-to-top"></div>
 	<div id="thread-div-pop" class="thread-pop">
 	

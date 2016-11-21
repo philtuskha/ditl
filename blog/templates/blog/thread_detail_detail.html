@@ -9,7 +9,7 @@
 			<p>{{ t.text|linebreaks }}</p>
 		</div>
 		<div class="date-user">
-			You posted at {{ t.published_date.time }} | {% get_votes t.pk t.tvote_set %}
+			You posted at  <div class="utc">{{ t.published_date | date:'G:i' }}</div> | {% get_votes t.pk t.tvote_set %}
 		</div>
 			
 		{% elif t.is_active == 1 %}
@@ -19,7 +19,7 @@
 				</p>
 			</div>	
 			<div class="date-user">
-				You posted at {{ t.published_date.time }} | {% get_votes t.pk t.tvote_set %}<br>
+				You posted at  <div class="utc">{{ t.published_date | date:'G:i' }}</div> | {% get_votes t.pk t.tvote_set %}
 				<br>There were comments on this thread. You have to<br>
 					wait until the thread has expired to post a new one.<br>
 					You can restore this thread by clicking on it.<br>
@@ -31,7 +31,7 @@
 				
 			</div>
 			<div class="date-user">
-				You posted at {{ t.published_date.time }} | {% get_votes t.pk t.tvote_set %}
+				You posted at <div class="utc">{{ t.published_date | date:'G:i' }}</div> | {% get_votes t.pk t.tvote_set %}
 				<br><br>Users can no longer post comments here.<br> 
 				 You have to wait until this thread has expired<br>
 				 to post a new thread.
@@ -44,14 +44,14 @@
 			<div class="bubble-middle">
 				<div class="respo-vote-right">
 					<ul class="vote-list-response" data-post="{{ t.pk }}" data-bind="{% get_user_votes t.pk t.tvote_set request.user %}" data-type="thread">
-						<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
+						<li id="SE" data-vote="SE"><div><span class="vote-heart"></span></div></li><li id="TR" data-vote="TR"><div><span class="vote-troll"></span></div></li>
 					</ul>
 				</div>
 		
 				<p>{{ t.text|linebreaks }}</p>
 			</div>
 			<div class="date-middle">
-				<span class="post-user-respo">User {{ t.author_id }}</span> posted at {{ t.published_date.time }} | {% get_votes t.pk t.tvote_set %}
+				<span class="post-user-respo">User {{ t.author_id }}</span> posted at <div class="utc">{{ t.published_date | date:'G:i' }}</div> | {% get_votes t.pk t.tvote_set %}
 			</div>
 			
 		{% elif t.is_active == 1 %}
@@ -70,7 +70,7 @@
 				<p>This thread has been marked as troll >:( </p>
 			</div>
 			<div class="date-middle">
-				<span class="post-user-respo">User {{ t.author_id }}</span> posted at {{ t.published_date.time }} | {% get_votes t.pk t.tvote_set %}
+				<span class="post-user-respo">User {{ t.author_id }}</span> posted at <div class="utc">{{ t.published_date | date:'G:i' }}</div> | {% get_votes t.pk t.tvote_set %}
 				<br><br>You can no longer post comments here. :(<br> 
 				 Scroll or use the menu to find other theads to post to.
 			</div>	
@@ -107,7 +107,7 @@
 					<div class="bubble-middle">
 						<div class="respo-vote-right">
 							<ul class="vote-list-response" data-post="{{ r.pk }}" data-bind="{% get_user_votes r.pk r.rvote_set request.user %}" data-type="response">
-								<li id="TR" data-vote="TR"><div>Troll</div></li><li id="SE" data-vote="SE"><div>Elf</div></li>
+								<li id="SE" data-vote="SE"><div><span class="vote-heart"></span></div></li><li id="TR" data-vote="TR"><div><span class="vote-troll"></span></div></li>
 							</ul>
 						</div>
 						<p>{{ r.text|linebreaks }}</p>
@@ -127,7 +127,7 @@
 			{% if r.author == user %}
 				{% if r.is_active == 0 %}
 					<div class="date-user">
-						You posted at {{ r.published_date.time }} | {% get_votes r.pk r.rvote_set %}
+						You posted at <div class="utc">{{ r.published_date | date:'G:i' }}</div> | {% get_votes r.pk r.rvote_set %}
 					</div>
 				{% elif r.is_active == 1 %}
 					<p class="date-user">
@@ -135,13 +135,13 @@
 					</p>
 				{% else %}
 					<div class="date-user">
-						You posted at {{ r.published_date.time }} | {% get_votes r.pk r.rvote_set %}
+						You posted at <div class="utc">{{ r.published_date | date:'G:i' }}</div> | {% get_votes r.pk r.rvote_set %}
 					</div>
 				{% endif %}
 			{% else %}
 				{% if r.is_active == 0 %}
 					<div class="date-middle">
-						<span class="post-user-respo">User {{ r.author_id }}</span> posted at {{ r.published_date.time }} | {% get_votes r.pk r.rvote_set %}
+						<span class="post-user-respo">User {{ r.author_id }}</span> posted at <div class="utc">{{ r.published_date | date:'G:i' }}</div> | {% get_votes r.pk r.rvote_set %}
 					</div>
 				{% elif r.is_active == 1 %}
 					<div class="date-middle">
@@ -149,7 +149,7 @@
 					</div>
 				{% else %}
 					<div class="date-middle">
-						<span class="post-user-respo">User {{ r.author_id }}</span> posted at {{ r.published_date.time }} | {% get_votes r.pk r.rvote_set %}
+						<span class="post-user-respo">User {{ r.author_id }}</span> posted at <div class="utc">{{ r.published_date | date:'G:i' }}</div> | {% get_votes r.pk r.rvote_set %}
 					</div>
 				{% endif %}
 			{% endif %}

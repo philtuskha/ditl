@@ -117,6 +117,9 @@ $(document).ready(function() {
 					///prevent body from scrolling 
 					_stopMainScroll()
 					
+					///convert to localtime
+					UTC2Local.convert(handle)
+					
 					/////bind swipe to responses
 					if('ontouchstart' in document.documentElement){
 						SwipeBubble.bind()
@@ -134,7 +137,10 @@ $(document).ready(function() {
 					
 					}
 				
-				}
+				},
+			error: function(){
+				AjaxError.alert();
+			}
 			})
 		}
 		
@@ -430,6 +436,11 @@ $(document).ready(function() {
 					
 					//cloning droptop and appending to sticky-top
 					_cloneDropTop()
+					
+					UTC2Local.convert(main_feed)
+				},
+				error: function(){
+				AjaxError.alert();
 				}
 			});
 		}
@@ -532,6 +543,9 @@ $(document).ready(function() {
 				////attach restore option to deleted posts
 				RestorePost.bind($(".user-view"));
 				
+				////adjust to local time
+				UTC2Local.convert($(".user-view"))
+				
 				/////bind swipe to responses
 				if('ontouchstart' in document.documentElement){
 					SwipeBubble.bind()
@@ -539,6 +553,9 @@ $(document).ready(function() {
 				
 				_cloneUserTop();
 
+				},
+				error: function(){
+				AjaxError.alert();
 				}
 			});
 		}
@@ -635,13 +652,13 @@ $(document).ready(function() {
 								_successThread(curr_id, handle);
 							
 							
-							}else{
-								///////throw error into custom error console (as of yet made), like inbox.google "offline"
-								alert('this post is not active')
 							}
 						}else{
 							Alert.loadAlert(['alert', data.message])
 						}
+					},
+					error: function(){
+						AjaxError.alert();
 					}
 				});
 			};
@@ -668,12 +685,18 @@ $(document).ready(function() {
 			////reset vote on ul data tag, reset all backgrounds to grey
 			obj[1].parent().data("bind", post.option);
 			obj[1].parent().children('li').each(function(){
-				 $(this).children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'});
+				 $(this).children("div:first").css({background:'#e6e6e6'});
+				 
+				 if($(this).children("div:first").children("span:first").hasClass('vote-heart-voted')){
+				 	$(this).children("div:first").children("span:first").removeClass('vote-heart-voted');
+				 }else if($(this).children("div:first").children("span:first").hasClass('vote-troll-voted')){
+				 	$(this).children("div:first").children("span:first").removeClass('vote-troll-voted');
+				 }
 			});
 
 			///check if post is deleted or not, style accordingly, set ul data tag to '' if deleted 
 			if(post.num < 0){
-				obj[1].children("div:first").css({background:'#e6e6e6', color:'#b3b3b3'}); //rgba(247, 245, 237,0.96)
+				obj[1].children("div:first").css({background:'#e6e6e6'}); //rgba(247, 245, 237,0.96) |||  , color:'#b3b3b3'
 				obj[1].parent().data("bind", '');
 				
 				///if touch
@@ -686,7 +709,13 @@ $(document).ready(function() {
 				}
 
 			}else{
-				obj[1].children("div:first").css({background:'#f28c8c', color:'#ffffff'});
+				if(post.option == "SE"){
+					obj[1].children("div:first").css({background:'#f28c8c'});
+					obj[1].children("div:first").children("span:first").addClass('vote-heart-voted');
+				}else{
+					obj[1].children("div:first").css({background:'#666'});
+					obj[1].children("div:first").children("span:first").addClass('vote-troll-voted');
+				}
 				
 				///if touch
 				if('ontouchstart' in document.documentElement){
@@ -726,8 +755,7 @@ $(document).ready(function() {
 		
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) { 
-					console.log(XMLHttpRequest.responseText.slice(0,34));
-					///////////this will return string 'IntegrityError' when the voter has voted for post already
+					AjaxError.alert();
 
 				}
 			});
@@ -908,6 +936,9 @@ $(document).ready(function() {
 					
 					}
 
+				},
+				error: function(){
+					AjaxError.alert();
 				}
 			});
 		}
@@ -928,7 +959,13 @@ $(document).ready(function() {
 					var vote_option = $(this).data("bind") == 'SE' ? 'touch-loved' : $(this).data("bind") == 'TR' ? 'touch-trolled' : ''; 
 					$(this).parent().parent().append('<div class="'+vote_option+'"></div>')
 				}else{
-					$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
+					if($(this).data("bind") == "SE"){
+						$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#f28c8c'})
+						$(this).find('#'+$(this).data("bind")).children("div:first").children("span:first").addClass('vote-heart-voted');
+					}else{
+						$(this).find('#'+$(this).data("bind")).children("div:first").css({background:'#666'})
+						$(this).find('#'+$(this).data("bind")).children("div:first").children("span:first").addClass('vote-troll-voted');
+					}
 				}
 			});
 		}
@@ -1011,6 +1048,9 @@ $(document).ready(function() {
 					if(data.restored == "true"){
 						_reloadHandle(handle)
 					}
+				},
+				error: function(){
+					AjaxError.alert();
 				}
 			});
 		}
@@ -1268,6 +1308,9 @@ $(document).ready(function() {
 				success: function(data) {
 					$("#keywords").html(data)
 					
+				},
+				error: function(){
+					AjaxError.alert();
 				}
 			});
 		}
@@ -1467,7 +1510,64 @@ $(document).ready(function() {
 	})();
 	
 	
+	var UTC2Local = (function(){
+		var d = new Date(),
+			n = d.getTimezoneOffset(),
+			hr_offset = n/60;
+			
+		var convert = function(parent){
+			
+			
+			var els = parent.find('.utc');
+			$.each(els, function(index, el){
+				
+				var el_html = el.textContent;
+				
+				//console.log(els, index, el.textContent)
+				
+				if(el_html.indexOf("am") == -1 || el_html.indexOf("pm") == -1){
+			
+					var time = el_html.split(':'),
+						int_hr = parseInt(time[0]);
+					
+					//adjust for military time
+					if(int_hr > 12){
+						var ps = "pm",
+						local_hr = (int_hr - 12) - hr_offset;
+					}else{
+						var ps = "am",
+						local_hr = int_hr - hr_offset;
+					}
+					
+					//adjust hrs
+					if(local_hr < 0){
+						local_hr = 12 - local_hr
+					}
+			
+					local_time = local_hr.toString() + ":" + time[1] + " " + ps;
+			
+					els[index].textContent = local_time;
+				}
+			})
+		}
+		
+		return{
+			convert:convert
+		}
+	
+	})();
+	
 
+	var AjaxError = (function(){
+		var alert = function(){
+			alert('error')
+		}
+		
+		return{
+			alert:alert
+		}
+	
+	})();
 	
 	
 	//init Sorter
@@ -1597,32 +1697,6 @@ $(document).ready(function() {
 		
 	})();
 
-/*
-	/////////search threads
-	(function(){
-		$('#search-text').on('focus', function(){
-			$(this).parent().css({background:"rgba(251, 249, 234, 0.5)"})
-			$(this).attr("placeholder", "Search")
-		})
-		$('#search-text').on('blur', function(){
-			$(this).parent().css({background:"transparent"})
-		})
-		$('#search-text').on('keydown', function(e){
-			if(e.keyCode == '13' ){	
-				e.preventDefault();
-				$(this).parent().attr("data-contains", $(this).val())
-				$(this).attr("placeholder", '"'+$(this).val()+'"')
-				AllThreads.load("contains", $(this).val());
-				$(this).val("")
-				$(this).blur()
-			}
-		});
-		$('#search-threads').click(function(){
-			AllThreads.load('contains', $(this).next().val());
-			$(this).next().val("")
-		})
-	})();
-*/
 	// CSRF code
 	(function(){
 		// CSRF code
@@ -1681,8 +1755,8 @@ $(document).ready(function() {
 
 			popUpWrapper.style.opacity = 0;
 			popUpDiv.style.opacity = 0;
-			popUpWrapper.style.left = "-40px";
-			popUpDiv.style.left = "-40px";
+			popUpWrapper.style.left = "-100%";
+			popUpDiv.style.left = "-100%";
 	
 			setTimeout(function () {
 				popUpWrapper.style.opacity = 1;
@@ -1735,6 +1809,9 @@ $(document).ready(function() {
 					_createPopUp(data, type);
 			
 					_bindClose()
+				},
+				error: function(){
+					AjaxError.alert();
 				}
 			});
 		
@@ -1836,7 +1913,7 @@ $(document).ready(function() {
 	
 	/////////Pretty Lights!!!
 	(function prettyTitle() {
-		$( "header span, .post-user p span").each(function(i, el){
+		$( "header span, .post-user p:nth-child(1) span").each(function(i, el){
 			var theSpan = $(this);
 			setTimeout(function(){
 		   	if(theSpan.parent().prop("tagName") == "P"){
@@ -1930,6 +2007,9 @@ $(document).ready(function() {
 					 
 					//store in localStorage
 					localStorage.setItem('curr_page_state', JSON.stringify(data));
+				},
+				error: function(){
+					AjaxError.alert();
 				}
 			});
 		}

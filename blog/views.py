@@ -677,8 +677,17 @@ def status(request):
 
 
 def home(request):
+    all_threads = Thread.objects.all()
+    last_14_days = timezone.now() - timezone.timedelta(days=14)
+    
+    #delete old threads
+    for at in all_threads:
+        if at.published_date < last_14_days:
+            at.delete()
+        
+
     #default load before ajax reload JIC
-    threads = Thread.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    threads = all_threads.filter(published_date__lte=timezone.now()).order_by('-published_date')
     
     #main thread form
     form = ThreadForm()
@@ -690,6 +699,8 @@ def home(request):
 
 
 def thread_list(request):
+    past_day = timezone.now() - timezone.timedelta(days=1)
+
     #if someone is logged in
     if request.user.id:
         kwargs = {}
@@ -738,24 +749,7 @@ def thread_list(request):
             fave_list = find_faves(request.user.id)
             
             kwargs[request.GET.get('faves')] = fave_list
-            
-            '''
-            my_faves = UserProfile.objects.get(user_id=request.user.id).favorites
-            
-            if my_faves: 
-                fave_dict = json.loads(my_faves)
-                fave_list_tuples = sorted(fave_dict.items(), key=lambda x: x[1], reverse=False)
-                fave_list = []
-                for x in fave_list_tuples:
-                    if x[1] > 0:
-                        fave_list.append(x[0])
-            
-                kwargs[request.GET.get('faves')] = fave_list
-                
-            else:
-                kwargs[request.GET.get('faves')] = [0] #filter by a non user
-                
-            '''   
+              
         #my conversations        
         if request.GET.get('my'):
             kwargs[request.GET.get('my')] = request.user.id
@@ -768,7 +762,7 @@ def thread_list(request):
     #         if not request.GET.get('pop'):
             args.append('-published_date')
         
-        threads=Thread.objects.filter(published_date__lte=timezone.now()).filter(**kwargs).order_by(*args)
+        threads=Thread.objects.filter(published_date__gte=past_day).filter(**kwargs).order_by(*args)
     
         #check to see if user has posted any threads
         my_threads = Thread.objects.filter(author_id=request.user.id)

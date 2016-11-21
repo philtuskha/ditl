@@ -3,7 +3,7 @@
 	{% for thread in threads %}
 	
 	<div class="thread" id="{{ thread.pk }}">
-		<div class="post-user" data-thread="{{ thread.pk }}"> <p><span>U</span><span>s</span><span>e</span><span>r</span> <span>{{ thread.author_id }}</span></p> <p>posted at {{ thread.published_date.time }} today</p></div>
+		<div class="post-user" data-thread="{{ thread.pk }}"> <p><span>U</span><span>s</span><span>e</span><span>r</span> <span>{{ thread.author_id }}</span></p> <p>posted at <span class="utc">{{ thread.published_date | date:'G:i' }}</span> today</p></div>
 		<div class="expand">
 			<ul class="expand-left">
 				<li>
