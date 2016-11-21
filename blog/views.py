@@ -472,7 +472,7 @@ def update_page(request):
 
     except (IndexError, ValueError):
         my_last_thread = 0
-        my_last_thread_responses = request.user.id
+        my_last_thread_responses = 0
         my_last_thread_tvote = 0
         my_last_thread_rvote = 0
         my_thread_active = 0

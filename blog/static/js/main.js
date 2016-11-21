@@ -139,7 +139,7 @@ $(document).ready(function() {
 				
 				},
 			error: function(){
-				AjaxError.alert();
+				AjaxError.show();
 			}
 			})
 		}
@@ -440,7 +440,7 @@ $(document).ready(function() {
 					UTC2Local.convert(main_feed)
 				},
 				error: function(){
-				AjaxError.alert();
+				AjaxError.show();
 				}
 			});
 		}
@@ -555,7 +555,7 @@ $(document).ready(function() {
 
 				},
 				error: function(){
-				AjaxError.alert();
+				AjaxError.show();
 				}
 			});
 		}
@@ -658,7 +658,7 @@ $(document).ready(function() {
 						}
 					},
 					error: function(){
-						AjaxError.alert();
+						AjaxError.show();
 					}
 				});
 			};
@@ -755,7 +755,7 @@ $(document).ready(function() {
 		
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) { 
-					AjaxError.alert();
+					AjaxError.show();
 
 				}
 			});
@@ -938,7 +938,7 @@ $(document).ready(function() {
 
 				},
 				error: function(){
-					AjaxError.alert();
+					AjaxError.show();
 				}
 			});
 		}
@@ -1050,7 +1050,7 @@ $(document).ready(function() {
 					}
 				},
 				error: function(){
-					AjaxError.alert();
+					AjaxError.show();
 				}
 			});
 		}
@@ -1310,7 +1310,7 @@ $(document).ready(function() {
 					
 				},
 				error: function(){
-					AjaxError.alert();
+					AjaxError.show();
 				}
 			});
 		}
@@ -1559,12 +1559,12 @@ $(document).ready(function() {
 	
 
 	var AjaxError = (function(){
-		var alert = function(){
+		var show = function(){
 			alert('error')
 		}
 		
 		return{
-			alert:alert
+			show:show
 		}
 	
 	})();
@@ -1811,7 +1811,7 @@ $(document).ready(function() {
 					_bindClose()
 				},
 				error: function(){
-					AjaxError.alert();
+					AjaxError.show();
 				}
 			});
 		
@@ -1994,7 +1994,7 @@ $(document).ready(function() {
 						UserView.load($(".user-view").scrollTop(), true);
 					}
 					//update user_view without scroll --- votes --- deletes
-					if(data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
+					if(data.my_last_thread_responses != last_state.my_last_thread_responses || data.my_last_thread_tvote != last_state.my_last_thread_tvote || data.my_last_thread_rvote != last_state.my_last_thread_rvote || data.my_deleted != last_state.my_deleted  || data.my_trolled != last_state.my_trolled || data.my_thread_active != last_state.my_thread_active){
 						UserView.load($(".user-view").scrollTop(), false);
 					
 						
@@ -2009,7 +2009,7 @@ $(document).ready(function() {
 					localStorage.setItem('curr_page_state', JSON.stringify(data));
 				},
 				error: function(){
-					AjaxError.alert();
+					AjaxError.show();
 				}
 			});
 		}
