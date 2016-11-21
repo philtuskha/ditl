@@ -463,7 +463,7 @@ def update_page(request):
     one_day = timezone.now() - timedelta(days=1)
     
     try:
-        my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
+        #my_last_thread = Thread.objects.filter(author_id=request.user.id).order_by("pk").reverse()[0]
         my_last_thread = Thread.objects.filter(author_id=request.user.id, published_date__gte=one_day)[0]
 
     except (IndexError, ValueError):
