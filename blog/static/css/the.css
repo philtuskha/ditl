@@ -155,6 +155,16 @@ vertical-align:top;
 display:inline-block;
 margin:12px 10px;
 }
+#rank-ico{
+height:36px;
+width:48px;
+background:url(../img/ico/bar_graph.svg) center center/60% 60% no-repeat;
+}
+#bell-ico{
+height:36px;
+width:48px;
+background:url(../img/ico/bell.svg) center center/47% 47% no-repeat;
+}
 #fixed-top-right ul{
 text-align:right;
 }
@@ -172,16 +182,17 @@ cursor:pointer;
 #posts-ico{
 height:36px;
 width:48px;
-background:url(../img/ico/globe2.svg) 8px 8px /54% 54% no-repeat;
+background:url(../img/ico/globe3.svg) center center /52% 52% no-repeat;
 }
 #compose-ico{
 height:36px;
 width:48px;
-background:url(../img/ico/compose.svg) 2px center/80% 80% no-repeat;
+background:url(../img/ico/compose2.svg) center center/66% 66% no-repeat;
 }
 #fixed-top-right ul li a{
 display:inline-block;
 margin:12px 8px;
+font-weight:bold;
 }
 
 #fixed-top, #fixed-top a, #fixed-top h1 a:visited, #fixed-top h1 a:active {
@@ -192,7 +203,7 @@ color:#ffffff;
 display:none;
 width:40px;
 height:36px;
-background:url(../img/ico/texts.svg) center center/80% 80% no-repeat;
+background:url(../img/ico/texts.svg) center 20%/80% 80% no-repeat;
 display:inline-block;
 -moz-transform: scale(-1, 1);
 -webkit-transform: scale(-1, 1);
@@ -1497,7 +1508,7 @@ z-index:100;
 background:#fff;
 opacity:0;
 left:-400px;
-transition:all 700ms;
+transition:all 400ms;
 padding:0;
 box-shadow: 5px 0 10px -4px rgba(64,64,64,0.2);
 }
