@@ -503,7 +503,7 @@ def update_page(request):
     else:
         timediff = 0
     
-    troll_check(request.user.id)
+    #troll_check(request.user.id)
         
       
     data = {'last_thread': last_thread, 
