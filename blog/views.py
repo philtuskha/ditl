@@ -482,7 +482,7 @@ def update_page(request):
     else:
         all_responses = Response.objects.all()  
         curr_thread_respo = all_responses.filter(thread_id=my_last_thread.id)                            
-        my_last_thread_responses = curr_thread_respo.count() #.exclude(author_id=request.user.id)
+        my_last_thread_responses = curr_thread_respo.exclude(author_id=request.user.id).count()
         my_last_thread_tvote = TVote.objects.filter(post_id=my_last_thread.id).count()
         
         #check for new inactive reponses
