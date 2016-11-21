@@ -1,3 +1,18 @@
-
-{{user}}
+<div>
+	{% for r in responses %}
+		{% if r.user_id %}
+			{% if r.author_id == user %}
+			<div class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+			{% else %}
+			<div style="background:cyan" class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+			{% endif %}
+		{% else %}
+			{% if r.author_id == user %}
+			<div class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+			{% else %}
+			<div style="background:magenta" class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+</div>
 

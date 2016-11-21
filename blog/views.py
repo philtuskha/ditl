@@ -10,6 +10,8 @@ from .forms import ThreadForm, TVoteForm, ResponseForm, RVoteForm
 from django.contrib.auth.models import Permission
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from django.utils.html import strip_tags
+from itertools import chain
+from operator import attrgetter
 
 #attach this to log in/page load/user_view. Attach another check to add posts and vote that initially checks the user profile for the date they get reinstated 
 def troll_check(user_id):
@@ -586,9 +588,50 @@ def keywords(request):
 
 
 def notifications(request):
-    pass
-    # user = request.user
-#     return render(request,'blog/notifications.html',{'user':user})
+    user = request.user.id
+    notif_list = []
+    all_threads = Thread.objects.all()
+    
+    my_last_thread = all_threads.filter(author_id=user).latest('published_date')
+    responses = Response.objects.all()
+    
+    #t_votes = th.tvote_set.filter(option="SE").count()
+    
+    curr_thread_respo = responses.filter(thread_id=my_last_thread.id).exclude(author_id=user)
+    
+    my_respo = responses.filter(author_id=user)
+    
+    my_rvotes = RVote.objects.all()
+    
+    my_tvotes = TVote.objects.all()
+    
+    combined = curr_thread_respo | my_respo
+    
+    #responses = responses.order_by('published_date').reverse()
+    
+    # descending order , my_rvotes, my_rvotes
+    responses = sorted(
+        chain(curr_thread_respo, my_respo, all_threads),
+        key=attrgetter('published_date'),
+        reverse=True)
+    
+        
+    
+    
+    
+    
+    
+    
+    '''
+    look through all responses and see if anyone left a comment directly after your response
+    
+    "      "    "     "       "     "      "  voted for your comment
+    
+    '''
+    
+    
+    
+    return render(request,'blog/notifications.html',{'user':user,'responses':responses})
 
 def status(request):
     if request.user.id:
