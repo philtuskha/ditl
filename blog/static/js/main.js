@@ -1349,7 +1349,7 @@ $(document).ready(function() {
 				console.log(el_parent[0].self)
 			}else{
 				
-				var position = el.offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height() ? el.offset().top - (scroll_el.offset().top + 20) : scroll_el.prop('scrollHeight') - el_parent.height();
+				var position = el.parent().parent().offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height() ? el.parent().parent().offset().top - (scroll_el.offset().top + 20) : scroll_el.prop('scrollHeight') - el_parent.height();
 				console.log(el.parent().parent().offset().top, scroll_el.offset().top )
 			}
 			
