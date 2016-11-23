@@ -1,6 +1,8 @@
 from django import template
 from django.utils import timezone
 import datetime
+from blog.models import Thread, Response
+
 
 register = template.Library()
 
@@ -38,14 +40,20 @@ def get_votes_r(post_id, set, user):
 		return x[0].option
 		
 		
-@register.simple_tag
-def split_vote(string, num):
-	vote_list = str(string).split("|")
-	return vote_list[num]
+# @register.simple_tag
+# def split_vote(string, num):
+# 	vote_list = str(string).split("|")
+# 	return vote_list[num]
 
 @register.simple_tag
-def next_response(id):
-	return int(id) + 1		
+def get_respo_title(id):
+	x = Response.objects.get(pk=id)
+	return x
+	
+@register.simple_tag
+def get_thread_title(id):
+	x = Thread.objects.get(pk=id)
+	return x		
 		
 @register.simple_tag
 def get_votes(post_id, set):

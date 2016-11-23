@@ -82,7 +82,7 @@ class TVote(models.Model):
 		self.save()
 	
 	def __str__(self):
-		return "%s|%s|%s|tvote" % (self.option, self.post, self.post.id)
+		return "tvote" #% (self.option, self.post.id)
 		
 
 class RVote(models.Model):
@@ -101,7 +101,7 @@ class RVote(models.Model):
 		self.save()
 	
 	def __str__(self):
-		return "%s|%s|%s|rvote" % (self.option, self.post, self.post.id)
+		return "rvote" #% (self.option, self.post.id)
 	
 	
         

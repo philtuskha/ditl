@@ -7,22 +7,28 @@
 			{% if r.user_id %}
 				{% if r.option == "SE" %}
 			
-				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{% split_vote r 3 %}">
+				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-heart"></span>
-						<p>{% split_vote r 1 %}</p>
-						
-						
+						{% if r == "rvote" %}
+							<p>{% get_respo_title r.post_id %}</p>
+						{% else %}
+							<p>{% get_thread_title r.post_id %}</p>
+						{% endif %}
 					</li>
 					<li>
 						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
 					</li>
 				</ul>
 				{% else %}
-				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{% split_vote r 3 %}">
+				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-troll"></span>
-						<p>{% split_vote r 1 %}</p>
+						{% if r == "rvote" %}
+							<p>{% get_respo_title r.post_id %}</p>
+						{% else %}
+							<p>{% get_thread_title r.post_id %}</p>
+						{% endif %}
 					</li>
 					<li>
 						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
