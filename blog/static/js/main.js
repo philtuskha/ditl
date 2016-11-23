@@ -1353,6 +1353,7 @@ $(document).ready(function() {
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
+				console.log((el.parent().parent().parent().attr('class') == 'middle-box'), el.parent().parent().parent().attr('class'),el.parent().parent().parent())
 				var to_highlight = (el.parent().parent().parent().attr('class') == 'middle-box') ? (el.parent().parent().parent()) : (el.parent().parent());
 				_highlight(to_highlight);
 				return false;
