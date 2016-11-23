@@ -1342,6 +1342,7 @@ $(document).ready(function() {
 		
 		var _scrollToEl = function(el, scroll_el, el_parent){
 			///check if it is the window
+			
 			console.log(el_parent[0].self == el_parent[0])
 			if(el_parent[0].self == el_parent[0]){
 				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
@@ -1353,7 +1354,7 @@ $(document).ready(function() {
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
-				console.log((el.parent().parent().parent().attr('class') == 'middle-box'), el.parent().parent().parent().attr('class'),el.parent().parent().parent())
+				console.log((el.parent().parent().parent().attr('class') == 'middle-box'), el.parent().parent().parent().attr('class'), el.parent().parent().parent())
 				var to_highlight = (el.parent().parent().parent().attr('class') == 'middle-box') ? (el.parent().parent().parent()) : (el.parent().parent());
 				_highlight(to_highlight);
 				return false;
