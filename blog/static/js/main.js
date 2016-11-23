@@ -1343,7 +1343,7 @@ $(document).ready(function() {
 		var _scrollToEl = function(el, scroll_el, el_parent){
 			///check if it is the window
 			
-			console.log(el_parent[0].self == el_parent[0])
+			console.log(scroll_el)
 			if(el_parent[0].self == el_parent[0]){
 				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
 
