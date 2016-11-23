@@ -1342,18 +1342,20 @@ $(document).ready(function() {
 		
 		var _scrollToEl = function(el, scroll_el, el_parent){
 			///check if it is the window
+			console.log(el_parent[0].self == el_parent[0])
 			if(el_parent[0].self == el_parent[0]){
 				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
 
 			}else{
+				
 				var position = (el.offset().top - scroll_el.offset().top - 15) < scroll_el.prop('scrollHeight') - el_parent.height() ? (el.offset().top - scroll_el.offset().top - 15) : scroll_el.prop('scrollHeight') - el_parent.height();
 			
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
-				var to_highlight = el.parent().parent().parent().attr('class') == 'middle-box' ? el.parent().parent().parent() : el.parent().parent()
-				_highlight(to_highlight)
-				return false;
+				var to_highlight = el.parent().parent().parent().attr('class') == 'middle-box' ? el.parent().parent().parent() : el.parent().parent();
+				_highlight(to_highlight);
+				//return false;
 			});
 			
 		}
@@ -1422,7 +1424,7 @@ $(document).ready(function() {
 			
 			}else if(center_check == 1  && toggled != '0px' && curr_thread != id_check){
 				_openThread(type, pk, thread_id)
-				console.log($('#thread-div-pop').find('.details'))
+				//console.log($('#thread-div-pop').find('.details'))
 				//setTimeout(function(){
 				thread_div_pop.one("transitionend", function(){
 					_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), $('#thread-div-pop').find('.details'));
