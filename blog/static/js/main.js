@@ -1346,11 +1346,11 @@ $(document).ready(function() {
 			console.log(scroll_el)
 			if(el_parent[0].self == el_parent[0]){
 				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
-
+				console.log(el_parent[0].self)
 			}else{
 				
 				var position = (el.offset().top - scroll_el.offset().top - 15) < scroll_el.prop('scrollHeight') - el_parent.height() ? (el.offset().top - scroll_el.offset().top - 15) : scroll_el.prop('scrollHeight') - el_parent.height();
-			
+				console.log(position)
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
