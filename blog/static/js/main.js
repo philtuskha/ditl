@@ -1349,8 +1349,8 @@ $(document).ready(function() {
 				console.log(el_parent[0].self)
 			}else{
 				
-				var position = (el.offset().top - scroll_el.offset().top - 15) < scroll_el.prop('scrollHeight') - el_parent.height() ? (el.offset().top - scroll_el.offset().top - 15) : scroll_el.prop('scrollHeight') - el_parent.height();
-				console.log(position)
+				var position = el.offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height() ? el.offset().top - (scroll_el.offset().top + 20) : scroll_el.prop('scrollHeight') - el_parent.height();
+				console.log(el.offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height(), scroll_el.prop('scrollHeight'), scroll_el[0].scrollHeight)
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
