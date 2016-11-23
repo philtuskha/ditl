@@ -1341,7 +1341,8 @@ $(document).ready(function() {
 		}
 		
 		var _scrollToEl = function(el, scroll_el, el_parent){
-			///check if it is the window
+			var to_highlight = (el.parent().parent().parent().attr('class') == 'middle-box') ? (el.parent().parent().parent()) : (el.parent().parent());
+
 			
 			console.log(scroll_el)
 			if(el_parent[0].self == el_parent[0]){
@@ -1349,13 +1350,12 @@ $(document).ready(function() {
 				console.log(el_parent[0].self)
 			}else{
 				
-				var position = el.parent().parent().offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height() ? el.parent().parent().offset().top - (scroll_el.offset().top + 20) : scroll_el.prop('scrollHeight') - el_parent.height();
+				var position = (to_highlight.offset().top - scroll_el.offset().top) < scroll_el.prop('scrollHeight') - el_parent.height() ? (to_highlight.offset().top - scroll_el.offset().top) : scroll_el.prop('scrollHeight') - el_parent.height();
 				console.log(el.parent().parent().offset().top, scroll_el.offset().top )
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
 				console.log((el.parent().parent().parent().attr('class') == 'middle-box'), el.parent().parent().parent().attr('class'), el.parent().parent().parent())
-				var to_highlight = (el.parent().parent().parent().attr('class') == 'middle-box') ? (el.parent().parent().parent()) : (el.parent().parent());
 				_highlight(to_highlight);
 				return false;
 			});
