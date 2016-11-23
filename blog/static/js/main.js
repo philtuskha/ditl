@@ -136,10 +136,10 @@ $(document).ready(function() {
 						
 					
 					}
-					
-					$('#thread-div-pop').find('.response-container').on('scroll', function(){
-						console.log($(this).scrollTop(), $(this).offset().top )
-					});
+					// 
+// 					$('#thread-div-pop').find('.response-container').on('scroll', function(){
+// 						console.log($(this).scrollTop(), $(this).offset().top )
+// 					});
 				
 				},
 			error: function(){
