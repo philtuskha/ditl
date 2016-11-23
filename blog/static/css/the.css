@@ -1538,7 +1538,7 @@ overflow:scroll;
 height:calc(100vh - 111px);
 -webkit-overflow-scrolling: touch;
 }
-#status p{
+#status p.small{
 padding:6px 12px;
 }
 #status h1, #status h2, #status h3, #status h4{
@@ -1586,8 +1586,11 @@ text-align:right;
 #status h2 span, #status h3 span, #status h4 span{
 color:#ef7578;/* #ffbaa2; */
 }
-
+#status p.small{
+padding:6px 12px;
+}
 #status p.large{
+padding:6px 12px;
 font-size:16px;
 font-weight:bold;
 }
@@ -1652,7 +1655,63 @@ height:100vh;
 z-index:-1;
 }
  */
- 
+ul.notify{
+padding:6px;
+border-bottom:1px solid #e6e6e6;
+list-style:none;
+cursor:pointer;
+transition:background 0.3s;
+}
+ul.notify:hover{
+background:#ffc7b3;
+
+}
+ul.notify li{
+display:inline-block;
+vertical-align:top;
+}
+ul.notify li:nth-child(1){
+width:calc(70% - 6px);
+}
+ul.notify li:nth-child(2){
+width:calc(30% - 6px);
+color:#999;
+}
+
+ul.notify li span{
+display:inline-block;
+vertical-align:top;
+height:14px;
+width:14px;
+margin:4px 10px 18px;
+}
+ul.notify li p{
+display:inline-block;
+vertical-align:top;
+padding:6px 0;
+margin:0;
+width:calc(100% - 38px);
+}
+ul.notify li div.utc{
+display:inline-block;
+margin:6px 0;
+}
+.notify li:nth-child(2){
+text-align:right;
+}
+.notify-heart{
+background:url(../img/ico/heart4.svg) center center/100% 100% no-repeat;
+}
+.notify-troll{
+background:url(../img/ico/troll5.svg) center center/100% 100% no-repeat;
+}
+.notify-response{
+background:url(../img/ico/response.svg) center center/100% 100% no-repeat;
+}
+.notify-thread{
+background:url(../img/ico/thread.svg) center center/100% 100% no-repeat;
+}
+
 .sticky-top{
 position:fixed;
 top:36px;
@@ -1726,6 +1785,41 @@ height:12px;
 background:url(../img/ico/three_dots.svg) center center/100% 100% no-repeat;
 margin-top:3px;
 }
+#tap{
+position:fixed;
+left:-100px;
+top:-100px;
+z-index:1000;
+width:0px;
+height:0px;
+border-radius:50%;
+background:#fef8cd;
+-webkit-filter: blur(15px);
+  -moz-filter: blur(15px);
+  -o-filter: blur(15px);
+  -ms-filter: blur(15px);
+  filter: blur(15px);
+transition:height
+}
+/* 
+#highlight{
+position:fixed;
+left:100px;
+top:100px;
+z-index:1000;
+width:100px;
+height:100px;
+border:8px solid #fef8cd;
+ */
+/* 
+-webkit-filter: blur(8px);
+  -moz-filter: blur(8px);
+  -o-filter: blur(8px);
+  -ms-filter: blur(8px);
+  filter: blur(8px);
+ */
+/* transition:height 1s, width 1s, left 1s, top 1s;
+} */
 /* 
 #home-screen-save>div:after{
 content: "";

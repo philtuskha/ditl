@@ -136,6 +136,10 @@ $(document).ready(function() {
 						
 					
 					}
+					
+					$('#thread-div-pop').find('.response-container').on('scroll', function(){
+						console.log($(this).scrollTop(), $(this).offset().top )
+					});
 				
 				},
 			error: function(){
@@ -1082,9 +1086,9 @@ $(document).ready(function() {
 		var myScroller = function(element, position){
 			//_bindElOff(element);
 
-		element.animate({ scrollTop: position }, 1000, 'easeOutCirc', function(){
-			//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
-		});
+			element.animate({ scrollTop: position }, 1000, 'easeOutCirc', function(){
+				//element.off("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove");
+			});
 
 		   return false; 
 
@@ -1319,7 +1323,138 @@ $(document).ready(function() {
 			load: load
 		}
     })();
+	
 
+	var Notify = (function(){
+		
+		var _highlight = function(el){
+			
+			el.css({transition:"background 0.7s", background:"#fef8cd"})
+			el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+				setTimeout(function(){
+					el.css({background:"#fff"})
+					el.one("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+						el.removeAttr('style')
+					});
+				},1000)
+			});
+		}
+		
+		var _scrollToEl = function(el, scroll_el, el_parent){
+			///check if it is the window
+			if(el_parent[0].self == el_parent[0]){
+				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
+
+			}else{
+				var position = (el.offset().top - scroll_el.offset().top - 15) < scroll_el.prop('scrollHeight') - el_parent.height() ? (el.offset().top - scroll_el.offset().top - 15) : scroll_el.prop('scrollHeight') - el_parent.height();
+			
+			}
+			
+			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
+				var to_highlight = el.parent().parent().parent().attr('class') == 'middle-box' ? el.parent().parent().parent() : el.parent().parent()
+				_highlight(to_highlight)
+				return false;
+			});
+			
+		}
+		
+		var _findPost = function(handle, thread_id, pk, scroll_el, el_parent){
+			$.each(handle, function(index, el){
+				if($(this).data('post') == pk){
+					_scrollToEl($(this), scroll_el, el_parent)
+		
+				}
+			})
+		}
+	
+		var _openThread = function(type, pk, thread_id){
+			if(thread_id){
+				OneThread.openPopUp($('#'+thread_id))
+			}else{
+				OneThread.openPopUp($('#'+pk))
+			}
+		
+		}
+		
+		var _go = function(type, pk, thread_id){
+			var center_check = $(".center").width() / $(window).width(),
+				left_wrap = $('.left-wrap')
+				toggled = left_wrap.css('left'),
+				tog_btn = $("#fixed-top-right>ul>li:nth-child(3)"),
+				curr_thread = $('.user-box-container').data('thread'),
+				id_check = thread_id == "" ? pk : thread_id
+				user_view = $('.user-view'),
+				thread_div_pop = $('#thread-div-pop');
+			
+			///hide notifications	
+			$('#pop-up-wrapper').remove();
+
+			////toggle to Global View if necessary or back
+			console.log(center_check == 1, toggled == '0px', curr_thread != id_check)
+			if(center_check == 1  && toggled == '0px' && curr_thread != id_check){
+				toggleView.toggle(tog_btn)
+				left_wrap.one("transitionend", function(){
+					
+				///see toggle to get oriented
+				//setTimeout(function(){
+					_openThread(type, pk, thread_id)
+					
+					thread_div_pop.one("transitionend", function(){
+						_findPost($('#thread-div-pop').find('.vote-list-response, .respo-vote-left'), thread_id, pk, $('#thread-div-pop').find('.response-container'), $('#thread-div-pop').find('.details'));
+					});
+				//}, 200)
+				});
+				
+			}else if(center_check == 1  && toggled == '0px' && curr_thread == id_check){
+				
+				_findPost(user_view.find('.vote-list-response, .respo-vote-left'), thread_id, pk, $('body, html'), $(window));
+			
+			
+			}else if(center_check == 1  && toggled != '0px' && curr_thread == id_check){
+				toggleView.toggle(tog_btn)
+				
+				//setTimeout(function(){
+				left_wrap.one("transitionend", function(){
+					_findPost(user_view.find('.vote-list-response, .respo-vote-left'), thread_id, pk, $('body, html'), $(window));
+				});
+				//}, 200)
+				
+			
+			}else if(center_check == 1  && toggled != '0px' && curr_thread != id_check){
+				_openThread(type, pk, thread_id)
+				console.log($('#thread-div-pop').find('.details'))
+				//setTimeout(function(){
+				thread_div_pop.one("transitionend", function(){
+					_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), $('#thread-div-pop').find('.details'));
+				});
+				//}, 500)
+				
+			
+			}else{
+				_openThread(type, pk, thread_id)
+				
+				setTimeout(function(){
+					//_highlight(el)
+				}, 500)
+			}
+			
+			
+		}
+		
+		var bind = function(){
+			
+			$('.notify').on('click', function(){
+				_go($(this).data('type'), $(this).data('pk'), $(this).data('thread_id'))
+			});
+			
+		}
+		
+		return{
+		bind:bind
+		}
+
+	})();
+	
 
 	var CloseSorter = (function(){
 	
@@ -1394,7 +1529,7 @@ $(document).ready(function() {
 			}
 		}
 		
-		var _toggle = function(el){
+		var toggle = function(el){
 			var menu = $("#fixed-top-right ul li:nth-child(2)"),
 				s2t = $('.scroll-to-top'),
 				post_form_container = $('.post-form-container'),
@@ -1433,15 +1568,12 @@ $(document).ready(function() {
 				center.css({height:"calc(100vh - 36px)"})
 				left_holder.removeAttr('style');
 				
-				
-				
-				
 			}
 		}
 		
 		var bind = function(){
 			$("#fixed-top-right>ul>li:nth-child(3)").on("click", function(){
-				_toggle($(this))
+				toggle($(this))
 			});
 				$(window).on('scroll', function(){
 					_stickToTop()
@@ -1457,6 +1589,10 @@ $(document).ready(function() {
 		}
 		
 		bind()
+		
+		return{
+			toggle:toggle 
+		}
 		
 	})();
 	
@@ -1560,7 +1696,7 @@ $(document).ready(function() {
 
 	var AjaxError = (function(){
 		var show = function(){
-			alert('error')
+			//alert('error')
 		}
 		
 		return{
@@ -1809,6 +1945,13 @@ $(document).ready(function() {
 					_createPopUp(data, type);
 			
 					_bindClose()
+					
+					if(type == 'notifications'){
+						
+						UTC2Local.convert($('#status-wrap'))
+						
+						Notify.bind()
+					}
 				},
 				error: function(){
 					AjaxError.show();
@@ -1863,7 +2006,7 @@ $(document).ready(function() {
 			//ScrollToTop.init() 
 		
 			
-			var center_check = parseInt($(".center").css("width").replace("px", "")) / $(window).width();
+			var center_check = $(".center").width() / $(window).width();
 			///phone
 			if(center_check == 1){
 				// if($(".content-wrap").css("left") == "0px"){

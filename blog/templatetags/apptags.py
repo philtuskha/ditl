@@ -39,6 +39,15 @@ def get_votes_r(post_id, set, user):
 		
 		
 @register.simple_tag
+def split_vote(string, num):
+	vote_list = str(string).split("|")
+	return vote_list[num]
+
+@register.simple_tag
+def next_response(id):
+	return int(id) + 1		
+		
+@register.simple_tag
 def get_votes(post_id, set):
 	x = set.filter(post=post_id)
 	l = ""

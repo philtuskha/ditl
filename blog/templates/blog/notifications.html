@@ -1,18 +1,58 @@
-<div>
-	{% for r in responses %}
-		{% if r.user_id %}
-			{% if r.author_id == user %}
-			<div class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+{% load apptags %}
+<div id="status">
+	<h1><div class="status-user">Notifications<span class="close-btn"></span></div></h1>
+	<div id="status-wrap">
+		
+		{% for r in responses %}
+			{% if r.user_id %}
+				{% if r.option == "SE" %}
+			
+				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{% split_vote r 3 %}">
+					<li>
+						<span class="notify-heart"></span>
+						<p>{% split_vote r 1 %}</p>
+						
+						
+					</li>
+					<li>
+						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+					</li>
+				</ul>
+				{% else %}
+				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{% split_vote r 3 %}">
+					<li>
+						<span class="notify-troll"></span>
+						<p>{% split_vote r 1 %}</p>
+					</li>
+					<li>
+						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+					</li>
+				</ul>
+				{% endif %}
 			{% else %}
-			<div style="background:cyan" class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
+				{% if r.resp_count >= 0 %}
+				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="thread">
+					<li>
+						<span class="notify-thread"></span>
+						<p>{{ r }}</p>
+					</li>
+					<li>
+						<p>User {{ r.author_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+					</li>
+				</ul>
+				{% else %}
+				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="response">
+					<li>
+						<span class="notify-response"></span>
+						<p>{{ r }}</p>
+					</li>
+					<li>
+						<p>User {{ r.author_id }}</p> <div class="utc">{{ r.published_date | date:'G:i' }}</div>
+					</li>
+				</ul>
+				{% endif %}
 			{% endif %}
-		{% else %}
-			{% if r.author_id == user %}
-			<div class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
-			{% else %}
-			<div style="background:magenta" class="noitfy" data-rpk="{{ r.pk }} ">{{ r }} |||| {{ r.published_date }}</div>
-			{% endif %}
-		{% endif %}
-	{% endfor %}
+		{% endfor %}
+	</div>
 </div>
 

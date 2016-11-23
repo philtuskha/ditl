@@ -589,43 +589,81 @@ def keywords(request):
 
 def notifications(request):
     user = request.user.id
-    notif_list = []
+    last_day = timezone.now() - timezone.timedelta(days=1)
+    
+    #all_threads
     all_threads = Thread.objects.all()
     
-    my_last_thread = all_threads.filter(author_id=user).latest('published_date')
-    responses = Response.objects.all()
+    #all threads that aren't mine written in the last day -- send to combine
+    others_threads = all_threads.filter(published_date__gte=last_day).exclude(author_id=user)
     
+    #all responses/all rvotes/all tvotes
+    responses = Response.objects.all()
+    all_rvotes = RVote.objects.all()
+    all_tvotes = TVote.objects.all()
+    
+    #these are threads that I have commented on
+    my_tvote_posts = others_threads.filter(tvote__user_id=user)
+    
+    #these are threads where I have voted on a response
+    my_rvote_posts = others_threads.filter(response__rvote__user_id=user)
+    
+    #these are threads that I have voted for the post itself
+    my_response_posts = others_threads.filter(response__author_id=user)
+    
+    #combine and get distinct
+    my_conversations = my_tvote_posts | my_rvote_posts | my_response_posts
+    my_conversations = my_conversations.distinct()
+    
+    #all responses in my conversations  -- send to combine
+    my_convo_responses = responses.filter(thread__id__in=my_conversations, published_date__gte=last_day).exclude(author_id=user)
+   
+    
+    #responses that I have made on threads posted in the last day
+    my_respo = responses.filter(author_id=user, thread__published_date__gte=last_day)
+    #votes for responses I have made
+    my_respo_rvotes = all_rvotes.filter(post_id__in=my_respo, published_date__gte=last_day)
+    
+    ##################################### my current thread ###################
+    
+    #_set example
     #t_votes = th.tvote_set.filter(option="SE").count()
     
-    curr_thread_respo = responses.filter(thread_id=my_last_thread.id).exclude(author_id=user)
+    #my current thread
+    my_last_thread = all_threads.filter(author_id=user).latest('published_date')
     
-    my_respo = responses.filter(author_id=user)
+    #responses to my current thread
+    curr_all_respo = responses.filter(thread_id=my_last_thread.id)
     
-    my_rvotes = RVote.objects.all()
+    #responses to my current thread by others -- send to combine
+    curr_thread_respo = curr_all_respo.exclude(author_id=user)
     
-    my_tvotes = TVote.objects.all()
+    #all thread votes on my current thread -- send to combine
+    curr_thread_tvotes = all_tvotes.filter(post_id=my_last_thread.id).exclude(user_id=user)
     
-    combined = curr_thread_respo | my_respo
+    #all response votes on my current thread -- send to combine
+    #curr_thread_rvotes = all_rvotes.filter(post_id__in=curr_all_respo).exclude(user_id=user)
     
-    #responses = responses.order_by('published_date').reverse()
+    ################################## combine all into iterable object sorted by date ####################
     
-    # descending order , my_rvotes, my_rvotes
+    #combine/sort/reverse order
     responses = sorted(
-        chain(curr_thread_respo, my_respo, all_threads),
+        chain(others_threads, my_convo_responses, my_respo_rvotes, curr_thread_respo, curr_thread_tvotes),  #, curr_thread_rvotes
         key=attrgetter('published_date'),
         reverse=True)
-    
-        
-    
-    
-    
-    
-    
-    
+
     '''
-    look through all responses and see if anyone left a comment directly after your response
+    include........
+    -all threads started by other people
+    -all reponses to threads that I have responded to
+    -all reponses to threads that I have voted on
+    -all votes for my responses
+    ---------
+    -all responses to my thread
+    -all tvotes to my thread
+    -all rvotes to my thread
     
-    "      "    "     "       "     "      "  voted for your comment
+    
     
     '''
     

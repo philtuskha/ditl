@@ -1,17 +1,17 @@
 
 <div id="status">
 	<!-- <span class="close-btn"></span> -->
-	<h1><div class="status-user">User {{user}}<span class="close-btn"></span></div></h1>
+	<h1><div class="status-user">Ranking<span class="close-btn"></span></div></h1>
 	<div id="status-wrap">
  		
 <!-- 
 		activity_list = [activity_ranking, my_activity_ranking, max_activity_points, my_activity_points, total_activity_points]
  -->
  		{% if activity_list %}
-		<h4>Your Activity<span>#{{ activity_list.1 }}</span></h4>
+		<h4>Activity<span>#{{ activity_list.1 }}</span></h4>
 		<p class="large">Your activity ranking is #{{ activity_list.1 }}, out of {{ total_users }} users. You have {{ activity_list.3 }} points. The highest ranking user has {{activity_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
 	
-		<p>Your Activity ranking is based on how much you have been posting in the last 14 days.</p>  
+		<p class="small">Your Activity ranking is based on how much you have been posting in the last 14 days.</p>  
 		<div class="graph">
 			<ul data-users="{{total_users}}" class="other-graph">
 			{% for u, r in activity_list.0 %}
@@ -31,10 +31,10 @@
 		my_thread_list = [thread_responses_count, thread_se_votes, thread_tr_votes]
  -->
  		{% if thread_list %}
-		<h4>Your Posts<span>#{{ thread_list.1 }}</span></h4>
+		<h4>Popularity<span>#{{ thread_list.1 }}</span></h4>
 		<p class="large">Your Post ranking is #{{ thread_list.1 }}, out of {{ total_users }} users. You have {{ thread_list.3 }} points. The highest ranking user has {{thread_list.2}} points.</p><!--  The high score is {{ total_activity_points }} points -->
 	
-		<p>Your Post ranking is based on how many votes and comments your posts have recieved in the last 14 days.</p>  
+		<p class="small">Your Post ranking is based on how many votes and comments your posts have recieved in the last 14 days.</p>  
 		<div class="graph">
 			<ul data-users="{{total_users}}" class="other-graph">
 			{% for u, r in thread_list.0 %}
