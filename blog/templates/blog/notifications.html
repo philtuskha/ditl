@@ -10,23 +10,28 @@
 				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-heart"></span>
+					</li>
+					<li>
 						<p>{{ r.post.title }}</p>
-							
+						<p>User {{ r.user_id }} liked one of your posts.</p>	
 						
 					</li>
 					<li>
-						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+						<div class="utc">{{ r.published_date | date:'G:i' }}</div>
 					</li>
 				</ul>
 				{% else %}
 				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-troll"></span>
-							<p>{{ r.post.title }}</p>
+					</li>
+					<li>	
+						<p>{{ r.post.title }}</p>
+						<p>User {{ r.user_id }} troll voted one of your posts.</p>
 						
 					</li>
 					<li>
-						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+						<div class="utc">{{ r.published_date | date:'G:i' }}</div>
 					</li>
 				</ul>
 				{% endif %}
@@ -35,20 +40,30 @@
 				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="thread">
 					<li>
 						<span class="notify-thread"></span>
+					</li>
+					<li>	
 						<p>{{ r.title }}</p>
+						<p>User {{ r.author_id }} started a new conversation.</p>
 					</li>
 					<li>
-						<p>User {{ r.author_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
+						<div class="utc">{{ r.published_date | date:'G:i' }}</div>
 					</li>
 				</ul>
 				{% else %}
 				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="response">
 					<li>
 						<span class="notify-response"></span>
-						<p>{{ r.title }}</p>
 					</li>
 					<li>
-						<p>User {{ r.author_id }}</p> <div class="utc">{{ r.published_date | date:'G:i' }}</div>
+						<p>{{ r.title }}</p>
+						{% if user == r.thread.author_id %}
+							<p>User {{ r.author_id }} posted to a conversation you started.</p>
+						{% else %}
+							<p>User {{ r.author_id }} posted to a conversation you are involved in.</p>
+						{% endif %}
+					</li>
+					<li>
+						<div class="utc">{{ r.published_date | date:'G:i' }}</div>
 					</li>
 				</ul>
 				{% endif %}
