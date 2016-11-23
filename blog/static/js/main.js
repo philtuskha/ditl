@@ -1350,7 +1350,7 @@ $(document).ready(function() {
 			}else{
 				
 				var position = el.offset().top - (scroll_el.offset().top + 20) < scroll_el.prop('scrollHeight') - el_parent.height() ? el.offset().top - (scroll_el.offset().top + 20) : scroll_el.prop('scrollHeight') - el_parent.height();
-				console.log(el.offset().top, scroll_el.offset().top )
+				console.log(el.parent().offset().top, scroll_el.offset().top )
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
