@@ -34,7 +34,7 @@
 				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="thread">
 					<li>
 						<span class="notify-thread"></span>
-						<p>{{ r }}</p>
+						<p>{{ r.title }}</p>
 					</li>
 					<li>
 						<p>User {{ r.author_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
@@ -44,7 +44,7 @@
 				<ul class="notify" data-pk="{{ r.pk }}" data-thread_id="{{ r.thread_id }}"  data-type="response">
 					<li>
 						<span class="notify-response"></span>
-						<p>{{ r }}</p>
+						<p>{{ r.title }}</p>
 					</li>
 					<li>
 						<p>User {{ r.author_id }}</p> <div class="utc">{{ r.published_date | date:'G:i' }}</div>

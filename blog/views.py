@@ -630,7 +630,7 @@ def notifications(request):
     #t_votes = th.tvote_set.filter(option="SE").count()
     
     #my current thread
-    my_last_thread = all_threads.filter(author_id=user).latest('published_date')
+    my_last_thread = all_threads.filter(author_id=user, published_date__gte=last_day).latest('published_date')
     
     #responses to my current thread
     curr_all_respo = responses.filter(thread_id=my_last_thread.id)
