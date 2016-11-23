@@ -10,11 +10,9 @@
 				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-heart"></span>
-						{% if r == "rvote" %}
-							<p>{% get_respo_title r.post_id %}</p>
-						{% else %}
-							<p>{% get_thread_title r.post_id %}</p>
-						{% endif %}
+						<p>{{ r.post }}</p>
+							
+						
 					</li>
 					<li>
 						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
@@ -24,11 +22,8 @@
 				<ul class="notify" data-pk="{{ r.post_id }}" data-thread_id="{{ r.post.thread.id }}" data-type="{{ r }}">
 					<li>
 						<span class="notify-troll"></span>
-						{% if r == "rvote" %}
-							<p>{% get_respo_title r.post_id %}</p>
-						{% else %}
-							<p>{% get_thread_title r.post_id %}</p>
-						{% endif %}
+							<p>{{ r.post }}</p>
+						
 					</li>
 					<li>
 						<p>User {{ r.user_id }}</p><div class="utc">{{ r.published_date | date:'G:i' }}</div>
