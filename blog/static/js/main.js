@@ -1311,6 +1311,8 @@ $(document).ready(function() {
 				url: "/keywords",
 				success: function(data) {
 					$("#keywords").html(data)
+					initSorter.bindEach($('.keyword'))
+					initSorter.initStyleStorage($('#keywords div'))
 					
 				},
 				error: function(){
@@ -1347,13 +1349,12 @@ $(document).ready(function() {
 			console.log(scroll_el)
 			///if window
 			if(el_parent[0].self == el_parent[0]){
-				console.log(to_highlight.offset().top - 98 < scroll_el.height() - el_parent.height(), to_highlight.offset().top - 98, scroll_el.height() - el_parent.height())
+				//console.log(to_highlight.offset().top - 98 < scroll_el.height() - el_parent.height(), to_highlight.offset().top - 98, scroll_el.height() - el_parent.height())
 				var position = to_highlight.offset().top - 98 < scroll_el.height() - el_parent.height() ? to_highlight.offset().top - 98 : scroll_el.height() - el_parent.height()
 				
 			}else{
-				
-				var position = (to_highlight.offset().top - scroll_el.offset().top) < scroll_el.prop('scrollHeight') - el_parent.height() ? (to_highlight.offset().top - scroll_el.offset().top) : scroll_el.prop('scrollHeight') - el_parent.height();
-				console.log(el.parent().parent().offset().top, scroll_el.offset().top )
+				var position = to_highlight.position().top - el_parent.position().top < scroll_el.prop('scrollHeight') - scroll_el.height() ? to_highlight.position().top - el_parent.position().top : scroll_el.prop('scrollHeight') - scroll_el.height();
+				//console.log(el.parent().parent().offset().top, scroll_el.offset().top )
 			}
 			
 			scroll_el.animate({ scrollTop: position }, 500, 'easeOutCirc', function(){
@@ -1406,7 +1407,7 @@ $(document).ready(function() {
 					_openThread(type, pk, thread_id)
 					
 					thread_div_pop.one("transitionend", function(){
-						_findPost($('#thread-div-pop').find('.vote-list-response, .respo-vote-left'), thread_id, pk, $('#thread-div-pop').find('.response-container'), $('#thread-div-pop').find('.details'));
+						_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), thread_div_pop.find('.details'));
 					});
 				//}, 200)
 				});
@@ -1431,17 +1432,21 @@ $(document).ready(function() {
 				//console.log($('#thread-div-pop').find('.details'))
 				//setTimeout(function(){
 				thread_div_pop.one("transitionend", function(){
-					_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), $('#thread-div-pop').find('.details'));
+					_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), thread_div_pop.find('.details'));
 				});
 				//}, 500)
 				
 			
 			}else{
-				_openThread(type, pk, thread_id)
+				if(curr_thread != id_check){
+					_openThread(type, pk, thread_id)
 				
-				setTimeout(function(){
-					//_highlight(el)
-				}, 500)
+					thread_div_pop.one("transitionend", function(){
+						_findPost(thread_div_pop.find('.vote-list-response, .respo-vote-left'), thread_id, pk, thread_div_pop.find('.response-container'), thread_div_pop.find('.details'));
+					});
+				}else{
+					_findPost(user_view.find('.vote-list-response, .respo-vote-left'), thread_id, pk, $('.user-view'), $('.user-box-container'));
+				}
 			}
 			
 			
@@ -1717,12 +1722,11 @@ $(document).ready(function() {
 	
 	})();
 	
-	
-	//init Sorter
-	(function(){ 
 		
-		var _initStyleStorage = function(){
-			$('.sorter div').each(function(){
+	var initSorter = (function(){ 
+		
+		var initStyleStorage = function(el){
+			el.each(function(){ //$('.sorter div')
 				var this_div = $(this);
 			
 				if(!$.isEmptyObject(this_div.data())){
@@ -1802,8 +1806,8 @@ $(document).ready(function() {
 			
 		}
 		
-		var _bindEach = function(){
-			 $('.sorter .sort, .sorter .keyword').on(' click',function(){
+		var bindEach = function(el){
+			 el.on(' click',function(){
 				var this_div = $(this);
 				_query(this_div)
 		
@@ -1837,11 +1841,16 @@ $(document).ready(function() {
 		}
 		
 		var _init = function(){
-			_initStyleStorage();
-			_bindEach();
+			initStyleStorage($('.sorter div'));
+			bindEach($('.sorter .sort, .sorter .keyword'));
 		}
 		
 		_init()
+		
+		return{
+			initStyleStorage:initStyleStorage,
+			bindEach:bindEach
+		}
 		
 	})();
 
@@ -1966,6 +1975,7 @@ $(document).ready(function() {
 					}
 				},
 				error: function(){
+					$('#pop-up-wrapper').remove();
 					AjaxError.show();
 				}
 			});
