@@ -1345,9 +1345,11 @@ $(document).ready(function() {
 
 			
 			console.log(scroll_el)
+			///if window
 			if(el_parent[0].self == el_parent[0]){
-				var position = el.offset().top - 98 < scroll_el.height() - el_parent.height() ? el.offset().top - 98 :  scroll_el.height() - el_parent.height()
-				console.log(el_parent[0].self)
+				console.log(to_highlight.offset().top - 98 < scroll_el.height() - el_parent.height(), to_highlight.offset().top - 98, scroll_el.height() - el_parent.height())
+				var position = to_highlight.offset().top - 98 < scroll_el.height() - el_parent.height() ? to_highlight.offset().top - 98 : scroll_el.height() - el_parent.height()
+				
 			}else{
 				
 				var position = (to_highlight.offset().top - scroll_el.offset().top) < scroll_el.prop('scrollHeight') - el_parent.height() ? (to_highlight.offset().top - scroll_el.offset().top) : scroll_el.prop('scrollHeight') - el_parent.height();
