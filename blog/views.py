@@ -522,12 +522,11 @@ def update_page(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
         
 
-def keyword_extends():
-#   if I want to add keyword searches from responses as well    
-#   response = Response.objects.all()
-#   all_text = [response, thread]
-    thread = Thread.objects.all()
-    response = Response.objects.all()
+def keyword_extends(user):
+    
+    last_day = timezone.now() - timezone.timedelta(days=1)
+    thread = Thread.objects.filter(published_date__gte=last_day).exclude(author_id=user)
+    response = Response.objects.filter(thread__published_date__gte=last_day).exclude(thread__author_id=user)
     all_text = [response, thread]
     
     most_used_nouns = {}
@@ -539,17 +538,20 @@ def keyword_extends():
             stripped_text = strip_tags(r.text)
             tokens = word_tokenize(stripped_text)
             tagged = pos_tag(tokens)
-    
-            last_word = ""
+            p_word = p_type = word = type = x_word = x_type = ""
     
             for t in range(0, len(tagged)):
                 word, type = tagged[t]
-                p_word, p_type = tagged[t-1]
-        
+                
+                if t is not 0:
+                    p_word, p_type = tagged[t-1]
+                    
+                    
                 if t+1 < len(tagged):
                     x_word, x_type = tagged[t+1]
                 else:
                     x_word, x_type = ("", "")
+                
                 
                 if type in nouns and (p_type in pre or x_type in nouns):
                     if x_type not in nouns:
@@ -575,16 +577,13 @@ def keyword_extends():
                         most_used_nouns[conj] = 1
                     
                     
-                    
-                    
     sorted_nouns = sorted(most_used_nouns.items(), key=lambda x: x[1], reverse=True)
     return sorted_nouns
 
     
 def keywords(request):  
-
-    sorted_nouns = keyword_extends()        
-    return render(request,'blog/keywords.html',{'sorted_nouns':sorted_nouns,'timediff':timediff})
+    sorted_nouns = keyword_extends(request.user.id)        
+    return render(request,'blog/keywords.html',{'sorted_nouns':sorted_nouns})
 
 
 def notifications(request):
@@ -652,23 +651,6 @@ def notifications(request):
         key=attrgetter('published_date'),
         reverse=True)
 
-    '''
-    include........
-    -all threads started by other people
-    -all reponses to threads that I have responded to
-    -all reponses to threads that I have voted on
-    -all votes for my responses
-    ---------
-    -all responses to my thread
-    -all tvotes to my thread
-    -all rvotes to my thread
-    
-    
-    
-    '''
-    
-    
-    
     return render(request,'blog/notifications.html',{'user':user,'responses':responses})
 
 def status(request):
@@ -781,7 +763,7 @@ def home(request):
     form = ThreadForm()
     
     #main keyword loading to sidbar
-    sorted_nouns = keyword_extends()
+    sorted_nouns = keyword_extends(request.user.id)
     
     return render(request, 'blog/home.html', {'sorted_nouns': sorted_nouns, 'threads': threads, 'form': form})
 

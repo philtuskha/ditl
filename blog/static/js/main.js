@@ -1308,7 +1308,7 @@ $(document).ready(function() {
 		var load = function(){
 			$.ajax({
 				type: "GET",
-				url: "/time_since/",
+				url: "/keywords",
 				success: function(data) {
 					$("#keywords").html(data)
 					
@@ -2141,7 +2141,9 @@ $(document).ready(function() {
 						if($("#thread-div-pop").css("display") == "block"){
 							OneThread.loadCurrThread(curr_id, handle, false)
 					
-						}	 
+						}
+						
+						Keywords.load()	 
 						
 					} 
 					//update user_view with scroll --- responses
