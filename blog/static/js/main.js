@@ -1659,33 +1659,39 @@ $(document).ready(function() {
 			
 		var convert = function(parent){
 			
-			
 			var els = parent.find('.utc');
 			$.each(els, function(index, el){
 				
 				var el_html = el.textContent;
-				
-				//console.log(els, index, el.textContent)
 				
 				if(el_html.indexOf("am") == -1 || el_html.indexOf("pm") == -1){
 			
 					var time = el_html.split(':'),
 						int_hr = parseInt(time[0]);
 					
-					//adjust for military time
-					if(int_hr > 12){
-						var ps = "pm",
-						local_hr = (int_hr - 12) - hr_offset;
+					//adjust for local
+					var off_hr = int_hr - hr_offset
+					
+					
+					if(off_hr < 0){
+						var mil = 24 + off_hr;
+					
+					}else if(int_hr > 24){
+						var mil = off_hr - 24;
+					
 					}else{
-						var ps = "am",
-						local_hr = int_hr - hr_offset;
+						var mil = off_hr;
 					}
 					
-					//adjust hrs
-					if(local_hr < 0){
-						local_hr = 12 - local_hr
+					//adjust for military time
+					if(mil > 12){
+						var ps = "pm",
+						local_hr = mil - 12;
+					}else{
+						var ps = "am",
+						local_hr = mil;
 					}
-			
+					
 					local_time = local_hr.toString() + ":" + time[1] + " " + ps;
 			
 					els[index].textContent = local_time;
