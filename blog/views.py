@@ -593,8 +593,13 @@ def notifications(request):
     #all_threads
     all_threads = Thread.objects.all()
     
-    #all threads that aren't mine written in the last day -- send to combine
-    others_threads = all_threads.filter(published_date__gte=last_day).exclude(author_id=user)
+    try:
+        #all threads that aren't mine written in the last day -- send to combine
+        others_threads = all_threads.filter(published_date__gte=last_day).exclude(author_id=user)
+        
+    except:
+        pass
+    
     
     #all responses/all rvotes/all tvotes
     responses = Response.objects.all()
@@ -629,19 +634,26 @@ def notifications(request):
     #t_votes = th.tvote_set.filter(option="SE").count()
     
     #my current thread
-    my_last_thread = all_threads.filter(author_id=user, published_date__gte=last_day).latest('published_date')
+    my_last_thread = all_threads.filter(author_id=user, published_date__gte=last_day)
     
-    #responses to my current thread
-    curr_all_respo = responses.filter(thread_id=my_last_thread.id)
+    if my_last_thread:
+        latest_thread = my_last_thread.latest('published_date')
     
-    #responses to my current thread by others -- send to combine
-    curr_thread_respo = curr_all_respo.exclude(author_id=user)
+        #responses to my current thread
+        curr_all_respo = responses.filter(thread_id=latest_thread.id)
     
-    #all thread votes on my current thread -- send to combine
-    curr_thread_tvotes = all_tvotes.filter(post_id=my_last_thread.id).exclude(user_id=user)
+        #responses to my current thread by others -- send to combine
+        curr_thread_respo = curr_all_respo.exclude(author_id=user)
     
-    #all response votes on my current thread -- send to combine
-    #curr_thread_rvotes = all_rvotes.filter(post_id__in=curr_all_respo).exclude(user_id=user)
+        #all thread votes on my current thread -- send to combine
+        curr_thread_tvotes = all_tvotes.filter(post_id=latest_thread.id).exclude(user_id=user)
+    
+        #all response votes on my current thread -- send to combine
+        #curr_thread_rvotes = all_rvotes.filter(post_id__in=curr_all_respo).exclude(user_id=user)
+    else:
+       
+        curr_thread_respo = iter([])
+        curr_thread_tvotes = iter([])
     
     ################################## combine all into iterable object sorted by date ####################
     

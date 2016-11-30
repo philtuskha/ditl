@@ -2,7 +2,7 @@
 <div id="status">
 	<h1><div class="status-user">Notifications<span class="close-btn"></span></div></h1>
 	<div id="status-wrap">
-		
+	{% if responses %}	
 		{% for r in responses %}
 			{% if r.user_id %}
 				{% if r.option == "SE" %}
@@ -69,6 +69,9 @@
 				{% endif %}
 			{% endif %}
 		{% endfor %}
+	{% else %}	
+		<p class="small">No new notifications at this time.  Post more stuff!</p>
+	{% endif %}	
 	</div>
 </div>
 

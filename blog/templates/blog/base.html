@@ -22,45 +22,36 @@
         {% endif %}
     </head>
     <body>
-    <div id="fixed-top">
+    
 		{% if user and not user.is_anonymous %}
-		<div id="fixed-top-left">
-			<ul>
-				<li data-type='status' data-hold='off'>
-					<div id="rank-ico"></div>
-				</li>
-				<li data-type='notifications' data-hold='off'>
-					<div id="bell-ico"></div>
-				</li>
+		<div id="fixed-top">
+			<div id="fixed-top-left">
+				<ul>
+					<li data-type='status' data-hold='off'>
+						<div id="rank-ico"></div>
+					</li>
+					<li data-type='notifications' data-hold='off'>
+						<div id="bell-ico"></div>
+					</li>
 				
-				<!-- </li><li data-type='notifications' data-hold='off'><a>NOTIFICATIONS</a></li> -->
-				<!-- <li></li> -->
-			</ul>
-		</div><div id="fixed-top-right">
-			<ul>
-				<li>
-					<a id="logout" href="{% url 'auth:logout' %}?next={{ request.path }}">LOGOUT</a>
-				</li><li>
-					<div id="explore-ico"></div>
-				</li><li>
-					<div id="posts-ico"></div>
-				</li>
-			</ul>
+					<!-- </li><li data-type='notifications' data-hold='off'><a>NOTIFICATIONS</a></li> -->
+					<!-- <li></li> -->
+				</ul>
+			</div><div id="fixed-top-right">
+				<ul>
+					<li>
+						<a id="logout" href="{% url 'auth:logout' %}?next={{ request.path }}">LOGOUT</a>
+					</li><li>
+						<div id="explore-ico"></div>
+					</li><li>
+						<div id="posts-ico"></div>
+					</li>
+				</ul>
+			</div>
 		</div>
 		{% else %}
-		<div></div>
-		<div></div>
-		<div id="fixed-top-right">
-			<ul>
-				<li>
-
-				</li>
-			</ul>
-		</div>
+		
 		{% endif %}
-		</div>
-	</div>
-
     <header>
     	<div>
         	<h1><a href="/"><span>D</span><span>a</span><span>y</span>&nbsp;&nbsp;<span>i</span><span>n</span>&nbsp;&nbsp;&nbsp;<span>t</span><span>h</span><span>e</span>&nbsp;&nbsp;&nbsp;<span>l</span><span>i</span><span>f</span><span>e</span></a></h1>

@@ -216,7 +216,7 @@ transition:all 0.2;
 .logged-out{
 text-align:center;
 width:100%;
-height:calc(100vh - 111px);
+height:calc(100vh - 75px);
 padding:0;
 background:url(../img/diamond_bkg4.jpg);
 overflow-y:scroll;
@@ -1885,7 +1885,7 @@ and (max-width:48.125em){
  		font-size:22pt;
  	}
  	.logged-out{
- 		height:calc(100vh - 96px)
+ 		height:calc(100vh - 60px)
  	}
  	#login-about{
  		width:100%;
@@ -2033,7 +2033,7 @@ and (max-width: 64.000em){
 		display:inline-block;
 	}
 	.logged-out{
- 		height:calc(100vh - 96px)
+ 		height:calc(100vh - 60px)
  	}
 	#login-about{
  		width:80%;

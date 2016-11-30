@@ -17,5 +17,6 @@ $(document).ready(function() {
 		});
 	
 	}
+	$('header').css({"margin-top":"0"})
 
 });

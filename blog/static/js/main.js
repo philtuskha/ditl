@@ -1693,7 +1693,11 @@ $(document).ready(function() {
 						var ps = "pm",
 						local_hr = mil - 12;
 					}else{
-						var ps = "am",
+						if (mil == 12){
+							var ps = "pm"
+						}else{
+							var ps = "am"
+						}
 						local_hr = mil;
 					}
 					
