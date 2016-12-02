@@ -1,2 +1,2 @@
 # ditl
-This is an annonymous, but kind, texting web app written in django.    
+An annonymous, group-texting, self-policing, web-app written with the help of django.      
