@@ -452,13 +452,13 @@ $(document).ready(function() {
 		
 		var load = function(pKey, pValue){
 			/////get Localstorage, find what parameters are already set
-			pData = _getLocalStorage()
+			localData = _getLocalStorage()
 		
 			///bind filter closing functionality
 			_bindFilterClose()
 		
 			/////add current parameters to parameter object
-			pData = _addCurrKeyValue(pData, pKey, pValue)
+			pData = _addCurrKeyValue(localData, pKey, pValue)
 		
 			_loadResponse(pData, pKey, pValue)
 			
