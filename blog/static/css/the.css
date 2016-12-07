@@ -698,6 +698,10 @@ padding:0;
 .user-top>ul>li:nth-child(1){
 width:32px;
 height:32px;
+-ms-transform: rotate(-90deg); 
+-webkit-transform: rotate(-90deg);
+transform: rotate(-90deg);
+display:inline-block; 
 }
 .user-top>ul>li:nth-child(2){
 width:calc(100% - 76px);
@@ -805,10 +809,12 @@ stroke-dasharray:0, 49.95; /*2π × 25 ≈ 158 */
 }
 svg.small-chart {
 margin:0;
+/* 
 -ms-transform: rotate(-90deg); 
 -webkit-transform: rotate(-90deg);
 transform: rotate(-90deg);
 display:inline-block; 
+ */
 background:#d9d9d9;
 border-radius:50%;
 
