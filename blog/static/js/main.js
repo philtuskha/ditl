@@ -1717,7 +1717,13 @@ $(document).ready(function() {
 						}else{
 							var ps = "am"
 						}
-						local_hr = mil;
+						
+						if (mil == 0){
+							local_hr = 12
+						}else{
+							local_hr = mil;
+						}
+							
 					}
 					
 					local_time = local_hr.toString() + ":" + time[1] + " " + ps;
