@@ -71,7 +71,6 @@ $(document).ready(function() {
 					//$('#thread-div-pop').css({bottom:""}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 					// $('#thread-div-pop').css({overflow:""})
-					$('.left-wrap').width("200%");
 					$('body, html').css({background:"#404040"});
 				});
 				
