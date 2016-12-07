@@ -1979,7 +1979,7 @@ $(document).ready(function() {
 // 				_close(e, removePop)
 // 				
 // 			});
-			$('.close-btn').on('click', function removePop(e){
+			$('.close-btn, #fixed-top-right ul li:nth-child(2), #fixed-top-right ul li:nth-child(3)').on('click', function removePop(e){
 				_close(e, removePop)
 				
 			});
