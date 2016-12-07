@@ -34,7 +34,7 @@ $(document).ready(function() {
 			}, 30);
 			
 			if('ontouchstart' in document.documentElement){
-				$(document).on('touchmove', function(e){
+				$("#thread-div-pop").on('touchmove', function(e){
 					e.preventDefault();
 					e.stopPropagation();
 					console.log(e);
