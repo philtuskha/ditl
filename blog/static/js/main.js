@@ -34,7 +34,7 @@ $(document).ready(function() {
 			}, 30);
 			
 			if('ontouchstart' in document.documentElement){
-				$("html, body").on('mousemove', function(e){
+				$(document).on('mousemove', function(e){
 					e.preventDefault();
 					console.log(e);
 					//$(this)scrollTop($(this)scrollTop() += )
