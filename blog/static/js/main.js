@@ -74,12 +74,14 @@ $(document).ready(function() {
 					$('body, html').css({background:"#404040"});
 				});
 				
-				///fix iphone safari popup when scrollbars change
+				///fix mobile when popup when orientation changes
 				$(window).on("orientationchange", function(){
-					//console.log($(window).height(), $("#viewport").height())
-					setTimeout(function(){
-						$("#thread-div-pop").css({height:$(window).innerHeight()});
-					}, 300);
+					if($("#thread-div-pop").css('display') == 'block'){
+						setTimeout(function(){
+							$("#thread-div-pop").css({height:$(window).innerHeight()});
+							$('.content-wrap').css({"min-height":"0px", height:"0px"})
+						}, 300);
+					}
 					
 				});
 			}
