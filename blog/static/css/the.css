@@ -808,7 +808,7 @@ margin:0;
 -ms-transform: rotate(-90deg); 
 -webkit-transform: rotate(-90deg);
 transform: rotate(-90deg);
-display:block; 
+display:inline-block; 
 background:#d9d9d9;
 border-radius:50%;
 
@@ -1387,7 +1387,7 @@ svg.chart {
   -ms-transform: rotate(-90deg); 
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
-  display:block;
+  display:inline-block;
   background: #ffc7b3;/* #ccfff5; */
   border-radius: 50%;
   /*  r="10" cx="20" cy="20" */
