@@ -68,7 +68,7 @@ $(document).ready(function() {
 			
 			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
-					$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed"})
+					//$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed"})
 					//$('#thread-div-pop').css({height:"150vh"}) // top:"116px"
 					//$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
 					//$('#thread-div-pop').css({bottom:"0px", height:$(window).innerHeight()+'px'}) // top:"116px"
@@ -76,8 +76,8 @@ $(document).ready(function() {
 					$('body, html').css({background:"#f8f8f8"});
 				
 				}).on('blur', function(){
-					$('#thread-div-pop').find('.response-form').removeAttr('style')
-					$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
+					//$('#thread-div-pop').find('.response-form').removeAttr('style')
+					//$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
 					
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 					$('body, html').css({background:"#404040"});
