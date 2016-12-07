@@ -76,13 +76,13 @@ $(document).ready(function() {
 				});
 				
 				///fix iphone safari popup when scrollbars change
-				$(window).resize(function(){
+				$(window).on("orientationchange", function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
 						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
 					}, 300);
 					
-				})
+				});
 			}
 			
 			////attach character counter
