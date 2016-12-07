@@ -62,7 +62,7 @@ $(document).ready(function() {
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').find('.response-form').removeAttr('style')
-					//$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
+					$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 				
