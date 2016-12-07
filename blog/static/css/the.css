@@ -534,7 +534,7 @@ opacity:1;
 
 .thread-pop{
 background:#f2f2f2;
-overflow:hidden;
+/* overflow:hidden; */
 }
 
 .thread-pop>p {
