@@ -14,9 +14,13 @@ $(document).ready(function() {
 				$("#thread-wrapper-pop").css({opacity:1});
 			
 				var pop_style = (center_check == 1) ? ["100%", "0"] : (center_check < 1 && center_check > 0.5) ? ["70%", "30%"] : ["47%", "32%"]
-				$('.content-wrap').css({"min-height":"0px", height:"0px"})
-				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$(window).innerHeight()+'px'});  // $("#viewport").height()+'px'
-				//$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed", border:"2px solid cyan", "z-index":"10000"})
+			
+				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$("#viewport").height()+'px'});  //
+				
+				if('ontouchstart' in document.documentElement){
+					$('.content-wrap').css({"min-height":"0px", height:"0px"})
+				}
+				
 				//var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() - 36)
 
 				// handle.parent().css({height:window_height+"px"});
@@ -32,19 +36,6 @@ $(document).ready(function() {
 				$("#thread-div-pop .expand").css({padding:"8px 0 0 8px"})
 				
 			}, 30);
-			
-			if('ontouchstart' in document.documentElement){
-				//$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed", border:"2px solid cyan"})
-				// $('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
-// 				$("#thread-div-pop").on('touchmove', function(e){
-// 					//e.preventDefault();
-// 					e.stopPropagation();
-// 					console.log(e);
-// 					//$(this)scrollTop($(this)scrollTop() += )
-// 				})
-			
-			}
-			
 		
 		}
 		var _addToStorage = function(curr_id, handle){
@@ -68,29 +59,19 @@ $(document).ready(function() {
 			
 			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
-					$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed"})
-					//$('#thread-div-pop').css({height:"150vh"}) // top:"116px"
-					//$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
-					//$('#thread-div-pop').css({bottom:"0px", height:$(window).innerHeight()+'px'}) // top:"116px"
+					//$('#thread-div-pop').css({bottom:"0px"}) // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
-					$('body, html').css({background:"#f8f8f8"});
 				
 				}).on('blur', function(){
-					$('#thread-div-pop').find('.response-form').removeAttr('style')
-					//$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
-					
+					//$('#thread-div-pop').css({bottom:""}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
-					$('body, html').css({background:"#404040"});
 				});
-				/*
 				
-				*/
 				///fix iphone safari popup when scrollbars change
 				$(window).resize(function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
-						//$('.content-wrap').css({"min-height":"0px", height:"0px"})
-						//$("#thread-div-pop").css({height:$(window).innerHeight()+'px'});
+						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
 					}, 300);
 					
 				})
@@ -100,7 +81,6 @@ $(document).ready(function() {
 			Character.bindCharCount($("#id_text_r"))
 		}
 		
-		//////not working
 		var _stopMainScroll = function() {
 			$('#thread-div-pop').find('.details').on('scroll', function(e){
 				e.stopPropagation();
@@ -138,9 +118,8 @@ $(document).ready(function() {
 					///attach AddPost functionality
 					AddPost.bindAddPost($("#id_text_r"))
 					
-					///this does not work!!!!!!!!!!!!
 					///prevent body from scrolling 
-					//_stopMainScroll()
+					_stopMainScroll()
 					
 					///convert to localtime
 					UTC2Local.convert(handle)
@@ -182,8 +161,9 @@ $(document).ready(function() {
 				div = $("#thread-div-pop");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
-			$('.content-wrap').removeAttr('style');
-			
+			if('ontouchstart' in document.documentElement){
+					$('.content-wrap').removeAttr('style')
+				}
 			if(center_check == 1){
 		
 				div.css({width:"100%", left:"0", height:this_thread_height, top:this_thread_position});
