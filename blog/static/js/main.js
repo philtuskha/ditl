@@ -34,7 +34,7 @@ $(document).ready(function() {
 			}, 30);
 			
 			if('ontouchstart' in document.documentElement){
-				$("#thread-div-pop").on('mousemove', function(e){
+				$("#thread-div-pop").on('touchmove', function(e){
 					e.preventDefault();
 					console.log(e);
 				})
