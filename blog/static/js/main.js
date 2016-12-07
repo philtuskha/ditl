@@ -19,7 +19,7 @@ $(document).ready(function() {
 				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$("#viewport").height()+'px'});  //
 				
 				if('ontouchstart' in document.documentElement){
-					store_scroll_top = $('html, body').scrollTop()
+					store_scroll_top = $(document).scrollTop()
 					console.log(store_scroll_top)
 					$('.content-wrap').css({"min-height":"0px", height:"0px"})
 					$('#thread-div-pop').css({overflow:"auto"})
@@ -172,7 +172,7 @@ $(document).ready(function() {
 			
 			if('ontouchstart' in document.documentElement){
 				$('.content-wrap').removeAttr('style')
-				$('html, body').scrollTop(store_scroll_top)
+				$(document).scrollTop(store_scroll_top)
 			}
 			
 			if(center_check == 1){
