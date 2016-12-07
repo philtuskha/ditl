@@ -62,7 +62,7 @@ $(document).ready(function() {
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
-					$('#thread-div-pop').find('.response-form').removeAttr('style')
+					//$('#thread-div-pop').find('.response-form').removeAttr('style')
 					$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
 					$('html, body').css({overflow:'', height:"", width:""})
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
