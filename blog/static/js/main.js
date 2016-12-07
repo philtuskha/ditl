@@ -59,7 +59,7 @@ $(document).ready(function() {
 			
 			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
-					//$('#thread-div-pop').css({bottom:"0px"}) // top:"116px"
+					$('#thread-div-pop').css({overflow:"auto"}) // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 					$('body, html').css({background:"#f8f8f8"});
 				
@@ -67,6 +67,7 @@ $(document).ready(function() {
 				}).on('blur', function(){
 					//$('#thread-div-pop').css({bottom:""}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
+					$('#thread-div-pop').css({overflow:""})
 					$('body, html').css({background:"#404040"});
 				});
 				
