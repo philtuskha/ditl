@@ -18,7 +18,7 @@ $(document).ready(function() {
 			
 				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$("#viewport").height()+'px'});  //
 				
-				if('ontouchstart' in document.documentElement){
+				if(center_check == 1 && 'ontouchstart' in document.documentElement){
 					store_scroll_top = $(document).scrollTop()
 					console.log(store_scroll_top)
 					$('.content-wrap').css({"min-height":"0px", height:"0px"})
@@ -170,7 +170,8 @@ $(document).ready(function() {
 			
 			$("#thread-wrapper-pop").css({opacity:0});
 			
-			if('ontouchstart' in document.documentElement){
+			///hacky mobile fixes
+			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$('.content-wrap').removeAttr('style')
 				$(document).scrollTop(store_scroll_top)
 				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px"

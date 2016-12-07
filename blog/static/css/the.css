@@ -2023,7 +2023,15 @@ and (max-width:48.125em){
 	#pop-up-wrapper {
 		width: 100%;
 	}
-	
+	 @media screen and (orientation:portrait) { 
+	 
+	 }
+	 
+ 	@media screen and (orientation:landscape) { 
+ 	body{
+	 border:6px solid cyan;
+	 }
+ 	}
 
 }
 /* tablet */
