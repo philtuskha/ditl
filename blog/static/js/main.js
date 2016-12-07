@@ -95,6 +95,7 @@ $(document).ready(function() {
 			Character.bindCharCount($("#id_text_r"))
 		}
 		
+		//////not working
 		var _stopMainScroll = function() {
 			$('#thread-div-pop').find('.details').on('scroll', function(e){
 				e.stopPropagation();
@@ -132,8 +133,9 @@ $(document).ready(function() {
 					///attach AddPost functionality
 					AddPost.bindAddPost($("#id_text_r"))
 					
+					///this does not work!!!!!!!!!!!!
 					///prevent body from scrolling 
-					_stopMainScroll()
+					//_stopMainScroll()
 					
 					///convert to localtime
 					UTC2Local.convert(handle)
@@ -175,7 +177,7 @@ $(document).ready(function() {
 				div = $("#thread-div-pop");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
-		
+			$('.content-wrap').removeAttr('style')
 			if(center_check == 1){
 		
 				div.css({width:"100%", left:"0", height:this_thread_height, top:this_thread_position});
