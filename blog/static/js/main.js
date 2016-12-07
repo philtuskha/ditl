@@ -57,14 +57,14 @@ $(document).ready(function() {
 				$("#id_text_r").on('focus', function(){
 					$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed"})
 					$('#thread-div-pop').css({height:"150vh"}) // top:"116px"
-					$('html, body').css(overflow:'hidden')
+					$('html, body').css({overflow:'hidden'})
 					//$('#thread-div-pop').css({bottom:"0px", height:$(window).innerHeight()+'px'}) // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
 					$('#thread-div-pop').find('.response-form').removeAttr('style')
 					$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
-					$('html, body').css(overflow:'')
+					$('html, body').css({overflow:''})
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 				
