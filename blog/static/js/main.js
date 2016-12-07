@@ -35,6 +35,7 @@ $(document).ready(function() {
 			
 			if('ontouchstart' in document.documentElement){
 				$(document).on('touchmove', function(e){
+					e.preventDefault();
 					e.stopPropagation();
 					console.log(e);
 					//$(this)scrollTop($(this)scrollTop() += )
