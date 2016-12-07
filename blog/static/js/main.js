@@ -1148,7 +1148,7 @@ $(document).ready(function() {
 				off_set = (off_set).toString() + ' ' + circumference.toString();
 				var stroke_w = radius + "px"
 				
-				clock.attr('transform', 'rotate(-90 '+radius+' '+radius+')')
+				//clock.attr('transform', 'rotate(-90 '+radius+' '+radius+')')
 				clock.css({strokeWidth: stroke_w, strokeDasharray: off_set, transition: "stroke-dasharray", transitionTimingFunction:'ease', transitionDuration: '1s' });
 
 				time_div.html(time_parts[1]+" hrs & "+time_parts[2]+" min left")
