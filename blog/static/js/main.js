@@ -37,7 +37,8 @@ $(document).ready(function() {
 				$("#thread-div-pop").on('touchmove', function(e){
 					e.preventDefault();
 					console.log(e);
-				}, false)
+					//$(this)scrollTop($(this)scrollTop() += )
+				})
 			
 			}
 			
