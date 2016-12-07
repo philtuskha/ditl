@@ -15,7 +15,7 @@ $(document).ready(function() {
 			
 				var pop_style = (center_check == 1) ? ["100%", "0"] : (center_check < 1 && center_check > 0.5) ? ["70%", "30%"] : ["47%", "32%"]
 				$('.content-wrap').css({"min-height":"0px", height:"0px"})
-				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$("#viewport").height()+'px'});  //
+				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$(window).innerHeight()+'px'});  // $("#viewport").height()+'px'
 				//$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed", border:"2px solid cyan", "z-index":"10000"})
 				//var window_height = $(window).innerHeight() - ($("#thread-div-pop").children().first().height() + $("#thread-div-pop").children().first().next().height() - 36)
 
@@ -177,7 +177,8 @@ $(document).ready(function() {
 				div = $("#thread-div-pop");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
-			$('.content-wrap').removeAttr('style')
+			$('.content-wrap').removeAttr('style');
+			
 			if(center_check == 1){
 		
 				div.css({width:"100%", left:"0", height:this_thread_height, top:this_thread_position});
