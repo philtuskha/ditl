@@ -62,17 +62,16 @@ $(document).ready(function() {
 			
 			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
-					 // top:"116px"
-					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
+				
 					$('.content-wrap').css({"min-height":"0px", height:"0px"})
 					$('#thread-div-pop').css({overflow:"auto"})
 					$('body, html').css({background:"#f8f8f8"});
-				
 				
 				}).on('blur', function(){
 					//$('#thread-div-pop').css({bottom:""}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 					// $('#thread-div-pop').css({overflow:""})
+					$('.left-wrap').width("200%");
 					$('body, html').css({background:"#404040"});
 				});
 				
