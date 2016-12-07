@@ -59,7 +59,7 @@ $(document).ready(function() {
 					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
-					$('#thread-div-pop').css({bottom:"", height:$("#viewport").height()+'px'}) //top:"0px"
+					$('#thread-div-pop').css({bottom:"", height:$(window).innerHeight()+'px'}) //top:"0px"
 					$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
 				});
 				
@@ -67,7 +67,7 @@ $(document).ready(function() {
 				$(window).resize(function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
-						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
+						$("#thread-div-pop").css({height:$(window).innerHeight()+'px'});
 					}, 300);
 					
 				})
