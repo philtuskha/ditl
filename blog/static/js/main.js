@@ -64,6 +64,8 @@ $(document).ready(function() {
 				$("#id_text_r").on('focus', function(){
 					 // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
+					$('.content-wrap').css({"min-height":"0px", height:"0px"})
+					$('#thread-div-pop').css({overflow:"auto"})
 					$('body, html').css({background:"#f8f8f8"});
 				
 				
