@@ -89,6 +89,7 @@ $(document).ready(function() {
 				$(window).resize(function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
+						$('.content-wrap').css({"min-height":"0px", height:"0px"})
 						$("#thread-div-pop").css({height:$(window).innerHeight()+'px'});
 					}, 300);
 					
