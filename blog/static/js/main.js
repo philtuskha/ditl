@@ -55,7 +55,7 @@ $(document).ready(function() {
 			
 			if(center_check == 1 && 'ontouchstart' in document.documentElement){
 				$("#id_text_r").on('focus', function(){
-					$('#thread-div-pop').css({bottom:"0px", height:$("#viewport").height()+'px'}) // top:"116px"
+					$('#thread-div-pop').css({bottom:"0px", height:$(window).innerHeight()+'px'}) // top:"116px"
 					$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
 				}).on('blur', function(){
