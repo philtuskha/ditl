@@ -805,9 +805,11 @@ stroke-dasharray:0, 49.95; /*2π × 25 ≈ 158 */
 }
 svg.small-chart {
 margin:0;
+/* 
 -ms-transform: rotate(-90deg); 
 -webkit-transform: rotate(-90deg);
 transform: rotate(-90deg);
+ */
 background:#d9d9d9;
 border-radius:50%;
 
@@ -1383,9 +1385,11 @@ width:20px;
 }
 svg.chart {
   margin:0px 0px 6px 0;
-  -ms-transform: rotate(-90deg); 
+  /* 
+-ms-transform: rotate(-90deg); 
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
+ */
   background: #ffc7b3;/* #ccfff5; */
   border-radius: 50%;
   /*  r="10" cx="20" cy="20" */
