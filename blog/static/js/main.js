@@ -61,10 +61,13 @@ $(document).ready(function() {
 				$("#id_text_r").on('focus', function(){
 					//$('#thread-div-pop').css({bottom:"0px"}) // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
+					$('body, html').css({background:"#f8f8f8"});
+				
 				
 				}).on('blur', function(){
 					//$('#thread-div-pop').css({bottom:""}) //top:"0px"
 					//$('#thread-wrapper-pop').css({background:"rgba(0,0,0,0.1)", height:"100vh"});
+					$('body, html').css({background:"#404040"});
 				});
 				
 				///fix iphone safari popup when scrollbars change
@@ -81,11 +84,11 @@ $(document).ready(function() {
 			Character.bindCharCount($("#id_text_r"))
 		}
 		
-		var _stopMainScroll = function() {
-			$('#thread-div-pop').find('.details').on('scroll', function(e){
-				e.stopPropagation();
-			});
-		}
+		// var _stopMainScroll = function() {
+// 			$('#thread-div-pop').find('.details').on('scroll', function(e){
+// 				e.stopPropagation();
+// 			});
+// 		}
 		
 		var loadCurrThread = function(curr_id, handle, reload){
 			var curr_url = "/thread/"+curr_id+"/",
@@ -119,7 +122,7 @@ $(document).ready(function() {
 					AddPost.bindAddPost($("#id_text_r"))
 					
 					///prevent body from scrolling 
-					_stopMainScroll()
+					//_stopMainScroll()
 					
 					///convert to localtime
 					UTC2Local.convert(handle)
@@ -161,9 +164,11 @@ $(document).ready(function() {
 				div = $("#thread-div-pop");
 			
 			$("#thread-wrapper-pop").css({opacity:0});
+			
 			if('ontouchstart' in document.documentElement){
-					$('.content-wrap').removeAttr('style')
-				}
+				$('.content-wrap').removeAttr('style')
+			}
+			
 			if(center_check == 1){
 		
 				div.css({width:"100%", left:"0", height:this_thread_height, top:this_thread_position});
