@@ -34,13 +34,14 @@ $(document).ready(function() {
 			}, 30);
 			
 			if('ontouchstart' in document.documentElement){
-				//$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
-				$("#thread-div-pop").on('touchmove', function(e){
-					//e.preventDefault();
-					e.stopPropagation();
-					console.log(e);
-					//$(this)scrollTop($(this)scrollTop() += )
-				})
+				$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed", border:"2px solid cyan"})
+				// $('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
+// 				$("#thread-div-pop").on('touchmove', function(e){
+// 					//e.preventDefault();
+// 					e.stopPropagation();
+// 					console.log(e);
+// 					//$(this)scrollTop($(this)scrollTop() += )
+// 				})
 			
 			}
 			
