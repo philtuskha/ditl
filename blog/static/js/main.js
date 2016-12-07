@@ -173,6 +173,7 @@ $(document).ready(function() {
 			if('ontouchstart' in document.documentElement){
 				$('.content-wrap').removeAttr('style')
 				$(document).scrollTop(store_scroll_top)
+				this_thread_position = ($("#" + thread_id).offset().top - $(window).scrollTop()) +"px"
 			}
 			
 			if(center_check == 1){
