@@ -34,8 +34,9 @@ $(document).ready(function() {
 			}, 30);
 			
 			if('ontouchstart' in document.documentElement){
+				//$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
 				$("#thread-div-pop").on('touchmove', function(e){
-					e.preventDefault();
+					//e.preventDefault();
 					e.stopPropagation();
 					console.log(e);
 					//$(this)scrollTop($(this)scrollTop() += )
@@ -68,7 +69,7 @@ $(document).ready(function() {
 				$("#id_text_r").on('focus', function(){
 					$('#thread-div-pop').find('.response-form').css({bottom:"0px", position:"fixed", border:"2px solid cyan"})
 					//$('#thread-div-pop').css({height:"150vh"}) // top:"116px"
-					$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
+					//$('html, body').css({overflow:'hidden', height:"100%", width:"100%"})
 					//$('#thread-div-pop').css({bottom:"0px", height:$(window).innerHeight()+'px'}) // top:"116px"
 					//$('#thread-wrapper-pop').css({background:"rgba(248,248,248,1)", height:"150vh"});
 				
