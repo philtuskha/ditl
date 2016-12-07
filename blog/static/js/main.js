@@ -16,7 +16,7 @@ $(document).ready(function() {
 			
 				var pop_style = (center_check == 1) ? ["100%", "0"] : (center_check < 1 && center_check > 0.5) ? ["70%", "30%"] : ["47%", "32%"]
 			
-				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$("#viewport").height()+'px'});  //
+				$("#thread-div-pop").css({display:"block", top:"0", width:pop_style[0], left:pop_style[1], height:$(window).innerHeight()});  //$("#viewport").height()+'px'
 				
 				if(center_check == 1 && 'ontouchstart' in document.documentElement){
 					store_scroll_top = $(document).scrollTop()
