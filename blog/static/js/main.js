@@ -78,8 +78,7 @@ $(document).ready(function() {
 				$(window).on("orientationchange", function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
-						
-						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
+						$("#thread-div-pop").css({height:$(window).innerHeight()});
 					}, 300);
 					
 				});
