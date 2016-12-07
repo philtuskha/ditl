@@ -20,7 +20,6 @@ $(document).ready(function() {
 				
 				if(center_check == 1 && 'ontouchstart' in document.documentElement){
 					store_scroll_top = $(document).scrollTop()
-					console.log(store_scroll_top)
 					$('.content-wrap').css({"min-height":"0px", height:"0px"})
 					$('#thread-div-pop').css({overflow:"auto"})
 				}
@@ -79,6 +78,9 @@ $(document).ready(function() {
 				$(window).on("orientationchange", function(){
 					//console.log($(window).height(), $("#viewport").height())
 					setTimeout(function(){
+						store_scroll_top = $(document).scrollTop()
+						$('.content-wrap').css({"min-height":"0px", height:"0px"})
+						$('#thread-div-pop').css({overflow:"auto"})
 						$("#thread-div-pop").css({height:$("#viewport").height()+'px'});
 					}, 300);
 					
