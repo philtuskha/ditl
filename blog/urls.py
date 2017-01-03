@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^ajax/add/$', views.add_thread, name='add_thread'),
     url(r'^profile_test/$', views.profile_test, name='profile_test'),
+    url(r'^guest_user/$', views.guest_user, name='guest_user'),
 ]

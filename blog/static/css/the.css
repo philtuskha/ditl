@@ -244,6 +244,29 @@ color:#f28c8c;
 #login a:hover{
 color:#ffc7b3;
 }
+#guest-user{
+width:50%;
+margin: 0 auto;
+text-align:right;
+}
+#guest-user a{
+text-decoration:none;
+color:#f28c8c;
+text-align:right;
+}
+#guest-user a:hover{
+color:#ffc7b3;
+}
+#guest-user h3 span{
+font-size:10px;
+color:#666;
+vertical-align:top;
+}
+#guest-user p{
+font-size:14px;
+text-align:justify;
+color:#666;
+}
 #login-about{
 	text-align:center;
 	width:60%;

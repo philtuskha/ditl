@@ -4,14 +4,17 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db.models import Q, Count
 from django.template.context import RequestContext
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from .models import Thread, TVote, Response, RVote, UserProfile, User
 from .forms import ThreadForm, TVoteForm, ResponseForm, RVoteForm
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, User
+from django.contrib.auth import authenticate, login
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from django.utils.html import strip_tags
 from itertools import chain
 from operator import attrgetter
+from django.utils.crypto import get_random_string
+from django.conf.urls import include, url, patterns
 
 #attach this to log in/page load/user_view. Attach another check to add posts and vote that initially checks the user profile for the date they get reinstated 
 def troll_check(user_id):
@@ -882,3 +885,24 @@ def thread_detail_detail(request, pk):
     response = Response.objects.filter(published_date__lte=timezone.now(), thread=t.pk).order_by('published_date')
     user=request.user
     return render(request, 'blog/thread_detail_detail.html', {'t': t, 'response': response, 'user':user})
+
+#guest user funtionality
+from django.views.generic import RedirectView
+
+def guest_user(request):
+    random_string = get_random_string(length=16)
+    username = 'guest_' + random_string
+    email = random_string + "@ditl.me"
+    password = random_string
+
+    user = User.objects.create_user(username, email, password)
+    user.save()
+    
+    user = authenticate(username=username, password=password)
+    
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect('/')
+    
