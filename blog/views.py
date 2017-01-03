@@ -14,7 +14,7 @@ from django.utils.html import strip_tags
 from itertools import chain
 from operator import attrgetter
 from django.utils.crypto import get_random_string
-from django.conf.urls import include, url, patterns
+from django.conf.urls import include, url
 
 #attach this to log in/page load/user_view. Attach another check to add posts and vote that initially checks the user profile for the date they get reinstated 
 def troll_check(user_id):
