@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, get_object_or_404, render_to_response, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db.models import Q, Count
