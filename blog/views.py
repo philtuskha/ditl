@@ -18,15 +18,12 @@ from django.conf.urls import include, url
 
 #attach this to log in/page load/user_view. Attach another check to add posts and vote that initially checks the user profile for the date they get reinstated 
 def troll_check(user_id):
-    print "user: ", user_id
     my_threads = Thread.objects.filter(author_id=user_id)
     my_respos = Response.objects.filter(author_id=user_id)
     profile = UserProfile.objects.get(user_id=user_id)
     
     
     past_day = timezone.now() - timezone.timedelta(days=1)
-
-    print"date: ", past_day
     
     one_t_count = my_threads.filter(published_date__gte=past_day, is_active=2).count()
     one_r_count = my_respos.filter(published_date__gte=past_day, is_active=2).count() 
@@ -40,13 +37,6 @@ def troll_check(user_id):
     five_r_count = my_respos.filter(published_date__gte=past_day, is_active=2).count() 
     
     five_day_count = five_t_count + five_r_count
-    
-    
-    print"one day count: ", one_day_count
-    print"five day count: ", five_day_count
-    print"date: ", past_day
-    print"date: ", past_day
-    print"date: ", past_day
     
     if not profile.troll_check: 
         if one_day_count > 2:
@@ -141,9 +131,7 @@ def post_status(post_object, type, post_id):
         
 
 def vote(request):
-    t_check = UserProfile.objects.get(user_id=request.user.id).troll_check
-    print "vote troll check", t_check
-    
+    t_check = UserProfile.objects.get(user_id=request.user.id).troll_check    
 
     if request.method=="POST" and t_check is None:
         user_thread_votes = TVote.objects.filter(user=request.user)
@@ -282,7 +270,6 @@ def delete_post(request):
         #check whether the delete is for thread or response
         if request.POST.get('post_type') == "thread":
             delete_this = Thread.objects.get(pk=request.POST.get('pk'), author=request.user)
-            print respos_to_thread.count()
             
             if respos_to_thread.count() == 0:
                 delete_this.delete()
@@ -819,7 +806,6 @@ def thread_list(request):
             for r in response_search:
                 keyword_threads.append(r.thread_id)
             
-            print keyword_threads
             kwargs['pk__in'] = keyword_threads
             #kwargs['text__icontains'] = request.GET.get('contains')
     
