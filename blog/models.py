@@ -9,7 +9,12 @@ from django.db.models import signals
 class UserProfile(models.Model):
 	yesterday = timezone.now() - timezone.timedelta(days=1)
 	
-	user = models.OneToOneField('auth.User', related_name='profile', primary_key=True)
+	user = models.OneToOneField(
+		'auth.User', 
+		related_name='profile', 
+		primary_key=True,
+		on_delete=models.CASCADE,
+	)
 	favorites = models.CharField(max_length=200, null=True)
 	troll_check = models.DateTimeField(null=True)
 	origin_date = models.DateTimeField(null=True)
