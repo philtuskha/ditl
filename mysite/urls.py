@@ -20,6 +20,6 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('', include('social.apps.django_app.urls', namespace='social')),
+    path('', include('social_django.urls', namespace='social')),
     path('', include('django.contrib.auth.urls', namespace='auth')),
 ]
