@@ -237,7 +237,7 @@ vertical-align: top;
 #login li img{
 margin:16%;
 }
-#login li.guest-user-person{
+#login li.guest-user-person a{
 display: flex;
 justify-content: space-between;
 align-items: center;
