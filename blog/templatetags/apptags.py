@@ -18,8 +18,8 @@ def time_since_post(thread_time):
 @register.simple_tag
 def clock(thread_time):
 	diff = timezone.now() - thread_time
-	hours = 23 - (diff.seconds / 60 / 60)
-	minutes = 59 - (diff.seconds / 60 % 60)
+	hours = round(23 - (diff.seconds / 60 / 60))
+	minutes = round(59 - (diff.seconds / 60 % 60))
 	minutes = str(minutes)
 	if len(minutes) != 2:
 		minutes = "0" + minutes
