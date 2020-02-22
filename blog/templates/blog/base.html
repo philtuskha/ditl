@@ -117,24 +117,30 @@
 	{% else %}
 		<div class="logged-out">
 			<ul id="login">
-				<li class="fbook">
+				<!-- <li class="fbook">
 					<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
 						<h3>Login With Facebook</h3>
 						<img src="{% static 'img/ico/fbook.svg' %}"></img>
 					</a>
-				</li>
+				</li> -->
 				<li class="googleplus">
 					<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
 						<h3>Login With Google</h3>
 						<img src="{% static 'img/ico/googleplus.svg' %}"></img>
 					</a>
 				</li>
+				<li class="guest-user-person">
+					<a href="/guest_user/">
+						<h3>Try it out! <span>*</span></h3>
+						<p>?</p>
+					</a>
+				</li>
 			</ul>
 			<div id="guest-user">
-				<a href="/guest_user/">
+				<!-- <a href="/guest_user/">
 					<h3>Try it out! <span>*</span></h3>
-				</a>
-				<p>* None of your personal information will be taken. You will be able to make posts, respond to posts and vote on posts, but your account will be deleted after you logout.</p>
+				</a> -->
+				<p>* None of your personal information will be taken. You will be able to make posts, respond to posts and vote on posts, but your account will be deleted after a while and you will not be able to log back in.</p>
 				<br><br><br>
 			</div>
 			<div id="login-about">
